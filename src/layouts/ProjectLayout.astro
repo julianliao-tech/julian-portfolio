@@ -10,12 +10,25 @@ interface Props {
   tools: string[];
   skills: string[];
   order: number;
+  tileImage: string;
+  tileAlt: string;
   nextOverrideHref?: string;
   nextOverrideTitle?: string;
 }
 
-const { title, role, timeline, team, tools, skills, order, nextOverrideHref, nextOverrideTitle } =
-  Astro.props;
+const {
+  title,
+  role,
+  timeline,
+  team,
+  tools,
+  skills,
+  order,
+  tileImage,
+  tileAlt,
+  nextOverrideHref,
+  nextOverrideTitle,
+} = Astro.props;
 const base = import.meta.env.BASE_URL;
 
 const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
@@ -23,11 +36,36 @@ const idx = all.findIndex((p) => p.data.order === order);
 const prev = idx > 0 ? all[idx - 1] : null;
 const nextEntry = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
 
-const meta = [
-  { label: 'Timeline', value: timeline },
-  { label: 'Role', value: role.join(', ') },
-  { label: 'Team', value: team },
-  { label: 'Tools', value: tools.join(', ') },
+// Icon + label + value(s) for each fact — mirrors the old site's
+// Role / Team / Timeline / Skills / Tools strip under the title.
+const facts = [
+  {
+    label: 'Role',
+    icon: 'M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z M4.5 20.5a7.5 7.5 0 0 1 15 0',
+    values: role,
+  },
+  {
+    label: 'Team',
+    icon:
+      'M8.5 10.6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z M15.5 11.1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z M3 19c0-3 2.5-5.4 5.5-5.4S14 16 14 19 M13.3 19c0-2.3 1.6-4.1 3.6-4.1s3.6 1.8 3.6 4.1',
+    values: [team],
+  },
+  {
+    label: 'Timeline',
+    icon: 'M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Z M12 7.5V12l3.2 1.8',
+    values: [timeline],
+  },
+  {
+    label: 'Skills',
+    icon: 'M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Z M12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z',
+    dot: true,
+    values: skills,
+  },
+  {
+    label: 'Tools',
+    icon: 'M4.5 4.5h6v6h-6z M13.5 4.5h6v6h-6z M4.5 13.5h6v6h-6z M13.5 13.5h6v6h-6z',
+    values: tools,
+  },
 ];
 const num = String(order).padStart(2, '0');
 ---
@@ -41,17 +79,27 @@ const num = String(order).padStart(2, '0');
       <p class="eyebrow">Case study {num}</p>
       <h1>{title}</h1>
 
-      <dl class="meta">
-        {meta.map((m) => (
-          <div>
-            <dt>{m.label}</dt>
-            <dd>{m.value}</dd>
-          </div>
-        ))}
-      </dl>
+      <div class="hero-media" data-tilt data-reveal>
+        <img src={tileImage} alt={tileAlt} class="reveal-zoom" loading="eager" decoding="async" />
+      </div>
 
-      <ul class="skills">
-        {skills.map((s, i) => <li style={`--i: ${i}`}>{s}</li>)}
+      <ul class="facts">
+        {facts.map((f) => (
+          <li class="fact">
+            <svg class="fact-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d={f.icon} />
+              {f.dot && <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none" />}
+            </svg>
+            <span class="fact-label">{f.label}</span>
+            {f.values.length > 1 ? (
+              <ul class="fact-list">
+                {f.values.map((v) => <li>{v}</li>)}
+              </ul>
+            ) : (
+              <span class="fact-value">{f.values[0]}</span>
+            )}
+          </li>
+        ))}
       </ul>
     </header>
 
@@ -116,28 +164,74 @@ const num = String(order).padStart(2, '0');
     margin: 0 0 clamp(2rem, 5vw, 3.5rem);
   }
 
-  .meta {
+  /* Hero -------------------------------------------------------------
+     The same device-mockup illustration used for this project's Home
+     grid tile, shown large here. [data-tilt] (site.js) drives the same
+     cursor-tracked rotation as the card thumbnails, so the tile and
+     its case study feel like the same object. */
+  .hero-media {
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .hero-media img {
+    width: 100%;
+    height: auto;
+    transform: perspective(1200px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.02);
+    transition: transform 0.6s var(--ease-out);
+  }
+
+  .hero-media:hover img {
+    transition: transform 0.15s var(--ease-out);
+  }
+
+  /* Facts strip --------------------------------------------------------
+     Role / Team / Timeline / Skills / Tools, echoing the icon row from
+     the previous site's case studies. */
+  .facts {
+    list-style: none;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-    gap: var(--space-3) var(--space-4);
-    margin: 0 0 var(--space-3);
-    padding: var(--space-3) 0;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: var(--space-4) var(--space-3);
+    margin: 0;
+    padding: var(--space-4) 0;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
   }
 
-  .meta dt {
+  .fact {
+    padding-left: var(--space-3);
+    border-left: 1px solid var(--line);
+  }
+
+  .fact:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .fact-icon {
+    display: block;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  .fact-label {
+    display: block;
     font-family: var(--font-body);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.18em;
     font-size: var(--step-micro);
     color: var(--ink-faint);
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.4rem;
   }
 
-  .meta dd {
-    margin: 0;
+  .fact-value {
+    display: block;
     font-family: var(--font-body);
     font-weight: 500;
     font-size: 0.95rem;
@@ -145,41 +239,42 @@ const num = String(order).padStart(2, '0');
     letter-spacing: -0.01em;
   }
 
-  .skills {
+  .fact-list {
     list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    margin: 0;
     padding: 0;
-    margin: var(--space-3) 0 0;
   }
 
-  .skills li {
-    font-size: var(--step-small);
-    padding: 0.4em 0.9em;
-    border: 1px solid var(--line);
-    border-radius: var(--r-full);
-    color: var(--ink-soft);
-    opacity: 0;
-    transform: translateY(10px);
-    animation: skill-in 0.6s var(--ease-out) both;
-    animation-delay: calc(var(--i, 0) * 70ms + 0.5s);
+  .fact-list li {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.5;
   }
 
-  @keyframes skill-in {
-    to {
-      opacity: 1;
-      transform: none;
+  @media (max-width: 620px) {
+    .facts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .fact:nth-child(odd) {
+      padding-left: 0;
+      border-left: 0;
     }
   }
 
   /* Prose ---------------------------------------------------------
-     Text sits in a readable column on the left; media spans the full
-     width of the container. */
+     Text sits in a readable column centered in the container (equal
+     space either side), left-aligned within that column; a couple of
+     call-out elements (.split, blockquote) deliberately bleed out to
+     the full container width for visual variety. */
   .prose {
     display: grid;
     grid-template-columns:
-      [text-start] minmax(0, 68ch) [text-end] minmax(0, 1fr) [wide-end];
+      [wide-start] minmax(0, 1fr) [text-start] minmax(0, 68ch) [text-end]
+      minmax(0, 1fr) [wide-end];
     padding-block: clamp(3rem, 8vw, 6rem) 0;
     counter-reset: section;
   }
@@ -189,7 +284,6 @@ const num = String(order).padStart(2, '0');
   }
 
   .prose :global(h2) {
-    grid-column: text-start / wide-end;
     font-size: var(--step-h2);
     margin: clamp(3.5rem, 8vw, 6rem) 0 var(--space-3);
     padding-top: var(--space-3);
@@ -295,7 +389,7 @@ const num = String(order).padStart(2, '0');
      Used sparingly within specific case studies, not for every image —
      authored directly as raw HTML in the markdown where it fits. */
   .prose :global(.split) {
-    grid-column: text-start / wide-end;
+    grid-column: wide-start / wide-end;
     display: grid;
     gap: var(--space-3);
     align-items: center;
@@ -323,7 +417,7 @@ const num = String(order).padStart(2, '0');
   }
 
   .prose :global(blockquote) {
-    grid-column: text-start / wide-end;
+    grid-column: wide-start / wide-end;
     margin: var(--space-4) 0;
     padding: var(--space-3) var(--space-4);
     background: var(--bg-soft);
