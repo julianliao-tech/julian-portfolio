@@ -2,28 +2,27 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL;
 
-const gallery = [
-  {
-    src: `${base}images/about/about-1.webp`,
-    alt: "Photography/Film Making collage: Julian at Michigan Stadium in a photo-crew vest, with film festival selection notices for his short 'The Letter'",
-  },
-  {
+// Each graphic already bakes in its own label, doodle and collage —
+// no card/border needed, just place them at the four corners around
+// the text, matching Julian's reference layout.
+const corners = {
+  tl: {
     src: `${base}images/about/about-2.webp`,
     alt: 'DJ/Music Production collage: Julian DJing outdoors on turntables, and producing music at a laptop and keyboard',
   },
-  {
-    src: `${base}images/about/about-3.webp`,
-    alt: 'Sports collage: Julian playing baseball, basketball, and soccer, with his Michigan Squash team and a sectional-champion award',
+  tr: {
+    src: `${base}images/about/about-1.webp`,
+    alt: "Photography/Film Making collage: Julian at Michigan Stadium in a photo-crew vest, with film festival selection notices for his short 'The Letter'",
   },
-  {
+  bl: {
     src: `${base}images/about/about-4.webp`,
     alt: 'Furniture Design collage: a handmade wooden stool with a woven cord seat, plus a close-up of the weave pattern',
   },
-];
-
-// Flank the copy: two shots in the left margin, two in the right.
-const leftShots = gallery.slice(0, 2);
-const rightShots = gallery.slice(2);
+  br: {
+    src: `${base}images/about/about-3.webp`,
+    alt: 'Sports collage: Julian playing baseball, basketball, and soccer, with his Michigan Squash team and a sectional-champion award',
+  },
+};
 ---
 <BaseLayout
   title="About — Julian Liao"
@@ -36,24 +35,33 @@ const rightShots = gallery.slice(2);
 
   <section class="wrap about-body">
     <div class="about-layout" data-zoom-group>
-      <div class="about-margin about-margin-left">
-        {leftShots.map((item, i) => (
-          <figure class="shot" data-reveal data-reveal-delay={i * 90}>
-            <div class="shot-frame" data-zoom-frame>
-              <img
-                class="reveal-zoom"
-                src={item.src}
-                alt={item.alt}
-                width="2500"
-                height="1932"
-                loading="lazy"
-                decoding="async"
-                data-zoomable
-              />
-            </div>
-          </figure>
-        ))}
-      </div>
+      <figure class="shot shot-tl" data-reveal data-reveal-delay="0">
+        <img
+          class="reveal-zoom"
+          data-zoom-frame
+          src={corners.tl.src}
+          alt={corners.tl.alt}
+          width="2500"
+          height="1932"
+          loading="lazy"
+          decoding="async"
+          data-zoomable
+        />
+      </figure>
+
+      <figure class="shot shot-tr" data-reveal data-reveal-delay="60">
+        <img
+          class="reveal-zoom"
+          data-zoom-frame
+          src={corners.tr.src}
+          alt={corners.tr.alt}
+          width="2500"
+          height="1932"
+          loading="lazy"
+          decoding="async"
+          data-zoomable
+        />
+      </figure>
 
       <div class="about-copy">
         <p data-reveal>
@@ -80,24 +88,33 @@ const rightShots = gallery.slice(2);
         </p>
       </div>
 
-      <div class="about-margin about-margin-right">
-        {rightShots.map((item, i) => (
-          <figure class="shot" data-reveal data-reveal-delay={i * 90 + 40}>
-            <div class="shot-frame" data-zoom-frame>
-              <img
-                class="reveal-zoom"
-                src={item.src}
-                alt={item.alt}
-                width="2500"
-                height="1932"
-                loading="lazy"
-                decoding="async"
-                data-zoomable
-              />
-            </div>
-          </figure>
-        ))}
-      </div>
+      <figure class="shot shot-bl" data-reveal data-reveal-delay="60">
+        <img
+          class="reveal-zoom"
+          data-zoom-frame
+          src={corners.bl.src}
+          alt={corners.bl.alt}
+          width="2500"
+          height="1932"
+          loading="lazy"
+          decoding="async"
+          data-zoomable
+        />
+      </figure>
+
+      <figure class="shot shot-br" data-reveal data-reveal-delay="0">
+        <img
+          class="reveal-zoom"
+          data-zoom-frame
+          src={corners.br.src}
+          alt={corners.br.alt}
+          width="2500"
+          height="1932"
+          loading="lazy"
+          decoding="async"
+          data-zoomable
+        />
+      </figure>
     </div>
   </section>
 </BaseLayout>
@@ -115,21 +132,33 @@ const rightShots = gallery.slice(2);
 
   .about-body {
     padding-bottom: clamp(3rem, 8vw, 6rem);
-    /* Wider than the site's default --max-width so the enlarged
-       margin photos have room without squeezing the text column. */
-    max-width: 96rem;
+    /* Wider than the site's default --max-width so the four corner
+       graphics have room to sit outside the text column. */
+    max-width: 100rem;
   }
 
-  /* Mobile-first: copy, then the two shot pairs below it. The margin
-     layout only kicks in once there's room either side of the text —
-     see the min-width query below. */
+  /* Mobile-first: the two top shots side by side, then the text, then
+     the two bottom shots side by side. The four-corner arrangement
+     only kicks in once there's room for real margins either side of
+     the text — see the min-width query below. */
   .about-layout {
     display: grid;
-    gap: clamp(2rem, 5vw, 3rem);
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'tl tr'
+      'text text'
+      'bl br';
+    align-items: center;
+    gap: clamp(1.5rem, 5vw, 3rem);
   }
 
+  .shot-tl { grid-area: tl; }
+  .shot-tr { grid-area: tr; }
+  .shot-bl { grid-area: bl; }
+  .shot-br { grid-area: br; }
+
   .about-copy {
-    order: 1;
+    grid-area: text;
     max-width: 42rem;
     margin-inline: auto;
     border-top: 1px solid var(--line);
@@ -154,73 +183,46 @@ const rightShots = gallery.slice(2);
     margin-bottom: var(--space-4);
   }
 
-  /* Two shots per margin, side by side while they're still a
-     full-width block (mobile), stacked once they move into the
-     sidebar columns (see the min-width query below). */
-  .about-margin {
-    order: 2;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(0.75rem, 2vw, 1.25rem);
-  }
-
-  .about-margin-right {
-    order: 3;
-  }
-
+  /* Each graphic already contains its own label, doodle and collage
+     on a transparent ground — no card, border or crop, just sized
+     down and dropped into place. */
   .shot {
     margin: 0;
   }
 
-  .shot-frame {
-    overflow: hidden;
-    border-radius: var(--r-lg);
-    border: 1px solid var(--line);
-    background: var(--bg-elev);
-    transition: border-color 0.4s var(--ease);
-  }
-
-  .shot-frame:hover {
-    border-color: var(--line-strong);
-  }
-
-  .shot-frame img {
+  .shot img {
+    display: block;
     width: 100%;
     height: auto;
   }
 
-  /* Margins either side of the text — sized up (3x the original
-     7-10rem columns) and vertically centered against the text block,
-     once there's enough width to hold them. */
-  @media (min-width: 1400px) {
+  /* Four true corners flanking the text, vertically centered against
+     it, once there's enough width to hold them. */
+  @media (min-width: 1300px) {
     .about-layout {
-      grid-template-columns: minmax(21rem, 30rem) minmax(0, 38rem) minmax(21rem, 30rem);
-      align-items: center;
+      grid-template-columns: minmax(12rem, 19rem) minmax(0, 42rem) minmax(12rem, 19rem);
+      grid-template-areas:
+        'tl text tr'
+        'bl text br';
       justify-content: center;
-    }
-
-    .about-copy,
-    .about-margin-left,
-    .about-margin-right {
-      order: initial;
     }
 
     .about-copy {
       margin-inline: 0;
     }
 
-    .about-margin {
-      grid-template-columns: 1fr;
-      gap: clamp(1.5rem, 3vw, 2.5rem);
-      align-content: center;
+    /* Images fill their column (width: 100%), so only the vertical
+       placement matters here: top pair hugs the top edge, bottom
+       pair hugs the bottom edge, leaving open space toward the text
+       at vertical center — matching the reference layout. */
+    .shot-tl,
+    .shot-tr {
+      align-self: start;
     }
 
-    .about-margin-left {
-      justify-self: end;
-    }
-
-    .about-margin-right {
-      justify-self: start;
+    .shot-bl,
+    .shot-br {
+      align-self: end;
     }
   }
 </style>
