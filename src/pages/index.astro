@@ -1,4 +1,6 @@
 ---
+import { existsSync } from 'node:fs';
+import path from 'node:path';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
@@ -12,18 +14,30 @@ const consultingWork = {
   tileAlt: 'Consulting project thumbnails: Q-Bakehouse and MCBC Pink Moon',
 };
 
+// Opt-in, zero-config hover video: drop `tile-<slug>.mp4` next to the
+// existing `tile-<slug>.webp` in public/images/home/ and it's picked
+// up automatically — no frontmatter or code change needed per
+// project. Nothing renders a video until that file actually exists.
+const homeImagesDir = path.join(process.cwd(), 'public', 'images', 'home');
+const hoverVideo = (slug: string) => {
+  const file = `tile-${slug}.mp4`;
+  return existsSync(path.join(homeImagesDir, file)) ? `${base}images/home/${file}` : null;
+};
+
 const cards = [
   ...projects.map((p) => ({
     href: `${base}work/${p.id}/`,
     title: p.data.title,
     image: p.data.tileImage,
     alt: p.data.tileAlt,
+    video: hoverVideo(p.id),
   })),
   {
     href: `${base}work/${consultingWork.slug}/`,
     title: consultingWork.title,
     image: consultingWork.tileImage,
     alt: consultingWork.tileAlt,
+    video: hoverVideo(consultingWork.slug),
   },
 ];
 
@@ -88,7 +102,21 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
         <li data-reveal data-reveal-delay={(i % 2) * 90}>
           <a class="card" href={card.href}>
             <span class="card-media" data-tilt>
-              <img class="reveal-zoom" src={card.image} alt={card.alt} loading="lazy" decoding="async" />
+              {card.video ? (
+                <video
+                  class="reveal-zoom"
+                  data-hover-video
+                  src={card.video}
+                  poster={card.image}
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  aria-hidden="true"
+                />
+              ) : (
+                <img class="reveal-zoom" src={card.image} alt={card.alt} loading="lazy" decoding="async" />
+              )}
             </span>
             <span class="card-foot">
               <span class="card-index" data-count-to={i + 1}>{pad(i + 1)}</span>
@@ -341,7 +369,8 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     --tilt-y: 0deg;
   }
 
-  .card-media img {
+  .card-media img,
+  .card-media video {
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
@@ -350,7 +379,9 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   }
 
   .card:hover .card-media img,
-  .card:focus-visible .card-media img {
+  .card:focus-visible .card-media img,
+  .card:hover .card-media video,
+  .card:focus-visible .card-media video {
     transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.14);
     transition: transform 0.15s var(--ease-out);
   }

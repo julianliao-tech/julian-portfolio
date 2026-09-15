@@ -211,6 +211,40 @@ function initCursor() {
   document.addEventListener('mouseenter', () => dot.classList.remove('is-hidden'));
 }
 
+/* Hover-to-play cover videos ------------------------------------------
+   [data-hover-video] elements (muted/loop/playsinline in the markup)
+   play only while a real mouse hovers their card, and pause + rewind
+   on leave. Touch devices never get a hover gesture at all, so they
+   simply keep showing the poster frame — no autoplay, no extra
+   mobile data spent on a video nobody asked to see move. */
+
+function initHoverVideo() {
+  if (!canHover()) return;
+  const videos = Array.from(document.querySelectorAll('[data-hover-video]'));
+  if (!videos.length) return;
+
+  videos.forEach((video) => {
+    const card = video.closest('a') || video;
+
+    const play = () => {
+      video.currentTime = 0;
+      video.play().catch(() => {
+        /* Autoplay can be rejected mid-gesture (e.g. a very quick
+           hover in/out); nothing to recover from, just skip it. */
+      });
+    };
+    const stop = () => {
+      video.pause();
+      video.currentTime = 0;
+    };
+
+    card.addEventListener('pointerenter', play);
+    card.addEventListener('pointerleave', stop);
+    card.addEventListener('focus', play);
+    card.addEventListener('blur', stop);
+  });
+}
+
 /* Cursor-tracked hover: 3D tilt + magnetic pull ---------------------
    [data-tilt] elements rotate toward the cursor (card thumbnails,
    photo frames); [data-magnetic] elements nudge slightly toward it
@@ -298,6 +332,7 @@ function boot() {
   initCursor();
   initTilt();
   initMagnetic();
+  initHoverVideo();
 }
 
 if (document.readyState === 'loading') {
