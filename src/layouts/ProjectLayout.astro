@@ -422,6 +422,20 @@ const num = String(order).padStart(2, '0');
     }
   }
 
+  /* Full-bleed figure for content that needs more than the 30rem text-width
+     cap — dense diagrams and charts (Gantt charts, WBS trees, data tables)
+     that turn to mush at phone-screenshot size. Used sparingly, same as
+     .split and blockquote. */
+  .prose :global(.wide-figure) {
+    grid-column: wide-start / wide-end;
+    margin-block: clamp(2rem, 5vw, 3rem);
+  }
+
+  .prose :global(.wide-figure img) {
+    max-width: 100%;
+    margin-inline: 0;
+  }
+
   .prose :global(blockquote) {
     grid-column: wide-start / wide-end;
     margin: var(--space-4) 0;
