@@ -2,12 +2,18 @@
 import { getCollection, render } from 'astro:content';
 import ProjectLayout from '../../layouts/ProjectLayout.astro';
 
+// michigan-chatgpt has its own bespoke page (michigan-chatgpt.astro) that
+// recreates the old site's look, so it's excluded here to avoid a route
+// collision — its content-collection entry still feeds the Home grid
+// tile and the prev/next pager order.
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
-  return projects.map((entry) => ({
-    params: { slug: entry.id },
-    props: { entry },
-  }));
+  return projects
+    .filter((entry) => entry.id !== 'michigan-chatgpt')
+    .map((entry) => ({
+      params: { slug: entry.id },
+      props: { entry },
+    }));
 }
 
 const { entry } = Astro.props;
