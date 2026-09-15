@@ -176,11 +176,17 @@ const num = String(order).padStart(2, '0');
     border: 1px solid var(--line);
     background: var(--bg-elev);
     margin-bottom: clamp(2.5rem, 6vw, 4rem);
+    /* Fixed at Guide's own illustration proportions (2108×1762) so
+       every case study's hero renders at the same size regardless of
+       its source image's native aspect ratio. */
+    aspect-ratio: 6 / 5;
   }
 
   .hero-media img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
     transform: perspective(1200px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.02);
     transition: transform 0.6s var(--ease-out);
   }

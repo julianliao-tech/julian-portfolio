@@ -82,7 +82,7 @@ Three UX principles that shaped the redesign, and how each was applied:
 
 Initial wireframes explored hero layouts, card structures, and sidebar navigation. These early concepts helped test how much information should appear above the fold and how users interpreted the purpose of each AI tool. Through iterations, I refined the layout to balance simplicity with clarity.
 
-## Final Design Features
+## Final Design
 
 ### Filled Landing Page
 
@@ -141,7 +141,7 @@ Audio Feedback enhances accessibility by allowing users to hear responses, inter
 
 ## Reflection & Next Steps
 
-### Final Design
+### What Shipped
 
 The final UI highlights:
 
