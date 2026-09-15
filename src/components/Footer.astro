@@ -35,16 +35,22 @@ const year = new Date().getFullYear();
 
   /* A quiet warm wash rather than a saturated dark-mode glow — one
      tone, low opacity, matching the reference sites' flourish-free
-     surfaces. */
+     surfaces. A slow ambient pulse keeps it from reading as a static
+     background image. */
   .glow {
     position: absolute;
     left: 50%;
     bottom: -60%;
     width: min(80rem, 150vw);
     aspect-ratio: 2 / 1;
-    transform: translateX(-50%);
     background: radial-gradient(ellipse at center, var(--accent-soft), transparent 70%);
     pointer-events: none;
+    animation: glow-drift 18s ease-in-out infinite;
+  }
+
+  @keyframes glow-drift {
+    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+    50% { transform: translateX(-50%) scale(1.1); opacity: 1; }
   }
 
   .footer-inner {
@@ -70,6 +76,12 @@ const year = new Date().getFullYear();
   .cta-line-2 .serif {
     color: var(--ink);
     font-size: 1.06em;
+  }
+
+  /* Sweeps in once the whole block has scrolled into view (base bar
+     styling lives in global.css, shared with the hero's). */
+  html.js [data-reveal].is-in .cta-line-2 .serif::after {
+    animation: sweep-in 0.6s var(--ease-out) 0.5s both;
   }
 
   .footer-links {

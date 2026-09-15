@@ -92,6 +92,18 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: 'ss01' 1, 'cv05' 1;
+  /* Every full page load fades in — a lightweight page-transition
+     feel without adopting client-side routing (which would need
+     site.js rewritten to safely re-run on every navigation instead
+     of once on load; not worth the risk on an already-fast static
+     site with full page loads). */
+  animation: page-in 0.45s var(--ease-out) both;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
 }
 
 /* A whisper of film grain over the whole page. Purely decorative.
@@ -211,10 +223,34 @@ strong {
 }
 
 .serif {
+  position: relative;
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.01em;
+}
+
+/* Underline sweep: a bar that draws in left-to-right. The trigger
+   (which ancestor state starts the animation) is defined per page,
+   since some .serif words appear in on-load hero copy and others in
+   scroll-revealed sections — see index.astro and Footer.astro. */
+.serif::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.06em;
+  height: 2px;
+  background: currentColor;
+  opacity: 0.55;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+@keyframes sweep-in {
+  to {
+    transform: scaleX(1);
+  }
 }
 
 .lead {
@@ -361,6 +397,68 @@ html.js :where([data-reveal].is-in) :where(.reveal-zoom) {
 /* Set by the lightbox script only once it knows it can actually open. */
 html.lb-ready [data-zoomable] {
   cursor: zoom-in;
+}
+
+/* Word-stagger reveal utility ---------------------------------------
+   Wraps individual words for a cascading entrance instead of a single
+   block fade. `.word` needs inline-block for the transform to apply;
+   the visible gap between adjacent inline-block spans is deliberate —
+   it's what keeps the normal word spacing. */
+.word {
+  display: inline-block;
+}
+
+/* Custom cursor -------------------------------------------------------
+   Only ever active once site.js confirms a real mouse and no
+   reduced-motion preference (see initCursor) and adds html.has-cursor
+   itself — so if JS never runs, none of this applies and the
+   browser's own cursor is untouched. */
+/* Excludes the lightbox (.lb): it's a native <dialog>, rendered in the
+   browser's top-layer above every normal element including the dot,
+   so hiding the OS cursor there would leave visitors with no visible
+   cursor at all while viewing a photo. Its own zoom-in/zoom-out/
+   pointer cursors take over instead, same as on any other browser. */
+html.has-cursor,
+html.has-cursor *:not(.lb):not(.lb *) {
+  /* Necessary: overriding every per-element `cursor: pointer/zoom-in/…`
+     declaration with one rule is exactly what !important is for. */
+  cursor: none !important;
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 200;
+  will-change: transform;
+  transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out),
+    margin 0.25s var(--ease-out), background 0.25s var(--ease),
+    border-color 0.25s var(--ease), opacity 0.25s var(--ease);
+}
+
+.cursor-dot.is-active {
+  width: 42px;
+  height: 42px;
+  margin: -21px 0 0 -21px;
+  background: transparent;
+  border: 1.5px solid var(--accent);
+}
+
+.cursor-dot.is-down {
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+}
+
+.cursor-dot.is-hidden {
+  opacity: 0;
 }
 
 /* Accessibility: honor reduced-motion everywhere ------------------- */

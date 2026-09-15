@@ -208,6 +208,18 @@ const items = [
       color 0.35s var(--ease), border-color 0.35s var(--ease);
   }
 
+  /* Draws in once the item scrolls into view (.item[data-reveal].is-in).
+     Gated behind html.js — see the matching note in index.astro. */
+  html.js .item-arrow svg path {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    transition: stroke-dashoffset 0.7s var(--ease-out) 0.25s;
+  }
+
+  html.js .item.is-in .item-arrow svg path {
+    stroke-dashoffset: 0;
+  }
+
   .project-pager {
     display: grid;
     grid-template-columns: 1fr 1fr;

@@ -51,7 +51,7 @@ const num = String(order).padStart(2, '0');
       </dl>
 
       <ul class="skills">
-        {skills.map((s) => <li>{s}</li>)}
+        {skills.map((s, i) => <li style={`--i: ${i}`}>{s}</li>)}
       </ul>
     </header>
 
@@ -160,6 +160,17 @@ const num = String(order).padStart(2, '0');
     border: 1px solid var(--line);
     border-radius: var(--r-full);
     color: var(--ink-soft);
+    opacity: 0;
+    transform: translateY(10px);
+    animation: skill-in 0.6s var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 70ms + 0.5s);
+  }
+
+  @keyframes skill-in {
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   /* Prose ---------------------------------------------------------
@@ -245,6 +256,22 @@ const num = String(order).padStart(2, '0');
     /* Grid rows don't collapse margins, so keep the image close to the
        copy it illustrates and let the gap fall after it. */
     margin-block: var(--space-2) var(--space-4);
+  }
+
+  /* A curtain-wipe reveal layered on top of the shared fade/rise from
+     global.css (opacity + transform) — additive, not a replacement,
+     since clip-path doesn't touch either property. Gated behind
+     html.js like every other reveal rule, so a no-JS visitor (who
+     never gets .is-in) sees the image plainly instead of permanently
+     clipped to nothing. */
+  html.js .prose > :global(p:has(> img)) {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.9s var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  html.js .prose > :global(p:has(> img).is-in) {
+    clip-path: inset(0 0 0% 0);
   }
 
   .prose :global(img) {

@@ -28,17 +28,25 @@ const cards = [
 ];
 
 const pad = (n: number) => String(n).padStart(2, '0');
+
+// Real skills, pulled from every case study's own frontmatter — not a
+// separate hand-maintained list — for the marquee strip below.
+const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills))).sort();
 ---
 <BaseLayout title="Julian Liao — UX Designer">
   <section class="hero">
-    <div class="aurora" aria-hidden="true" data-parallax="0.06"></div>
+    <div class="aurora" aria-hidden="true"></div>
 
     <div class="wrap hero-inner">
       <div class="hero-copy">
         <p class="eyebrow rise" style="--d: 40ms">UX Designer</p>
         <h1 class="hero-title">
-          <span class="line rise" style="--d: 120ms">Hello, I'm</span>
-          <span class="line rise" style="--d: 200ms">Julian <span class="wave" aria-hidden="true">👋</span></span>
+          <span class="line">
+            <span class="word rise" style="--d: 100ms">Hello,</span> <span class="word rise" style="--d: 160ms">I'm</span>
+          </span>
+          <span class="line">
+            <span class="word rise" style="--d: 220ms">Julian</span> <span class="word rise" style="--d: 280ms"><span class="wave" aria-hidden="true">👋</span></span>
+          </span>
         </h1>
         <p class="hero-sub rise" style="--d: 300ms">
           UX designer focused on <em class="serif">intuitive</em> and
@@ -72,7 +80,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <section id="work" class="work wrap">
     <div class="section-head" data-reveal>
       <h2>Projects</h2>
-      <span class="section-count">{pad(cards.length)}</span>
+      <span class="section-count" data-count-to={cards.length}>{pad(cards.length)}</span>
     </div>
 
     <ol class="work-grid">
@@ -83,7 +91,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
               <img class="reveal-zoom" src={card.image} alt={card.alt} loading="lazy" decoding="async" />
             </span>
             <span class="card-foot">
-              <span class="card-index">{pad(i + 1)}</span>
+              <span class="card-index" data-count-to={i + 1}>{pad(i + 1)}</span>
               <span class="card-title">{card.title}</span>
               <span class="card-arrow" data-magnetic aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg>
@@ -94,6 +102,14 @@ const pad = (n: number) => String(n).padStart(2, '0');
       ))}
     </ol>
   </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      {[...skillsTicker, ...skillsTicker].map((skill) => (
+        <span class="marquee-item">{skill}</span>
+      ))}
+    </div>
+  </div>
 </BaseLayout>
 
 <style>
@@ -106,7 +122,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
 
   /* A single quiet wash, not a saturated dark-mode gradient blob —
-     matches the flourish-free reference sites. */
+     matches the flourish-free reference sites. A slow ambient
+     breathing animation, not scroll-linked, keeps it alive without
+     drawing attention the way a scroll-tied parallax would. */
   .aurora {
     position: absolute;
     z-index: -1;
@@ -114,10 +132,15 @@ const pad = (n: number) => String(n).padStart(2, '0');
     left: 50%;
     width: min(70rem, 130vw);
     aspect-ratio: 1 / 1;
-    transform: translateX(-50%);
     background: radial-gradient(circle at 42% 40%, var(--accent-soft), transparent 55%);
     filter: blur(20px);
     pointer-events: none;
+    animation: aurora-drift 16s ease-in-out infinite;
+  }
+
+  @keyframes aurora-drift {
+    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.85; }
+    50% { transform: translateX(-50%) scale(1.08) rotate(4deg); opacity: 1; }
   }
 
   .hero-inner {
@@ -163,6 +186,17 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .hero-sub em {
     color: var(--accent);
     font-size: 1.1em;
+  }
+
+  /* Underline bar (base styling in global.css) sweeps in after the
+     rest of the hero has settled. */
+  .hero-sub em::after {
+    animation: sweep-in 0.6s var(--ease-out) both;
+    animation-delay: 1s;
+  }
+
+  .hero-sub em:nth-of-type(2)::after {
+    animation-delay: 1.2s;
   }
 
   .hero-school {
@@ -374,6 +408,20 @@ const pad = (n: number) => String(n).padStart(2, '0');
       color 0.35s var(--ease), border-color 0.35s var(--ease);
   }
 
+  /* Draws in once the card scrolls into view (li[data-reveal].is-in),
+     rather than just appearing with the rest of the card. Gated
+     behind html.js — without it .is-in never arrives, so an
+     undrawn (all-dashed-out) arrow would otherwise stay invisible. */
+  html.js .card-arrow svg path {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    transition: stroke-dashoffset 0.7s var(--ease-out) 0.25s;
+  }
+
+  html.js .work-grid li.is-in .card-arrow svg path {
+    stroke-dashoffset: 0;
+  }
+
   @media (min-width: 860px) {
     .work-grid {
       grid-template-columns: 1fr 1fr;
@@ -386,6 +434,40 @@ const pad = (n: number) => String(n).padStart(2, '0');
     .work-grid > li:nth-child(even) .card {
       transform: translateY(clamp(2rem, 5vw, 4.5rem));
     }
+  }
+
+  /* Skills marquee --------------------------------------------------
+     An infinite strip built from the real skills list on every case
+     study (see frontmatter above) — the list is duplicated once so
+     the loop from 0% to -50% is seamless. */
+  .marquee {
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding-block: clamp(1rem, 3vw, 1.5rem);
+    mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    animation: marquee 32s linear infinite;
+  }
+
+  .marquee-item {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: var(--step-small);
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
 
   /* Entrance ------------------------------------------------------- */
@@ -401,7 +483,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   @media (prefers-reduced-motion: reduce) {
     .rise { animation: none; }
-    .wave, .cue-dot { animation: none; }
+    .wave, .cue-dot, .aurora { animation: none; }
     .work-grid > li:nth-child(even) .card { transform: none; }
   }
 </style>

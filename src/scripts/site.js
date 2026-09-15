@@ -108,6 +108,109 @@ function initScrollChrome() {
   update();
 }
 
+/* Count-up numbers ---------------------------------------------------
+   [data-count-to="N"] elements count up from 0 to N the first time
+   they scroll into view, preserving their original zero-padding
+   (e.g. "06" stays 2 digits throughout). Reduced motion jumps
+   straight to the final value. */
+
+function initCountUp() {
+  const els = Array.from(document.querySelectorAll('[data-count-to]'));
+  if (!els.length) return;
+
+  const animate = (el) => {
+    const target = parseInt(el.dataset.countTo, 10);
+    if (Number.isNaN(target)) return;
+    const pad = el.textContent.trim().length || String(target).length;
+
+    if (prefersReduced()) {
+      el.textContent = String(target).padStart(pad, '0');
+      return;
+    }
+
+    const duration = 700;
+    const start = performance.now();
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - (1 - t) ** 3;
+      el.textContent = String(Math.round(eased * target)).padStart(pad, '0');
+      if (t < 1) window.requestAnimationFrame(tick);
+    };
+    window.requestAnimationFrame(tick);
+  };
+
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(animate);
+    return;
+  }
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        animate(entry.target);
+        io.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.5 }
+  );
+  els.forEach((el) => io.observe(el));
+}
+
+/* Custom cursor -------------------------------------------------------
+   A small dot that follows the pointer and rings outward over
+   hoverable elements. Only ever created on a real mouse (hover: hover
+   + pointer: fine) and never under reduced motion — html.has-cursor
+   is the single switch the CSS keys off, so if this never runs (JS
+   disabled, unsupported), the browser's normal cursor is untouched. */
+
+function initCursor() {
+  if (!canHover()) return;
+
+  const dot = document.createElement('div');
+  dot.className = 'cursor-dot';
+  dot.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(dot);
+  document.documentElement.classList.add('has-cursor');
+
+  let x = window.innerWidth / 2;
+  let y = window.innerHeight / 2;
+  let raf = null;
+
+  const paint = () => {
+    dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    raf = null;
+  };
+
+  window.addEventListener(
+    'pointermove',
+    (event) => {
+      x = event.clientX;
+      y = event.clientY;
+      if (!raf) raf = window.requestAnimationFrame(paint);
+    },
+    { passive: true }
+  );
+
+  const HOVER_TARGETS = 'a, button, [data-tilt], [data-magnetic], [data-zoomable]';
+
+  document.addEventListener('pointerover', (event) => {
+    if (event.target instanceof Element && event.target.closest(HOVER_TARGETS)) {
+      dot.classList.add('is-active');
+    }
+  });
+  document.addEventListener('pointerout', (event) => {
+    if (event.target instanceof Element && event.target.closest(HOVER_TARGETS)) {
+      dot.classList.remove('is-active');
+    }
+  });
+
+  window.addEventListener('pointerdown', () => dot.classList.add('is-down'));
+  window.addEventListener('pointerup', () => dot.classList.remove('is-down'));
+  document.addEventListener('mouseleave', () => dot.classList.add('is-hidden'));
+  document.addEventListener('mouseenter', () => dot.classList.remove('is-hidden'));
+}
+
 /* Cursor-tracked hover: 3D tilt + magnetic pull ---------------------
    [data-tilt] elements rotate toward the cursor (card thumbnails,
    photo frames); [data-magnetic] elements nudge slightly toward it
@@ -191,6 +294,8 @@ function boot() {
   document.documentElement.classList.add('js');
   initReveal();
   initScrollChrome();
+  initCountUp();
+  initCursor();
   initTilt();
   initMagnetic();
 }
