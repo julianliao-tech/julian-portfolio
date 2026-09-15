@@ -5,5 +5,5 @@ import { defineConfig } from 'astro/config';
 // `base` — see README.md.
 export default defineConfig({
   site: 'https://julianliao-tech.github.io',
-  base: '/julian-portfolio',
+  base: '/julian-portfolio/',
 });
