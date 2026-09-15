@@ -1,45 +1,61 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+/* ------------------------------------------------------------------
+   Julian Liao — portfolio design system
+   Dark, editorial, high-contrast. Tokens first, then primitives.
+   ------------------------------------------------------------------ */
 
 :root {
-  --bg: #f5f3ee;
-  --ink: #14141a;
-  --ink-soft: #4a4a52;
-  --accent: #ff4d2e;
-  --accent-ink: #14141a;
-  --line: rgba(20, 20, 26, 0.12);
-  --card-bg: #ffffff;
+  /* Surface + ink -------------------------------------------------- */
+  --bg: #08080a;
+  --bg-soft: #0e0e12;
+  --bg-elev: #15151b;
+  --ink: #f5f3ef;
+  --ink-soft: #a6a4b0;
+  /* Passes AA (4.9:1) on --bg at body size; used for labels and hints. */
+  --ink-faint: #85828f;
 
+  --accent: #ff5a2b;
+  --accent-ink: #0a0a0c;
+  --accent-soft: rgba(255, 90, 43, 0.14);
+  --violet: #6b5bff;
+
+  --line: rgba(245, 243, 239, 0.1);
+  --line-strong: rgba(245, 243, 239, 0.22);
+
+  /* Type ----------------------------------------------------------- */
   --font-display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
-  --step-hero: clamp(2.75rem, 4vw + 1.5rem, 6rem);
-  --step-h1: clamp(2rem, 2.5vw + 1rem, 3.25rem);
-  --step-h2: clamp(1.5rem, 1.5vw + 0.9rem, 2.25rem);
-  --step-h3: clamp(1.15rem, 0.6vw + 0.9rem, 1.5rem);
+  --step-display: clamp(2.75rem, 9.5vw, 7.5rem);
+  --step-h1: clamp(2.1rem, 5.5vw, 4rem);
+  --step-h2: clamp(1.6rem, 3vw, 2.5rem);
+  --step-h3: clamp(1.15rem, 1.4vw, 1.5rem);
+  --step-lead: clamp(1.1rem, 1.5vw, 1.45rem);
   --step-body: 1.0625rem;
-  --step-small: 0.875rem;
+  --step-small: 0.8125rem;
+  --step-micro: 0.6875rem;
 
+  /* Space ---------------------------------------------------------- */
   --space-1: 0.5rem;
   --space-2: 1rem;
   --space-3: 1.5rem;
   --space-4: 2.5rem;
   --space-5: 4rem;
   --space-6: 6rem;
+  --space-7: clamp(5rem, 12vw, 10rem);
+  --gutter: clamp(1.25rem, 5vw, 3.5rem);
 
-  --radius: 18px;
-  --max-width: 72rem;
-}
+  /* Shape + motion ------------------------------------------------- */
+  --r-sm: 10px;
+  --r: 16px;
+  --r-lg: 26px;
+  --r-full: 999px;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #121115;
-    --ink: #f4f2ec;
-    --ink-soft: #b9b6ae;
-    --accent: #ff6a4d;
-    --accent-ink: #121115;
-    --line: rgba(244, 242, 236, 0.14);
-    --card-bg: #1b1a1f;
-  }
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --max-width: 78rem;
+  --measure: 66ch;
 }
 
 * {
@@ -48,6 +64,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* Keep anchored sections clear of the sticky header. */
+  scroll-padding-top: 6rem;
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -56,8 +76,23 @@ body {
   color: var(--ink);
   font-family: var(--font-body);
   font-size: var(--step-body);
-  line-height: 1.6;
+  line-height: 1.65;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'ss01' 1, 'cv05' 1;
+}
+
+/* A whisper of film grain over the whole page. Purely decorative. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 img {
@@ -69,66 +104,269 @@ a {
   color: inherit;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--font-display);
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1.02;
   margin: 0 0 var(--space-2);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
 p {
   margin: 0 0 var(--space-3);
   color: var(--ink-soft);
-  max-width: 62ch;
+  max-width: var(--measure);
+  text-wrap: pretty;
 }
 
-.wrap {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--space-3);
-}
-
-.eyebrow {
-  font-family: var(--font-display);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: var(--step-small);
-  color: var(--accent);
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--step-small);
-  text-decoration: none;
-  padding: 0.85em 1.5em;
-  border-radius: 999px;
-  background: var(--accent);
-  color: var(--accent-ink);
-  border: 2px solid var(--accent);
-  transition: transform 0.15s ease, background 0.15s ease;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-}
-
-.btn.btn-outline {
-  background: transparent;
+strong {
   color: var(--ink);
-  border-color: var(--line);
+  font-weight: 600;
 }
 
-.btn.btn-outline:hover {
-  border-color: var(--ink);
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 ::selection {
   background: var(--accent);
   color: var(--accent-ink);
+}
+
+/* Layout primitives ------------------------------------------------ */
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.wrap-narrow {
+  max-width: 54rem;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-2);
+  top: var(--space-2);
+  z-index: 100;
+  transform: translateY(-200%);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step-small);
+  padding: 0.6em 1em;
+  border-radius: var(--r-full);
+  text-decoration: none;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* Text primitives -------------------------------------------------- */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: var(--step-micro);
+  color: var(--accent);
+  margin: 0 0 var(--space-3);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 1.75rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.lead {
+  font-size: var(--step-lead);
+  line-height: 1.45;
+  color: var(--ink);
+  max-width: 34ch;
+}
+
+/* Buttons + links -------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step-small);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  padding: 0.95em 1.6em;
+  border-radius: var(--r-full);
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: 1px solid var(--accent);
+  transition: transform 0.35s var(--ease-out), background 0.3s var(--ease),
+    border-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  background: #ff7047;
+  border-color: #ff7047;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+.btn-outline:hover {
+  background: rgba(245, 243, 239, 0.06);
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* Animated underline used for inline/nav links. */
+.link-underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s var(--ease-out);
+}
+
+.link-underline:hover::after,
+.link-underline:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Section headers -------------------------------------------------- */
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-5);
+  border-bottom: 1px solid var(--line);
+}
+
+.section-head h2 {
+  font-size: var(--step-h1);
+  margin: 0;
+}
+
+.section-count {
+  font-family: var(--font-display);
+  font-size: var(--step-micro);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* Scroll-reveal ----------------------------------------------------
+   Only ever hides content when JS is running (html.js), so the
+   no-JS and pre-hydration states are fully readable. */
+
+html.js [data-reveal],
+html.js .prose > :is(p, h2, h3, h4, ul, ol, blockquote, figure) {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+html.js [data-reveal='fade'] {
+  transform: none;
+}
+
+html.js [data-reveal].is-in,
+html.js .prose > .is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* :where() keeps these at near-zero specificity so component-level
+   hover states can still take over the same transform. */
+html.js :where([data-reveal]) :where(.reveal-zoom) {
+  transform: scale(1.07);
+  transition: transform 1.3s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+html.js :where([data-reveal].is-in) :where(.reveal-zoom) {
+  transform: scale(1);
+}
+
+/* Zoomable imagery ------------------------------------------------- */
+
+/* Set by the lightbox script only once it knows it can actually open. */
+html.lb-ready [data-zoomable] {
+  cursor: zoom-in;
+}
+
+/* Accessibility: honor reduced-motion everywhere ------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html.js [data-reveal],
+  html.js .prose > :is(p, h2, h3, h4, ul, ol, blockquote, figure) {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Wins over component hover-zoom rules on purpose. */
+  html.js [data-reveal] .reveal-zoom {
+    transform: none !important;
+  }
 }

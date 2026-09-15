@@ -2,64 +2,156 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL;
 
+// Intrinsic sizes are declared so the masonry columns never reflow
+// while the images load.
 const photos = [
-  { n: '01', alt: 'Black-and-white photo of a hillside with palm trees and a modernist curved building, striped beach umbrellas in the foreground' },
-  { n: '02', alt: 'Black-and-white photo of the Getty Center’s stone colonnade overlooking a terrace of cafe tables with the Los Angeles skyline in the distance' },
-  { n: '03', alt: 'Black-and-white photo looking down a covered ramp toward a STOP sign and a hillside road' },
-  { n: '04', alt: 'Black-and-white aerial view of the Getty Center’s stone columns above a courtyard filled with cafe tables and visitors' },
-  { n: '05', alt: 'Black-and-white photo of a man and child riding a three-wheeled mobility scooter along a beachfront boardwalk' },
-  { n: '06', alt: 'Black-and-white photo of a religious icon painting propped in a car’s back window, tree branches reflected in the glass' },
-  { n: '07', alt: 'Black-and-white photo of a man sitting barefoot with a laptop in the open side door of a VW camper van' },
-  { n: '08', alt: 'Photo of a cabin door and wall covered in visitors’ signatures and messages, with “Leave your mark” written large' },
-  { n: '09', alt: 'A wooden dock with swings over calm evening water, signed “Tarpum Bay, South Eleuthera”' },
-  { n: '10', alt: 'Close-up of dark volcanic rock against turquoise ocean water' },
-  { n: '11', alt: 'Silhouette of a bird perched on bare winter branches against a gray sky' },
-  { n: '12', alt: 'Night photo of an auto service center, a red car visible on a lift through the garage window' },
-  { n: '13', alt: 'The moon reflecting a path of light across dark ocean water at night' },
-  { n: '14', alt: 'A wooden signpost stacked with hand-painted directions to towns across Eleuthera, Bahamas' },
-  { n: '15', alt: 'Night photo of a wet city street lined with trees, string lights, and a “Hulfish St” street sign' },
-  { n: '16', alt: 'A small boat moored near a mangrove-lined beach opening' },
-  { n: '17', alt: 'Several weathered small boats resting on a sandy shore beside piles of conch shells' },
-  { n: '18', alt: 'A minimalist seascape with a single white sailboat on the horizon above a pale tidal flat' },
+  { n: '01', w: 2500, h: 1666, alt: 'Black-and-white photo of a hillside with palm trees and a modernist curved building, striped beach umbrellas in the foreground' },
+  { n: '02', w: 2500, h: 1666, alt: 'Black-and-white photo of the Getty Center’s stone colonnade overlooking a terrace of cafe tables with the Los Angeles skyline in the distance' },
+  { n: '03', w: 1960, h: 2941, alt: 'Black-and-white photo looking down a covered ramp toward a STOP sign and a hillside road' },
+  { n: '04', w: 2500, h: 1666, alt: 'Black-and-white aerial view of the Getty Center’s stone columns above a courtyard filled with cafe tables and visitors' },
+  { n: '05', w: 2500, h: 1666, alt: 'Black-and-white photo of a man and child riding a three-wheeled mobility scooter along a beachfront boardwalk' },
+  { n: '06', w: 2500, h: 1666, alt: 'Black-and-white photo of a religious icon painting propped in a car’s back window, tree branches reflected in the glass' },
+  { n: '07', w: 2500, h: 1666, alt: 'Black-and-white photo of a man sitting barefoot with a laptop in the open side door of a VW camper van' },
+  { n: '08', w: 2500, h: 1667, alt: 'Photo of a cabin door and wall covered in visitors’ signatures and messages, with “Leave your mark” written large' },
+  { n: '09', w: 2500, h: 1667, alt: 'A wooden dock with swings over calm evening water, signed “Tarpum Bay, South Eleuthera”' },
+  { n: '10', w: 2500, h: 1667, alt: 'Close-up of dark volcanic rock against turquoise ocean water' },
+  { n: '11', w: 2500, h: 1667, alt: 'Silhouette of a bird perched on bare winter branches against a gray sky' },
+  { n: '12', w: 2500, h: 1667, alt: 'Night photo of an auto service center, a red car visible on a lift through the garage window' },
+  { n: '13', w: 2500, h: 3750, alt: 'The moon reflecting a path of light across dark ocean water at night' },
+  { n: '14', w: 2500, h: 3750, alt: 'A wooden signpost stacked with hand-painted directions to towns across Eleuthera, Bahamas' },
+  { n: '15', w: 2500, h: 3750, alt: 'Night photo of a wet city street lined with trees, string lights, and a “Hulfish St” street sign' },
+  { n: '16', w: 2500, h: 3750, alt: 'A small boat moored near a mangrove-lined beach opening' },
+  { n: '17', w: 2500, h: 3750, alt: 'Several weathered small boats resting on a sandy shore beside piles of conch shells' },
+  { n: '18', w: 2500, h: 3750, alt: 'A minimalist seascape with a single white sailboat on the horizon above a pale tidal flat' },
 ];
 ---
 <BaseLayout title="Photos — Julian Liao" description="A street and travel photography portfolio by Julian Liao.">
   <section class="wrap photos-head">
     <p class="eyebrow">Photos</p>
     <h1>Street &amp; travel photography</h1>
+    <p class="hint">
+      <span class="hint-key" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg>
+      </span>
+      Click any frame to enlarge. Arrow keys move through the set.
+    </p>
   </section>
 
-  <section class="wrap photo-grid">
-    {photos.map((p) => (
-      <img src={`${base}images/photos/${p.n}.webp`} alt={p.alt} loading="lazy" />
+  <section class="wrap photo-grid" data-zoom-group>
+    {photos.map((p, i) => (
+      <figure class="frame" data-zoom-frame data-reveal data-reveal-delay={(i % 3) * 70}>
+        <img
+          src={`${base}images/photos/${p.n}.webp`}
+          alt={p.alt}
+          width={p.w}
+          height={p.h}
+          loading="lazy"
+          decoding="async"
+          data-zoomable
+        />
+        <figcaption aria-hidden="true">{p.n}</figcaption>
+      </figure>
     ))}
   </section>
 </BaseLayout>
 
 <style>
   .photos-head {
-    padding-block: var(--space-5) var(--space-4);
+    padding-block: clamp(3.5rem, 9vw, 7rem) clamp(2rem, 4vw, 3rem);
   }
+
   .photos-head h1 {
-    font-size: var(--step-hero);
+    font-size: var(--step-display);
+    line-height: 0.95;
+    max-width: 14ch;
+    margin: 0 0 var(--space-3);
   }
+
+  .hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: var(--step-small);
+    color: var(--ink-faint);
+    margin: 0;
+  }
+
+  .hint-key {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--accent);
+  }
+
   .photo-grid {
     padding-block: 0 var(--space-6);
     column-count: 1;
-    column-gap: var(--space-2);
+    column-gap: clamp(0.75rem, 2vw, 1.5rem);
   }
-  .photo-grid img {
+
+  .frame {
+    position: relative;
+    margin: 0 0 clamp(0.75rem, 2vw, 1.5rem);
+    break-inside: avoid;
+    border-radius: var(--r);
+    overflow: hidden;
+    background: var(--bg-elev);
+  }
+
+  .frame img {
     width: 100%;
     height: auto;
-    display: block;
-    border-radius: 12px;
-    margin-bottom: var(--space-2);
-    break-inside: avoid;
+    transition: transform 1s var(--ease-out), opacity 0.6s var(--ease);
   }
+
+  .frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px var(--line);
+    pointer-events: none;
+    transition: box-shadow 0.4s var(--ease);
+  }
+
+  .frame:hover img {
+    transform: scale(1.035);
+  }
+
+  .frame:hover::after {
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+  }
+
+  .frame figcaption {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    font-family: var(--font-display);
+    font-size: var(--step-micro);
+    letter-spacing: 0.18em;
+    color: var(--ink);
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(8, 8, 10, 0.6);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.35s var(--ease), transform 0.35s var(--ease-out);
+  }
+
+  .frame:hover figcaption {
+    opacity: 1;
+    transform: none;
+  }
+
   @media (min-width: 640px) {
     .photo-grid { column-count: 2; }
   }
-  @media (min-width: 1000px) {
+
+  @media (min-width: 1040px) {
     .photo-grid { column-count: 3; }
   }
 </style>

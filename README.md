@@ -20,8 +20,14 @@ builder.
 - `src/layouts/` — `BaseLayout` (nav + footer, used everywhere) and
   `ProjectLayout` (case-study header/metadata/prev-next, used by every
   project page).
-- `src/styles/global.css` — design tokens (color, type scale, spacing). Edit
+- `src/styles/global.css` — design tokens (color, type scale, spacing) and
+  the shared primitives (`.wrap`, `.eyebrow`, `.btn`, scroll-reveal). Edit
   `--accent` etc. here to reskin the whole site.
+- `src/scripts/` — the two client scripts, both dependency-free vanilla JS:
+  `site.js` (scroll reveal, sticky-nav behavior, reading progress,
+  parallax) and `lightbox.js` (click-to-expand image viewer).
+- `tests/` — Node test-runner tests for those two scripts, against a small
+  hand-rolled DOM stub. Run with `npm test`.
 - `public/images/` — every image from the original site, downloaded and
   organized by page/project.
 - `public/files/` — the two consulting-work PDFs.
@@ -31,7 +37,29 @@ builder.
 ```
 npm install
 npm run dev
+npm test      # client-script tests
 ```
+
+## Design and interaction notes
+
+- The site is a single dark theme (no light mode) — `--bg` through
+  `--line` in `global.css` define it.
+- **Click an image to expand it.** Photos, the About collages and every
+  case-study image open in a modal `<dialog>`. The expand is a FLIP
+  animation via `element.animate()`, so the thumbnail appears to grow
+  into place. Arrow keys and swipes move through the set; Esc, the close
+  button or a click outside collapses it back to the thumbnail. Browsers
+  without `<dialog>` or the Web Animations API just show the images
+  inline, which is why nothing depends on the lightbox to read the page.
+- **Scrolling** fades and lifts blocks in via `IntersectionObserver`,
+  drives a reading-progress bar in the header, hides the header on the
+  way down and returns it on the way up, and floats the hero portrait on
+  a small parallax offset.
+- `prefers-reduced-motion: reduce` turns all of that off: reveals show
+  immediately, parallax is skipped, and the lightbox opens and closes
+  without a flight animation.
+- Scroll-reveal styles only apply under `html.js` (set by an inline head
+  script), so with JavaScript disabled the page is fully visible.
 
 ## Deploying
 

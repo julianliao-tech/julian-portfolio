@@ -14,187 +14,331 @@ interface Props {
   nextOverrideTitle?: string;
 }
 
-const { title, role, timeline, team, tools, skills, order, nextOverrideHref, nextOverrideTitle } = Astro.props;
+const { title, role, timeline, team, tools, skills, order, nextOverrideHref, nextOverrideTitle } =
+  Astro.props;
 const base = import.meta.env.BASE_URL;
 
 const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const idx = all.findIndex((p) => p.data.order === order);
 const prev = idx > 0 ? all[idx - 1] : null;
 const nextEntry = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
+
+const meta = [
+  { label: 'Timeline', value: timeline },
+  { label: 'Role', value: role.join(', ') },
+  { label: 'Team', value: team },
+  { label: 'Tools', value: tools.join(', ') },
+];
+const num = String(order).padStart(2, '0');
 ---
 <BaseLayout title={`${title} — Julian Liao`}>
-  <article class="wrap project">
-    <header class="project-head">
-      <a class="back" href={`${base}#work`}>&larr; All projects</a>
+  <article class="project">
+    <header class="project-head wrap">
+      <a class="back" href={`${base}#work`}>
+        <span class="back-arrow" aria-hidden="true">&larr;</span> All projects
+      </a>
+
+      <p class="eyebrow">Case study {num}</p>
       <h1>{title}</h1>
+
       <dl class="meta">
-        <div><dt>Timeline</dt><dd>{timeline}</dd></div>
-        <div><dt>Role</dt><dd>{role.join(', ')}</dd></div>
-        <div><dt>Team</dt><dd>{team}</dd></div>
-        <div><dt>Tools</dt><dd>{tools.join(', ')}</dd></div>
+        {meta.map((m) => (
+          <div>
+            <dt>{m.label}</dt>
+            <dd>{m.value}</dd>
+          </div>
+        ))}
       </dl>
+
       <ul class="skills">
         {skills.map((s) => <li>{s}</li>)}
       </ul>
     </header>
 
-    <div class="prose">
+    <div class="prose wrap" data-zoom-group data-zoom-scan>
       <slot />
     </div>
 
-    <nav class="project-pager">
+    <nav class="project-pager wrap" aria-label="More projects">
       {prev ? (
-        <a class="pager-link" href={`${base}work/${prev.id}`}>
-          <span class="pager-label">&larr; Previous</span>
+        <a class="pager-link" href={`${base}work/${prev.id}/`}>
+          <span class="pager-label"><span aria-hidden="true">&larr;</span> Previous</span>
           <span class="pager-title">{prev.data.title}</span>
         </a>
-      ) : <span />}
+      ) : <span class="pager-empty" />}
       {nextEntry ? (
-        <a class="pager-link pager-next" href={`${base}work/${nextEntry.id}`}>
-          <span class="pager-label">Next &rarr;</span>
+        <a class="pager-link pager-next" href={`${base}work/${nextEntry.id}/`}>
+          <span class="pager-label">Next <span aria-hidden="true">&rarr;</span></span>
           <span class="pager-title">{nextEntry.data.title}</span>
         </a>
       ) : nextOverrideHref ? (
-        <a class="pager-link pager-next" href={`${base}${nextOverrideHref}`}>
-          <span class="pager-label">Next &rarr;</span>
+        <a class="pager-link pager-next" href={`${base}${nextOverrideHref}/`}>
+          <span class="pager-label">Next <span aria-hidden="true">&rarr;</span></span>
           <span class="pager-title">{nextOverrideTitle}</span>
         </a>
-      ) : <span />}
+      ) : <span class="pager-empty" />}
     </nav>
   </article>
 </BaseLayout>
 
 <style>
-  .project {
-    padding-block: var(--space-5) var(--space-6);
+  .project-head {
+    padding-block: clamp(2.5rem, 7vw, 5rem) 0;
   }
+
   .back {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     text-decoration: none;
     font-family: var(--font-display);
-    font-weight: 600;
+    font-weight: 500;
     font-size: var(--step-small);
-    color: var(--ink-soft);
-    margin-bottom: var(--space-3);
+    color: var(--ink-faint);
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+    transition: color 0.3s var(--ease);
   }
-  .back:hover { color: var(--accent); }
+
+  .back:hover { color: var(--ink); }
+
+  .back-arrow {
+    display: inline-block;
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  .back:hover .back-arrow { transform: translateX(-4px); }
+
   .project-head h1 {
-    font-size: var(--step-hero);
-    max-width: 20ch;
+    font-size: clamp(2.4rem, 7.5vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    max-width: 16ch;
+    margin: 0 0 clamp(2rem, 5vw, 3.5rem);
   }
+
   .meta {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-    gap: var(--space-3);
-    margin: var(--space-4) 0 var(--space-3);
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: var(--space-3) var(--space-4);
+    margin: 0 0 var(--space-3);
     padding: var(--space-3) 0;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
   }
+
   .meta dt {
     font-family: var(--font-display);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-size: 0.7rem;
-    color: var(--accent);
-    margin-bottom: 0.25rem;
+    letter-spacing: 0.18em;
+    font-size: var(--step-micro);
+    color: var(--ink-faint);
+    margin-bottom: 0.35rem;
   }
+
   .meta dd {
     margin: 0;
+    font-family: var(--font-display);
     font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
   }
+
   .skills {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     padding: 0;
-    margin: 0 0 var(--space-5);
+    margin: var(--space-3) 0 0;
   }
+
   .skills li {
     font-size: var(--step-small);
-    padding: 0.35em 0.85em;
+    padding: 0.4em 0.9em;
     border: 1px solid var(--line);
-    border-radius: 999px;
+    border-radius: var(--r-full);
     color: var(--ink-soft);
+  }
+
+  /* Prose ---------------------------------------------------------
+     Text sits in a readable column on the left; media spans the full
+     width of the container. */
+  .prose {
+    display: grid;
+    grid-template-columns:
+      [text-start] minmax(0, 68ch) [text-end] minmax(0, 1fr) [wide-end];
+    padding-block: clamp(3rem, 8vw, 6rem) 0;
+    counter-reset: section;
+  }
+
+  .prose > :global(*) {
+    grid-column: text-start / text-end;
   }
 
   .prose :global(h2) {
-    font-size: var(--step-h1);
-    margin-top: var(--space-6);
+    grid-column: text-start / wide-end;
+    font-size: var(--step-h2);
+    margin: clamp(3.5rem, 8vw, 6rem) 0 var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--line);
   }
+
+  .prose :global(h2::before) {
+    counter-increment: section;
+    content: counter(section, decimal-leading-zero);
+    display: block;
+    font-size: var(--step-micro);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    margin-bottom: 0.9rem;
+  }
+
+  .prose > :global(h2:first-child) {
+    margin-top: 0;
+    border-top: 0;
+    padding-top: 0;
+  }
+
   .prose :global(h3) {
     font-size: var(--step-h3);
     margin-top: var(--space-4);
+    color: var(--ink);
   }
+
   .prose :global(p) {
-    max-width: 68ch;
+    max-width: none;
+    line-height: 1.7;
   }
+
   .prose :global(ul),
   .prose :global(ol) {
     color: var(--ink-soft);
-    max-width: 68ch;
-    padding-left: 1.25em;
+    padding-left: 1.2em;
+    margin-bottom: var(--space-3);
   }
+
   .prose :global(li) {
-    margin-bottom: 0.4em;
+    margin-bottom: 0.45em;
   }
+
+  .prose :global(li::marker) {
+    color: var(--accent);
+  }
+
   .prose :global(strong) {
     color: var(--ink);
   }
+
+  .prose :global(a) {
+    color: var(--accent);
+  }
+
+  /* Markdown renders each image as its own paragraph. Where :has() is
+     supported those paragraphs widen past the text column; where it
+     isn't, the image simply stays at text width. */
+  .prose > :global(p:has(> img)) {
+    grid-column: text-start / wide-end;
+    /* Grid rows don't collapse margins, so keep the image close to the
+       copy it illustrates and let the gap fall after it. */
+    margin-block: var(--space-2) var(--space-4);
+  }
+
   .prose :global(img) {
     width: 100%;
-    border-radius: var(--radius);
+    height: auto;
+    border-radius: var(--r-lg);
     border: 1px solid var(--line);
-    margin: var(--space-3) 0;
+    background: var(--bg-elev);
+    transition: border-color 0.4s var(--ease), transform 0.7s var(--ease-out);
   }
+
+  .prose :global(img:hover) {
+    border-color: var(--line-strong);
+  }
+
   .prose :global(blockquote) {
-    margin: var(--space-3) 0;
-    padding: var(--space-3);
-    background: var(--card-bg);
+    grid-column: text-start / wide-end;
+    margin: var(--space-4) 0;
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-soft);
     border: 1px solid var(--line);
-    border-left: 4px solid var(--accent);
-    border-radius: 0 var(--radius) var(--radius) 0;
+    border-left: 2px solid var(--accent);
+    border-radius: 0 var(--r) var(--r) 0;
   }
+
   .prose :global(blockquote p) {
     margin: 0;
     color: var(--ink);
+    font-family: var(--font-serif);
     font-style: italic;
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    line-height: 1.4;
   }
 
+  /* Pager ---------------------------------------------------------- */
   .project-pager {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-3);
-    margin-top: var(--space-6);
-    padding-top: var(--space-4);
+    margin-top: clamp(4rem, 9vw, 7rem);
     border-top: 1px solid var(--line);
   }
-  .pager-link {
-    text-decoration: none;
+
+  .pager-link,
+  .pager-empty {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.5rem;
+    padding: clamp(1.75rem, 4vw, 3rem) var(--space-3);
+    text-decoration: none;
+    transition: background 0.4s var(--ease);
   }
+
+  .pager-link:hover {
+    background: var(--bg-soft);
+  }
+
+  /* Keep the outer edges flush with the page gutter. */
+  .pager-link:not(.pager-next) { padding-left: 0; }
+  .pager-next { padding-right: 0; }
+
   .pager-next {
     text-align: right;
     grid-column: 2;
+    align-items: flex-end;
+    border-left: 1px solid var(--line);
   }
+
   .pager-label {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: var(--step-small);
+    font-size: var(--step-micro);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
     color: var(--accent);
   }
+
   .pager-title {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: var(--step-h3);
+    font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
     color: var(--ink);
   }
-  @media (max-width: 560px) {
+
+  @media (max-width: 620px) {
     .project-pager { grid-template-columns: 1fr; }
-    .pager-next { grid-column: 1; text-align: left; }
+    .pager-next {
+      grid-column: 1;
+      text-align: left;
+      align-items: flex-start;
+      border-left: 0;
+      border-top: 1px solid var(--line);
+    }
+    .pager-empty { display: none; }
+    .pager-link { padding-inline: 0; }
   }
 </style>

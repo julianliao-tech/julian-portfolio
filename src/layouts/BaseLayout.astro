@@ -1,28 +1,65 @@
 ---
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Lightbox from '../components/Lightbox.astro';
 import '../styles/global.css';
 
 interface Props {
   title: string;
   description?: string;
 }
-const { title, description = 'UX designer focused on intuitive and accessible user experiences.' } = Astro.props;
+const {
+  title,
+  description = 'UX designer focused on intuitive and accessible user experiences.',
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const ogImage = new URL(`${base}images/home/profile-illustration.webp`, Astro.site);
+const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <meta name="theme-color" content="#08080a" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="canonical" href={canonical.href} />
     <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImage.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&display=swap"
+    />
+
     <title>{title}</title>
+
+    {/* Set the JS flag before first paint so scroll-reveal never flashes
+        unstyled content, and never hides anything if JS is off. */}
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <Nav />
-    <main>
+    <main id="main">
       <slot />
     </main>
     <Footer />
+    <Lightbox />
+    <script>
+      import '../scripts/site.js';
+      import '../scripts/lightbox.js';
+    </script>
   </body>
 </html>

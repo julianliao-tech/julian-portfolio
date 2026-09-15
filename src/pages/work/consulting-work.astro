@@ -8,91 +8,231 @@ const items = [
     href: `${base}files/Q-Bakehouse.pdf`,
     image: `${base}images/consulting-work/01-q-bakehouse.webp`,
     alt: 'Q-Bakehouse consulting deliverable cover',
+    width: 1308,
+    height: 1198,
   },
   {
     title: 'MCBC – Pink Moon Deliverable Presentation',
     href: `${base}files/MCBC_-PinkMoon-Deliverable-Presentation.pdf`,
     image: `${base}images/consulting-work/02-mcbc-pink-moon.png`,
     alt: 'MCBC Pink Moon deliverable presentation cover',
+    width: 1540,
+    height: 1072,
   },
 ];
 ---
 <BaseLayout title="Consulting Work — Julian Liao">
-  <article class="wrap project">
-    <header class="project-head">
-      <a class="back" href={`${base}#work`}>&larr; All projects</a>
+  <article class="project">
+    <header class="project-head wrap">
+      <a class="back" href={`${base}#work`}>
+        <span class="back-arrow" aria-hidden="true">&larr;</span> All projects
+      </a>
+      <p class="eyebrow">Consulting</p>
       <h1>Consulting Work</h1>
-      <p class="intro">A couple of client deliverables from outside the case-study projects above. Each one links out to the full PDF.</p>
+      <p class="intro">
+        A couple of client deliverables from outside the case-study projects above. Each one links out to
+        the full PDF.
+      </p>
     </header>
 
-    <div class="items">
-      {items.map((item) => (
-        <a class="item" href={item.href} target="_blank" rel="noreferrer">
-          <img src={item.image} alt={item.alt} loading="lazy" />
-          <span class="item-title">{item.title}</span>
+    <div class="wrap items">
+      {items.map((item, i) => (
+        <a class="item" href={item.href} target="_blank" rel="noreferrer" data-reveal data-reveal-delay={i * 90}>
+          <span class="item-media">
+            <img
+              class="reveal-zoom"
+              src={item.image}
+              alt={item.alt}
+              width={item.width}
+              height={item.height}
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="badge">PDF</span>
+          </span>
+          <span class="item-foot">
+            <span class="item-title">{item.title}</span>
+            <span class="item-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg>
+            </span>
+          </span>
         </a>
       ))}
     </div>
 
-    <nav class="project-pager">
-      <a class="pager-link" href={`${base}work/dominos`}>
-        <span class="pager-label">&larr; Previous</span>
+    <nav class="project-pager wrap" aria-label="More projects">
+      <a class="pager-link" href={`${base}work/dominos/`}>
+        <span class="pager-label"><span aria-hidden="true">&larr;</span> Previous</span>
         <span class="pager-title">Domino's Ann Arbor Website</span>
       </a>
-      <span />
+      <span class="pager-empty" />
     </nav>
   </article>
 </BaseLayout>
 
 <style>
-  .project { padding-block: var(--space-5) var(--space-6); }
+  .project-head {
+    padding-block: clamp(2.5rem, 7vw, 5rem) 0;
+  }
+
   .back {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     text-decoration: none;
     font-family: var(--font-display);
-    font-weight: 600;
+    font-weight: 500;
     font-size: var(--step-small);
-    color: var(--ink-soft);
-    margin-bottom: var(--space-3);
+    color: var(--ink-faint);
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+    transition: color 0.3s var(--ease);
   }
-  .back:hover { color: var(--accent); }
-  .project-head h1 { font-size: var(--step-hero); }
-  .intro { font-size: var(--step-h3); max-width: 50ch; }
+
+  .back:hover { color: var(--ink); }
+
+  .back-arrow { display: inline-block; transition: transform 0.4s var(--ease-out); }
+  .back:hover .back-arrow { transform: translateX(-4px); }
+
+  .project-head h1 {
+    font-size: clamp(2.4rem, 7.5vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin: 0 0 var(--space-3);
+  }
+
+  .intro {
+    font-size: var(--step-lead);
+    line-height: 1.5;
+    max-width: 46ch;
+    margin: 0;
+  }
 
   .items {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: var(--space-3);
-    margin: var(--space-5) 0 var(--space-6);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: clamp(1.5rem, 4vw, 3rem);
+    margin-block: clamp(3rem, 7vw, 5rem) 0;
   }
+
   .item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
+    display: block;
     text-decoration: none;
-    background: var(--card-bg);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    overflow: hidden;
-    transition: transform 0.18s ease, border-color 0.18s ease;
   }
-  .item:hover { transform: translateY(-4px); border-color: var(--accent); }
-  .item img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+
+  .item-media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+  }
+
+  .item-media img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.9s var(--ease-out);
+  }
+
+  .item:hover .item-media img {
+    transform: scale(1.035);
+  }
+
+  .badge {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    font-family: var(--font-display);
+    font-size: var(--step-micro);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(8, 8, 10, 0.72);
+    backdrop-filter: blur(6px);
+  }
+
+  .item-foot {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-2);
+    padding-top: var(--space-3);
+  }
+
   .item-title {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: var(--step-h3);
-    padding: 0 var(--space-2) var(--space-2);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    color: var(--ink);
+    transition: color 0.3s var(--ease);
+  }
+
+  .item:hover .item-title { color: var(--accent); }
+
+  .item-arrow {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    transition: transform 0.45s var(--ease-out), background 0.35s var(--ease),
+      color 0.35s var(--ease), border-color 0.35s var(--ease);
+  }
+
+  .item:hover .item-arrow {
+    transform: translate(3px, -3px);
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
   }
 
   .project-pager {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-3);
-    padding-top: var(--space-4);
+    margin-top: clamp(4rem, 9vw, 7rem);
     border-top: 1px solid var(--line);
   }
-  .pager-link { text-decoration: none; display: flex; flex-direction: column; gap: 0.35rem; }
-  .pager-label { font-family: var(--font-display); font-weight: 600; font-size: var(--step-small); color: var(--accent); }
-  .pager-title { font-family: var(--font-display); font-weight: 700; font-size: var(--step-h3); color: var(--ink); }
+
+  .pager-link,
+  .pager-empty {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: clamp(1.75rem, 4vw, 3rem) var(--space-3);
+    text-decoration: none;
+    transition: background 0.4s var(--ease);
+  }
+
+  .pager-link { padding-left: 0; }
+
+  .pager-link:hover { background: var(--bg-soft); }
+
+  .pager-label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--step-micro);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .pager-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+
+  @media (max-width: 620px) {
+    .project-pager { grid-template-columns: 1fr; }
+    .pager-empty { display: none; }
+  }
 </style>
