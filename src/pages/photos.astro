@@ -45,15 +45,21 @@ const photos = [
   }
   .photo-grid {
     padding-block: 0 var(--space-6);
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--space-2);
+    column-count: 1;
+    column-gap: var(--space-2);
   }
   .photo-grid img {
     width: 100%;
-    height: 100%;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
+    height: auto;
+    display: block;
     border-radius: 12px;
+    margin-bottom: var(--space-2);
+    break-inside: avoid;
+  }
+  @media (min-width: 640px) {
+    .photo-grid { column-count: 2; }
+  }
+  @media (min-width: 1000px) {
+    .photo-grid { column-count: 3; }
   }
 </style>
