@@ -10,11 +10,11 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="footer-links" data-reveal data-reveal-delay="90">
-      <a class="mail" href="mailto:julianliaowork@gmail.com">
+      <a class="mail" data-magnetic href="mailto:julianliaowork@gmail.com">
         <span class="mail-text">julianliaowork@gmail.com</span>
         <svg class="mail-arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
       </a>
-      <a class="btn btn-outline" href="https://www.linkedin.com/in/julian-liao-475685239/" target="_blank" rel="noreferrer">LinkedIn</a>
+      <a class="btn btn-outline" data-magnetic href="https://www.linkedin.com/in/julian-liao-475685239/" target="_blank" rel="noreferrer">LinkedIn</a>
     </div>
 
     <div class="footer-base">
@@ -81,6 +81,8 @@ const year = new Date().getFullYear();
   }
 
   .mail {
+    --magnet-x: 0px;
+    --magnet-y: 0px;
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
@@ -93,14 +95,19 @@ const year = new Date().getFullYear();
     padding: 0.6rem 1.4rem 0.6rem 1.5rem;
     border: 1px solid var(--line-strong);
     border-radius: var(--r-full);
+    transform: translate(var(--magnet-x), var(--magnet-y));
     transition: border-color 0.35s var(--ease), background 0.35s var(--ease),
-      color 0.35s var(--ease);
+      color 0.35s var(--ease), transform 0.5s var(--ease-out);
   }
 
+  /* [data-magnetic] (see site.js) keeps --magnet-x/y live while the
+     cursor is over the link, so it nudges toward the pointer. */
   .mail:hover {
     background: var(--accent);
     border-color: var(--accent);
     color: var(--accent-ink);
+    transition: border-color 0.35s var(--ease), background 0.35s var(--ease),
+      color 0.35s var(--ease), transform 0.15s var(--ease-out);
   }
 
   .mail-arrow {

@@ -227,6 +227,8 @@ strong {
 /* Buttons + links -------------------------------------------------- */
 
 .btn {
+  --magnet-x: 0px;
+  --magnet-y: 0px;
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
@@ -240,14 +242,19 @@ strong {
   background: var(--accent);
   color: var(--accent-ink);
   border: 1px solid var(--accent);
-  transition: transform 0.35s var(--ease-out), background 0.3s var(--ease),
+  transform: translate(var(--magnet-x), var(--magnet-y));
+  transition: transform 0.5s var(--ease-out), background 0.3s var(--ease),
     border-color 0.3s var(--ease), color 0.3s var(--ease);
 }
 
+/* [data-magnetic] (see site.js) keeps --magnet-x/y live while the
+   cursor is over the button, so it nudges toward the pointer. */
 .btn:hover {
-  transform: translateY(-3px);
+  transform: translate(var(--magnet-x), calc(var(--magnet-y) - 3px));
   background: var(--accent-light);
   border-color: var(--accent-light);
+  transition: transform 0.15s var(--ease-out), background 0.3s var(--ease),
+    border-color 0.3s var(--ease), color 0.3s var(--ease);
 }
 
 .btn-outline {

@@ -38,7 +38,7 @@ const items = [
     <div class="wrap items">
       {items.map((item, i) => (
         <a class="item" href={item.href} target="_blank" rel="noreferrer" data-reveal data-reveal-delay={i * 90}>
-          <span class="item-media">
+          <span class="item-media" data-tilt>
             <img
               class="reveal-zoom"
               src={item.image}
@@ -52,7 +52,7 @@ const items = [
           </span>
           <span class="item-foot">
             <span class="item-title">{item.title}</span>
-            <span class="item-arrow" aria-hidden="true">
+            <span class="item-arrow" data-magnetic aria-hidden="true">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg>
             </span>
           </span>
@@ -128,14 +128,23 @@ const items = [
     background: var(--bg-elev);
   }
 
+  /* [data-tilt] (see site.js) keeps --tilt-x/y live while the cursor
+     moves over the thumbnail, so it rotates to follow the pointer. */
+  .item-media {
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+  }
+
   .item-media img {
     width: 100%;
     height: auto;
-    transition: transform 0.9s var(--ease-out);
+    transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.02);
+    transition: transform 0.6s var(--ease-out);
   }
 
   .item:hover .item-media img {
-    transform: scale(1.035);
+    transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.1);
+    transition: transform 0.15s var(--ease-out);
   }
 
   .badge {
@@ -176,6 +185,8 @@ const items = [
   .item:hover .item-title { color: var(--accent); }
 
   .item-arrow {
+    --magnet-x: 0px;
+    --magnet-y: 0px;
     display: grid;
     place-items: center;
     width: 40px;
@@ -183,15 +194,18 @@ const items = [
     border-radius: 999px;
     border: 1px solid var(--line);
     color: var(--ink-soft);
+    transform: translate(var(--magnet-x), var(--magnet-y));
     transition: transform 0.45s var(--ease-out), background 0.35s var(--ease),
       color 0.35s var(--ease), border-color 0.35s var(--ease);
   }
 
   .item:hover .item-arrow {
-    transform: translate(3px, -3px);
+    transform: translate(calc(var(--magnet-x) + 3px), calc(var(--magnet-y) - 3px));
     background: var(--accent);
     border-color: var(--accent);
     color: var(--accent-ink);
+    transition: transform 0.15s var(--ease-out), background 0.35s var(--ease),
+      color 0.35s var(--ease), border-color 0.35s var(--ease);
   }
 
   .project-pager {

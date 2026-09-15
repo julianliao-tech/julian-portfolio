@@ -108,12 +108,91 @@ function initScrollChrome() {
   update();
 }
 
+/* Cursor-tracked hover: 3D tilt + magnetic pull ---------------------
+   [data-tilt] elements rotate toward the cursor (card thumbnails,
+   photo frames); [data-magnetic] elements nudge slightly toward it
+   (buttons, icons). Both read the pointer position into CSS custom
+   properties so the actual transform lives in CSS, and both are
+   skipped entirely under reduced motion or on touch devices, where
+   "hover" isn't a real gesture. */
+
+function canHover() {
+  return (
+    !prefersReduced() &&
+    window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  );
+}
+
+function trackPointer(el, onMove, onLeave) {
+  let rect = null;
+
+  el.addEventListener('pointerenter', () => {
+    rect = el.getBoundingClientRect();
+  });
+
+  el.addEventListener('pointermove', (event) => {
+    if (!rect) rect = el.getBoundingClientRect();
+    onMove(event, rect);
+  });
+
+  el.addEventListener('pointerleave', () => {
+    rect = null;
+    onLeave();
+  });
+}
+
+function initTilt() {
+  if (!canHover()) return;
+  const els = Array.from(document.querySelectorAll('[data-tilt]'));
+  const max = 14; // degrees
+
+  els.forEach((el) => {
+    trackPointer(
+      el,
+      (event, rect) => {
+        const px = (event.clientX - rect.left) / rect.width;
+        const py = (event.clientY - rect.top) / rect.height;
+        el.style.setProperty('--tilt-x', `${((0.5 - py) * max).toFixed(2)}deg`);
+        el.style.setProperty('--tilt-y', `${((px - 0.5) * max).toFixed(2)}deg`);
+      },
+      () => {
+        el.style.setProperty('--tilt-x', '0deg');
+        el.style.setProperty('--tilt-y', '0deg');
+      }
+    );
+  });
+}
+
+function initMagnetic() {
+  if (!canHover()) return;
+  const els = Array.from(document.querySelectorAll('[data-magnetic]'));
+  const strength = 0.35;
+
+  els.forEach((el) => {
+    trackPointer(
+      el,
+      (event, rect) => {
+        const x = (event.clientX - (rect.left + rect.width / 2)) * strength;
+        const y = (event.clientY - (rect.top + rect.height / 2)) * strength;
+        el.style.setProperty('--magnet-x', `${x.toFixed(1)}px`);
+        el.style.setProperty('--magnet-y', `${y.toFixed(1)}px`);
+      },
+      () => {
+        el.style.setProperty('--magnet-x', '0px');
+        el.style.setProperty('--magnet-y', '0px');
+      }
+    );
+  });
+}
+
 /* Boot -------------------------------------------------------------- */
 
 function boot() {
   document.documentElement.classList.add('js');
   initReveal();
   initScrollChrome();
+  initTilt();
+  initMagnetic();
 }
 
 if (document.readyState === 'loading') {

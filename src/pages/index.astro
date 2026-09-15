@@ -79,13 +79,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
       {cards.map((card, i) => (
         <li data-reveal data-reveal-delay={(i % 2) * 90}>
           <a class="card" href={card.href}>
-            <span class="card-media">
+            <span class="card-media" data-tilt>
               <img class="reveal-zoom" src={card.image} alt={card.alt} loading="lazy" decoding="async" />
             </span>
             <span class="card-foot">
               <span class="card-index">{pad(i + 1)}</span>
               <span class="card-title">{card.title}</span>
-              <span class="card-arrow" aria-hidden="true">
+              <span class="card-arrow" data-magnetic aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg>
               </span>
             </span>
@@ -299,16 +299,26 @@ const pad = (n: number) => String(n).padStart(2, '0');
     background: var(--bg-elev);
   }
 
+  /* [data-tilt] (see site.js) keeps --tilt-x/y live while the cursor
+     moves over the thumbnail, so the screen rotates toward it — the
+     card's own device mockup "spins" to follow the pointer. */
+  .card-media {
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+  }
+
   .card-media img {
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    transition: transform 0.9s var(--ease-out), filter 0.6s var(--ease);
+    transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.04);
+    transition: transform 0.6s var(--ease-out), filter 0.6s var(--ease);
   }
 
   .card:hover .card-media img,
   .card:focus-visible .card-media img {
-    transform: scale(1.045);
+    transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.14);
+    transition: transform 0.15s var(--ease-out);
   }
 
   .card-foot {
@@ -341,6 +351,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .card:hover .card-title { color: var(--accent); }
 
   .card-arrow {
+    --magnet-x: 0px;
+    --magnet-y: 0px;
     display: grid;
     place-items: center;
     width: 40px;
@@ -348,15 +360,18 @@ const pad = (n: number) => String(n).padStart(2, '0');
     border-radius: 999px;
     border: 1px solid var(--line);
     color: var(--ink-soft);
+    transform: translate(var(--magnet-x), var(--magnet-y));
     transition: transform 0.45s var(--ease-out), background 0.35s var(--ease),
       color 0.35s var(--ease), border-color 0.35s var(--ease);
   }
 
   .card:hover .card-arrow {
-    transform: translate(3px, -3px);
+    transform: translate(calc(var(--magnet-x) + 3px), calc(var(--magnet-y) - 3px));
     background: var(--accent);
     border-color: var(--accent);
     color: var(--accent-ink);
+    transition: transform 0.15s var(--ease-out), background 0.35s var(--ease),
+      color 0.35s var(--ease), border-color 0.35s var(--ease);
   }
 
   @media (min-width: 860px) {

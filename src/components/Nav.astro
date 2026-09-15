@@ -31,6 +31,7 @@ const links = [
 
       <a
         class="icon"
+        data-magnetic
         href="https://www.linkedin.com/in/julian-liao-475685239/"
         target="_blank"
         rel="noreferrer"
@@ -38,7 +39,7 @@ const links = [
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
       </a>
-      <a class="icon" href="mailto:julianliaowork@gmail.com" aria-label="Email Julian">
+      <a class="icon" data-magnetic href="mailto:julianliaowork@gmail.com" aria-label="Email Julian">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
       </a>
     </nav>
@@ -160,15 +161,21 @@ const links = [
   }
 
   .icon {
+    --magnet-x: 0px;
+    --magnet-y: 0px;
     display: grid;
     place-items: center;
     color: var(--ink-soft);
+    transform: translate(var(--magnet-x), var(--magnet-y));
     transition: color 0.3s var(--ease), transform 0.3s var(--ease-out);
   }
 
+  /* [data-magnetic] (see site.js) keeps --magnet-x/y live while the
+     cursor is over the icon, so it nudges toward the pointer. */
   .icon:hover {
     color: var(--accent);
-    transform: translateY(-2px);
+    transform: translate(var(--magnet-x), calc(var(--magnet-y) - 2px));
+    transition: color 0.3s var(--ease), transform 0.15s var(--ease-out);
   }
 
   .progress {
