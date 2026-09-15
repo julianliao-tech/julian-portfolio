@@ -236,18 +236,22 @@ const num = String(order).padStart(2, '0');
     color: var(--accent);
   }
 
-  /* Markdown renders each image as its own paragraph. Where :has() is
-     supported those paragraphs widen past the text column; where it
-     isn't, the image simply stays at text width. */
+  /* Markdown renders each image as its own paragraph, kept at text
+     width rather than bleeding into the wide column — these are
+     mostly tall screenshots, and full-bleed made the page feel much
+     longer than the writing actually is. */
   .prose > :global(p:has(> img)) {
-    grid-column: text-start / wide-end;
+    grid-column: text-start / text-end;
     /* Grid rows don't collapse margins, so keep the image close to the
        copy it illustrates and let the gap fall after it. */
     margin-block: var(--space-2) var(--space-4);
   }
 
   .prose :global(img) {
+    display: block;
     width: 100%;
+    max-width: 30rem;
+    margin-inline: auto;
     height: auto;
     border-radius: var(--r-lg);
     border: 1px solid var(--line);

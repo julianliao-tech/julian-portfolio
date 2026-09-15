@@ -20,6 +20,10 @@ const gallery = [
     alt: 'Furniture Design collage: a handmade wooden stool with a woven cord seat, plus a close-up of the weave pattern',
   },
 ];
+
+// Flank the copy: two shots in the left margin, two in the right.
+const leftShots = gallery.slice(0, 2);
+const rightShots = gallery.slice(2);
 ---
 <BaseLayout
   title="About — Julian Liao"
@@ -31,49 +35,70 @@ const gallery = [
   </section>
 
   <section class="wrap about-body">
-    <div class="about-copy">
-      <p data-reveal>
-        I'm Julian, a student at the <strong>University</strong> of <strong>Michigan</strong> studying UX
-        Design with a double minor in Digital Studies and Business at the Ross School of Business.
-      </p>
-      <p data-reveal>
-        Growing up, I spent my summers bringing my ambitious ideas to life at a short film camp with my
-        friends; writing, shooting, and editing stories that turned imagination into reality.
-      </p>
-      <p data-reveal>
-        Over the years, I've been creative through sports, street photography, music production and
-        furniture design.
-      </p>
-      <p data-reveal>
-        While studying in the library as a freshman in college, I stumbled across a flyer advertising a
-        UX Design opportunity. Being my curious self I looked into it and the craft immediately clicked
-        with me.
-      </p>
-      <p data-reveal>
-        UX Design blends my creative instincts with a structured, thoughtful process I genuinely enjoy.
-        Today, I design digital experiences that are intuitive, accessible, and meaningful; driven by the
-        same passion that first had me holding a camera and chasing a story.
-      </p>
-    </div>
-  </section>
+    <div class="about-layout" data-zoom-group>
+      <div class="about-margin about-margin-left">
+        {leftShots.map((item, i) => (
+          <figure class="shot" data-reveal data-reveal-delay={i * 90}>
+            <div class="shot-frame" data-zoom-frame>
+              <img
+                class="reveal-zoom"
+                src={item.src}
+                alt={item.alt}
+                width="2500"
+                height="1932"
+                loading="lazy"
+                decoding="async"
+                data-zoomable
+              />
+            </div>
+          </figure>
+        ))}
+      </div>
 
-  <section class="wrap about-gallery" data-zoom-group>
-    {gallery.map((item, i) => (
-      <figure class="shot" data-reveal data-reveal-delay={(i % 2) * 80}>
-        <div class="shot-frame" data-zoom-frame>
-          <img
-            class="reveal-zoom"
-            src={item.src}
-            alt={item.alt}
-            width="2500"
-            height="1932"
-            loading="lazy"
-            decoding="async"
-            data-zoomable
-          />
-        </div>
-      </figure>
-    ))}
+      <div class="about-copy">
+        <p data-reveal>
+          I'm Julian, a student at the <strong>University</strong> of <strong>Michigan</strong> studying UX
+          Design with a double minor in Digital Studies and Business at the Ross School of Business.
+        </p>
+        <p data-reveal>
+          Growing up, I spent my summers bringing my ambitious ideas to life at a short film camp with my
+          friends; writing, shooting, and editing stories that turned imagination into reality.
+        </p>
+        <p data-reveal>
+          Over the years, I've been creative through sports, street photography, music production and
+          furniture design.
+        </p>
+        <p data-reveal>
+          While studying in the library as a freshman in college, I stumbled across a flyer advertising a
+          UX Design opportunity. Being my curious self I looked into it and the craft immediately clicked
+          with me.
+        </p>
+        <p data-reveal>
+          UX Design blends my creative instincts with a structured, thoughtful process I genuinely enjoy.
+          Today, I design digital experiences that are intuitive, accessible, and meaningful; driven by the
+          same passion that first had me holding a camera and chasing a story.
+        </p>
+      </div>
+
+      <div class="about-margin about-margin-right">
+        {rightShots.map((item, i) => (
+          <figure class="shot" data-reveal data-reveal-delay={i * 90 + 40}>
+            <div class="shot-frame" data-zoom-frame>
+              <img
+                class="reveal-zoom"
+                src={item.src}
+                alt={item.alt}
+                width="2500"
+                height="1932"
+                loading="lazy"
+                decoding="async"
+                data-zoomable
+              />
+            </div>
+          </figure>
+        ))}
+      </div>
+    </div>
   </section>
 </BaseLayout>
 
@@ -92,9 +117,18 @@ const gallery = [
     padding-bottom: clamp(3rem, 8vw, 6rem);
   }
 
+  /* Mobile-first: copy, then the two shot pairs below it. The margin
+     layout only kicks in once there's room either side of the text —
+     see the min-width query below. */
+  .about-layout {
+    display: grid;
+    gap: clamp(2rem, 5vw, 3rem);
+  }
+
   .about-copy {
-    max-width: 44rem;
-    margin-left: auto;
+    order: 1;
+    max-width: 42rem;
+    margin-inline: auto;
     border-top: 1px solid var(--line);
     padding-top: clamp(1.5rem, 4vw, 2.5rem);
   }
@@ -117,10 +151,18 @@ const gallery = [
     margin-bottom: var(--space-4);
   }
 
-  .about-gallery {
+  /* Two shots per margin, side by side while they're still a
+     full-width block (mobile), stacked once they move into the
+     sidebar columns (see the min-width query below). */
+  .about-margin {
+    order: 2;
     display: grid;
-    gap: clamp(1.25rem, 3vw, 2.5rem);
-    padding-bottom: var(--space-6);
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(0.75rem, 2vw, 1.25rem);
+  }
+
+  .about-margin-right {
+    order: 3;
   }
 
   .shot {
@@ -144,17 +186,41 @@ const gallery = [
     height: auto;
   }
 
-  @media (min-width: 760px) {
-    .about-gallery {
-      grid-template-columns: 1fr 1fr;
-      padding-bottom: clamp(3rem, 6vw, 6rem);
+  /* Margins either side of the text, a little smaller than the old
+     below-text gallery, once there's enough width to hold them. */
+  @media (min-width: 1100px) {
+    .about-layout {
+      grid-template-columns: minmax(7rem, 10rem) minmax(0, 42rem) minmax(7rem, 10rem);
+      align-items: start;
+      justify-content: center;
     }
-    .about-gallery > .shot:nth-child(even) .shot-frame {
-      transform: translateY(clamp(1.5rem, 4vw, 3.5rem));
-    }
-  }
 
-  @media (prefers-reduced-motion: reduce) {
-    .about-gallery > .shot:nth-child(even) .shot-frame { transform: none; }
+    .about-copy,
+    .about-margin-left,
+    .about-margin-right {
+      order: initial;
+    }
+
+    .about-copy {
+      margin-inline: 0;
+    }
+
+    .about-margin {
+      grid-template-columns: 1fr;
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
+
+    .about-margin-left {
+      justify-self: end;
+    }
+
+    .about-margin-right {
+      justify-self: start;
+    }
+
+    /* A little vertical rhythm between the two stacked shots. */
+    .about-margin > .shot:nth-child(2) {
+      margin-top: clamp(1.5rem, 5vw, 3rem);
+    }
   }
 </style>
