@@ -115,6 +115,9 @@ const rightShots = gallery.slice(2);
 
   .about-body {
     padding-bottom: clamp(3rem, 8vw, 6rem);
+    /* Wider than the site's default --max-width so the enlarged
+       margin photos have room without squeezing the text column. */
+    max-width: 96rem;
   }
 
   /* Mobile-first: copy, then the two shot pairs below it. The margin
@@ -186,12 +189,13 @@ const rightShots = gallery.slice(2);
     height: auto;
   }
 
-  /* Margins either side of the text, a little smaller than the old
-     below-text gallery, once there's enough width to hold them. */
-  @media (min-width: 1100px) {
+  /* Margins either side of the text — sized up (3x the original
+     7-10rem columns) and vertically centered against the text block,
+     once there's enough width to hold them. */
+  @media (min-width: 1400px) {
     .about-layout {
-      grid-template-columns: minmax(7rem, 10rem) minmax(0, 42rem) minmax(7rem, 10rem);
-      align-items: start;
+      grid-template-columns: minmax(21rem, 30rem) minmax(0, 38rem) minmax(21rem, 30rem);
+      align-items: center;
       justify-content: center;
     }
 
@@ -208,6 +212,7 @@ const rightShots = gallery.slice(2);
     .about-margin {
       grid-template-columns: 1fr;
       gap: clamp(1.5rem, 3vw, 2.5rem);
+      align-content: center;
     }
 
     .about-margin-left {
@@ -216,11 +221,6 @@ const rightShots = gallery.slice(2);
 
     .about-margin-right {
       justify-self: start;
-    }
-
-    /* A little vertical rhythm between the two stacked shots. */
-    .about-margin > .shot:nth-child(2) {
-      margin-top: clamp(1.5rem, 5vw, 3rem);
     }
   }
 </style>

@@ -86,25 +86,40 @@ Initial wireframes explored hero layouts, card structures, and sidebar navigatio
 
 ### Filled Landing Page
 
-The filled landing page presents all core MichiganGPT tools in a clear, structured layout that reduces cognitive load and eliminates guesswork for first-time users. By emphasizing a strong hero section and four primary action cards, users can immediately understand what the platform offers and where to begin. This approach establishes clarity, trust, and a consistent visual hierarchy across the experience.
-
-![Michigan ChatGPT filled landing page with hero section and tool cards](/julian-portfolio/images/michigan-chatgpt/03.webp)
+<div class="split">
+  <div class="split-text">
+    <p>The filled landing page presents all core MichiganGPT tools in a clear, structured layout that reduces cognitive load and eliminates guesswork for first-time users. By emphasizing a strong hero section and four primary action cards, users can immediately understand what the platform offers and where to begin. This approach establishes clarity, trust, and a consistent visual hierarchy across the experience.</p>
+  </div>
+  <div class="split-media">
+    <img src="/julian-portfolio/images/michigan-chatgpt/03.webp" alt="Michigan ChatGPT filled landing page with hero section and tool cards" />
+  </div>
+</div>
 
 ![Michigan ChatGPT landing page detail view](/julian-portfolio/images/michigan-chatgpt/04.webp)
 
 ### Accessible Sidebar
 
-The redesigned sidebar organizes tools, resources, and support into intuitive categories, making navigation predictable and easy to scan. Larger tap targets, readable labels, and consistent iconography improve accessibility for users browsing quickly or on smaller screens. The result is a simpler, more reliable method for returning users to access what they need without friction.
-
-![Michigan ChatGPT accessible sidebar navigation](/julian-portfolio/images/michigan-chatgpt/05.webp)
+<div class="split split-reverse">
+  <div class="split-text">
+    <p>The redesigned sidebar organizes tools, resources, and support into intuitive categories, making navigation predictable and easy to scan. Larger tap targets, readable labels, and consistent iconography improve accessibility for users browsing quickly or on smaller screens. The result is a simpler, more reliable method for returning users to access what they need without friction.</p>
+  </div>
+  <div class="split-media">
+    <img src="/julian-portfolio/images/michigan-chatgpt/05.webp" alt="Michigan ChatGPT accessible sidebar navigation" />
+  </div>
+</div>
 
 ![Michigan ChatGPT sidebar detail view](/julian-portfolio/images/michigan-chatgpt/06.webp)
 
 ### Curated Responses
 
-Curated responses offer high-quality, context-aware guidance built specifically for academic, research, and campus-related tasks. This feature increases trust by helping users get more accurate and relevant answers without needing to refine prompts repeatedly. It also supports new AI users who may be unsure how to phrase questions effectively.
-
-![Michigan ChatGPT curated response screen](/julian-portfolio/images/michigan-chatgpt/07.webp)
+<div class="split">
+  <div class="split-text">
+    <p>Curated responses offer high-quality, context-aware guidance built specifically for academic, research, and campus-related tasks. This feature increases trust by helping users get more accurate and relevant answers without needing to refine prompts repeatedly. It also supports new AI users who may be unsure how to phrase questions effectively.</p>
+  </div>
+  <div class="split-media">
+    <img src="/julian-portfolio/images/michigan-chatgpt/07.webp" alt="Michigan ChatGPT curated response screen" />
+  </div>
+</div>
 
 ![Michigan ChatGPT curated response detail view](/julian-portfolio/images/michigan-chatgpt/08.webp)
 

@@ -102,13 +102,23 @@ In the end, I selected Option 3 for its clear hierarchy, layered composition, an
 
 ### Solved Pain Points
 
-During the design process, I identified the most effective way to clearly communicate the accessible features of a route. I incorporated 5 main pinpoints along a route: elevators, ramps, large crowds, handicapped bathrooms and an additional feature to report something.
+<div class="split split-reverse">
+  <div class="split-text">
+    <p>During the design process, I identified the most effective way to clearly communicate the accessible features of a route. I incorporated 5 main pinpoints along a route: elevators, ramps, large crowds, handicapped bathrooms and an additional feature to report something.</p>
+  </div>
+  <div class="split-media">
+    <img src="/julian-portfolio/images/guide/12.webp" alt="Two Guide app screens showing an elevator-location callout and an important-alert callout over the map" />
+  </div>
+</div>
 
-![Two Guide app screens showing an elevator-location callout and an important-alert callout over the map](/julian-portfolio/images/guide/12.webp)
-
-To build trust and confidence for the user, the application only uses the most accessible route with the least detours or interruptions, prioritizing paths that are maintained well, clearly marked, and verified by recent user feedback. Users can view detailed information about each route, including elevator status, ramp conditions, and any reported obstacles. This ensures they can travel with greater independence, certainty, and reduced stress in unfamiliar environments.
-
-![Two Guide app screens: turn-by-turn directions to Warm Springs Plaza with an accessibility icon bar, and the surrounding map view](/julian-portfolio/images/guide/13.webp)
+<div class="split">
+  <div class="split-text">
+    <p>To build trust and confidence for the user, the application only uses the most accessible route with the least detours or interruptions, prioritizing paths that are maintained well, clearly marked, and verified by recent user feedback. Users can view detailed information about each route, including elevator status, ramp conditions, and any reported obstacles. This ensures they can travel with greater independence, certainty, and reduced stress in unfamiliar environments.</p>
+  </div>
+  <div class="split-media">
+    <img src="/julian-portfolio/images/guide/13.webp" alt="Two Guide app screens: turn-by-turn directions to Warm Springs Plaza with an accessibility icon bar, and the surrounding map view" />
+  </div>
+</div>
 
 ### Final Prototype
 

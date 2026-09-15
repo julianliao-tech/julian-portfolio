@@ -106,13 +106,23 @@ In the end, I chose Option 2 for its streamlined functionality. Rather than rely
 
 ### Solved Challenges
 
-During the design process, we tackled several user challenges to improve ease of use and clarity. To boost **confidence during setup**, we introduced instant testing tools that delivered feedback within seconds, helping users feel reassured and avoid second guessing. This feature is very user friendly and doesn't require a high level of understanding from the user.
+<div class="split">
+  <div class="split-text">
+    <p>During the design process, we tackled several user challenges to improve ease of use and clarity. To boost <strong>confidence during setup</strong>, we introduced instant testing tools that delivered feedback within seconds, helping users feel reassured and avoid second guessing. This feature is very user friendly and doesn't require a high level of understanding from the user.</p>
+  </div>
+  <div class="split-media">
+    <img src="/julian-portfolio/images/surecall/10.webp" alt="Final SureCall screen showing instant signal-test feedback" />
+  </div>
+</div>
 
-![Final SureCall screen showing instant signal-test feedback](/julian-portfolio/images/surecall/10.webp)
-
-To make **signal strength easier to understand**, I used a visual meter with color coded tiers and clear labels like "Good" and "Great," translating technical values like -80 dBm into something intuitive. For better **accessibility in the field**, we prioritized large tap targets, clean layouts, and step-by-step screens, making the app easy to use.
-
-![Final SureCall screen showing the color-coded signal strength meter](/julian-portfolio/images/surecall/11.webp)
+<div class="split split-reverse">
+  <div class="split-text">
+    <p>To make <strong>signal strength easier to understand</strong>, I used a visual meter with color coded tiers and clear labels like "Good" and "Great," translating technical values like -80 dBm into something intuitive. For better <strong>accessibility in the field</strong>, we prioritized large tap targets, clean layouts, and step-by-step screens, making the app easy to use.</p>
+  </div>
+  <div class="split-media">
+    <img src="/julian-portfolio/images/surecall/11.webp" alt="Final SureCall screen showing the color-coded signal strength meter" />
+  </div>
+</div>
 
 ### Final Prototype
 

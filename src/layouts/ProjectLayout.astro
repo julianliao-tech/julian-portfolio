@@ -263,6 +263,38 @@ const num = String(order).padStart(2, '0');
     border-color: var(--line-strong);
   }
 
+  /* Occasional side-by-side layout: a paragraph beside the image it
+     describes, alternating which side the image sits on (.split-reverse).
+     Used sparingly within specific case studies, not for every image —
+     authored directly as raw HTML in the markdown where it fits. */
+  .prose :global(.split) {
+    grid-column: text-start / wide-end;
+    display: grid;
+    gap: var(--space-3);
+    align-items: center;
+    margin-block: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .prose :global(.split-text p) {
+    margin: 0;
+  }
+
+  .prose :global(.split-media img) {
+    max-width: none;
+    margin-inline: 0;
+  }
+
+  @media (min-width: 800px) {
+    .prose :global(.split) {
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .prose :global(.split-reverse .split-media) {
+      order: -1;
+    }
+  }
+
   .prose :global(blockquote) {
     grid-column: text-start / wide-end;
     margin: var(--space-4) 0;
