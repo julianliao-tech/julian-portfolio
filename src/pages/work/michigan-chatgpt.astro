@@ -13,12 +13,36 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
 
 const img = (n: string) => `${base}images/michigan-chatgpt/${n}`;
 
+// Icon + label + value(s) for each fact — matches the shared strip
+// used on every other case study (ProjectLayout.astro).
 const facts = [
-  { label: 'Role', values: role },
-  { label: 'Team', values: [team] },
-  { label: 'Timeline', values: [timeline] },
-  { label: 'Skills', values: skills },
-  { label: 'Tools', values: tools },
+  {
+    label: 'Role',
+    icon: 'M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z M4.5 20.5a7.5 7.5 0 0 1 15 0',
+    values: role,
+  },
+  {
+    label: 'Team',
+    icon:
+      'M8.5 10.6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z M15.5 11.1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z M3 19c0-3 2.5-5.4 5.5-5.4S14 16 14 19 M13.3 19c0-2.3 1.6-4.1 3.6-4.1s3.6 1.8 3.6 4.1',
+    values: [team],
+  },
+  {
+    label: 'Timeline',
+    icon: 'M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Z M12 7.5V12l3.2 1.8',
+    values: [timeline],
+  },
+  {
+    label: 'Skills',
+    icon: 'M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Z M12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z',
+    dot: true,
+    values: skills,
+  },
+  {
+    label: 'Tools',
+    icon: 'M4.5 4.5h6v6h-6z M13.5 4.5h6v6h-6z M4.5 13.5h6v6h-6z M13.5 13.5h6v6h-6z',
+    values: tools,
+  },
 ];
 ---
 <BaseLayout title="Michigan ChatGPT — Julian Liao">
@@ -35,9 +59,19 @@ const facts = [
 
       <ul class="facts">
         {facts.map((f) => (
-          <li>
-            <span class="facts-label">{f.label}</span>
-            <span class="facts-value">{f.values.join('\n')}</span>
+          <li class="fact">
+            <svg class="fact-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d={f.icon} />
+              {f.dot && <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none" />}
+            </svg>
+            <span class="fact-label">{f.label}</span>
+            {f.values.length > 1 ? (
+              <ul class="fact-list">
+                {f.values.map((v) => <li>{v}</li>)}
+              </ul>
+            ) : (
+              <span class="fact-value">{f.values[0]}</span>
+            )}
           </li>
         ))}
       </ul>
@@ -341,37 +375,79 @@ const facts = [
   }
 
   /* Facts strip --------------------------------------------------------
-     Plain centered columns, no icons or dividers — matches the old
-     site's simpler Role/Team/Timeline/Skills/Tools row. */
+     Ported verbatim from ProjectLayout.astro so this page's Role/Team/
+     Timeline/Skills/Tools row matches every other case study. */
   .facts {
     list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: clamp(2rem, 6vw, 5rem);
-    max-width: 60rem;
-    margin: 0 auto clamp(3rem, 8vw, 5rem);
-    padding: 0;
-    text-align: left;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: var(--space-4) var(--space-3);
+    margin: 0 0 clamp(3rem, 8vw, 5rem);
+    padding: var(--space-4) 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
   }
 
-  .facts-label {
+  .fact {
+    padding-left: var(--space-3);
+    border-left: 1px solid var(--line);
+  }
+
+  .fact:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .fact-icon {
     display: block;
-    font-family: var(--font-body);
-    font-weight: 700;
-    color: var(--mgpt-navy);
-    font-size: 1rem;
+    color: var(--accent);
     margin-bottom: 0.6rem;
   }
 
-  .facts-value {
+  .fact-label {
     display: block;
-    max-width: 11rem;
     font-family: var(--font-body);
-    font-size: 0.9rem;
-    color: var(--ink-soft);
-    line-height: 1.6;
-    white-space: pre-line;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: var(--step-micro);
+    color: var(--ink-faint);
+    margin-bottom: 0.4rem;
+  }
+
+  .fact-value {
+    display: block;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .fact-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .fact-list li {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 620px) {
+    .facts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .fact:nth-child(odd) {
+      padding-left: 0;
+      border-left: 0;
+    }
   }
 
   /* Reading column ------------------------------------------------------
