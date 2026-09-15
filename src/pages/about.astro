@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="About — Julian Liao" description="Julian Liao is a UX design student at the University of Michigan.">
+  <section class="wrap about">
+    <p class="eyebrow">About</p>
+    <h1>A bit about me</h1>
+
+    <div class="about-grid">
+      <div class="about-copy">
+        <p>I'm Julian, a student at the <strong>University</strong> of <strong>Michigan</strong> studying UX Design with a double minor in Digital Studies and Business at the Ross School of Business.</p>
+        <p>Growing up, I spent my summers bringing my ambitious ideas to life at a short film camp with my friends; writing, shooting, and editing stories that turned imagination into reality.</p>
+        <p>Over the years, I've been creative through sports, street photography, music production and furniture design.</p>
+        <p>While studying in the library as a freshman in college, I stumbled across a flyer advertising a UX Design opportunity. Being my curious self I looked into it and the craft immediately clicked with me.</p>
+        <p>UX Design blends my creative instincts with a structured, thoughtful process I genuinely enjoy. Today, I design digital experiences that are intuitive, accessible, and meaningful; driven by the same passion that first had me holding a camera and chasing a story.</p>
+      </div>
+      <div class="about-images">
+        <img src={`${base}images/about/about-1.webp`} alt="Photography/Film Making collage: Julian at Michigan Stadium in a photo-crew vest, with film festival selection notices for his short 'The Letter'" loading="lazy" />
+        <img src={`${base}images/about/about-2.webp`} alt="DJ/Music Production collage: Julian DJing outdoors on turntables, and producing music at a laptop and keyboard" loading="lazy" />
+        <img src={`${base}images/about/about-3.webp`} alt="Sports collage: Julian playing baseball, basketball, and soccer, with his Michigan Squash team and a sectional-champion award" loading="lazy" />
+        <img src={`${base}images/about/about-4.webp`} alt="Furniture Design collage: a handmade wooden stool with a woven cord seat, plus a close-up of the weave pattern" loading="lazy" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about {
+    padding-block: var(--space-5) var(--space-6);
+  }
+  .about h1 {
+    font-size: var(--step-hero);
+    margin-bottom: var(--space-5);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+    align-items: start;
+  }
+  .about-copy p {
+    font-size: var(--step-h3);
+    max-width: none;
+  }
+  .about-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+  }
+  .about-images img {
+    border-radius: var(--radius);
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+  @media (max-width: 800px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

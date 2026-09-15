@@ -1,0 +1,200 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  title: string;
+  role: string[];
+  timeline: string;
+  team: string;
+  tools: string[];
+  skills: string[];
+  order: number;
+  nextOverrideHref?: string;
+  nextOverrideTitle?: string;
+}
+
+const { title, role, timeline, team, tools, skills, order, nextOverrideHref, nextOverrideTitle } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const idx = all.findIndex((p) => p.data.order === order);
+const prev = idx > 0 ? all[idx - 1] : null;
+const nextEntry = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
+---
+<BaseLayout title={`${title} — Julian Liao`}>
+  <article class="wrap project">
+    <header class="project-head">
+      <a class="back" href={`${base}#work`}>&larr; All projects</a>
+      <h1>{title}</h1>
+      <dl class="meta">
+        <div><dt>Timeline</dt><dd>{timeline}</dd></div>
+        <div><dt>Role</dt><dd>{role.join(', ')}</dd></div>
+        <div><dt>Team</dt><dd>{team}</dd></div>
+        <div><dt>Tools</dt><dd>{tools.join(', ')}</dd></div>
+      </dl>
+      <ul class="skills">
+        {skills.map((s) => <li>{s}</li>)}
+      </ul>
+    </header>
+
+    <div class="prose">
+      <slot />
+    </div>
+
+    <nav class="project-pager">
+      {prev ? (
+        <a class="pager-link" href={`${base}work/${prev.id}`}>
+          <span class="pager-label">&larr; Previous</span>
+          <span class="pager-title">{prev.data.title}</span>
+        </a>
+      ) : <span />}
+      {nextEntry ? (
+        <a class="pager-link pager-next" href={`${base}work/${nextEntry.id}`}>
+          <span class="pager-label">Next &rarr;</span>
+          <span class="pager-title">{nextEntry.data.title}</span>
+        </a>
+      ) : nextOverrideHref ? (
+        <a class="pager-link pager-next" href={`${base}${nextOverrideHref}`}>
+          <span class="pager-label">Next &rarr;</span>
+          <span class="pager-title">{nextOverrideTitle}</span>
+        </a>
+      ) : <span />}
+    </nav>
+  </article>
+</BaseLayout>
+
+<style>
+  .project {
+    padding-block: var(--space-5) var(--space-6);
+  }
+  .back {
+    display: inline-block;
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--step-small);
+    color: var(--ink-soft);
+    margin-bottom: var(--space-3);
+  }
+  .back:hover { color: var(--accent); }
+  .project-head h1 {
+    font-size: var(--step-hero);
+    max-width: 20ch;
+  }
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: var(--space-3);
+    margin: var(--space-4) 0 var(--space-3);
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .meta dt {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+  .meta dd {
+    margin: 0;
+    font-weight: 500;
+  }
+  .skills {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0 0 var(--space-5);
+  }
+  .skills li {
+    font-size: var(--step-small);
+    padding: 0.35em 0.85em;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-soft);
+  }
+
+  .prose :global(h2) {
+    font-size: var(--step-h1);
+    margin-top: var(--space-6);
+  }
+  .prose :global(h3) {
+    font-size: var(--step-h3);
+    margin-top: var(--space-4);
+  }
+  .prose :global(p) {
+    max-width: 68ch;
+  }
+  .prose :global(ul),
+  .prose :global(ol) {
+    color: var(--ink-soft);
+    max-width: 68ch;
+    padding-left: 1.25em;
+  }
+  .prose :global(li) {
+    margin-bottom: 0.4em;
+  }
+  .prose :global(strong) {
+    color: var(--ink);
+  }
+  .prose :global(img) {
+    width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    margin: var(--space-3) 0;
+  }
+  .prose :global(blockquote) {
+    margin: var(--space-3) 0;
+    padding: var(--space-3);
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .prose :global(blockquote p) {
+    margin: 0;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  .project-pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+  .pager-link {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .pager-next {
+    text-align: right;
+    grid-column: 2;
+  }
+  .pager-label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--step-small);
+    color: var(--accent);
+  }
+  .pager-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-h3);
+    color: var(--ink);
+  }
+  @media (max-width: 560px) {
+    .project-pager { grid-template-columns: 1fr; }
+    .pager-next { grid-column: 1; text-align: left; }
+  }
+</style>

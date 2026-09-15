@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
+
+const items = [
+  {
+    title: 'Q-Bakehouse',
+    href: `${base}files/Q-Bakehouse.pdf`,
+    image: `${base}images/consulting-work/01-q-bakehouse.webp`,
+    alt: 'Q-Bakehouse consulting deliverable cover',
+  },
+  {
+    title: 'MCBC – Pink Moon Deliverable Presentation',
+    href: `${base}files/MCBC_-PinkMoon-Deliverable-Presentation.pdf`,
+    image: `${base}images/consulting-work/02-mcbc-pink-moon.png`,
+    alt: 'MCBC Pink Moon deliverable presentation cover',
+  },
+];
+---
+<BaseLayout title="Consulting Work — Julian Liao">
+  <article class="wrap project">
+    <header class="project-head">
+      <a class="back" href={`${base}#work`}>&larr; All projects</a>
+      <h1>Consulting Work</h1>
+      <p class="intro">A couple of client deliverables from outside the case-study projects above. Each one links out to the full PDF.</p>
+    </header>
+
+    <div class="items">
+      {items.map((item) => (
+        <a class="item" href={item.href} target="_blank" rel="noreferrer">
+          <img src={item.image} alt={item.alt} loading="lazy" />
+          <span class="item-title">{item.title}</span>
+        </a>
+      ))}
+    </div>
+
+    <nav class="project-pager">
+      <a class="pager-link" href={`${base}work/dominos`}>
+        <span class="pager-label">&larr; Previous</span>
+        <span class="pager-title">Domino's Ann Arbor Website</span>
+      </a>
+      <span />
+    </nav>
+  </article>
+</BaseLayout>
+
+<style>
+  .project { padding-block: var(--space-5) var(--space-6); }
+  .back {
+    display: inline-block;
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--step-small);
+    color: var(--ink-soft);
+    margin-bottom: var(--space-3);
+  }
+  .back:hover { color: var(--accent); }
+  .project-head h1 { font-size: var(--step-hero); }
+  .intro { font-size: var(--step-h3); max-width: 50ch; }
+
+  .items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-3);
+    margin: var(--space-5) 0 var(--space-6);
+  }
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    text-decoration: none;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.18s ease, border-color 0.18s ease;
+  }
+  .item:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .item img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .item-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-h3);
+    padding: 0 var(--space-2) var(--space-2);
+  }
+
+  .project-pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+  .pager-link { text-decoration: none; display: flex; flex-direction: column; gap: 0.35rem; }
+  .pager-label { font-family: var(--font-display); font-weight: 600; font-size: var(--step-small); color: var(--accent); }
+  .pager-title { font-family: var(--font-display); font-weight: 700; font-size: var(--step-h3); color: var(--ink); }
+</style>

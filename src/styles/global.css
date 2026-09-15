@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #f5f3ee;
+  --ink: #14141a;
+  --ink-soft: #4a4a52;
+  --accent: #ff4d2e;
+  --accent-ink: #14141a;
+  --line: rgba(20, 20, 26, 0.12);
+  --card-bg: #ffffff;
+
+  --font-display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --step-hero: clamp(2.75rem, 4vw + 1.5rem, 6rem);
+  --step-h1: clamp(2rem, 2.5vw + 1rem, 3.25rem);
+  --step-h2: clamp(1.5rem, 1.5vw + 0.9rem, 2.25rem);
+  --step-h3: clamp(1.15rem, 0.6vw + 0.9rem, 1.5rem);
+  --step-body: 1.0625rem;
+  --step-small: 0.875rem;
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --space-6: 6rem;
+
+  --radius: 18px;
+  --max-width: 72rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121115;
+    --ink: #f4f2ec;
+    --ink-soft: #b9b6ae;
+    --accent: #ff6a4d;
+    --accent-ink: #121115;
+    --line: rgba(244, 242, 236, 0.14);
+    --card-bg: #1b1a1f;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0 0 var(--space-2);
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0 0 var(--space-3);
+  color: var(--ink-soft);
+  max-width: 62ch;
+}
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-3);
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: var(--step-small);
+  color: var(--accent);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step-small);
+  text-decoration: none;
+  padding: 0.85em 1.5em;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: 2px solid var(--accent);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.btn.btn-outline:hover {
+  border-color: var(--ink);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}

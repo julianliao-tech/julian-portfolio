@@ -1,0 +1,42 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div>
+      <p class="cta-line">Appreciate you dropping in!</p>
+      <p class="cta-line">Want to team up? Let's make it happen!</p>
+    </div>
+    <div class="footer-links">
+      <a class="btn" href="mailto:julianliaowork@gmail.com">julianliaowork@gmail.com</a>
+      <a class="btn btn-outline" href="https://www.linkedin.com/in/julian-liao-475685239/" target="_blank" rel="noreferrer">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--line);
+    padding-block: var(--space-5);
+    margin-top: var(--space-6);
+  }
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .cta-line {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-h3);
+    color: var(--ink);
+    margin: 0;
+  }
+  .footer-links {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+</style>

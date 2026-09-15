@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
+
+const photos = [
+  { n: '01', alt: 'Black-and-white photo of a hillside with palm trees and a modernist curved building, striped beach umbrellas in the foreground' },
+  { n: '02', alt: 'Black-and-white photo of the Getty Center’s stone colonnade overlooking a terrace of cafe tables with the Los Angeles skyline in the distance' },
+  { n: '03', alt: 'Black-and-white photo looking down a covered ramp toward a STOP sign and a hillside road' },
+  { n: '04', alt: 'Black-and-white aerial view of the Getty Center’s stone columns above a courtyard filled with cafe tables and visitors' },
+  { n: '05', alt: 'Black-and-white photo of a man and child riding a three-wheeled mobility scooter along a beachfront boardwalk' },
+  { n: '06', alt: 'Black-and-white photo of a religious icon painting propped in a car’s back window, tree branches reflected in the glass' },
+  { n: '07', alt: 'Black-and-white photo of a man sitting barefoot with a laptop in the open side door of a VW camper van' },
+  { n: '08', alt: 'Photo of a cabin door and wall covered in visitors’ signatures and messages, with “Leave your mark” written large' },
+  { n: '09', alt: 'A wooden dock with swings over calm evening water, signed “Tarpum Bay, South Eleuthera”' },
+  { n: '10', alt: 'Close-up of dark volcanic rock against turquoise ocean water' },
+  { n: '11', alt: 'Silhouette of a bird perched on bare winter branches against a gray sky' },
+  { n: '12', alt: 'Night photo of an auto service center, a red car visible on a lift through the garage window' },
+  { n: '13', alt: 'The moon reflecting a path of light across dark ocean water at night' },
+  { n: '14', alt: 'A wooden signpost stacked with hand-painted directions to towns across Eleuthera, Bahamas' },
+  { n: '15', alt: 'Night photo of a wet city street lined with trees, string lights, and a “Hulfish St” street sign' },
+  { n: '16', alt: 'A small boat moored near a mangrove-lined beach opening' },
+  { n: '17', alt: 'Several weathered small boats resting on a sandy shore beside piles of conch shells' },
+  { n: '18', alt: 'A minimalist seascape with a single white sailboat on the horizon above a pale tidal flat' },
+];
+---
+<BaseLayout title="Photos — Julian Liao" description="A street and travel photography portfolio by Julian Liao.">
+  <section class="wrap photos-head">
+    <p class="eyebrow">Photos</p>
+    <h1>Street &amp; travel photography</h1>
+  </section>
+
+  <section class="wrap photo-grid">
+    {photos.map((p) => (
+      <img src={`${base}images/photos/${p.n}.webp`} alt={p.alt} loading="lazy" />
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .photos-head {
+    padding-block: var(--space-5) var(--space-4);
+  }
+  .photos-head h1 {
+    font-size: var(--step-hero);
+  }
+  .photo-grid {
+    padding-block: 0 var(--space-6);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-2);
+  }
+  .photo-grid img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+</style>
