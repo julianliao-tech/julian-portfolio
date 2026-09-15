@@ -62,7 +62,7 @@ const photos = [
 
   .photos-head h1 {
     font-size: var(--step-display);
-    line-height: 0.95;
+    line-height: 1;
     max-width: 14ch;
     margin: 0 0 var(--space-3);
   }
@@ -129,10 +129,13 @@ const photos = [
     position: absolute;
     left: 0.75rem;
     bottom: 0.75rem;
-    font-family: var(--font-display);
+    font-family: var(--font-body);
+    font-weight: 600;
     font-size: var(--step-micro);
     letter-spacing: 0.18em;
-    color: var(--ink);
+    /* Fixed light text on a fixed dark chip over the photo — stays
+       dark regardless of the page's own (now light) theme. */
+    color: #f5f3ef;
     padding: 0.25rem 0.55rem;
     border-radius: 999px;
     background: rgba(8, 8, 10, 0.6);

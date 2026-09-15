@@ -5,25 +5,54 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL;
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 
+// Homepage-only teaser copy: a tag row + one-line outcome per project,
+// condensed from each project's own case study (not new claims).
+const teasers: Record<string, { tags: string[]; line: string }> = {
+  guide: {
+    tags: ['UX Research', 'Accessibility', 'Mobile App'],
+    line: "Turn-by-turn routing and real-time obstacle alerts, shaped by a survey of 20+ wheelchair users and caregivers.",
+  },
+  'michigan-chatgpt': {
+    tags: ['Product Design', 'UX Research', 'Information Architecture'],
+    line: "Redesigned the University of Michigan's AI workspace into one cohesive hub, from a fragmented set of tools students avoided.",
+  },
+  surecall: {
+    tags: ['UX Design', 'Mobile App', 'Client Work'],
+    line: 'A 3-step signal-test flow that turns raw dBm readings into a confidence check anyone can read mid-install.',
+  },
+  'timecapsule-tunes': {
+    tags: ['UX Design', 'Interaction Design', 'Mobile App'],
+    line: 'A Spotify-powered app for finding music-based friend groups, built on a 40-response survey where 75% said music helps them bond.',
+  },
+  dominos: {
+    tags: ['Marketing', 'UX Design', 'Client Work'],
+    line: 'A minimalist, linear ordering flow for the Ann Arbor franchise site, built to keep food — not clutter — the focus.',
+  },
+  connexu: {
+    tags: ['UX Research', 'Usability Testing', 'Client Work'],
+    line: "A full rebuild of connexU's event site, closing the exact navigation and registration gaps two rounds of research turned up.",
+  },
+};
+
 const consultingWork = {
   slug: 'consulting-work',
   title: 'Consulting Work',
-  tileImage: `${base}images/home/tile-consulting-work.webp`,
-  tileAlt: 'Consulting project thumbnails: Q-Bakehouse and MCBC Pink Moon',
+  tags: ['Strategy', 'Brand', 'Client Work'],
+  line: 'Two client deliverables from outside the case studies above — decks for Q-Bakehouse and MCBC Pink Moon.',
 };
 
 const cards = [
   ...projects.map((p) => ({
     href: `${base}work/${p.id}/`,
     title: p.data.title,
-    image: p.data.tileImage,
-    alt: p.data.tileAlt,
+    tags: teasers[p.id]?.tags ?? p.data.skills.slice(0, 3),
+    line: teasers[p.id]?.line ?? '',
   })),
   {
     href: `${base}work/${consultingWork.slug}/`,
     title: consultingWork.title,
-    image: consultingWork.tileImage,
-    alt: consultingWork.tileAlt,
+    tags: consultingWork.tags,
+    line: consultingWork.line,
   },
 ];
 
@@ -75,19 +104,18 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <span class="section-count">{pad(cards.length)}</span>
     </div>
 
-    <ol class="work-grid">
+    <ol class="work-list">
       {cards.map((card, i) => (
-        <li data-reveal data-reveal-delay={(i % 2) * 90}>
-          <a class="card" href={card.href}>
-            <span class="card-media">
-              <img class="reveal-zoom" src={card.image} alt={card.alt} loading="lazy" decoding="async" />
+        <li data-reveal data-reveal-delay={(i % 3) * 70}>
+          <a class="row" href={card.href}>
+            <span class="row-index">{pad(i + 1)}</span>
+            <span class="row-body">
+              <span class="row-title">{card.title}</span>
+              <span class="row-tags">{card.tags.join(' · ')}</span>
+              {card.line && <span class="row-line">{card.line}</span>}
             </span>
-            <span class="card-foot">
-              <span class="card-index">{pad(i + 1)}</span>
-              <span class="card-title">{card.title}</span>
-              <span class="card-arrow" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg>
-              </span>
+            <span class="row-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg>
             </span>
           </a>
         </li>
@@ -105,6 +133,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
     overflow: hidden;
   }
 
+  /* A single quiet wash, not a saturated dark-mode gradient blob —
+     matches the flourish-free reference sites. */
   .aurora {
     position: absolute;
     z-index: -1;
@@ -113,12 +143,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     width: min(70rem, 130vw);
     aspect-ratio: 1 / 1;
     transform: translateX(-50%);
-    background: radial-gradient(
-        circle at 32% 38%,
-        rgba(255, 90, 43, 0.22),
-        transparent 52%
-      ),
-      radial-gradient(circle at 68% 52%, rgba(107, 91, 255, 0.16), transparent 55%);
+    background: radial-gradient(circle at 42% 40%, var(--accent-soft), transparent 55%);
     filter: blur(20px);
     pointer-events: none;
   }
@@ -131,8 +156,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   .hero-title {
     font-size: var(--step-display);
-    line-height: 0.92;
-    letter-spacing: -0.045em;
+    line-height: 0.98;
+    letter-spacing: -0.01em;
     margin: 0 0 var(--space-3);
   }
 
@@ -172,7 +197,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-weight: 500;
     font-size: var(--step-small);
     color: var(--ink-soft);
@@ -180,7 +205,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     padding: 0.5rem 1rem 0.5rem 0.85rem;
     border: 1px solid var(--line);
     border-radius: var(--r-full);
-    background: rgba(245, 243, 239, 0.03);
+    background: rgba(16, 16, 16, 0.03);
   }
 
   .pip {
@@ -214,7 +239,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     position: absolute;
     inset: -28% -34%;
     border-radius: 50%;
-    background: radial-gradient(circle at 50% 45%, rgba(255, 90, 43, 0.3), transparent 64%);
+    background: radial-gradient(circle at 50% 45%, var(--accent-soft), transparent 64%);
     filter: blur(22px);
   }
 
@@ -225,7 +250,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
     gap: 0.75rem;
     margin-top: clamp(2.5rem, 6vw, 4.5rem);
     margin-left: var(--gutter);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
+    font-weight: 600;
     font-size: var(--step-micro);
     letter-spacing: 0.22em;
     text-transform: uppercase;
@@ -273,70 +299,80 @@ const pad = (n: number) => String(n).padStart(2, '0');
     padding-block: clamp(3rem, 7vw, 6rem) var(--space-6);
   }
 
-  .work-grid {
+  /* Work list -------------------------------------------------------
+     A text-first index (title, tags, one-line outcome) rather than an
+     image grid — closer to how both reference portfolios present
+     their work. */
+  .work-list {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
-    gap: clamp(2rem, 4vw, 3.5rem);
+    border-top: 1px solid var(--line);
   }
 
-  .card {
-    display: block;
-    text-decoration: none;
-  }
-
-  .card-media {
-    display: block;
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--r-lg);
-    border: 1px solid var(--line);
-    background: var(--bg-elev);
-  }
-
-  .card-media img {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    transition: transform 0.9s var(--ease-out), filter 0.6s var(--ease);
-  }
-
-  .card:hover .card-media img,
-  .card:focus-visible .card-media img {
-    transform: scale(1.045);
-  }
-
-  .card-foot {
+  .row {
     display: grid;
     grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: var(--space-2);
-    padding-top: var(--space-3);
+    align-items: start;
+    gap: var(--space-3);
+    padding-block: clamp(1.75rem, 4vw, 2.75rem);
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    transition: background 0.4s var(--ease);
   }
 
-  .card-index {
-    font-family: var(--font-display);
+  .row:hover,
+  .row:focus-visible {
+    background: var(--bg-soft);
+  }
+
+  .row-index {
+    font-family: var(--font-body);
+    font-weight: 600;
     font-size: var(--step-micro);
     letter-spacing: 0.18em;
     color: var(--ink-faint);
-    padding-top: 0.2em;
-    align-self: start;
+    padding-top: 0.4em;
   }
 
-  .card-title {
+  .row-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .row-title {
     font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(1.15rem, 2vw, 1.6rem);
-    letter-spacing: -0.03em;
-    line-height: 1.15;
+    font-size: clamp(1.5rem, 3.4vw, 2.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
     color: var(--ink);
     transition: color 0.3s var(--ease);
   }
 
-  .card:hover .card-title { color: var(--accent); }
+  .row:hover .row-title,
+  .row:focus-visible .row-title {
+    color: var(--accent);
+  }
 
-  .card-arrow {
+  .row-tags {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: var(--step-micro);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .row-line {
+    font-size: var(--step-body);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 58ch;
+  }
+
+  .row-arrow {
     display: grid;
     place-items: center;
     width: 40px;
@@ -344,28 +380,25 @@ const pad = (n: number) => String(n).padStart(2, '0');
     border-radius: 999px;
     border: 1px solid var(--line);
     color: var(--ink-soft);
+    margin-top: 0.3em;
     transition: transform 0.45s var(--ease-out), background 0.35s var(--ease),
       color 0.35s var(--ease), border-color 0.35s var(--ease);
   }
 
-  .card:hover .card-arrow {
+  .row:hover .row-arrow,
+  .row:focus-visible .row-arrow {
     transform: translate(3px, -3px);
     background: var(--accent);
     border-color: var(--accent);
     color: var(--accent-ink);
   }
 
-  @media (min-width: 860px) {
-    .work-grid {
-      grid-template-columns: 1fr 1fr;
-      column-gap: clamp(2rem, 4vw, 4rem);
-      /* Room for the offset column, which sits outside layout flow. */
-      padding-bottom: clamp(2rem, 5vw, 4.5rem);
+  @media (max-width: 640px) {
+    .row {
+      grid-template-columns: auto 1fr;
     }
-    /* Offset lives on the card, not the <li>: the <li> owns the
-       scroll-reveal transform. */
-    .work-grid > li:nth-child(even) .card {
-      transform: translateY(clamp(2rem, 5vw, 4.5rem));
+    .row-arrow {
+      display: none;
     }
   }
 
@@ -383,6 +416,5 @@ const pad = (n: number) => String(n).padStart(2, '0');
   @media (prefers-reduced-motion: reduce) {
     .rise { animation: none; }
     .wave, .cue-dot { animation: none; }
-    .work-grid > li:nth-child(even) .card { transform: none; }
   }
 </style>

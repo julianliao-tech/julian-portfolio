@@ -33,7 +33,9 @@
     padding: 0;
     border: 0;
     background: transparent;
-    color: var(--ink);
+    /* The viewer is intentionally a dark theater regardless of the
+       page theme, so this stays a fixed light value, not var(--ink). */
+    color: #f5f3ef;
     overflow: hidden;
   }
 
@@ -129,11 +131,14 @@
 
   .lb-counter {
     display: block;
-    font-family: var(--font-display);
+    font-family: var(--font-body);
+    font-weight: 600;
     font-size: 0.6875rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--accent);
+    /* accent-light, not accent: needs 4.5:1 on this dark backdrop
+       regardless of page theme — plain --accent only clears 3.69:1. */
+    color: var(--accent-light);
   }
 
   .lb-caption {

@@ -1,28 +1,39 @@
 /* ------------------------------------------------------------------
    Julian Liao — portfolio design system
-   Dark, editorial, high-contrast. Tokens first, then primitives.
+   Warm, light editorial. Tokens first, then primitives.
+
+   Palette + type influenced by two reference portfolios (seungmee-lee.com,
+   sanvithi.com): a warm off-white surface, a single confident accent,
+   an editorial serif for headlines paired with a plain workhorse sans
+   for everything functional, and sharp (non-pill) shapes throughout.
+   Colors re-checked for AA contrast against --bg — see notes below.
    ------------------------------------------------------------------ */
 
 :root {
   /* Surface + ink -------------------------------------------------- */
-  --bg: #08080a;
-  --bg-soft: #0e0e12;
-  --bg-elev: #15151b;
-  --ink: #f5f3ef;
-  --ink-soft: #a6a4b0;
-  /* Passes AA (4.9:1) on --bg at body size; used for labels and hints. */
-  --ink-faint: #85828f;
+  --bg: #fdfbf9;
+  --bg-soft: #f6f1e9;
+  --bg-elev: #f1ebdf;
+  --ink: #101010;
+  /* 8.98:1 on --bg; used for body copy. */
+  --ink-soft: #4a473f;
+  /* 5.05:1 on --bg; used for labels and hints. */
+  --ink-faint: #726c60;
 
-  --accent: #ff5a2b;
-  --accent-ink: #0a0a0c;
-  --accent-soft: rgba(255, 90, 43, 0.14);
-  --violet: #6b5bff;
+  --accent: #0057ff;
+  --accent-light: #3378ff;
+  --accent-ink: #fdfbf9;
+  /* 5.34:1 on --bg; 5.52:1 white-on-accent for button labels. */
+  --accent-soft: rgba(0, 87, 255, 0.1);
+  --sage: #6f8a76;
 
-  --line: rgba(245, 243, 239, 0.1);
-  --line-strong: rgba(245, 243, 239, 0.22);
+  --line: rgba(16, 16, 16, 0.1);
+  --line-strong: rgba(16, 16, 16, 0.22);
 
   /* Type ----------------------------------------------------------- */
-  --font-display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  /* Instrument Serif ships one weight (400) + italic only, so every
+     rule below that sets --font-display leaves font-weight at 400. */
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
@@ -46,10 +57,10 @@
   --gutter: clamp(1.25rem, 5vw, 3.5rem);
 
   /* Shape + motion ------------------------------------------------- */
-  --r-sm: 10px;
-  --r: 16px;
-  --r-lg: 26px;
-  --r-full: 999px;
+  --r-sm: 0px;
+  --r: 0px;
+  --r-lg: 0px;
+  --r-full: 0px;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -83,7 +94,9 @@ body {
   font-feature-settings: 'ss01' 1, 'cv05' 1;
 }
 
-/* A whisper of film grain over the whole page. Purely decorative. */
+/* A whisper of film grain over the whole page. Purely decorative.
+   `multiply` reads as fine dark speckle on a light surface; `screen`
+   (right for a dark surface) would wash out to nearly nothing here. */
 body::after {
   content: '';
   position: fixed;
@@ -91,7 +104,7 @@ body::after {
   z-index: 9;
   pointer-events: none;
   opacity: 0.035;
-  mix-blend-mode: screen;
+  mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -109,10 +122,10 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.02;
   margin: 0 0 var(--space-2);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
@@ -161,7 +174,7 @@ strong {
   transform: translateY(-200%);
   background: var(--accent);
   color: var(--accent-ink);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-weight: 600;
   font-size: var(--step-small);
   padding: 0.6em 1em;
@@ -180,7 +193,7 @@ strong {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -217,7 +230,7 @@ strong {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-weight: 600;
   font-size: var(--step-small);
   letter-spacing: -0.01em;
@@ -233,8 +246,8 @@ strong {
 
 .btn:hover {
   transform: translateY(-3px);
-  background: #ff7047;
-  border-color: #ff7047;
+  background: var(--accent-light);
+  border-color: var(--accent-light);
 }
 
 .btn-outline {
@@ -293,7 +306,8 @@ strong {
 }
 
 .section-count {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
+  font-weight: 600;
   font-size: var(--step-micro);
   letter-spacing: 0.2em;
   text-transform: uppercase;

@@ -80,7 +80,7 @@ const items = [
     align-items: center;
     gap: 0.5rem;
     text-decoration: none;
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-weight: 500;
     font-size: var(--step-small);
     color: var(--ink-faint);
@@ -95,8 +95,8 @@ const items = [
 
   .project-head h1 {
     font-size: clamp(2.4rem, 7.5vw, 5.5rem);
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
     margin: 0 0 var(--space-3);
   }
 
@@ -142,11 +142,13 @@ const items = [
     position: absolute;
     top: 0.85rem;
     left: 0.85rem;
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--step-micro);
     font-weight: 600;
     letter-spacing: 0.18em;
-    color: var(--ink);
+    /* Fixed light text on a fixed dark chip — this badge sits on top
+       of a thumbnail image, independent of the page's own theme. */
+    color: #f5f3ef;
     padding: 0.3rem 0.6rem;
     border-radius: 999px;
     background: rgba(8, 8, 10, 0.72);
@@ -163,10 +165,10 @@ const items = [
 
   .item-title {
     font-family: var(--font-display);
-    font-weight: 700;
+    font-weight: 400;
     font-size: clamp(1.1rem, 2vw, 1.5rem);
-    letter-spacing: -0.03em;
-    line-height: 1.2;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
     color: var(--ink);
     transition: color 0.3s var(--ease);
   }
@@ -214,7 +216,7 @@ const items = [
   .pager-link:hover { background: var(--bg-soft); }
 
   .pager-label {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-weight: 600;
     font-size: var(--step-micro);
     letter-spacing: 0.2em;
@@ -224,10 +226,10 @@ const items = [
 
   .pager-title {
     font-family: var(--font-display);
-    font-weight: 700;
+    font-weight: 400;
     font-size: clamp(1.1rem, 2.2vw, 1.6rem);
-    letter-spacing: -0.03em;
-    line-height: 1.15;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
     color: var(--ink);
   }
 
