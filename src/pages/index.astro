@@ -97,7 +97,18 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
 
   <section id="work" class="work wrap">
     <div class="section-head" data-reveal>
-      <h2>Projects</h2>
+      <h2>
+        Pro<span class="j-hop">j<span class="lamp-jump" aria-hidden="true">
+          <svg class="lamp-icon" viewBox="0 0 40 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 4 26 4 19 17 13 17Z" fill="currentColor" />
+            <circle cx="16" cy="19" r="3" fill="currentColor" />
+            <path d="M16 19 21 34" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+            <circle cx="21" cy="34" r="3" fill="currentColor" />
+            <path d="M21 34 15 49" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+            <ellipse cx="15" cy="53" rx="9" ry="3.5" fill="currentColor" />
+          </svg>
+        </span></span>ects
+      </h2>
       <span class="section-count" data-count-to={cards.length}>{pad(cards.length)}</span>
     </div>
 
@@ -129,18 +140,6 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
                   <img class="reveal-zoom" src={card.image} alt={card.alt} loading="lazy" decoding="async" />
                 )}
                 {isFeatured && <span class="featured-badge">Featured</span>}
-                {isFeatured && (
-                  <span class="lamp-jump" aria-hidden="true">
-                    <svg class="lamp-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <ellipse cx="18" cy="57" rx="13" ry="4" fill="currentColor" />
-                      <path d="M18 57 33 31" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
-                      <circle cx="33" cy="31" r="4.5" fill="currentColor" />
-                      <path d="M33 31 47 15" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
-                      <circle cx="47" cy="15" r="4.5" fill="currentColor" />
-                      <path d="M35 9 60 19 45 28Z" fill="currentColor" />
-                    </svg>
-                  </span>
-                )}
               </span>
               <span class="card-foot">
                 <span class="card-index" data-count-to={i + 1}>{pad(i + 1)}</span>
@@ -451,19 +450,34 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   }
 
   /* Lamp easter egg ---------------------------------------------------
-     A little homage to the Pixar hop: a desk lamp hops across the top
-     of the featured thumbnail on a loop. .lamp-jump carries the
-     left-to-right travel (and hides itself during the instant reset
-     back to the start); .lamp-icon layers a faster up/down hop on top
-     so the two motions don't fight over the same transform. */
+     A nod to the Pixar hop: a desk lamp hops in from the right, across
+     "ects", and lands on the "j" in "Projects" — taking the place of
+     its dot, the way Luxo Jr. takes the dot of the "i". .j-hop is the
+     positioning anchor (sized to the letter itself, so this scales
+     with the heading's responsive font-size); .lamp-jump plays the
+     hop-in once, triggered by the same scroll-reveal system as the
+     rest of the section (html.js + [data-reveal].is-in), and holds
+     its landed position afterward instead of looping. */
+  .j-hop {
+    position: relative;
+    display: inline-block;
+  }
+
   .lamp-jump {
     position: absolute;
-    top: 8%;
-    left: -14%;
-    width: clamp(38px, 5.5vw, 60px);
-    z-index: 2;
+    bottom: 70%;
+    left: 50%;
+    width: clamp(18px, 1.8vw, 26px);
+    z-index: 3;
     pointer-events: none;
-    animation: lamp-travel 9s linear infinite;
+    transform: translate(calc(-50% + 4.2em), 60%) rotate(-10deg) scaleY(0.9);
+    opacity: 0;
+    animation: lamp-hop-in 1.8s cubic-bezier(0.32, 0.9, 0.34, 1) 0.3s both;
+    animation-play-state: paused;
+  }
+
+  html.js .section-head.is-in .lamp-jump {
+    animation-play-state: running;
   }
 
   .lamp-icon {
@@ -471,20 +485,20 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     width: 100%;
     height: auto;
     color: var(--accent);
-    filter: drop-shadow(0 0 3px rgba(253, 251, 249, 0.9)) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.35));
-    transform-origin: 50% 100%;
-    animation: lamp-hop 0.5s ease-in-out infinite;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
   }
 
-  @keyframes lamp-travel {
-    0% { left: -14%; opacity: 1; }
-    82% { left: 106%; opacity: 1; }
-    83%, 100% { left: -14%; opacity: 0; }
-  }
-
-  @keyframes lamp-hop {
-    0%, 100% { transform: translateY(0) rotate(-6deg) scaleY(1); }
-    50% { transform: translateY(-30%) rotate(5deg) scaleY(1.06); }
+  @keyframes lamp-hop-in {
+    0% { transform: translate(calc(-50% + 4.2em), 60%) rotate(-10deg) scaleY(0.9); opacity: 0; }
+    6% { opacity: 1; }
+    18% { transform: translate(calc(-50% + 2.6em), -140%) rotate(6deg) scaleY(1.05); }
+    30% { transform: translate(calc(-50% + 2.6em), 15%) rotate(-4deg) scaleY(0.82); }
+    38% { transform: translate(calc(-50% + 2.6em), 0%) rotate(0deg) scaleY(1); }
+    55% { transform: translate(calc(-50% + 0.9em), -150%) rotate(5deg) scaleY(1.05); }
+    70% { transform: translate(-50%, 10%) rotate(-3deg) scaleY(0.8); }
+    80% { transform: translate(-50%, -6%) rotate(2deg) scaleY(1.12); }
+    90% { transform: translate(-50%, 1%) rotate(-1deg) scaleY(0.97); }
+    100% { transform: translate(-50%, 0%) rotate(0deg) scaleY(1); opacity: 1; }
   }
 
   .is-featured .card-title {
@@ -623,7 +637,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   @media (prefers-reduced-motion: reduce) {
     .rise { animation: none; }
     .wave, .cue-dot { animation: none; }
-    .lamp-jump { animation: none; opacity: 0; }
-    .lamp-icon { animation: none; }
+    /* No hop, just the lamp already resting where it lands. */
+    .lamp-jump { animation: none; opacity: 1; transform: translate(-50%, 0); }
   }
 </style>
