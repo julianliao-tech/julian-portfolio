@@ -49,6 +49,42 @@ Rather than propose a new platform from scratch, we scoped E-LINK to live inside
 
 </div>
 
+## Prototype
+
+To pitch the four pillars as something concrete rather than four bullet points, we mocked up the platform as a working prototype inside the SharePoint-tab concept above.
+
+<div class="wide-figure">
+
+<video src="/julian-portfolio/images/elink/alumni-network.mp4" autoplay muted loop playsinline aria-label="Alumni database page, filterable by career field and location, with student cards showing a Connect button"></video>
+
+</div>
+
+The alumni database — filterable by career field and location — is the matching-buddies pillar and the information-gap problem solved in one screen: a student can find someone a few years ahead in the exact role they're prepping for, instead of cold-emailing whoever answers first.
+
+<div class="wide-figure">
+
+<video src="/julian-portfolio/images/elink/dinners.mp4" autoplay muted loop playsinline aria-label="Recruiter dinners page showing McKinsey and Goldman Sachs dinner listings with a Reserve My Spot button and a remaining-spots counter"></video>
+
+</div>
+
+Recruiter dinners make the incentive from the stakeholder analysis real — a firm-hosted dinner with a capped headcount and a visible "spots remaining" counter, giving students a concrete reason to show up beyond "networking is good for you."
+
+<div class="wide-figure">
+
+<video src="/julian-portfolio/images/elink/mentorship-program.mp4" autoplay muted loop playsinline aria-label="Mentorship program page listing available mentors with their specialty and interview-prep documents, plus upcoming one-on-one workshops"></video>
+
+</div>
+
+Mentorship is the structured version of a coffee chat: a mentor's specialty and prep documents are visible before a student reaches out, and one-on-one workshop slots are booked directly instead of over email back-and-forth.
+
+<div class="wide-figure">
+
+<video src="/julian-portfolio/images/elink/pro-network.mp4" autoplay muted loop playsinline aria-label="Group chats page organized by industry — Finance and Banking, Tech and Innovation, Consulting, Marketing, Entrepreneurship, and Luxury and Retail — each with a member count and Join Chat button"></video>
+
+</div>
+
+Group chats sort by industry rather than class year, so a third-year deciding between consulting and tech can sit in both conversations instead of picking one identity to network under.
+
 ## Stakeholder Analysis
 
 The riskiest assumption in the plan wasn't the platform — it was whether the people who'd need to actually use it would. We mapped students, alumni, recruiters, and Career Services (whose workload we'd be adding to) against what each group stood to gain and what we'd be asking of them in return.

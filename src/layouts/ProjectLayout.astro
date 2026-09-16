@@ -390,6 +390,20 @@ const num = String(order).padStart(2, '0');
     border-color: var(--line-strong);
   }
 
+  /* Same treatment as .prose img, for screen-recorded product-demo
+     clips (muted/looping, styled like a silent GIF rather than a
+     video player — no controls needed). */
+  .prose :global(video) {
+    display: block;
+    width: 100%;
+    max-width: 30rem;
+    margin-inline: auto;
+    height: auto;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+  }
+
   /* Occasional side-by-side layout: a paragraph beside the image it
      describes, alternating which side the image sits on (.split-reverse).
      Used sparingly within specific case studies, not for every image —
@@ -431,7 +445,8 @@ const num = String(order).padStart(2, '0');
     margin-block: clamp(2rem, 5vw, 3rem);
   }
 
-  .prose :global(.wide-figure img) {
+  .prose :global(.wide-figure img),
+  .prose :global(.wide-figure video) {
     max-width: 100%;
     margin-inline: 0;
   }
