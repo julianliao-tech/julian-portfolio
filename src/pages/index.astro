@@ -55,13 +55,13 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
         <h1 class="hero-title">
           <span class="line">
             <span class="word rise" style="--d: 100ms">Hello,</span> <span class="word rise" style="--d: 160ms">I'm</span>
-          </span>
+          </span>{' '}
           <span class="line">
             <span class="word rise" style="--d: 220ms">Julian</span> <span class="word rise" style="--d: 280ms"><span class="wave" aria-hidden="true">👋</span></span>
           </span>
         </h1>
         <p class="hero-sub rise" style="--d: 300ms">
-          UX designer focused on <em class="serif">intuitive</em> and
+          UX designer focused on <em class="serif">intuitive</em> and{' '}
           <em class="serif">accessible</em> user experiences.
         </p>
         <p class="hero-school rise" style="--d: 380ms">
@@ -154,14 +154,14 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   }
 
   .hero-title {
-    font-size: clamp(1.75rem, 4vw, 3.25rem);
-    line-height: 1.02;
+    font-size: clamp(2rem, 5vw, 4.25rem);
+    line-height: 1.05;
     letter-spacing: -0.01em;
     margin: 0 0 var(--space-2);
   }
 
   .hero-title .line {
-    display: block;
+    display: inline;
   }
 
   .wave {
@@ -183,7 +183,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     font-size: clamp(0.9rem, 1.3vw, 1.1rem);
     line-height: 1.35;
     color: var(--ink);
-    max-width: 26ch;
+    max-width: none;
     margin-bottom: var(--space-2);
   }
 
@@ -299,7 +299,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
 
   @media (min-width: 900px) {
     .hero-inner {
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      grid-template-columns: minmax(0, 1fr) auto;
     }
     .hero-portrait { justify-self: end; width: min(140px, 12vw); }
   }
