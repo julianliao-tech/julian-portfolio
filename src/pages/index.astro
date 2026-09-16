@@ -431,7 +431,13 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
      accent-tinted border/glow, and a badge instead of just relying on
      grid position to read as "different." */
   .is-featured .card-media {
-    height: clamp(320px, 36vw, 480px);
+    /* Matches the hover video's own frame (1600x1198) exactly, so the
+       full clip shows edge-to-edge with no cropping and no
+       letterboxing — unlike the fixed-height bento tiles below, this
+       card is alone in its row, so nothing else needs to match its
+       height. */
+    height: auto;
+    aspect-ratio: 1600 / 1198;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px var(--accent-soft);
   }
