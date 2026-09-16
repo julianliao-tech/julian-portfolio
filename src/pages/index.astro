@@ -99,13 +99,16 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     <div class="section-head" data-reveal>
       <h2>
         Pro<span class="j-hop">j<span class="lamp-jump" aria-hidden="true">
+          <span class="lamp-spotlight"></span>
           <svg class="lamp-icon" viewBox="0 0 40 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 4 26 4 19 17 13 17Z" fill="currentColor" />
-            <circle cx="16" cy="19" r="3" fill="currentColor" />
-            <path d="M16 19 21 34" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
-            <circle cx="21" cy="34" r="3" fill="currentColor" />
             <path d="M21 34 15 49" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
             <ellipse cx="15" cy="53" rx="9" ry="3.5" fill="currentColor" />
+            <path d="M16 19 21 34" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+            <circle cx="21" cy="34" r="3" fill="currentColor" />
+            <g class="lamp-head">
+              <path d="M6 4 26 4 19 17 13 17Z" fill="currentColor" />
+              <circle cx="16" cy="19" r="3" fill="currentColor" />
+            </g>
           </svg>
         </span></span>ects
       </h2>
@@ -484,8 +487,58 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     display: block;
     width: 100%;
     height: auto;
+    overflow: visible;
     color: var(--accent);
     filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
+  }
+
+  /* Once landed, the head bows down toward the featured card and a
+     little spotlight cone fades in underneath it — both delayed to
+     start right as the 3.5s hop finishes. transform-box: view-box
+     lets the head pivot around the neck joint (16, 19) in the SVG's
+     own coordinate space instead of its own bounding-box center. */
+  .lamp-head {
+    transform-box: view-box;
+    transform-origin: 16px 19px;
+    animation: lamp-look-down 0.5s var(--ease-out) 3.5s both;
+    animation-play-state: paused;
+  }
+
+  html.js .section-head.is-in .lamp-head {
+    animation-play-state: running;
+  }
+
+  @keyframes lamp-look-down {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(32deg); }
+  }
+
+  .lamp-spotlight {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: clamp(120px, 15vw, 210px);
+    height: clamp(210px, 25vw, 340px);
+    transform: translateX(-50%);
+    clip-path: polygon(46% 0%, 54% 0%, 100% 100%, 0% 100%);
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 221, 120, 0) 0%,
+      rgba(255, 221, 120, 0.32) 55%,
+      rgba(255, 210, 100, 0.55) 100%
+    );
+    opacity: 0;
+    animation: lamp-spotlight-in 0.9s var(--ease-out) 3.55s both;
+    animation-play-state: paused;
+  }
+
+  html.js .section-head.is-in .lamp-spotlight {
+    animation-play-state: running;
+  }
+
+  @keyframes lamp-spotlight-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
   }
 
   @keyframes lamp-hop-in {
@@ -643,7 +696,10 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   @media (prefers-reduced-motion: reduce) {
     .rise { animation: none; }
     .wave, .cue-dot { animation: none; }
-    /* No hop, just the lamp already resting where it lands. */
+    /* No hop, just the lamp already resting where it lands, head
+       bowed and spotlight lit. */
     .lamp-jump { animation: none; opacity: 1; transform: translate(-50%, 0); }
+    .lamp-head { animation: none; transform: rotate(32deg); }
+    .lamp-spotlight { animation: none; opacity: 1; }
   }
 </style>
