@@ -470,9 +470,9 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     width: clamp(18px, 1.8vw, 26px);
     z-index: 3;
     pointer-events: none;
-    transform: translate(calc(-50% + 4.2em), 60%) rotate(-10deg) scaleY(0.9);
+    transform: translate(calc(-50% + 62vw), 70%) rotate(-10deg) scaleY(0.9);
     opacity: 0;
-    animation: lamp-hop-in 1.8s cubic-bezier(0.32, 0.9, 0.34, 1) 0.3s both;
+    animation: lamp-hop-in 3.5s cubic-bezier(0.32, 0.9, 0.34, 1) 0.2s both;
     animation-play-state: paused;
   }
 
@@ -489,15 +489,18 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   }
 
   @keyframes lamp-hop-in {
-    0% { transform: translate(calc(-50% + 4.2em), 60%) rotate(-10deg) scaleY(0.9); opacity: 0; }
-    6% { opacity: 1; }
-    18% { transform: translate(calc(-50% + 2.6em), -140%) rotate(6deg) scaleY(1.05); }
-    30% { transform: translate(calc(-50% + 2.6em), 15%) rotate(-4deg) scaleY(0.82); }
-    38% { transform: translate(calc(-50% + 2.6em), 0%) rotate(0deg) scaleY(1); }
-    55% { transform: translate(calc(-50% + 0.9em), -150%) rotate(5deg) scaleY(1.05); }
-    70% { transform: translate(-50%, 10%) rotate(-3deg) scaleY(0.8); }
-    80% { transform: translate(-50%, -6%) rotate(2deg) scaleY(1.12); }
-    90% { transform: translate(-50%, 1%) rotate(-1deg) scaleY(0.97); }
+    0% { transform: translate(calc(-50% + 62vw), 70%) rotate(-10deg) scaleY(0.9); opacity: 0; }
+    4% { opacity: 1; }
+    14% { transform: translate(calc(-50% + 44vw), -150%) rotate(6deg) scaleY(1.05); }
+    24% { transform: translate(calc(-50% + 44vw), 15%) rotate(-4deg) scaleY(0.82); }
+    30% { transform: translate(calc(-50% + 44vw), 0%) rotate(0deg) scaleY(1); }
+    42% { transform: translate(calc(-50% + 24vw), -155%) rotate(6deg) scaleY(1.05); }
+    52% { transform: translate(calc(-50% + 24vw), 15%) rotate(-4deg) scaleY(0.82); }
+    58% { transform: translate(calc(-50% + 24vw), 0%) rotate(0deg) scaleY(1); }
+    72% { transform: translate(calc(-50% + 6vw), -150%) rotate(5deg) scaleY(1.05); }
+    84% { transform: translate(-50%, 10%) rotate(-3deg) scaleY(0.8); }
+    90% { transform: translate(-50%, -6%) rotate(2deg) scaleY(1.12); }
+    96% { transform: translate(-50%, 1%) rotate(-1deg) scaleY(0.97); }
     100% { transform: translate(-50%, 0%) rotate(0deg) scaleY(1); opacity: 1; }
   }
 
