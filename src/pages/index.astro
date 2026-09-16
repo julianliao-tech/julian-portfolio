@@ -49,8 +49,6 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
 ---
 <BaseLayout title="Julian Liao — UX Designer">
   <section class="hero">
-    <div class="aurora" aria-hidden="true"></div>
-
     <div class="wrap hero-inner">
       <div class="hero-copy">
         <p class="eyebrow rise" style="--d: 40ms">UX Designer</p>
@@ -145,34 +143,8 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   .hero {
     position: relative;
     isolation: isolate;
-    min-height: 20vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     padding-block: clamp(1.25rem, 3vw, 2rem) clamp(1rem, 2vw, 1.5rem);
     overflow: hidden;
-  }
-
-  /* A single quiet wash, not a saturated dark-mode gradient blob —
-     matches the flourish-free reference sites. A slow ambient
-     breathing animation, not scroll-linked, keeps it alive without
-     drawing attention the way a scroll-tied parallax would. */
-  .aurora {
-    position: absolute;
-    z-index: -1;
-    top: -30%;
-    left: 50%;
-    width: min(70rem, 130vw);
-    aspect-ratio: 1 / 1;
-    background: radial-gradient(circle at 42% 40%, var(--accent-soft), transparent 55%);
-    filter: blur(20px);
-    pointer-events: none;
-    animation: aurora-drift 16s ease-in-out infinite;
-  }
-
-  @keyframes aurora-drift {
-    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.85; }
-    50% { transform: translateX(-50%) scale(1.08) rotate(4deg); opacity: 1; }
   }
 
   .hero-inner {
@@ -540,7 +512,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
 
   @media (prefers-reduced-motion: reduce) {
     .rise { animation: none; }
-    .wave, .cue-dot, .aurora { animation: none; }
+    .wave, .cue-dot { animation: none; }
     .work-grid > li:nth-child(even) .card { transform: none; }
   }
 </style>
