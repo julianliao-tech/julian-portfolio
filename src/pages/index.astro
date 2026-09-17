@@ -29,7 +29,9 @@ const heroCodeLines = heroCodeSource.map((line) => {
   return { ...line, chars: line.text.length, delayMs, durationMs };
 });
 const heroCodeTotalMs = codeCursorMs;
-const sortedProjects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const sortedProjects = (await getCollection('projects', (entry) => !entry.data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+);
 // Michigan ChatGPT leads the grid as a standalone, highlighted feature —
 // everything else keeps its normal order behind it.
 const projects = [
@@ -37,13 +39,27 @@ const projects = [
   ...sortedProjects.filter((p) => p.id !== 'michigan-chatgpt'),
 ];
 
-const consultingWork = {
-  slug: 'consulting-work',
-  title: 'Consulting Work',
-  tileImage: `${base}images/home/tile-consulting-work.webp`,
-  tileAlt: 'Consulting project thumbnails: Q-Bakehouse and MCBC Pink Moon',
-  summary: 'Freelance branding and strategy work for two small businesses',
-};
+// Consulting work gets its own section below the case-study grid
+// (two thumbnails, each linking straight to its PDF) rather than a
+// grid tile that opens a separate page.
+const consultingItems = [
+  {
+    title: 'Q-Bakehouse',
+    href: `${base}files/Q-Bakehouse.pdf`,
+    image: `${base}images/consulting-work/01-q-bakehouse.webp`,
+    alt: 'Q-Bakehouse consulting deliverable cover',
+    width: 1308,
+    height: 1198,
+  },
+  {
+    title: 'MCBC – Pink Moon Deliverable Presentation',
+    href: `${base}files/MCBC_-PinkMoon-Deliverable-Presentation.pdf`,
+    image: `${base}images/consulting-work/02-mcbc-pink-moon.png`,
+    alt: 'MCBC Pink Moon deliverable presentation cover',
+    width: 1540,
+    height: 1072,
+  },
+];
 
 // Opt-in, zero-config hover video: drop `tile-<slug>.mp4` next to the
 // existing `tile-<slug>.webp` in public/images/home/ and it's picked
@@ -77,30 +93,17 @@ const VIDEO_ASPECT: Record<string, string> = {
   elink: '4 / 3',
 };
 
-const cards = [
-  ...projects.map((p) => ({
-    href: `${base}work/${p.id}/`,
-    title: p.data.title,
-    summary: p.data.summary,
-    image: p.data.tileImage,
-    alt: p.data.tileAlt,
-    video: hoverVideo(p.id),
-    showsFirstFrame: showsFirstFrame(p.id),
-    idlesAtEnd: idlesAtEnd(p.id),
-    videoAspect: VIDEO_ASPECT[p.id] ?? null,
-  })),
-  {
-    href: `${base}work/${consultingWork.slug}/`,
-    title: consultingWork.title,
-    summary: consultingWork.summary,
-    image: consultingWork.tileImage,
-    alt: consultingWork.tileAlt,
-    video: hoverVideo(consultingWork.slug),
-    showsFirstFrame: showsFirstFrame(consultingWork.slug),
-    idlesAtEnd: idlesAtEnd(consultingWork.slug),
-    videoAspect: VIDEO_ASPECT[consultingWork.slug] ?? null,
-  },
-];
+const cards = projects.map((p) => ({
+  href: `${base}work/${p.id}/`,
+  title: p.data.title,
+  summary: p.data.summary,
+  image: p.data.tileImage,
+  alt: p.data.tileAlt,
+  video: hoverVideo(p.id),
+  showsFirstFrame: showsFirstFrame(p.id),
+  idlesAtEnd: idlesAtEnd(p.id),
+  videoAspect: VIDEO_ASPECT[p.id] ?? null,
+}));
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -219,6 +222,47 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     </ol>
   </section>
 
+  <section id="consulting" class="consulting wrap">
+    <div class="section-head" data-reveal>
+      <h2>Consulting Work</h2>
+      <span class="section-count" data-count-to={consultingItems.length}>{pad(consultingItems.length)}</span>
+    </div>
+    <p class="lead consulting-intro" data-reveal>
+      A couple of client deliverables from outside the case-study projects above — each links out to the full PDF.
+    </p>
+
+    <div class="consulting-grid">
+      {consultingItems.map((item, i) => (
+        <a
+          class="consulting-item"
+          href={item.href}
+          target="_blank"
+          rel="noreferrer"
+          data-reveal
+          data-reveal-delay={i * 90}
+        >
+          <span class="consulting-media" data-tilt>
+            <img
+              src={item.image}
+              alt={item.alt}
+              width={item.width}
+              height={item.height}
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="consulting-badge">PDF</span>
+          </span>
+          <span class="consulting-foot">
+            <span class="consulting-title">{item.title}</span>
+            <span class="consulting-arrow" data-magnetic aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg>
+            </span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
   <div class="marquee" aria-hidden="true">
     <div class="marquee-track">
       {[...skillsTicker, ...skillsTicker].map((skill) => (
@@ -302,13 +346,14 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
      only .is-last keeps a blinking cursor once everything's done. */
   .hero-code-box {
     --code-green: #1a5c3a;
+    container-type: size;
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
     height: 100%;
     margin: 0;
-    padding: 0.5rem 0.675rem;
+    padding: 0.75rem 1rem;
     border: 1px solid var(--line);
     border-radius: var(--r-lg);
     background: var(--bg-elev);
@@ -322,7 +367,14 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     overflow: hidden;
     white-space: pre;
     font-family: var(--font-mono);
-    font-size: clamp(0.425rem, 0.85vw, 0.525rem);
+    /* Sized off the box itself, not the viewport, so the five lines
+       actually fill it top-to-bottom — 11cqh ≈ 100% / (5 lines *
+       1.65 line-height); capped by 2.6cqw so the longest line (the
+       internships one, ~55ch) never outgrows the box's own width.
+       Static fallback first for browsers without container query
+       units, which just ignore the invalid second declaration. */
+    font-size: clamp(0.95rem, 1.9vw, 1.2rem);
+    font-size: min(11cqh, 2.6cqw);
     line-height: 1.65;
     color: var(--code-green);
     animation: hero-typing var(--code-duration) steps(var(--code-chars, 1), end) var(--code-delay) both;
@@ -805,6 +857,134 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     .work-grid {
       grid-template-columns: repeat(3, 1fr);
     }
+  }
+
+  /* Consulting Work -------------------------------------------------
+     A lighter, secondary section below the case-study grid: two
+     thumbnails linking straight out to their PDF, no case-study page
+     in between. */
+  .consulting {
+    padding-block: clamp(1.5rem, 3vw, 2.5rem) var(--space-6);
+  }
+
+  .consulting-intro {
+    margin-top: calc(-1 * var(--space-2));
+    margin-bottom: 0;
+  }
+
+  .consulting-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: clamp(1.5rem, 4vw, 3rem);
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+
+  .consulting-item {
+    display: block;
+    text-decoration: none;
+  }
+
+  .consulting-media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: clamp(14px, 1.8vw, 22px);
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+  }
+
+  /* [data-tilt] (see site.js) keeps --tilt-x/y live while the cursor
+     moves over the thumbnail, so it rotates to follow the pointer. */
+  .consulting-media {
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+  }
+
+  .consulting-media img {
+    width: 100%;
+    height: auto;
+    transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.02);
+    transition: transform 0.6s var(--ease-out);
+  }
+
+  .consulting-item:hover .consulting-media img {
+    transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.1);
+    transition: transform 0.15s var(--ease-out);
+  }
+
+  .consulting-badge {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    font-family: var(--font-body);
+    font-size: var(--step-micro);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    /* Fixed light text on a fixed dark chip — sits on top of a
+       thumbnail image, independent of the page's own theme. */
+    color: #f5f3ef;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(8, 8, 10, 0.72);
+    backdrop-filter: blur(6px);
+  }
+
+  .consulting-foot {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-2);
+    padding-top: var(--space-3);
+  }
+
+  .consulting-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    color: var(--ink);
+    transition: color 0.3s var(--ease);
+  }
+
+  .consulting-item:hover .consulting-title { color: var(--accent); }
+
+  .consulting-arrow {
+    --magnet-x: 0px;
+    --magnet-y: 0px;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    transform: translate(var(--magnet-x), var(--magnet-y));
+    transition: transform 0.45s var(--ease-out), background 0.35s var(--ease),
+      color 0.35s var(--ease), border-color 0.35s var(--ease);
+  }
+
+  .consulting-item:hover .consulting-arrow {
+    transform: translate(calc(var(--magnet-x) + 3px), calc(var(--magnet-y) - 3px));
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+    transition: transform 0.15s var(--ease-out), background 0.35s var(--ease),
+      color 0.35s var(--ease), border-color 0.35s var(--ease);
+  }
+
+  /* Draws in once the item scrolls into view — unlike the project
+     grid above, this section is only ever reached by scrolling, so
+     the scroll-gated reveal (see [data-reveal] in global.css) is the
+     right fit rather than the on-load .rise treatment. */
+  html.js .consulting-arrow svg path {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    transition: stroke-dashoffset 0.7s var(--ease-out) 0.25s;
+  }
+
+  html.js .consulting-item.is-in .consulting-arrow svg path {
+    stroke-dashoffset: 0;
   }
 
   /* Skills marquee --------------------------------------------------

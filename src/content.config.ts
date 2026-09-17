@@ -23,6 +23,9 @@ const projects = defineCollection({
     // (used once, for Dominos -> Consulting Work).
     nextOverrideHref: z.string().optional(),
     nextOverrideTitle: z.string().optional(),
+    // Pulled from every listing (Home grid, [slug] routes, prev/next
+    // pager) without deleting the entry — flip off to bring it back.
+    draft: z.boolean().optional().default(false),
   }),
 });
 

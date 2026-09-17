@@ -9,7 +9,7 @@ import ProjectLayout from '../../layouts/ProjectLayout.astro';
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
   return projects
-    .filter((entry) => entry.id !== 'michigan-chatgpt')
+    .filter((entry) => entry.id !== 'michigan-chatgpt' && !entry.data.draft)
     .map((entry) => ({
       params: { slug: entry.id },
       props: { entry },

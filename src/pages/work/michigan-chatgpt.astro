@@ -6,7 +6,9 @@ const base = import.meta.env.BASE_URL;
 const entry = await getEntry('projects', 'michigan-chatgpt');
 const { role, team, timeline, skills, tools, tileAlt } = entry!.data;
 
-const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const all = (await getCollection('projects', (e) => !e.data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+);
 const idx = all.findIndex((p) => p.id === 'michigan-chatgpt');
 const prev = idx > 0 ? all[idx - 1] : null;
 const next = idx < all.length - 1 ? all[idx + 1] : null;
