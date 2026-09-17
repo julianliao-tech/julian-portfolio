@@ -6,6 +6,46 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const base = import.meta.env.BASE_URL;
 
+// One-time opening animation: a fixed, full-viewport 3-column grid of
+// project imagery, each column auto-scrolling vertically (alternating
+// direction per column) for a couple of seconds before fading away to
+// reveal the actual homepage underneath — see [data-intro-loader]
+// below and initIntroLoader() in site.js. Each column's image list is
+// rendered twice back-to-back in the markup so a translateY(-50%)
+// loop is seamless.
+const introColumns = [
+  {
+    dir: 'normal',
+    duration: '7s',
+    images: [
+      `${base}images/home/tile-michigan-chatgpt.webp`,
+      `${base}images/guide/03.webp`,
+      `${base}images/home/tile-elink.webp`,
+      `${base}images/about/about-2.webp`,
+    ],
+  },
+  {
+    dir: 'reverse',
+    duration: '8.5s',
+    images: [
+      `${base}images/home/tile-guide.webp`,
+      `${base}images/elink/02.webp`,
+      `${base}images/home/tile-consulting-work.webp`,
+      `${base}images/about/about-4.webp`,
+    ],
+  },
+  {
+    dir: 'normal',
+    duration: '7.8s',
+    images: [
+      `${base}images/home/tile-surecall.webp`,
+      `${base}images/home/tile-connexu.png`,
+      `${base}images/guide/07.webp`,
+      `${base}images/about/about-1.webp`,
+    ],
+  },
+];
+
 // Hero credentials, written out as one object literal (one grouped
 // "line of code" rather than a row of separate badges) and typed out
 // line by line — each line's own length sets how long its typing
@@ -112,6 +152,21 @@ const pad = (n: number) => String(n).padStart(2, '0');
 const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills))).sort();
 ---
 <BaseLayout title="Julian Liao — UX Designer">
+  <div class="intro-loader" data-intro-loader aria-hidden="true">
+    {introColumns.map((col) => (
+      <div class="intro-col">
+        <div
+          class="intro-track"
+          style={`--intro-duration: ${col.duration}; --intro-direction: ${col.dir};`}
+        >
+          {[...col.images, ...col.images].map((src) => (
+            <img src={src} alt="" loading="eager" decoding="async" />
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
   <section class="hero">
     <div class="wrap hero-inner">
       <div class="hero-copy">
@@ -272,6 +327,78 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
 </BaseLayout>
 
 <style>
+  /* Opening animation ------------------------------------------------
+     Fixed over everything (nav included) at first paint, then fades
+     itself out on a pure-CSS timeline (see @keyframes below) — no
+     dependency on JS to be visible or to look right; site.js only
+     locks page scroll for the duration and tears the markup down
+     afterward (initIntroLoader). Full-bleed, no .wrap gutter, so the
+     imagery runs edge to edge like the reference clip. */
+  .intro-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    gap: clamp(0.75rem, 2vw, 1.5rem);
+    padding: clamp(0.75rem, 2vw, 1.5rem);
+    background: var(--bg);
+    animation: intro-loader-out 3s var(--ease) forwards;
+  }
+
+  /* Each column is just a clipping window onto its own doubled-up,
+     endlessly scrolling stack of images (.intro-track) — the window
+     itself isn't rounded, only the tiles inside it are, so the tiles
+     read as individual cards rather than one long filmstrip. */
+  .intro-col {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .intro-track {
+    display: flex;
+    flex-direction: column;
+    gap: inherit;
+    width: 100%;
+    animation: intro-scroll var(--intro-duration, 8s) linear infinite;
+    animation-direction: var(--intro-direction, normal);
+    will-change: transform;
+  }
+
+  .intro-track img {
+    display: block;
+    width: 100%;
+    height: clamp(160px, 22vh, 260px);
+    object-fit: cover;
+    border-radius: clamp(14px, 1.8vw, 22px);
+  }
+
+  /* The track's own list of images is rendered twice back-to-back in
+     the markup, so translating exactly halfway (-50%) lands on a
+     frame identical to the start — a seamless loop with no jump. */
+  @keyframes intro-scroll {
+    to { transform: translateY(-50%); }
+  }
+
+  /* Holds fully opaque and interactive/focus-blocking for most of the
+     3s, then fades out — pointer-events and visibility are discrete
+     (not numeric) properties, so they flip state partway through the
+     opacity fade rather than tweening, which is what lets the page
+     underneath become scrollable/clickable again right as it clears. */
+  @keyframes intro-loader-out {
+    0%, 78% { opacity: 1; visibility: visible; pointer-events: auto; }
+    100% { opacity: 0; visibility: hidden; pointer-events: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* site.js removes the loader outright under reduced motion, but
+       this is the no-JS fallback: skip straight past it rather than
+       forcing a motionless multi-second wait. */
+    .intro-loader { animation: none; opacity: 0; visibility: hidden; pointer-events: none; }
+    .intro-track { animation: none; }
+  }
+
   /* Hero ---------------------------------------------------------- */
   .hero {
     position: relative;

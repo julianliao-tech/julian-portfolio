@@ -400,6 +400,13 @@ html.lb-ready [data-zoomable] {
   cursor: zoom-in;
 }
 
+/* Set by initIntroLoader (site.js) for the few seconds the Home
+   page's opening animation covers the screen, so the page underneath
+   can't be scrolled while it's up. */
+html.intro-lock {
+  overflow: hidden;
+}
+
 /* Word-stagger reveal utility ---------------------------------------
    Wraps individual words for a cascading entrance instead of a single
    block fade. `.word` needs inline-block for the transform to apply;

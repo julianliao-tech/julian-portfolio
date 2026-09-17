@@ -364,10 +364,44 @@ function initMagnetic() {
   });
 }
 
+/* Opening animation --------------------------------------------------
+   [data-intro-loader] (see index.astro) fades itself out on a pure-CSS
+   timeline — this just locks page scroll for that stretch and tears
+   the markup down once it's done, so it doesn't linger in the DOM or
+   the accessibility tree. Under reduced motion, skip it outright
+   rather than forcing a motionless multi-second wait. */
+
+function initIntroLoader() {
+  const loader = document.querySelector('[data-intro-loader]');
+  if (!loader) return;
+
+  if (prefersReduced()) {
+    loader.remove();
+    return;
+  }
+
+  document.documentElement.classList.add('intro-lock');
+
+  let cleared = false;
+  const clear = () => {
+    if (cleared) return;
+    cleared = true;
+    document.documentElement.classList.remove('intro-lock');
+    loader.remove();
+  };
+
+  loader.addEventListener('animationend', clear, { once: true });
+  // Safety net, same idea as initReveal's: if the animationend event
+  // never fires for any reason, don't leave the page permanently
+  // locked behind the overlay.
+  window.setTimeout(clear, 4500);
+}
+
 /* Boot -------------------------------------------------------------- */
 
 function boot() {
   document.documentElement.classList.add('js');
+  initIntroLoader();
   initReveal();
   initScrollChrome();
   initCountUp();
