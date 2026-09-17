@@ -839,12 +839,13 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
      ([data-reveal].is-in) and the opening animation having already
      handed off to the page (html.intro-done, set once the intro
      loader's fade finishes — see site.js), and holds its landed
-     position afterward instead of looping. Desktop-only (see the
-     max-width: 899px rule below): the whole hop path and the
-     spotlight's reach down to the featured card are tuned in vw/px
-     values against the desktop heading size, and don't scale down
-     with the much smaller mobile heading — below 900px the beam was
-     landing well short of the card instead of on it. */
+     position afterward instead of looping. The heading's own font
+     size shrinks a lot more on mobile than the spotlight's reach
+     used to (see .lamp-spotlight below) — rather than chase that
+     with more breakpoint-specific numbers I can't see rendered, the
+     spotlight's length now floors at a flat, generous size that
+     comfortably overshoots the gap on any screen instead of risking
+     falling short again. */
   .j-hop {
     position: relative;
     display: inline-block;
@@ -861,10 +862,6 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     opacity: 0;
     animation: lamp-hop-in 3.5s cubic-bezier(0.32, 0.9, 0.34, 1) both;
     animation-play-state: paused;
-  }
-
-  @media (max-width: 899px) {
-    .lamp-jump { display: none; }
   }
 
   html.js.intro-done .section-head.is-in .lamp-jump {
@@ -910,7 +907,15 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     top: 40%;
     left: 50%;
     width: clamp(90px, 11.25vw, 157.5px);
-    height: clamp(157.5px, 18.75vw, 255px);
+    /* Floors at 320px regardless of viewport (25vw only clears that
+       floor past ~1280px wide, i.e. desktop), rotated -30deg so its
+       actual vertical reach is height * cos(30°) ≈ 0.87 * height —
+       comfortably past the featured card below on any screen size,
+       including the much-smaller-headed mobile layout, where the
+       old value (topping out at 157.5px) was consistently landing
+       short of it. Overshooting is harmless (it's a soft gradient
+       fade); falling short reads as visibly broken. */
+    height: clamp(320px, 25vw, 420px);
     transform: translateX(-50%) rotate(-30deg);
     transform-origin: top center;
     clip-path: polygon(46% 0%, 54% 0%, 100% 100%, 0% 100%);
