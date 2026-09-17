@@ -23,7 +23,7 @@ const base = import.meta.env.BASE_URL;
 const introColumns = [
   {
     anim: 'intro-scroll-up',
-    duration: '3.4s',
+    duration: '1.9s',
     images: [
       `${base}images/michigan-chatgpt/00-cover.webp`,
       `${base}images/michigan-chatgpt/02.webp`,
@@ -33,7 +33,7 @@ const introColumns = [
   },
   {
     anim: 'intro-scroll-down',
-    duration: '3.8s',
+    duration: '2.2s',
     images: [
       `${base}images/guide/01.webp`,
       `${base}images/guide/04.webp`,
@@ -43,7 +43,7 @@ const introColumns = [
   },
   {
     anim: 'intro-scroll-up',
-    duration: '3.6s',
+    duration: '2.05s',
     images: [
       `${base}images/surecall/01.webp`,
       `${base}images/surecall/04.webp`,
@@ -372,11 +372,17 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     gap: inherit;
     width: 100%;
     /* A steep ease-in, not linear — every column visibly starts slow
-       and rockets toward full speed by the time the fade takes over,
-       rather than scrolling at one constant rate throughout. */
+       and speeds up toward the end, rather than scrolling at one
+       constant rate throughout. Duration is deliberately kept well
+       under the loader's 2s hold (not stretched across the full
+       3.5s timeline) so the accelerating half of the curve actually
+       plays out on screen instead of being the still-nearly-flat
+       opening portion of a much longer curve — that mismatch (a
+       multi-second ease-in on a duration longer than the visible
+       window) is what made it read as "barely speeds up" before. */
     animation-name: var(--intro-anim, intro-scroll-up);
-    animation-duration: var(--intro-duration, 1.6s);
-    animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
+    animation-duration: var(--intro-duration, 2s);
+    animation-timing-function: cubic-bezier(0.64, 0, 0.78, 0);
     animation-fill-mode: both;
     will-change: transform;
   }
