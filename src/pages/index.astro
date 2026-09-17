@@ -36,6 +36,17 @@ const hoverVideo = (slug: string) => {
 // keeps its dedicated poster image.
 const showsFirstFrame = (slug: string) => slug === 'guide' || slug === 'elink';
 
+// Both screen recordings were captured at 960x720 — sizing the tile to
+// that same ratio (rather than the grid's own fixed height) means the
+// box exactly frames the clip, with no cropping and no letterboxed
+// background showing around it. Michigan ChatGPT gets the same
+// treatment via its own `.is-featured` rule, sized to its 1600x1198
+// capture.
+const VIDEO_ASPECT: Record<string, string> = {
+  guide: '4 / 3',
+  elink: '4 / 3',
+};
+
 const cards = [
   ...projects.map((p) => ({
     href: `${base}work/${p.id}/`,
@@ -44,6 +55,7 @@ const cards = [
     alt: p.data.tileAlt,
     video: hoverVideo(p.id),
     showsFirstFrame: showsFirstFrame(p.id),
+    videoAspect: VIDEO_ASPECT[p.id] ?? null,
   })),
   {
     href: `${base}work/${consultingWork.slug}/`,
@@ -52,6 +64,7 @@ const cards = [
     alt: consultingWork.tileAlt,
     video: hoverVideo(consultingWork.slug),
     showsFirstFrame: showsFirstFrame(consultingWork.slug),
+    videoAspect: VIDEO_ASPECT[consultingWork.slug] ?? null,
   },
 ];
 
@@ -134,7 +147,11 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
             data-reveal-delay={isFeatured ? 0 : (i % 2) * 90}
           >
             <a class="card" href={card.href}>
-              <span class="card-media" data-tilt style={`--card-i: ${i}`}>
+              <span
+                class:list={['card-media', { 'has-native-aspect': !!card.videoAspect }]}
+                data-tilt
+                style={`--card-i: ${i};${card.videoAspect ? ` --video-aspect: ${card.videoAspect};` : ''}`}
+              >
                 {card.video ? (
                   <video
                     class="reveal-zoom"
@@ -386,6 +403,17 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
        out at the same height instead of the wide tile growing taller
        at 2x the width. */
     height: clamp(220px, 24vw, 340px);
+  }
+
+  /* Opt-out of the fixed row height above: for tiles whose video's own
+     aspect ratio is known (--video-aspect, set inline above), the box
+     is sized to match it exactly instead, so the recording fills the
+     tile edge-to-edge with nothing cropped and no background showing
+     around it. This tile may end up a different height than its row
+     neighbors as a tradeoff. */
+  .card-media.has-native-aspect {
+    height: auto;
+    aspect-ratio: var(--video-aspect);
   }
 
   /* [data-tilt] (see site.js) keeps --tilt-x/y live while the cursor
