@@ -524,12 +524,10 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
      only .is-last keeps a blinking cursor once everything's done. */
   .hero-code-box {
     --code-green: #1a5c3a;
-    container-type: size;
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    height: 100%;
     margin: 0;
     padding: 0.75rem 1rem;
     border: 1px solid var(--line);
@@ -545,14 +543,14 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     overflow: hidden;
     white-space: pre;
     font-family: var(--font-mono);
-    /* Sized off the box itself, not the viewport, so the five lines
-       actually fill it top-to-bottom — 11cqh ≈ 100% / (5 lines *
-       1.65 line-height); capped by 2.6cqw so the longest line (the
-       internships one, ~55ch) never outgrows the box's own width.
-       Static fallback first for browsers without container query
-       units, which just ignore the invalid second declaration. */
+    /* Static size everywhere by default — see the 900px breakpoint
+       below for the container-query version, which needs a definite
+       box height to work from (only true once the hero switches to
+       its 2-column layout there; on a single mobile column
+       .hero-code-box has no such height, and container-type: size
+       on an element with no definite height collapses it to zero —
+       which was making the whole block disappear on phones). */
     font-size: clamp(0.95rem, 1.9vw, 1.2rem);
-    font-size: min(11cqh, 2.6cqw);
     line-height: 1.65;
     color: var(--code-green);
     animation: hero-typing var(--code-duration) steps(var(--code-chars, 1), end) var(--code-delay) both;
@@ -644,6 +642,23 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   @media (min-width: 900px) {
     .hero-inner {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    /* Only from here up does .hero-code-box actually get a definite
+       height (stretched to match hero-copy in the same grid row —
+       see align-items: stretch above), which is what container-type:
+       size needs to not collapse to zero. Sized off the box itself,
+       not the viewport, so the five lines actually fill it
+       top-to-bottom — 11cqh ≈ 100% / (5 lines * 1.65 line-height);
+       capped by 2.6cqw so the longest line (the internships one,
+       ~55ch) never outgrows the box's own width. */
+    .hero-code-box {
+      container-type: size;
+      height: 100%;
+    }
+
+    .hero-code-line {
+      font-size: min(11cqh, 2.6cqw);
     }
   }
 
@@ -824,7 +839,12 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
      ([data-reveal].is-in) and the opening animation having already
      handed off to the page (html.intro-done, set once the intro
      loader's fade finishes — see site.js), and holds its landed
-     position afterward instead of looping. */
+     position afterward instead of looping. Desktop-only (see the
+     max-width: 899px rule below): the whole hop path and the
+     spotlight's reach down to the featured card are tuned in vw/px
+     values against the desktop heading size, and don't scale down
+     with the much smaller mobile heading — below 900px the beam was
+     landing well short of the card instead of on it. */
   .j-hop {
     position: relative;
     display: inline-block;
@@ -841,6 +861,10 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     opacity: 0;
     animation: lamp-hop-in 3.5s cubic-bezier(0.32, 0.9, 0.34, 1) both;
     animation-play-state: paused;
+  }
+
+  @media (max-width: 899px) {
+    .lamp-jump { display: none; }
   }
 
   html.js.intro-done .section-head.is-in .lamp-jump {
