@@ -7,17 +7,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL;
 
 // One-time opening animation: a fixed, full-viewport 3-column grid of
-// project imagery, each column auto-scrolling vertically (alternating
-// direction per column) for a couple of seconds before fading away to
-// reveal the actual homepage underneath — see [data-intro-loader]
-// below and initIntroLoader() in site.js. Each column's image list is
-// rendered twice back-to-back in the markup so a translateY(-50%)
-// loop is seamless. One column per project — Michigan ChatGPT, Guide,
-// SureCall — rather than mixing in every case study.
+// project imagery, shown for 1.5s total before fading away to reveal
+// the actual homepage underneath — see [data-intro-loader] below and
+// initIntroLoader() in site.js. Each column scrolls once (not
+// looping — the window's too short for a loop to ever matter) along
+// an exponential-in curve, so it visibly starts slow and rockets
+// toward full speed rather than moving at one constant rate; `anim`
+// picks the scroll direction (see the two @keyframes below — a
+// shared easing curve on both is what keeps every column reading as
+// *accelerating* regardless of which way it scrolls). Each column's
+// image list is rendered twice back-to-back so the -50%/0 travel
+// distance still has real content the whole way, even mid-acceleration.
+// One column per project — Michigan ChatGPT, Guide, SureCall — rather
+// than mixing in every case study.
 const introColumns = [
   {
-    dir: 'normal',
-    duration: '3.2s',
+    anim: 'intro-scroll-up',
+    duration: '1.5s',
     images: [
       `${base}images/michigan-chatgpt/00-cover.webp`,
       `${base}images/michigan-chatgpt/02.webp`,
@@ -26,8 +32,8 @@ const introColumns = [
     ],
   },
   {
-    dir: 'reverse',
-    duration: '3.8s',
+    anim: 'intro-scroll-down',
+    duration: '1.7s',
     images: [
       `${base}images/guide/01.webp`,
       `${base}images/guide/04.webp`,
@@ -36,8 +42,8 @@ const introColumns = [
     ],
   },
   {
-    dir: 'normal',
-    duration: '3.5s',
+    anim: 'intro-scroll-up',
+    duration: '1.6s',
     images: [
       `${base}images/surecall/01.webp`,
       `${base}images/surecall/04.webp`,
@@ -158,7 +164,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
       <div class="intro-col">
         <div
           class="intro-track"
-          style={`--intro-duration: ${col.duration}; --intro-direction: ${col.dir};`}
+          style={`--intro-duration: ${col.duration}; --intro-anim: ${col.anim};`}
         >
           {[...col.images, ...col.images].map((src) => (
             <img src={src} alt="" loading="eager" decoding="async" />
@@ -346,15 +352,15 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     padding: clamp(0.75rem, 2vw, 1.5rem);
     background: var(--bg);
     /* Sits untouched (opacity/visibility/pointer-events all at their
-       plain CSS defaults) for the 2.3s delay, then dissolves into the
-       page underneath over a slow, deliberate 2s fade. */
-    animation: intro-loader-out 2s var(--ease) 2.3s forwards;
+       plain CSS defaults) for the 0.8s delay, then dissolves into the
+       page underneath over a 0.7s fade — 1.5s total. */
+    animation: intro-loader-out 0.7s var(--ease-out) 0.8s forwards;
   }
 
-  /* Each column is just a clipping window onto its own doubled-up,
-     endlessly scrolling stack of images (.intro-track) — the window
-     itself isn't rounded, only the tiles inside it are, so the tiles
-     read as individual cards rather than one long filmstrip. */
+  /* Each column is just a clipping window onto its own doubled-up
+     stack of images (.intro-track) — the window itself isn't rounded,
+     only the tiles inside it are, so the tiles read as individual
+     cards rather than one long filmstrip. */
   .intro-col {
     height: 100%;
     overflow: hidden;
@@ -365,8 +371,13 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     flex-direction: column;
     gap: inherit;
     width: 100%;
-    animation: intro-scroll var(--intro-duration, 8s) linear infinite;
-    animation-direction: var(--intro-direction, normal);
+    /* A steep ease-in, not linear — every column visibly starts slow
+       and rockets toward full speed by the time the fade takes over,
+       rather than scrolling at one constant rate throughout. */
+    animation-name: var(--intro-anim, intro-scroll-up);
+    animation-duration: var(--intro-duration, 1.6s);
+    animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
+    animation-fill-mode: both;
     will-change: transform;
   }
 
@@ -378,27 +389,39 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     border-radius: clamp(14px, 1.8vw, 22px);
   }
 
-  /* The track's own list of images is rendered twice back-to-back in
-     the markup, so translating exactly halfway (-50%) lands on a
-     frame identical to the start — a seamless loop with no jump. */
-  @keyframes intro-scroll {
+  /* Two directions, not one keyframe flipped via animation-direction
+     — reversing a keyframe's playback also reverses how its easing
+     reads (an ease-in curve becomes an ease-out, i.e. decelerating),
+     which would make an "upward" column accelerate but a "downward"
+     one decelerate. Two explicit keyframes let every column use the
+     exact same accelerating curve regardless of which way it scrolls.
+     Each track's image list is rendered twice back-to-back in the
+     markup, so 0%/-50% are visually identical frames. */
+  @keyframes intro-scroll-up {
+    from { transform: translateY(0); }
     to { transform: translateY(-50%); }
   }
 
+  @keyframes intro-scroll-down {
+    from { transform: translateY(-50%); }
+    to { transform: translateY(0); }
+  }
+
   /* pointer-events and visibility are discrete (not numeric)
-     properties, so they flip state partway through the opacity fade
-     rather than tweening — the page underneath becomes scrollable/
-     clickable again right as the fade clears, not only once it
-     finishes. */
+     properties, so they flip state partway through the fade rather
+     than tweening — the page underneath becomes scrollable/clickable
+     again right as it clears, not only once the fade fully finishes.
+     The added blur + scale (rather than a flat opacity cut) is what
+     makes the hand-off itself read as fluid motion instead of a cut. */
   @keyframes intro-loader-out {
-    from { opacity: 1; visibility: visible; pointer-events: auto; }
-    to { opacity: 0; visibility: hidden; pointer-events: none; }
+    from { opacity: 1; visibility: visible; pointer-events: auto; filter: blur(0); transform: scale(1); }
+    to { opacity: 0; visibility: hidden; pointer-events: none; filter: blur(10px); transform: scale(1.04); }
   }
 
   @media (prefers-reduced-motion: reduce) {
     /* site.js removes the loader outright under reduced motion, but
        this is the no-JS fallback: skip straight past it rather than
-       forcing a motionless multi-second wait. */
+       forcing a motionless wait. */
     .intro-loader { animation: none; opacity: 0; visibility: hidden; pointer-events: none; }
     .intro-track { animation: none; }
   }
