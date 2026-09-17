@@ -12,36 +12,37 @@ const base = import.meta.env.BASE_URL;
 // reveal the actual homepage underneath — see [data-intro-loader]
 // below and initIntroLoader() in site.js. Each column's image list is
 // rendered twice back-to-back in the markup so a translateY(-50%)
-// loop is seamless.
+// loop is seamless. One column per project — Michigan ChatGPT, Guide,
+// SureCall — rather than mixing in every case study.
 const introColumns = [
   {
     dir: 'normal',
     duration: '3.2s',
     images: [
-      `${base}images/home/tile-michigan-chatgpt.webp`,
-      `${base}images/guide/03.webp`,
-      `${base}images/home/tile-elink.webp`,
-      `${base}images/about/about-2.webp`,
+      `${base}images/michigan-chatgpt/00-cover.webp`,
+      `${base}images/michigan-chatgpt/02.webp`,
+      `${base}images/michigan-chatgpt/05.webp`,
+      `${base}images/michigan-chatgpt/08.webp`,
     ],
   },
   {
     dir: 'reverse',
     duration: '3.8s',
     images: [
-      `${base}images/home/tile-guide.webp`,
-      `${base}images/elink/02.webp`,
-      `${base}images/home/tile-consulting-work.webp`,
-      `${base}images/about/about-4.webp`,
+      `${base}images/guide/01.webp`,
+      `${base}images/guide/04.webp`,
+      `${base}images/guide/07.webp`,
+      `${base}images/guide/11.webp`,
     ],
   },
   {
     dir: 'normal',
     duration: '3.5s',
     images: [
-      `${base}images/home/tile-surecall.webp`,
-      `${base}images/home/tile-connexu.png`,
-      `${base}images/guide/07.webp`,
-      `${base}images/about/about-1.webp`,
+      `${base}images/surecall/01.webp`,
+      `${base}images/surecall/04.webp`,
+      `${base}images/surecall/07.webp`,
+      `${base}images/surecall/10.webp`,
     ],
   },
 ];
@@ -345,10 +346,9 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     padding: clamp(0.75rem, 2vw, 1.5rem);
     background: var(--bg);
     /* Sits untouched (opacity/visibility/pointer-events all at their
-       plain CSS defaults) for the 2.3s delay, then the fade itself
-       takes exactly 0.7s — a quick, smooth hand-off into the page
-       underneath rather than a long lingering dissolve. */
-    animation: intro-loader-out 0.7s var(--ease) 2.3s forwards;
+       plain CSS defaults) for the 2.3s delay, then dissolves into the
+       page underneath over a slow, deliberate 2s fade. */
+    animation: intro-loader-out 2s var(--ease) 2.3s forwards;
   }
 
   /* Each column is just a clipping window onto its own doubled-up,
@@ -508,6 +508,12 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     line-height: 1.65;
     color: var(--code-green);
     animation: hero-typing var(--code-duration) steps(var(--code-chars, 1), end) var(--code-delay) both;
+    /* Held paused until the opening animation (see .intro-loader
+       above) has actually handed off to the page — see html.js.intro-done
+       below (site.js sets intro-done once that fade finishes) — so the
+       typing effect isn't half-finished behind the overlay by the time
+       anyone can see it. */
+    animation-play-state: paused;
   }
 
   .hero-code-line.is-comment {
@@ -520,6 +526,19 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     animation:
       hero-typing var(--code-duration) steps(var(--code-chars, 1), end) var(--code-delay) both,
       hero-caret 0.8s step-end var(--code-total) infinite;
+    animation-play-state: paused;
+  }
+
+  /* No JS means intro-done can never arrive — show the finished text
+     outright rather than sitting paused at width:0 forever. */
+  html:not(.js) .hero-code-line {
+    animation: none;
+    width: var(--code-ch-width);
+    border-right-color: transparent;
+  }
+
+  html.js.intro-done .hero-code-line {
+    animation-play-state: running;
   }
 
   @keyframes hero-typing {
@@ -753,9 +772,11 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
      its dot, the way Luxo Jr. takes the dot of the "i". .j-hop is the
      positioning anchor (sized to the letter itself, so this scales
      with the heading's responsive font-size); .lamp-jump plays the
-     hop-in once, triggered by the same scroll-reveal system as the
-     rest of the section (html.js + [data-reveal].is-in), and holds
-     its landed position afterward instead of looping. */
+     hop-in once, gated behind both the section's own scroll-reveal
+     ([data-reveal].is-in) and the opening animation having already
+     handed off to the page (html.intro-done, set once the intro
+     loader's fade finishes — see site.js), and holds its landed
+     position afterward instead of looping. */
   .j-hop {
     position: relative;
     display: inline-block;
@@ -774,7 +795,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     animation-play-state: paused;
   }
 
-  html.js .section-head.is-in .lamp-jump {
+  html.js.intro-done .section-head.is-in .lamp-jump {
     animation-play-state: running;
   }
 
@@ -799,7 +820,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     animation-play-state: paused;
   }
 
-  html.js .section-head.is-in .lamp-head {
+  html.js.intro-done .section-head.is-in .lamp-head {
     animation-play-state: running;
   }
 
@@ -833,7 +854,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     animation-play-state: paused;
   }
 
-  html.js .section-head.is-in .lamp-spotlight {
+  html.js.intro-done .section-head.is-in .lamp-spotlight {
     animation-play-state: running;
   }
 

@@ -366,16 +366,22 @@ function initMagnetic() {
 
 /* Opening animation --------------------------------------------------
    [data-intro-loader] (see index.astro) fades itself out on a pure-CSS
-   timeline — this just locks page scroll for that stretch and tears
-   the markup down once it's done, so it doesn't linger in the DOM or
-   the accessibility tree. Under reduced motion, skip it outright
-   rather than forcing a motionless multi-second wait. */
+   timeline — this just locks page scroll for that stretch, tears the
+   markup down once it's done, and flags html.intro-done so a couple
+   of the hero's own animations (the typed code block, the lamp
+   easter egg — both gated on that class in index.astro's styles)
+   only start once the handoff to the actual page has happened,
+   instead of running out behind the overlay. Under reduced motion,
+   skip the overlay outright rather than forcing a motionless
+   multi-second wait — intro-done still gets set so nothing gated on
+   it is left waiting forever. */
 
 function initIntroLoader() {
   const loader = document.querySelector('[data-intro-loader]');
   if (!loader) return;
 
   if (prefersReduced()) {
+    document.documentElement.classList.add('intro-done');
     loader.remove();
     return;
   }
@@ -387,14 +393,17 @@ function initIntroLoader() {
     if (cleared) return;
     cleared = true;
     document.documentElement.classList.remove('intro-lock');
+    document.documentElement.classList.add('intro-done');
     loader.remove();
   };
 
   loader.addEventListener('animationend', clear, { once: true });
   // Safety net, same idea as initReveal's: if the animationend event
   // never fires for any reason, don't leave the page permanently
-  // locked behind the overlay.
-  window.setTimeout(clear, 4500);
+  // locked behind the overlay (or its gated animations waiting
+  // forever). Comfortably past the CSS timeline's own 4.3s total
+  // (2.3s hold + 2s fade).
+  window.setTimeout(clear, 5500);
 }
 
 /* Boot -------------------------------------------------------------- */
