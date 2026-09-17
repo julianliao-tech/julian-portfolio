@@ -172,17 +172,10 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     <ol class="work-grid">
       {cards.map((card, i) => {
         const isFeatured = i === 0;
-        // Wide, narrow, narrow, repeat — every 3rd non-featured card
-        // spans 2 columns instead of 1. That rhythm (span 2 + span 1 +
-        // span 1 = 4, exactly two rows of a 2-col grid, and exactly one
-        // row of a 3-col grid) tiles the remaining cards into a clean
-        // rectangle with no leftover gaps, without pinning every tile
-        // to the same size the way the old bento grid did.
-        const isLarge = !isFeatured && (i - 1) % 3 === 0;
         const cardDelayMs = isFeatured ? 0 : (i % 2) * 90;
         return (
           <li
-            class:list={['bento-item', 'rise', { 'is-featured': isFeatured, 'is-large': isLarge }]}
+            class:list={['bento-item', 'rise', { 'is-featured': isFeatured }]}
             style={`--d: ${cardDelayMs}ms`}
           >
             <a class="card" href={card.href}>
@@ -462,15 +455,14 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   }
 
   /* Work grid --------------------------------------------------------
-     The featured item (.is-featured) always spans the full row;
-     everything else flows through a wide/narrow/narrow rhythm
-     (.is-large, see the JS above) that tiles cleanly into a rectangle
-     at both the 2- and 3-column breakpoints below, with `dense`
-     packing as a safety net against gaps if the card count ever
-     doesn't divide evenly. Thumbnails get an actual radius (unlike
-     the rest of the site's zeroed --r-* tokens) so the tiles still
-     read as considered cards rather than a flourish-free display
-     grid, even without the old full bento layout. */
+     The featured item (.is-featured) always spans the full row on its
+     own; everything else sits in a plain, even grid — one column on
+     phones, an even 2x2 square of equally-sized tiles from tablet up
+     — so the whole section composes as a clean, symmetrical rectangle
+     rather than a bento layout of mismatched sizes. Thumbnails get an
+     actual radius (unlike the rest of the site's zeroed --r-* tokens)
+     so the tiles still read as considered cards rather than a
+     flourish-free display grid. */
   .work-grid {
     list-style: none;
     margin: 0;
@@ -497,10 +489,9 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     border-radius: clamp(14px, 1.8vw, 22px);
     border: 1px solid var(--line);
     background: var(--bg-elev);
-    /* Fixed (not aspect-ratio-driven) so every tile in a bento row —
-       whether it's a single-column or a wide .is-large tile — bottoms
-       out at the same height instead of the wide tile growing taller
-       at 2x the width. */
+    /* Fixed (not aspect-ratio-driven) so every tile in the 2x2 grid
+       bottoms out at the same height regardless of its own image's
+       native proportions. */
     height: clamp(220px, 24vw, 340px);
   }
 
@@ -853,17 +844,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   @media (min-width: 700px) {
     .work-grid {
       grid-template-columns: repeat(2, 1fr);
-      grid-auto-flow: row dense;
       column-gap: clamp(2rem, 4vw, 3rem);
-    }
-    .bento-item.is-large {
-      grid-column: span 2;
-    }
-  }
-
-  @media (min-width: 1080px) {
-    .work-grid {
-      grid-template-columns: repeat(3, 1fr);
     }
   }
 
