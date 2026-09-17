@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const base = import.meta.env.BASE_URL;
 const entry = await getEntry('projects', 'michigan-chatgpt');
-const { role, team, timeline, skills, tools, tileImage, tileAlt } = entry!.data;
+const { role, team, timeline, skills, tools, tileAlt } = entry!.data;
 
 const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const idx = all.findIndex((p) => p.id === 'michigan-chatgpt');
@@ -48,7 +48,7 @@ const facts = [
 <BaseLayout title="Michigan ChatGPT — Julian Liao">
   <article class="mgpt">
     <div class="hero-band">
-      <img src={tileImage} alt={tileAlt} />
+      <img src={img('00-cover.webp')} alt={tileAlt} />
     </div>
 
     <div class="wrap">
