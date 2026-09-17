@@ -245,6 +245,41 @@ function initHoverVideo() {
   });
 }
 
+/* First-frame poster --------------------------------------------------
+   [data-show-first-frame] videos skip the separate poster image and
+   show the clip's own opening frame at rest instead. A muted video
+   with no `autoplay` just renders blank until it plays, so this forces
+   one frame to decode by playing and immediately pausing again — runs
+   once metadata/frame data is available, independent of hover or
+   touch, so every visitor sees a frame instead of nothing. */
+
+function initFirstFramePoster() {
+  const videos = Array.from(document.querySelectorAll('[data-show-first-frame]'));
+  if (!videos.length) return;
+
+  videos.forEach((video) => {
+    const showFirstFrame = () => {
+      video
+        .play()
+        .then(() => {
+          video.pause();
+          video.currentTime = 0;
+        })
+        .catch(() => {
+          /* Browser declined the programmatic play; the video is left
+             on whatever frame it has (usually black) rather than
+             fighting it further. */
+        });
+    };
+
+    if (video.readyState >= 2) {
+      showFirstFrame();
+    } else {
+      video.addEventListener('loadeddata', showFirstFrame, { once: true });
+    }
+  });
+}
+
 /* Cursor-tracked hover: 3D tilt + magnetic pull ---------------------
    [data-tilt] elements rotate toward the cursor (card thumbnails,
    photo frames); [data-magnetic] elements nudge slightly toward it
@@ -333,6 +368,7 @@ function boot() {
   initTilt();
   initMagnetic();
   initHoverVideo();
+  initFirstFramePoster();
 }
 
 if (document.readyState === 'loading') {
