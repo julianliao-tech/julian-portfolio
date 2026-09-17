@@ -218,11 +218,12 @@ function initCursor() {
    simply keep showing the poster frame — no autoplay, no extra
    mobile data spent on a video nobody asked to see move.
 
-   [data-idle-at-end] videos rewind to their last frame instead of
-   their first on leave — their poster image IS that last frame, but a
-   browser only shows `poster` before a video has ever played, so
-   without this the tile would fall back to frame one (not the poster)
-   the moment a visitor hovers away for the first time. */
+   A card can also carry a sibling [data-idle-frame] image (see
+   .card-media-idle-frame in index.astro) — a plain, already-decoded
+   picture of the video's own last frame that crossfades in on top of
+   it here on leave. That's what makes the "return to cover" instant:
+   no re-seeking the video itself, which would mean fetching/decoding
+   that point in the file again and a visible stall. */
 
 function initHoverVideo() {
   if (!canHover()) return;
@@ -231,7 +232,6 @@ function initHoverVideo() {
 
   videos.forEach((video) => {
     const card = video.closest('a') || video;
-    const idleAtEnd = video.hasAttribute('data-idle-at-end');
 
     const play = () => {
       video.currentTime = 0;
@@ -242,11 +242,7 @@ function initHoverVideo() {
     };
     const stop = () => {
       video.pause();
-      /* 0.15s shy of the true end, matching how the poster image
-         itself was captured — seeking to the exact last frame risks
-         landing on a black/undecodable frame in some browsers. */
-      video.currentTime =
-        idleAtEnd && Number.isFinite(video.duration) ? Math.max(0, video.duration - 0.15) : 0;
+      video.currentTime = 0;
     };
 
     card.addEventListener('pointerenter', play);

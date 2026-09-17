@@ -164,7 +164,6 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
                     class="reveal-zoom"
                     data-hover-video
                     data-show-first-frame={card.showsFirstFrame || undefined}
-                    data-idle-at-end={card.idlesAtEnd || undefined}
                     src={card.video}
                     poster={card.showsFirstFrame ? undefined : card.image}
                     muted
@@ -175,6 +174,9 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
                   />
                 ) : (
                   <img class="reveal-zoom" src={card.image} alt={card.alt} loading="lazy" decoding="async" />
+                )}
+                {card.idlesAtEnd && (
+                  <img class="card-media-idle-frame" src={card.image} alt="" aria-hidden="true" />
                 )}
                 {isFeatured && <span class="featured-badge">Featured</span>}
                 <span class="card-media-title">{card.title}</span>
@@ -479,6 +481,27 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   .card:focus-visible .card-media video {
     transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.14);
     transition: transform 0.15s var(--ease-out);
+  }
+
+  /* Michigan ChatGPT's tile: a plain, already-decoded image sitting on
+     top of the video at rest, so returning to the "cover" after a
+     hover is an instant opacity crossfade — no seeking the video back
+     to its last frame (which meant re-fetching/decoding that point in
+     the file and a visible stall) and no network wait, since the
+     browser already has this exact file from the video's own poster
+     attribute. */
+  .card-media img.card-media-idle-frame {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    object-fit: contain;
+    pointer-events: none;
+    transition: opacity 0.25s var(--ease);
+  }
+
+  .card:hover .card-media img.card-media-idle-frame,
+  .card:focus-visible .card-media img.card-media-idle-frame {
+    opacity: 0;
   }
 
   /* Featured card ---------------------------------------------------
