@@ -563,7 +563,11 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
 
   @keyframes lamp-look-down {
     0% { transform: rotate(0deg); }
-    100% { transform: rotate(180deg); }
+    /* 150deg, not a flat 180 — matches the spotlight cone's own
+       rotate(-30deg) tilt below, so the head is actually aimed where
+       the light is pointing rather than straight down while the beam
+       falls off to one side. */
+    100% { transform: rotate(150deg); }
   }
 
   .lamp-spotlight {
@@ -754,7 +758,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     /* No hop, just the lamp already resting where it lands, head
        bowed and spotlight lit. */
     .lamp-jump { animation: none; opacity: 1; transform: translate(-50%, 0); }
-    .lamp-head { animation: none; transform: rotate(180deg); }
+    .lamp-head { animation: none; transform: rotate(150deg); }
     .lamp-spotlight { animation: none; opacity: 1; }
   }
 </style>
