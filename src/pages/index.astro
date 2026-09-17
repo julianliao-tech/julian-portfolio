@@ -7,23 +7,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL;
 
 // One-time opening animation: a fixed, full-viewport 3-column grid of
-// project imagery, shown for 3.5s total before fading away to reveal
+// project imagery, shown for 4.5s total before fading away to reveal
 // the actual homepage underneath — see [data-intro-loader] below and
-// initIntroLoader() in site.js. Each column scrolls once (not
-// looping — the window's too short for a loop to ever matter) along
-// an exponential-in curve, so it visibly starts slow and rockets
-// toward full speed rather than moving at one constant rate; `anim`
-// picks the scroll direction (see the two @keyframes below — a
-// shared easing curve on both is what keeps every column reading as
-// *accelerating* regardless of which way it scrolls). Each column's
-// image list is rendered twice back-to-back so the -50%/0 travel
-// distance still has real content the whole way, even mid-acceleration.
-// One column per project — Michigan ChatGPT, Guide, SureCall — rather
-// than mixing in every case study.
+// initIntroLoader() in site.js. Each column scrolls once (not looping)
+// along a strong exponential-in curve, covering nearly the whole
+// height of its doubled-up image list (see --92%/0% in the
+// @keyframes below) so by the end it's genuinely whipping past —
+// not just a mild ramp. Durations are all comfortably shorter than
+// the 3s hold below, so every column visibly finishes accelerating
+// (and sits on that last, fastest-reached frame) before the fade
+// ever starts, instead of the fade cutting the ramp-up off early.
+// `anim` picks the scroll direction — see the two @keyframes below;
+// a shared easing curve on both is what keeps every column reading
+// as *accelerating* regardless of which way it scrolls. One column
+// per project — Michigan ChatGPT, Guide, SureCall — rather than
+// mixing in every case study.
 const introColumns = [
   {
     anim: 'intro-scroll-up',
-    duration: '1.9s',
+    duration: '2.6s',
     images: [
       `${base}images/michigan-chatgpt/00-cover.webp`,
       `${base}images/michigan-chatgpt/02.webp`,
@@ -33,7 +35,7 @@ const introColumns = [
   },
   {
     anim: 'intro-scroll-down',
-    duration: '2.2s',
+    duration: '2.9s',
     images: [
       `${base}images/guide/01.webp`,
       `${base}images/guide/04.webp`,
@@ -43,7 +45,7 @@ const introColumns = [
   },
   {
     anim: 'intro-scroll-up',
-    duration: '2.05s',
+    duration: '2.75s',
     images: [
       `${base}images/surecall/01.webp`,
       `${base}images/surecall/04.webp`,
@@ -352,9 +354,14 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     padding: clamp(0.75rem, 2vw, 1.5rem);
     background: var(--bg);
     /* Sits untouched (opacity/visibility/pointer-events all at their
-       plain CSS defaults) for the 2s delay, then dissolves into the
-       page underneath over a 1.5s fade — 3.5s total. */
-    animation: intro-loader-out 1.5s var(--ease-out) 2s forwards;
+       plain CSS defaults) for the 3s hold — long enough that every
+       column (see .intro-track's durations) has already finished
+       accelerating and come to rest on its last frame — then a calm,
+       nothing-else-moving 1.5s fade into the page underneath. 4.5s
+       total. Keeping the fade free of any concurrent motion (no
+       column still scrolling, no blur/scale on the loader itself) is
+       what makes it read as a clean dissolve instead of a jump cut. */
+    animation: intro-loader-out 1.5s var(--ease-out) 3s forwards;
   }
 
   /* Each column is just a clipping window onto its own doubled-up
@@ -371,18 +378,17 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     flex-direction: column;
     gap: inherit;
     width: 100%;
-    /* A steep ease-in, not linear — every column visibly starts slow
-       and speeds up toward the end, rather than scrolling at one
-       constant rate throughout. Duration is deliberately kept well
-       under the loader's 2s hold (not stretched across the full
-       3.5s timeline) so the accelerating half of the curve actually
-       plays out on screen instead of being the still-nearly-flat
-       opening portion of a much longer curve — that mismatch (a
-       multi-second ease-in on a duration longer than the visible
-       window) is what made it read as "barely speeds up" before. */
+    /* A hard exponential-in, not linear — every column crawls at
+       first and is whipping past by the end. Two things make that
+       finish actually read as fast: the travel distance covers
+       nearly the whole doubled image list (-92%, not just -50% —
+       there's no seamless-loop constraint to honor since this only
+       ever plays once), and the duration is kept shorter than the
+       loader's 3s hold so the fastest part of the curve fully plays
+       out on screen instead of being cut short by the fade. */
     animation-name: var(--intro-anim, intro-scroll-up);
-    animation-duration: var(--intro-duration, 2s);
-    animation-timing-function: cubic-bezier(0.64, 0, 0.78, 0);
+    animation-duration: var(--intro-duration, 2.6s);
+    animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
     animation-fill-mode: both;
     will-change: transform;
   }
@@ -400,28 +406,31 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
      reads (an ease-in curve becomes an ease-out, i.e. decelerating),
      which would make an "upward" column accelerate but a "downward"
      one decelerate. Two explicit keyframes let every column use the
-     exact same accelerating curve regardless of which way it scrolls.
-     Each track's image list is rendered twice back-to-back in the
-     markup, so 0%/-50% are visually identical frames. */
+     exact same accelerating curve regardless of which way it scrolls. */
   @keyframes intro-scroll-up {
     from { transform: translateY(0); }
-    to { transform: translateY(-50%); }
+    to { transform: translateY(-92%); }
   }
 
   @keyframes intro-scroll-down {
-    from { transform: translateY(-50%); }
+    from { transform: translateY(-92%); }
     to { transform: translateY(0); }
   }
 
-  /* pointer-events and visibility are discrete (not numeric)
-     properties, so they flip state partway through the fade rather
+  /* A plain opacity fade, nothing else — no blur/scale layered on
+     top. That combination (an expensive animated filter over a
+     large, image-heavy element, stacked on top of still-moving
+     children) was the actual cause of the fade reading as abrupt:
+     it's costly enough to drop frames on a lot of hardware, which
+     looks like a jump rather than a dissolve no matter how long the
+     declared duration is. pointer-events/visibility are discrete
+     (not numeric) properties, so they flip partway through rather
      than tweening — the page underneath becomes scrollable/clickable
-     again right as it clears, not only once the fade fully finishes.
-     The added blur + scale (rather than a flat opacity cut) is what
-     makes the hand-off itself read as fluid motion instead of a cut. */
+     again right as it visually clears, not only once the fade
+     finishes outright. */
   @keyframes intro-loader-out {
-    from { opacity: 1; visibility: visible; pointer-events: auto; filter: blur(0); transform: scale(1); }
-    to { opacity: 0; visibility: hidden; pointer-events: none; filter: blur(10px); transform: scale(1.04); }
+    from { opacity: 1; visibility: visible; pointer-events: auto; }
+    to { opacity: 0; visibility: hidden; pointer-events: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {

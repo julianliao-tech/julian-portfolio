@@ -401,9 +401,9 @@ function initIntroLoader() {
   // Safety net, same idea as initReveal's: if the animationend event
   // never fires for any reason, don't leave the page permanently
   // locked behind the overlay (or its gated animations waiting
-  // forever). Comfortably past the CSS timeline's own 3.5s total
-  // (2s hold + 1.5s fade).
-  window.setTimeout(clear, 5000);
+  // forever). Comfortably past the CSS timeline's own 4.5s total
+  // (3s hold + 1.5s fade).
+  window.setTimeout(clear, 6000);
 }
 
 /* Boot -------------------------------------------------------------- */
