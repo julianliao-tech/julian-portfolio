@@ -8,6 +8,7 @@ tools: ["Figma", "FigJam"]
 skills: ["Wireframing", "Prototyping", "Design Systems", "Client Work"]
 tileImage: "/julian-portfolio/images/home/tile-dominos.webp"
 tileAlt: "Domino's Ann Arbor redesigned website homepage"
+summary: "A redesigned ordering website for the Ann Arbor franchise"
 ---
 
 ## Context

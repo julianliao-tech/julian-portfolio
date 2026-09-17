@@ -16,6 +16,8 @@ const projects = defineCollection({
     // Image shown on the Home page project grid.
     tileImage: z.string(),
     tileAlt: z.string(),
+    // One-line project description shown on the Home page tile.
+    summary: z.string(),
     // Slug + title of a page to link to as "next" when this project isn't
     // the last one and the next one isn't a content-collection entry
     // (used once, for Dominos -> Consulting Work).

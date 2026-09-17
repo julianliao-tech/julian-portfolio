@@ -8,6 +8,7 @@ tools: ["Figma", "Slack", "FigJam", "Python", "Spotipy (API)"]
 skills: ["Wireframing", "Prototyping", "Design Systems", "Interaction Design", "Information Architecture"]
 tileImage: "/julian-portfolio/images/home/tile-timecapsule-tunes.webp"
 tileAlt: "Timecapsule Tunes app screen showing music-based group discovery"
+summary: "Matching people into friend groups through shared music taste"
 ---
 
 ## Context

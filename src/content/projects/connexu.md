@@ -8,6 +8,7 @@ tools: ["Google Docs", "Google Sheets"]
 skills: ["Heuristic Evaluation", "Usability Testing", "Information Architecture", "Client Work"]
 tileImage: "/julian-portfolio/images/home/tile-connexu.png"
 tileAlt: "connexU logo on a dark purple gradient background with the tagline 'B2B Events for Senior Decision-Makers'"
+summary: "An end-to-end rebuild of a B2B events marketplace site in Sydney"
 ---
 
 ## Context

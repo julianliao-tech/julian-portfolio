@@ -8,6 +8,7 @@ tools: ["PowerPoint", "Excel"]
 skills: ["Business Case Development", "Stakeholder Analysis", "Project Planning", "Risk Management", "Work Breakdown Structure"]
 tileImage: "/julian-portfolio/images/home/tile-elink.webp"
 tileAlt: "Chart showing ESADE's internship landing rate flat at 35% while IE Business School and Bocconi climb to 45–53%"
+summary: "A business case and PM plan to close Esade's internship gap"
 nextOverrideHref: "work/consulting-work"
 nextOverrideTitle: "Consulting Work"
 ---

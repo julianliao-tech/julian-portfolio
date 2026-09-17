@@ -8,6 +8,7 @@ tools: ["Figma", "FigJam"]
 skills: ["Wireframing", "Prototyping", "Design Systems", "Interaction Design", "User Research"]
 tileImage: "/julian-portfolio/images/home/tile-guide.webp"
 tileAlt: "Guide app screens showing an accessible navigation route"
+summary: "A wheelchair-accessible navigation app for safer, independent travel"
 ---
 
 ## Context

@@ -18,6 +18,7 @@ const consultingWork = {
   title: 'Consulting Work',
   tileImage: `${base}images/home/tile-consulting-work.webp`,
   tileAlt: 'Consulting project thumbnails: Q-Bakehouse and MCBC Pink Moon',
+  summary: 'Freelance branding and strategy work for two small businesses',
 };
 
 // Opt-in, zero-config hover video: drop `tile-<slug>.mp4` next to the
@@ -56,6 +57,7 @@ const cards = [
   ...projects.map((p) => ({
     href: `${base}work/${p.id}/`,
     title: p.data.title,
+    summary: p.data.summary,
     image: p.data.tileImage,
     alt: p.data.tileAlt,
     video: hoverVideo(p.id),
@@ -66,6 +68,7 @@ const cards = [
   {
     href: `${base}work/${consultingWork.slug}/`,
     title: consultingWork.title,
+    summary: consultingWork.summary,
     image: consultingWork.tileImage,
     alt: consultingWork.tileAlt,
     video: hoverVideo(consultingWork.slug),
@@ -98,9 +101,11 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
           UX designer focused on <em class="serif">intuitive</em> and{' '}
           <em class="serif">accessible</em> user experiences.
         </p>
-        <p class="hero-school rise" style="--d: 380ms">
-          <span class="pip" aria-hidden="true"></span>Student @ The University of Michigan
-        </p>
+        <ul class="hero-credentials rise" style="--d: 380ms">
+          <li class="hero-chip"><span class="pip" aria-hidden="true"></span>Student @ The University of Michigan</li>
+          <li class="hero-chip"><span class="pip" aria-hidden="true"></span>UX Intern in Sydney, Australia &amp; Silicon Valley</li>
+          <li class="hero-chip"><span class="pip" aria-hidden="true"></span>Studied UX &amp; Project Management in Barcelona, Spain</li>
+        </ul>
       </div>
 
       <div class="hero-portrait rise" style="--d: 300ms">
@@ -179,7 +184,10 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
                   <img class="card-media-idle-frame" src={card.image} alt="" aria-hidden="true" />
                 )}
                 {isFeatured && <span class="featured-badge">Featured</span>}
-                <span class="card-media-title">{card.title}</span>
+                <span class="card-media-caption">
+                  <span class="card-media-heading">{card.title}</span>
+                  <span class="card-media-sub">{card.summary}</span>
+                </span>
               </span>
               <span class="card-foot">
                 <span class="card-index" data-count-to={i + 1}>{pad(i + 1)}</span>
@@ -268,7 +276,16 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     animation-delay: 1.2s;
   }
 
-  .hero-school {
+  .hero-credentials {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .hero-chip {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -650,38 +667,59 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     100% { transform: translate(-50%, 0%) rotate(0deg) scaleY(1); opacity: 1; }
   }
 
-  /* Project name lives on the thumbnail itself now, not below it —
-     a scrim (rather than the page's own --ink text color, which
-     disappears or clashes depending on what's under it) guarantees
-     the white text reads on any screenshot or video frame. Hidden
-     until hover/focus so the thumbnail reads as pure image at rest. */
-  .card-media-title {
+  /* Project name + one-line summary live on the thumbnail itself, not
+     below it — a scrim (rather than the page's own --ink text color,
+     which disappears or clashes depending on what's under it)
+     guarantees the white text reads on any screenshot or video frame.
+     Visible at rest and faded out on hover/focus, so hovering clears
+     the thumbnail entirely to let the image or video speak for itself. */
+  .card-media-caption {
     position: absolute;
     inset-inline: 0;
     bottom: 0;
     z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
     padding: clamp(1.5rem, 4vw, 2.5rem) clamp(0.9rem, 2vw, 1.25rem) clamp(0.85rem, 2vw, 1.1rem);
     background: linear-gradient(to top, rgba(10, 8, 4, 0.75), rgba(10, 8, 4, 0) 100%);
+    opacity: 1;
+    transition: opacity 0.35s var(--ease);
+    pointer-events: none;
+  }
+
+  .card:hover .card-media-caption,
+  .card:focus-visible .card-media-caption {
+    opacity: 0;
+  }
+
+  .card-media-heading {
     font-family: var(--font-display);
     font-size: clamp(1.3rem, 2.3vw, 1.85rem);
     letter-spacing: -0.01em;
     line-height: 1.15;
     color: #fff;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
-    opacity: 0;
-    transform: translateY(6px);
-    transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
-    pointer-events: none;
   }
 
-  .card:hover .card-media-title,
-  .card:focus-visible .card-media-title {
-    opacity: 1;
-    transform: translateY(0);
+  .card-media-sub {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: var(--step-small);
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
   }
 
-  .is-featured .card-media-title {
+  .is-featured .card-media-heading {
     font-size: clamp(1.85rem, 3.4vw, 2.75rem);
+  }
+
+  .is-featured .card-media-sub {
+    font-size: var(--step-body);
+  }
+
+  .is-featured .card-media-caption {
     padding-inline: clamp(0.85rem, 2vw, 1.25rem);
   }
 

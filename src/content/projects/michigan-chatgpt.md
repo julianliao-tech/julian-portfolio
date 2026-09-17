@@ -8,6 +8,7 @@ tools: ["Figma", "FigJam"]
 skills: ["Wireframing", "Prototyping", "Design Systems", "Interaction Design", "User Research"]
 tileImage: "/julian-portfolio/images/home/tile-michigan-chatgpt.webp"
 tileAlt: "Michigan ChatGPT redesigned homepage with tool cards"
+summary: "Redesigning U-M's AI workspace into one clear, trusted homepage"
 ---
 
 ## Context

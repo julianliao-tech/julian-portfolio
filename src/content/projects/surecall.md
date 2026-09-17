@@ -8,6 +8,7 @@ tools: ["Figma", "Slack", "FigJam"]
 skills: ["Wireframing", "Prototyping", "Design Systems", "Interaction Design", "Information Architecture"]
 tileImage: "/julian-portfolio/images/home/tile-surecall.webp"
 tileAlt: "SureCall app screen showing 5G signal strength"
+summary: "A field tool for installing and testing Verizon 5G boosters"
 ---
 
 ## Context
