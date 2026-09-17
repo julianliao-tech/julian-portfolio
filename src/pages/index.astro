@@ -5,6 +5,30 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const base = import.meta.env.BASE_URL;
+
+// Hero credentials, written out as one object literal (one grouped
+// "line of code" rather than a row of separate badges) and typed out
+// line by line — each line's own length sets how long its typing
+// animation takes and when the next line's delay starts, so the
+// whole block reads left-to-right, top-to-bottom like a real terminal
+// boot rather than every line typing in lockstep.
+const heroCodeSource = [
+  { text: '// about julian', isComment: true },
+  { text: 'const julian = {' },
+  { text: '  school: "University of Michigan",' },
+  { text: '  internships: ["Sydney, Australia", "Silicon Valley"],' },
+  { text: '  studiedAbroad: "UX + PM, Barcelona" };' },
+];
+const CODE_START_MS = 700;
+const CODE_MS_PER_CHAR = 26;
+let codeCursorMs = CODE_START_MS;
+const heroCodeLines = heroCodeSource.map((line) => {
+  const durationMs = Math.max(1, line.text.length) * CODE_MS_PER_CHAR;
+  const delayMs = codeCursorMs;
+  codeCursorMs += durationMs;
+  return { ...line, chars: line.text.length, delayMs, durationMs };
+});
+const heroCodeTotalMs = codeCursorMs;
 const sortedProjects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 // Michigan ChatGPT leads the grid as a standalone, highlighted feature —
 // everything else keeps its normal order behind it.
@@ -101,11 +125,17 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
           UX designer focused on <em class="serif">intuitive</em> and{' '}
           <em class="serif">accessible</em> user experiences.
         </p>
-        <ul class="hero-credentials rise" style="--d: 380ms">
-          <li class="hero-chip"><span class="pip" aria-hidden="true"></span>Student @ The University of Michigan</li>
-          <li class="hero-chip"><span class="pip" aria-hidden="true"></span>UX Intern in Sydney, Australia &amp; Silicon Valley</li>
-          <li class="hero-chip"><span class="pip" aria-hidden="true"></span>Studied UX &amp; Project Management in Barcelona, Spain</li>
-        </ul>
+        <div class="hero-code-box rise" style="--d: 380ms">
+          {heroCodeLines.map((line, idx) => (
+            <div
+              class:list={[
+                'hero-code-line',
+                { 'is-comment': line.isComment, 'is-last': idx === heroCodeLines.length - 1 },
+              ]}
+              style={`--code-chars: ${line.chars}; --code-delay: ${line.delayMs}ms; --code-duration: ${line.durationMs}ms; --code-total: ${heroCodeTotalMs}ms`}
+            >{line.text}</div>
+          ))}
+        </div>
       </div>
 
       <div class="hero-portrait rise" style="--d: 300ms">
@@ -276,36 +306,56 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     animation-delay: 1.2s;
   }
 
-  .hero-credentials {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+  /* Bio credentials read as one object literal in a little code
+     snippet instead of a row of separate badges. Each .hero-code-line
+     types itself out via the classic width 0 -> Nch steps() reveal
+     (Nch, not %, since a percentage has nothing to resolve against on
+     a nowrap block sized by its own content) with a per-line delay
+     computed in the frontmatter script, so lines type in sequence —
+     only .is-last keeps a blinking cursor once everything's done. */
+  .hero-code-box {
+    --code-green: #1a5c3a;
+    display: inline-block;
+    max-width: 100%;
     margin: 0;
-    padding: 0;
-  }
-
-  .hero-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: var(--step-micro);
-    color: var(--ink-soft);
-    margin: 0;
-    padding: 0.35rem 0.85rem 0.35rem 0.7rem;
+    padding: 0.7rem 1rem;
     border: 1px solid var(--line);
-    border-radius: var(--r-full);
-    background: rgba(16, 16, 16, 0.03);
+    border-radius: var(--r-lg);
+    background: var(--bg-elev);
+    overflow-x: auto;
   }
 
-  .pip {
-    width: 6px;
-    height: 6px;
-    border-radius: 999px;
-    background: var(--accent);
-    box-shadow: 0 0 0 4px var(--accent-soft);
+  .hero-code-line {
+    --code-ch-width: calc(var(--code-chars, 0) * 1ch);
+    width: 0;
+    max-width: var(--code-ch-width);
+    overflow: hidden;
+    white-space: pre;
+    font-family: var(--font-mono);
+    font-size: clamp(0.72rem, 1.4vw, 0.85rem);
+    line-height: 1.6;
+    color: var(--code-green);
+    animation: hero-typing var(--code-duration) steps(var(--code-chars, 1), end) var(--code-delay) both;
+  }
+
+  .hero-code-line.is-comment {
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+
+  .hero-code-line.is-last {
+    border-right: 2px solid var(--code-green);
+    animation:
+      hero-typing var(--code-duration) steps(var(--code-chars, 1), end) var(--code-delay) both,
+      hero-caret 0.8s step-end var(--code-total) infinite;
+  }
+
+  @keyframes hero-typing {
+    to { width: var(--code-ch-width); }
+  }
+
+  @keyframes hero-caret {
+    50% { border-right-color: transparent; }
   }
 
   /* The illustration is a transparent cut-out, so it sits straight on
@@ -847,5 +897,10 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     .lamp-jump { animation: none; opacity: 1; transform: translate(-50%, 0); }
     .lamp-head { animation: none; transform: rotate(150deg); }
     .lamp-spotlight { animation: none; opacity: 1; }
+    .hero-code-line {
+      animation: none;
+      width: var(--code-ch-width);
+      border-right-color: transparent;
+    }
   }
 </style>
