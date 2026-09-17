@@ -182,11 +182,11 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
       {cards.map((card, i) => {
         const isFeatured = i === 0;
         const isLarge = !isFeatured && (i - 1) % 4 === 0;
+        const cardDelayMs = isFeatured ? 0 : (i % 2) * 90;
         return (
           <li
-            class:list={['bento-item', { 'is-featured': isFeatured, 'is-large': isLarge }]}
-            data-reveal
-            data-reveal-delay={isFeatured ? 0 : (i % 2) * 90}
+            class:list={['bento-item', 'rise', { 'is-featured': isFeatured, 'is-large': isLarge }]}
+            style={`--d: ${cardDelayMs}ms`}
           >
             <a class="card" href={card.href}>
               <span
@@ -196,7 +196,6 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
               >
                 {card.video ? (
                   <video
-                    class="reveal-zoom"
                     data-hover-video
                     data-show-first-frame={card.showsFirstFrame || undefined}
                     src={card.video}
@@ -208,7 +207,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
                     aria-hidden="true"
                   />
                 ) : (
-                  <img class="reveal-zoom" src={card.image} alt={card.alt} loading="lazy" decoding="async" />
+                  <img src={card.image} alt={card.alt} loading="lazy" decoding="async" />
                 )}
                 {card.idlesAtEnd && (
                   <img class="card-media-idle-frame" src={card.image} alt="" aria-hidden="true" />
@@ -246,7 +245,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   .hero {
     position: relative;
     isolation: isolate;
-    padding-block: clamp(1.25rem, 3vw, 2rem) clamp(1rem, 2vw, 1.5rem);
+    padding-block: clamp(1.25rem, 3vw, 2rem) clamp(1.5rem, 3vw, 2.5rem);
     overflow: hidden;
   }
 
@@ -438,7 +437,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
 
   /* Work grid ------------------------------------------------------ */
   .work {
-    padding-block: clamp(0.75rem, 2vw, 1.5rem) var(--space-6);
+    padding-block: clamp(1.5rem, 3vw, 2.5rem) var(--space-6);
   }
 
   /* Work grid --------------------------------------------------------
@@ -813,18 +812,19 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
       color 0.35s var(--ease), border-color 0.35s var(--ease);
   }
 
-  /* Draws in once the card scrolls into view (li[data-reveal].is-in),
-     rather than just appearing with the rest of the card. Gated
-     behind html.js — without it .is-in never arrives, so an
-     undrawn (all-dashed-out) arrow would otherwise stay invisible. */
+  /* Draws in shortly after the card itself fades in on load (see
+     .rise on .bento-item, whose --d delay this inherits), rather than
+     just appearing with the rest of the card. Gated behind html.js —
+     without it the arrow would otherwise stay invisible, dashed out. */
   html.js .card-arrow svg path {
     stroke-dasharray: 40;
     stroke-dashoffset: 40;
-    transition: stroke-dashoffset 0.7s var(--ease-out) 0.25s;
+    animation: arrow-draw 0.6s var(--ease-out) both;
+    animation-delay: calc(var(--d, 0ms) + 500ms);
   }
 
-  html.js .work-grid li.is-in .card-arrow svg path {
-    stroke-dashoffset: 0;
+  @keyframes arrow-draw {
+    to { stroke-dashoffset: 0; }
   }
 
   @media (min-width: 700px) {
