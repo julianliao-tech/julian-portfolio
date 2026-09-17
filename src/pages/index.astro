@@ -169,10 +169,10 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
                   <img class="reveal-zoom" src={card.image} alt={card.alt} loading="lazy" decoding="async" />
                 )}
                 {isFeatured && <span class="featured-badge">Featured</span>}
+                <span class="card-media-title">{card.title}</span>
               </span>
               <span class="card-foot">
                 <span class="card-index" data-count-to={i + 1}>{pad(i + 1)}</span>
-                <span class="card-title">{card.title}</span>
                 <span class="card-arrow" data-magnetic aria-hidden="true">
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg>
                 </span>
@@ -619,14 +619,45 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     100% { transform: translate(-50%, 0%) rotate(0deg) scaleY(1); opacity: 1; }
   }
 
-  .is-featured .card-title {
+  /* Project name lives on the thumbnail itself now, not below it —
+     a scrim (rather than the page's own --ink text color, which
+     disappears or clashes depending on what's under it) guarantees
+     the white text reads on any screenshot or video frame. Hidden
+     until hover/focus so the thumbnail reads as pure image at rest. */
+  .card-media-title {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: clamp(1.5rem, 4vw, 2.5rem) clamp(0.9rem, 2vw, 1.25rem) clamp(0.85rem, 2vw, 1.1rem);
+    background: linear-gradient(to top, rgba(10, 8, 4, 0.75), rgba(10, 8, 4, 0) 100%);
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2.3vw, 1.85rem);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+    pointer-events: none;
+  }
+
+  .card:hover .card-media-title,
+  .card:focus-visible .card-media-title {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .is-featured .card-media-title {
     font-size: clamp(1.85rem, 3.4vw, 2.75rem);
+    padding-inline: clamp(0.85rem, 2vw, 1.25rem);
   }
 
   .card-foot {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--space-2);
     padding-top: var(--space-3);
   }
@@ -637,20 +668,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     font-size: var(--step-micro);
     letter-spacing: 0.18em;
     color: var(--ink-faint);
-    padding-top: 0.2em;
-    align-self: start;
   }
-
-  .card-title {
-    font-family: var(--font-display);
-    font-size: clamp(1.3rem, 2.3vw, 1.85rem);
-    letter-spacing: -0.01em;
-    line-height: 1.15;
-    color: var(--ink);
-    transition: color 0.3s var(--ease);
-  }
-
-  .card:hover .card-title { color: var(--accent); }
 
   .card-arrow {
     --magnet-x: 0px;
