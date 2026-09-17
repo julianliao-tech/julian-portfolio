@@ -306,7 +306,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     width: fit-content;
     max-width: 100%;
     margin: 0;
-    padding: 1rem 1.35rem;
+    padding: 0.5rem 0.675rem;
     border: 1px solid var(--line);
     border-radius: var(--r-lg);
     background: var(--bg-elev);
@@ -320,7 +320,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     overflow: hidden;
     white-space: pre;
     font-family: var(--font-mono);
-    font-size: clamp(0.85rem, 1.7vw, 1.05rem);
+    font-size: clamp(0.425rem, 0.85vw, 0.525rem);
     line-height: 1.65;
     color: var(--code-green);
     animation: hero-typing var(--code-duration) steps(var(--code-chars, 1), end) var(--code-delay) both;
@@ -581,7 +581,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     position: absolute;
     bottom: 70%;
     left: 50%;
-    width: clamp(42px, 4.2vw, 60px);
+    width: clamp(31.5px, 3.15vw, 45px);
     z-index: 3;
     pointer-events: none;
     transform: translate(calc(-50% + 62vw), 70%) rotate(-10deg) scaleY(0.9);
@@ -632,8 +632,8 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     position: absolute;
     top: 40%;
     left: 50%;
-    width: clamp(120px, 15vw, 210px);
-    height: clamp(210px, 25vw, 340px);
+    width: clamp(90px, 11.25vw, 157.5px);
+    height: clamp(157.5px, 18.75vw, 255px);
     transform: translateX(-50%) rotate(-30deg);
     transform-origin: top center;
     clip-path: polygon(46% 0%, 54% 0%, 100% 100%, 0% 100%);
