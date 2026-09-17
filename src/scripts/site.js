@@ -397,7 +397,21 @@ function initIntroLoader() {
     loader.remove();
   };
 
-  loader.addEventListener('animationend', clear, { once: true });
+  // animationend bubbles, and the columns inside the loader (see
+  // .intro-track in index.astro) run their own, separately-timed
+  // scroll animations that finish *during* the loader's own fade —
+  // so without this filter, the first column to finish its scroll
+  // fires an animationend that bubbles up and gets mistaken for the
+  // loader's own fade completing, cutting the fade off mid-way. Not
+  // using { once: true } here on purpose: it would consume the
+  // listener on that first (wrong) bubbled event and leave nothing
+  // to catch the loader's real one afterward.
+  const onAnimationEnd = (event) => {
+    if (event.target !== loader || event.animationName !== 'intro-loader-out') return;
+    loader.removeEventListener('animationend', onAnimationEnd);
+    clear();
+  };
+  loader.addEventListener('animationend', onAnimationEnd);
   // Safety net, same idea as initReveal's: if the animationend event
   // never fires for any reason, don't leave the page permanently
   // locked behind the overlay (or its gated animations waiting

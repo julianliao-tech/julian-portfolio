@@ -36,6 +36,13 @@ export class El {
     return this;
   }
 
+  remove() {
+    if (!this.parentNode) return;
+    const i = this.parentNode.children.indexOf(this);
+    if (i !== -1) this.parentNode.children.splice(i, 1);
+    this.parentNode = null;
+  }
+
   setAttribute(name, value) {
     this.attrs[name] = String(value);
   }
@@ -142,6 +149,13 @@ export class El {
     this.listeners.get(type).push(fn);
   }
 
+  removeEventListener(type, fn) {
+    const list = this.listeners.get(type);
+    if (!list) return;
+    const i = list.indexOf(fn);
+    if (i !== -1) list.splice(i, 1);
+  }
+
   fire(type, event = {}) {
     const e = { type, target: this, defaultPrevented: false, preventDefault() { this.defaultPrevented = true; }, ...event };
     e.target = e.target || this;
@@ -183,7 +197,13 @@ export function installGlobals(doc, { reducedMotion = false, animate = true } = 
       (winListeners.get(type) || []).forEach((fn) => fn({ type }));
     },
     requestAnimationFrame: (fn) => fn(),
-    setTimeout: (fn, ms) => setTimeout(fn, ms),
+    // unref so a real multi-second safety-net timeout (see
+    // initIntroLoader in site.js) never holds the test process open.
+    setTimeout: (fn, ms) => {
+      const id = setTimeout(fn, ms);
+      if (id && typeof id.unref === 'function') id.unref();
+      return id;
+    },
   };
   globalThis.window = win;
   globalThis.document = doc;

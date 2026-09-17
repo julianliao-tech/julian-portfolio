@@ -141,3 +141,56 @@ test('parallax moves the marked element against the scroll', async () => {
   // centre is 450px above the viewport centre, speed 0.1 => +45px
   assert.equal(page.hero.style.transform, 'translate3d(0, 45.00px, 0)');
 });
+
+/* Opening animation --------------------------------------------------- */
+
+function buildIntroPage() {
+  const body = new El('body');
+  const loader = new El('div', { 'data-intro-loader': '' });
+  const col = new El('div', { class: 'intro-col' });
+  const track = new El('div', { class: 'intro-track' });
+  col.append(track);
+  loader.append(col);
+  body.append(loader);
+  return { body, loader, col, track };
+}
+
+async function loadIntro(options = {}) {
+  const page = buildIntroPage();
+  const doc = makeDocument(page.body);
+  const win = installGlobals(doc, options);
+  await import(`../src/scripts/site.js?t=${Math.random()}`);
+  return { ...page, doc, win };
+}
+
+test('intro loader ignores a bubbled animationend from a child track', async () => {
+  const page = await loadIntro();
+  assert.ok(page.doc.documentElement.classList.contains('intro-lock'));
+
+  // A column's own scroll animation (see .intro-track in index.astro)
+  // finishes independently of, and often before, the loader's own
+  // fade — this bubbles up through .intro-col to the loader and used
+  // to be mistaken for the loader's fade completing.
+  page.track.fire('animationend', { animationName: 'intro-scroll-up' });
+
+  assert.ok(page.doc.documentElement.classList.contains('intro-lock'), 'still locked');
+  assert.equal(page.doc.documentElement.classList.contains('intro-done'), false);
+  assert.equal(page.loader.parentNode, page.body, 'loader not torn down yet');
+});
+
+test('intro loader clears once its own fade animation actually ends', async () => {
+  const page = await loadIntro();
+  page.track.fire('animationend', { animationName: 'intro-scroll-up' }); // ignored
+  page.loader.fire('animationend', { animationName: 'intro-loader-out' });
+
+  assert.equal(page.doc.documentElement.classList.contains('intro-lock'), false);
+  assert.ok(page.doc.documentElement.classList.contains('intro-done'));
+  assert.equal(page.loader.parentNode, null, 'loader removed from the DOM');
+});
+
+test('intro loader is skipped under reduced motion, but intro-done still gets set', async () => {
+  const page = await loadIntro({ reducedMotion: true });
+  assert.equal(page.doc.documentElement.classList.contains('intro-lock'), false);
+  assert.ok(page.doc.documentElement.classList.contains('intro-done'));
+  assert.equal(page.loader.parentNode, null);
+});
