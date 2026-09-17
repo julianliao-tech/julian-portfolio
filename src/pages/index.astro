@@ -7,7 +7,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL;
 
 // One-time opening animation: a fixed, full-viewport 3-column grid of
-// project imagery, shown for 1.5s total before fading away to reveal
+// project imagery, shown for 3.5s total before fading away to reveal
 // the actual homepage underneath — see [data-intro-loader] below and
 // initIntroLoader() in site.js. Each column scrolls once (not
 // looping — the window's too short for a loop to ever matter) along
@@ -23,7 +23,7 @@ const base = import.meta.env.BASE_URL;
 const introColumns = [
   {
     anim: 'intro-scroll-up',
-    duration: '1.5s',
+    duration: '3.4s',
     images: [
       `${base}images/michigan-chatgpt/00-cover.webp`,
       `${base}images/michigan-chatgpt/02.webp`,
@@ -33,7 +33,7 @@ const introColumns = [
   },
   {
     anim: 'intro-scroll-down',
-    duration: '1.7s',
+    duration: '3.8s',
     images: [
       `${base}images/guide/01.webp`,
       `${base}images/guide/04.webp`,
@@ -43,7 +43,7 @@ const introColumns = [
   },
   {
     anim: 'intro-scroll-up',
-    duration: '1.6s',
+    duration: '3.6s',
     images: [
       `${base}images/surecall/01.webp`,
       `${base}images/surecall/04.webp`,
@@ -352,9 +352,9 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     padding: clamp(0.75rem, 2vw, 1.5rem);
     background: var(--bg);
     /* Sits untouched (opacity/visibility/pointer-events all at their
-       plain CSS defaults) for the 0.8s delay, then dissolves into the
-       page underneath over a 0.7s fade — 1.5s total. */
-    animation: intro-loader-out 0.7s var(--ease-out) 0.8s forwards;
+       plain CSS defaults) for the 2s delay, then dissolves into the
+       page underneath over a 1.5s fade — 3.5s total. */
+    animation: intro-loader-out 1.5s var(--ease-out) 2s forwards;
   }
 
   /* Each column is just a clipping window onto its own doubled-up
