@@ -16,7 +16,7 @@ const base = import.meta.env.BASE_URL;
 const introColumns = [
   {
     dir: 'normal',
-    duration: '7s',
+    duration: '3.2s',
     images: [
       `${base}images/home/tile-michigan-chatgpt.webp`,
       `${base}images/guide/03.webp`,
@@ -26,7 +26,7 @@ const introColumns = [
   },
   {
     dir: 'reverse',
-    duration: '8.5s',
+    duration: '3.8s',
     images: [
       `${base}images/home/tile-guide.webp`,
       `${base}images/elink/02.webp`,
@@ -36,7 +36,7 @@ const introColumns = [
   },
   {
     dir: 'normal',
-    duration: '7.8s',
+    duration: '3.5s',
     images: [
       `${base}images/home/tile-surecall.webp`,
       `${base}images/home/tile-connexu.png`,
@@ -344,7 +344,11 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     gap: clamp(0.75rem, 2vw, 1.5rem);
     padding: clamp(0.75rem, 2vw, 1.5rem);
     background: var(--bg);
-    animation: intro-loader-out 3s var(--ease) forwards;
+    /* Sits untouched (opacity/visibility/pointer-events all at their
+       plain CSS defaults) for the 2.3s delay, then the fade itself
+       takes exactly 0.7s — a quick, smooth hand-off into the page
+       underneath rather than a long lingering dissolve. */
+    animation: intro-loader-out 0.7s var(--ease) 2.3s forwards;
   }
 
   /* Each column is just a clipping window onto its own doubled-up,
@@ -381,14 +385,14 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     to { transform: translateY(-50%); }
   }
 
-  /* Holds fully opaque and interactive/focus-blocking for most of the
-     3s, then fades out — pointer-events and visibility are discrete
-     (not numeric) properties, so they flip state partway through the
-     opacity fade rather than tweening, which is what lets the page
-     underneath become scrollable/clickable again right as it clears. */
+  /* pointer-events and visibility are discrete (not numeric)
+     properties, so they flip state partway through the opacity fade
+     rather than tweening — the page underneath becomes scrollable/
+     clickable again right as the fade clears, not only once it
+     finishes. */
   @keyframes intro-loader-out {
-    0%, 78% { opacity: 1; visibility: visible; pointer-events: auto; }
-    100% { opacity: 0; visibility: hidden; pointer-events: none; }
+    from { opacity: 1; visibility: visible; pointer-events: auto; }
+    to { opacity: 0; visibility: hidden; pointer-events: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
