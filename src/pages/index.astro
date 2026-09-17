@@ -172,7 +172,13 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     <ol class="work-grid">
       {cards.map((card, i) => {
         const isFeatured = i === 0;
-        const isLarge = !isFeatured && (i - 1) % 4 === 0;
+        // Wide, narrow, narrow, repeat — every 3rd non-featured card
+        // spans 2 columns instead of 1. That rhythm (span 2 + span 1 +
+        // span 1 = 4, exactly two rows of a 2-col grid, and exactly one
+        // row of a 3-col grid) tiles the remaining cards into a clean
+        // rectangle with no leftover gaps, without pinning every tile
+        // to the same size the way the old bento grid did.
+        const isLarge = !isFeatured && (i - 1) % 3 === 0;
         const cardDelayMs = isFeatured ? 0 : (i % 2) * 90;
         return (
           <li
@@ -456,13 +462,15 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   }
 
   /* Work grid --------------------------------------------------------
-     Bento layout: the featured item (.is-featured) always spans the
-     full row; everything else flows through an auto-placed, dense
-     grid so a large tile (.is-large, every 4th item) and its
-     neighboring small tiles backfill into a single row instead of
-     leaving gaps. Thumbnails get an actual radius (unlike the rest
-     of the site's zeroed --r-* tokens) so the tiles read as bento
-     cards rather than the old flourish-free display grid. */
+     The featured item (.is-featured) always spans the full row;
+     everything else flows through a wide/narrow/narrow rhythm
+     (.is-large, see the JS above) that tiles cleanly into a rectangle
+     at both the 2- and 3-column breakpoints below, with `dense`
+     packing as a safety net against gaps if the card count ever
+     doesn't divide evenly. Thumbnails get an actual radius (unlike
+     the rest of the site's zeroed --r-* tokens) so the tiles still
+     read as considered cards rather than a flourish-free display
+     grid, even without the old full bento layout. */
   .work-grid {
     list-style: none;
     margin: 0;
