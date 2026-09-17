@@ -11,14 +11,17 @@ const base = import.meta.env.BASE_URL;
 // the actual homepage underneath — see [data-intro-loader] below and
 // initIntroLoader() in site.js. Each column scrolls once (not looping)
 // along a strong exponential-in curve so it's genuinely whipping past
-// by the end, not just a mild ramp. Durations are all comfortably
-// shorter than the 3s hold below, so every column visibly finishes
-// accelerating (and sits on that last, fastest-reached frame) before
-// the fade ever starts. `anim` picks the scroll direction — see the
-// two @keyframes below; a shared easing curve on both is what keeps
-// every column reading as *accelerating* regardless of which way it
-// scrolls. One column per project — Michigan ChatGPT, Guide, SureCall
-// — rather than mixing in every case study.
+// by the end, not just a mild ramp. Durations run close to the full
+// 4.5s timeline (not just the 3s opaque hold), so the fastest part of
+// each column's acceleration lands during the loader's own 1.5s fade
+// (see .intro-loader below) rather than finishing before it starts —
+// the wheels are still visibly speeding up as the screen dissolves,
+// instead of sitting still underneath a fade. `anim` picks the scroll
+// direction — see the two @keyframes below; a shared easing curve on
+// both is what keeps every column reading as *accelerating*
+// regardless of which way it scrolls. One column per project —
+// Michigan ChatGPT, Guide, SureCall — rather than mixing in every
+// case study.
 //
 // Each column's image list is repeated INTRO_REPEATS times back-to-
 // back (not just doubled) and the scroll only travels 75% of that
@@ -30,7 +33,7 @@ const INTRO_REPEATS = 6;
 const introColumns = [
   {
     anim: 'intro-scroll-up',
-    duration: '2.6s',
+    duration: '4.1s',
     images: [
       `${base}images/michigan-chatgpt/00-cover.webp`,
       `${base}images/michigan-chatgpt/02.webp`,
@@ -40,7 +43,7 @@ const introColumns = [
   },
   {
     anim: 'intro-scroll-down',
-    duration: '2.9s',
+    duration: '4.4s',
     images: [
       `${base}images/guide/01.webp`,
       `${base}images/guide/04.webp`,
@@ -50,7 +53,7 @@ const introColumns = [
   },
   {
     anim: 'intro-scroll-up',
-    duration: '2.75s',
+    duration: '4.25s',
     images: [
       `${base}images/surecall/01.webp`,
       `${base}images/surecall/04.webp`,
@@ -358,14 +361,17 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     gap: clamp(0.75rem, 2vw, 1.5rem);
     padding: clamp(0.75rem, 2vw, 1.5rem);
     background: var(--bg);
-    /* Sits untouched (opacity/visibility/pointer-events all at their
-       plain CSS defaults) for the 3s hold — long enough that every
-       column (see .intro-track's durations) has already finished
-       accelerating and come to rest on its last frame — then a calm,
-       nothing-else-moving 1.5s fade into the page underneath. 4.5s
-       total. Keeping the fade free of any concurrent motion (no
-       column still scrolling, no blur/scale on the loader itself) is
-       what makes it read as a clean dissolve instead of a jump cut. */
+    /* Sits fully opaque for a 3s hold, then a plain opacity fade
+       takes the last 1.5s — 4.5s total, fade starting exactly 1.5s
+       before the whole thing ends. The columns (see .intro-track)
+       keep accelerating right through that fade rather than already
+       being stopped by the time it starts, so the fade overlaps the
+       wheels' fastest motion instead of dissolving a static frame.
+       No blur/scale layered on top, on purpose — animating a filter
+       over this much image content is costly enough to drop frames
+       on real hardware, which reads as a jump cut no matter the
+       declared duration; a plain opacity tween stays smooth even
+       with the tracks still moving underneath it. */
     animation: intro-loader-out 1.5s var(--ease-out) 3s forwards;
   }
 
@@ -384,15 +390,14 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     gap: inherit;
     width: 100%;
     /* A hard exponential-in, not linear — every column crawls at
-       first and is whipping past by the end. Two things make that
-       finish actually read as fast without ever running out of
-       images mid-scroll (see INTRO_REPEATS above): the travel
-       distance covers 75% of the repeated list's full height, and
-       the duration is kept shorter than the loader's 3s hold so the
-       fastest part of the curve fully plays out on screen instead of
-       being cut short by the fade. */
+       first and is whipping past by the end. The travel distance
+       covers 75% of the repeated list's full height (see
+       INTRO_REPEATS above) so it never runs out of real images
+       mid-scroll, and the duration runs long enough (see
+       introColumns above) that the fastest part of the curve lands
+       during the loader's own fade rather than finishing before it. */
     animation-name: var(--intro-anim, intro-scroll-up);
-    animation-duration: var(--intro-duration, 2.6s);
+    animation-duration: var(--intro-duration, 4.2s);
     animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
     animation-fill-mode: both;
     will-change: transform;
