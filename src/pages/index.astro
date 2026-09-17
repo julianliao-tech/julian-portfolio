@@ -125,30 +125,18 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
           UX designer focused on <em class="serif">intuitive</em> and{' '}
           <em class="serif">accessible</em> user experiences.
         </p>
-        <div class="hero-code-box rise" style="--d: 380ms">
-          {heroCodeLines.map((line, idx) => (
-            <div
-              class:list={[
-                'hero-code-line',
-                { 'is-comment': line.isComment, 'is-last': idx === heroCodeLines.length - 1 },
-              ]}
-              style={`--code-chars: ${line.chars}; --code-delay: ${line.delayMs}ms; --code-duration: ${line.durationMs}ms; --code-total: ${heroCodeTotalMs}ms`}
-            >{line.text}</div>
-          ))}
-        </div>
       </div>
 
-      <div class="hero-portrait rise" style="--d: 300ms">
-        <div class="portrait-float" data-parallax="0.05">
-          <div class="portrait-ring" aria-hidden="true"></div>
-          <img
-            src={`${base}images/home/profile-illustration.webp`}
-            alt="Illustrated portrait of Julian Liao"
-            width="136"
-            height="204"
-            fetchpriority="high"
-          />
-        </div>
+      <div class="hero-code-box rise" style="--d: 380ms">
+        {heroCodeLines.map((line, idx) => (
+          <div
+            class:list={[
+              'hero-code-line',
+              { 'is-comment': line.isComment, 'is-last': idx === heroCodeLines.length - 1 },
+            ]}
+            style={`--code-chars: ${line.chars}; --code-delay: ${line.delayMs}ms; --code-duration: ${line.durationMs}ms; --code-total: ${heroCodeTotalMs}ms`}
+          >{line.text}</div>
+        ))}
       </div>
     </div>
 
@@ -252,7 +240,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   .hero-inner {
     display: grid;
     gap: clamp(1.25rem, 3vw, 2rem);
-    align-items: center;
+    align-items: start;
   }
 
   .hero-title {
@@ -314,10 +302,11 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
      only .is-last keeps a blinking cursor once everything's done. */
   .hero-code-box {
     --code-green: #1a5c3a;
-    display: inline-block;
+    justify-self: start;
+    width: fit-content;
     max-width: 100%;
     margin: 0;
-    padding: 0.7rem 1rem;
+    padding: 1rem 1.35rem;
     border: 1px solid var(--line);
     border-radius: var(--r-lg);
     background: var(--bg-elev);
@@ -331,8 +320,8 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     overflow: hidden;
     white-space: pre;
     font-family: var(--font-mono);
-    font-size: clamp(0.72rem, 1.4vw, 0.85rem);
-    line-height: 1.6;
+    font-size: clamp(0.85rem, 1.7vw, 1.05rem);
+    line-height: 1.65;
     color: var(--code-green);
     animation: hero-typing var(--code-duration) steps(var(--code-chars, 1), end) var(--code-delay) both;
   }
@@ -355,33 +344,6 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
 
   @keyframes hero-caret {
     50% { border-right-color: transparent; }
-  }
-
-  /* The illustration is a transparent cut-out, so it sits straight on
-     the page with a warm glow behind it rather than in a frame. */
-  .hero-portrait {
-    width: min(110px, 24vw);
-    justify-self: start;
-  }
-
-  .portrait-float {
-    position: relative;
-    will-change: transform;
-  }
-
-  .hero-portrait img {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    height: auto;
-  }
-
-  .portrait-ring {
-    position: absolute;
-    inset: -28% -34%;
-    border-radius: 50%;
-    background: radial-gradient(circle at 50% 45%, var(--accent-soft), transparent 64%);
-    filter: blur(22px);
   }
 
   .scroll-cue {
@@ -432,7 +394,6 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     .hero-inner {
       grid-template-columns: minmax(0, 1fr) auto;
     }
-    .hero-portrait { justify-self: end; width: min(140px, 12vw); }
   }
 
   /* Work grid ------------------------------------------------------ */
