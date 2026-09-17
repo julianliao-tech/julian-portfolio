@@ -216,7 +216,13 @@ function initCursor() {
    play only while a real mouse hovers their card, and pause + rewind
    on leave. Touch devices never get a hover gesture at all, so they
    simply keep showing the poster frame — no autoplay, no extra
-   mobile data spent on a video nobody asked to see move. */
+   mobile data spent on a video nobody asked to see move.
+
+   [data-idle-at-end] videos rewind to their last frame instead of
+   their first on leave — their poster image IS that last frame, but a
+   browser only shows `poster` before a video has ever played, so
+   without this the tile would fall back to frame one (not the poster)
+   the moment a visitor hovers away for the first time. */
 
 function initHoverVideo() {
   if (!canHover()) return;
@@ -225,6 +231,7 @@ function initHoverVideo() {
 
   videos.forEach((video) => {
     const card = video.closest('a') || video;
+    const idleAtEnd = video.hasAttribute('data-idle-at-end');
 
     const play = () => {
       video.currentTime = 0;
@@ -235,7 +242,11 @@ function initHoverVideo() {
     };
     const stop = () => {
       video.pause();
-      video.currentTime = 0;
+      /* 0.15s shy of the true end, matching how the poster image
+         itself was captured — seeking to the exact last frame risks
+         landing on a black/undecodable frame in some browsers. */
+      video.currentTime =
+        idleAtEnd && Number.isFinite(video.duration) ? Math.max(0, video.duration - 0.15) : 0;
     };
 
     card.addEventListener('pointerenter', play);

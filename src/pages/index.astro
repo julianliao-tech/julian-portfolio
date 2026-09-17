@@ -36,6 +36,11 @@ const hoverVideo = (slug: string) => {
 // keeps its dedicated poster image.
 const showsFirstFrame = (slug: string) => slug === 'guide' || slug === 'elink';
 
+// Michigan ChatGPT's poster is its own last frame, so the tile should
+// idle there rather than snapping back to frame one after a hover —
+// only the hover-triggered playback should ever show the start.
+const idlesAtEnd = (slug: string) => slug === 'michigan-chatgpt';
+
 // Both screen recordings were captured at 960x720 — sizing the tile to
 // that same ratio (rather than the grid's own fixed height) means the
 // box exactly frames the clip, with no cropping and no letterboxed
@@ -55,6 +60,7 @@ const cards = [
     alt: p.data.tileAlt,
     video: hoverVideo(p.id),
     showsFirstFrame: showsFirstFrame(p.id),
+    idlesAtEnd: idlesAtEnd(p.id),
     videoAspect: VIDEO_ASPECT[p.id] ?? null,
   })),
   {
@@ -64,6 +70,7 @@ const cards = [
     alt: consultingWork.tileAlt,
     video: hoverVideo(consultingWork.slug),
     showsFirstFrame: showsFirstFrame(consultingWork.slug),
+    idlesAtEnd: idlesAtEnd(consultingWork.slug),
     videoAspect: VIDEO_ASPECT[consultingWork.slug] ?? null,
   },
 ];
@@ -157,6 +164,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
                     class="reveal-zoom"
                     data-hover-video
                     data-show-first-frame={card.showsFirstFrame || undefined}
+                    data-idle-at-end={card.idlesAtEnd || undefined}
                     src={card.video}
                     poster={card.showsFirstFrame ? undefined : card.image}
                     muted
