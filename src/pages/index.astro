@@ -10,18 +10,23 @@ const base = import.meta.env.BASE_URL;
 // project imagery, shown for 4.5s total before fading away to reveal
 // the actual homepage underneath — see [data-intro-loader] below and
 // initIntroLoader() in site.js. Each column scrolls once (not looping)
-// along a strong exponential-in curve, covering nearly the whole
-// height of its doubled-up image list (see --92%/0% in the
-// @keyframes below) so by the end it's genuinely whipping past —
-// not just a mild ramp. Durations are all comfortably shorter than
-// the 3s hold below, so every column visibly finishes accelerating
-// (and sits on that last, fastest-reached frame) before the fade
-// ever starts, instead of the fade cutting the ramp-up off early.
-// `anim` picks the scroll direction — see the two @keyframes below;
-// a shared easing curve on both is what keeps every column reading
-// as *accelerating* regardless of which way it scrolls. One column
-// per project — Michigan ChatGPT, Guide, SureCall — rather than
-// mixing in every case study.
+// along a strong exponential-in curve so it's genuinely whipping past
+// by the end, not just a mild ramp. Durations are all comfortably
+// shorter than the 3s hold below, so every column visibly finishes
+// accelerating (and sits on that last, fastest-reached frame) before
+// the fade ever starts. `anim` picks the scroll direction — see the
+// two @keyframes below; a shared easing curve on both is what keeps
+// every column reading as *accelerating* regardless of which way it
+// scrolls. One column per project — Michigan ChatGPT, Guide, SureCall
+// — rather than mixing in every case study.
+//
+// Each column's image list is repeated INTRO_REPEATS times back-to-
+// back (not just doubled) and the scroll only travels 75% of that
+// full repeated height, not close to 100% — leaving 1.5 repeats'
+// worth of untouched images below the visible window at every point,
+// so the clipped viewport (.intro-col) never runs out of real content
+// to show and bottoms out showing blank page background instead.
+const INTRO_REPEATS = 6;
 const introColumns = [
   {
     anim: 'intro-scroll-up',
@@ -168,7 +173,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
           class="intro-track"
           style={`--intro-duration: ${col.duration}; --intro-anim: ${col.anim};`}
         >
-          {[...col.images, ...col.images].map((src) => (
+          {Array.from({ length: INTRO_REPEATS }, () => col.images).flat().map((src) => (
             <img src={src} alt="" loading="eager" decoding="async" />
           ))}
         </div>
@@ -380,12 +385,12 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     width: 100%;
     /* A hard exponential-in, not linear — every column crawls at
        first and is whipping past by the end. Two things make that
-       finish actually read as fast: the travel distance covers
-       nearly the whole doubled image list (-92%, not just -50% —
-       there's no seamless-loop constraint to honor since this only
-       ever plays once), and the duration is kept shorter than the
-       loader's 3s hold so the fastest part of the curve fully plays
-       out on screen instead of being cut short by the fade. */
+       finish actually read as fast without ever running out of
+       images mid-scroll (see INTRO_REPEATS above): the travel
+       distance covers 75% of the repeated list's full height, and
+       the duration is kept shorter than the loader's 3s hold so the
+       fastest part of the curve fully plays out on screen instead of
+       being cut short by the fade. */
     animation-name: var(--intro-anim, intro-scroll-up);
     animation-duration: var(--intro-duration, 2.6s);
     animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
@@ -409,11 +414,11 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
      exact same accelerating curve regardless of which way it scrolls. */
   @keyframes intro-scroll-up {
     from { transform: translateY(0); }
-    to { transform: translateY(-92%); }
+    to { transform: translateY(-75%); }
   }
 
   @keyframes intro-scroll-down {
-    from { transform: translateY(-92%); }
+    from { transform: translateY(-75%); }
     to { transform: translateY(0); }
   }
 
