@@ -523,7 +523,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     position: absolute;
     bottom: 70%;
     left: 50%;
-    width: clamp(54px, 5.4vw, 78px);
+    width: clamp(42px, 4.2vw, 60px);
     z-index: 3;
     pointer-events: none;
     transform: translate(calc(-50% + 62vw), 70%) rotate(-10deg) scaleY(0.9);
@@ -563,7 +563,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
 
   @keyframes lamp-look-down {
     0% { transform: rotate(0deg); }
-    100% { transform: rotate(32deg); }
+    100% { transform: rotate(180deg); }
   }
 
   .lamp-spotlight {
@@ -754,7 +754,7 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     /* No hop, just the lamp already resting where it lands, head
        bowed and spotlight lit. */
     .lamp-jump { animation: none; opacity: 1; transform: translate(-50%, 0); }
-    .lamp-head { animation: none; transform: rotate(32deg); }
+    .lamp-head { animation: none; transform: rotate(180deg); }
     .lamp-spotlight { animation: none; opacity: 1; }
   }
 </style>
