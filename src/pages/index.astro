@@ -125,11 +125,13 @@ const hoverVideo = (slug: string) => {
   return existsSync(path.join(homeImagesDir, file)) ? `${base}images/home/${file}` : null;
 };
 
-// Guide and E-LINK's tiles open on the video's own first frame instead
-// of a separate poster still, so the resting thumbnail already reads as
-// "this is a clip" rather than a static screenshot. Michigan ChatGPT
-// keeps its dedicated poster image.
-const showsFirstFrame = (slug: string) => slug === 'guide' || slug === 'elink';
+// Guide's tile opens on the video's own first frame instead of a
+// separate poster still, so the resting thumbnail already reads as
+// "this is a clip" rather than a static screenshot. Everything else
+// (including E-LINK) keeps its own dedicated poster image, so the
+// actual uploaded thumbnail is what's shown at rest, video only on
+// hover.
+const showsFirstFrame = (slug: string) => slug === 'guide';
 
 // Michigan ChatGPT's poster is its own last frame, so the tile should
 // idle there rather than snapping back to frame one after a hover —
@@ -638,6 +640,9 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   /* Work grid ------------------------------------------------------ */
   .work {
     padding-block: clamp(1.5rem, 3vw, 2.5rem) var(--space-6);
+    /* Wider than the site's default --max-width so two-up tiles read
+       as genuinely large, not shrunk to fit the usual text measure. */
+    max-width: 100rem;
   }
 
   /* Work grid --------------------------------------------------------
@@ -716,15 +721,12 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     transition: transform 0.6s var(--ease-out), filter 0.6s var(--ease);
   }
 
-  .card-media img {
-    object-fit: cover;
-  }
-
-  /* Screen recordings get letterboxed instead of cropped — the tiles'
-     fixed aspect ratio rarely matches a captured screen's, and cropping
-     a UI demo risks cutting off the exact interaction being shown. */
+  /* Every tile fills its box completely — cropped as needed, never
+     letterboxed. A gap around the content read as broken/unfinished;
+     a slightly tighter crop reads as intentional. */
+  .card-media img,
   .card-media video {
-    object-fit: contain;
+    object-fit: cover;
   }
 
   .card:hover .card-media img,
@@ -746,7 +748,10 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     position: absolute;
     inset: 0;
     z-index: 1;
-    object-fit: contain;
+    /* Matches the video's own object-fit (see above) so the crossfade
+       between them doesn't jump between a filled frame and a
+       letterboxed one. */
+    object-fit: cover;
     pointer-events: none;
     transition: opacity 0.25s var(--ease);
   }
@@ -985,16 +990,12 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     to { stroke-dashoffset: 0; }
   }
 
+  /* Two up, not three — kept large rather than shrunk to fit a third
+     column, closer to the reference size. */
   @media (min-width: 700px) {
     .work-grid {
       grid-template-columns: repeat(2, 1fr);
       column-gap: clamp(2rem, 4vw, 3rem);
-    }
-  }
-
-  @media (min-width: 1080px) {
-    .work-grid {
-      grid-template-columns: repeat(3, 1fr);
     }
   }
 
