@@ -37,6 +37,9 @@
   --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  /* Quirky accent — hand-marker feel, used sparingly for a single
+     highlighted word or annotation, never body copy. */
+  --font-quirky: 'Permanent Marker', cursive;
 
   --step-display: clamp(2.75rem, 9.5vw, 7.5rem);
   --step-h1: clamp(2.1rem, 5.5vw, 4rem);

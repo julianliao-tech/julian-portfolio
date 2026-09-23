@@ -15,6 +15,30 @@ const year = new Date().getFullYear();
         <svg class="mail-arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
       </a>
       <a class="btn btn-outline" data-magnetic href="https://www.linkedin.com/in/julian-liao-475685239/" target="_blank" rel="noreferrer">LinkedIn</a>
+
+      <div class="orbit-wrap">
+        <span class="orbit-quip">let's chat</span>
+        <svg class="orbit-quip-arrow" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M4 6 Q30 6 32 30" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M25 26 32 32 36 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+
+        <div class="orbit-btn">
+          <svg class="orbit-ring" viewBox="0 0 160 160" aria-hidden="true">
+            <defs>
+              <path id="orbit-path" d="M80,80 m-62,0 a62,62 0 1,1 124,0 a62,62 0 1,1 -124,0" />
+            </defs>
+            <text>
+              <textPath href="#orbit-path" startOffset="0%">SAY HELLO &#183; SAY HELLO &#183; SAY HELLO &#183;</textPath>
+            </text>
+          </svg>
+          <a class="orbit-center" data-magnetic href="mailto:julianliaowork@gmail.com" aria-label="Get in touch with Julian by email">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z" />
+            </svg>
+          </a>
+        </div>
+      </div>
     </div>
 
     <div class="footer-base">
@@ -132,6 +156,99 @@ const year = new Date().getFullYear();
 
   .mail-text {
     overflow-wrap: anywhere;
+  }
+
+  /* Spinning "say hello" badge --------------------------------------
+     A phone-shaped call-to-action: the ring of text spins continuously
+     (SVG textPath + a plain CSS rotate keyframe) while the center
+     button stays upright and still links out, same as .mail above —
+     this is additive, not a replacement for the email CTA. */
+  .orbit-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .orbit-quip {
+    font-family: var(--font-quirky);
+    font-weight: 400;
+    font-size: 1.15rem;
+    color: var(--accent);
+    transform: rotate(-4deg);
+  }
+
+  .orbit-quip-arrow {
+    width: 32px;
+    height: 32px;
+    color: var(--accent);
+    opacity: 0.8;
+  }
+
+  .orbit-btn {
+    position: relative;
+    width: 150px;
+    height: 150px;
+  }
+
+  .orbit-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    animation: orbit-spin 16s linear infinite;
+  }
+
+  @keyframes orbit-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .orbit-ring text {
+    font-family: var(--font-quirky);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    fill: var(--accent);
+  }
+
+  .orbit-center {
+    --magnet-x: 0px;
+    --magnet-y: 0px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 88px;
+    height: 88px;
+    margin: -44px 0 0 -44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--accent-ink);
+    transform: translate(var(--magnet-x), var(--magnet-y));
+    transition: transform 0.3s var(--ease-out), background 0.3s var(--ease);
+  }
+
+  .orbit-center:hover,
+  .orbit-center:focus-visible {
+    background: var(--accent-light);
+  }
+
+  @media (max-width: 480px) {
+    .orbit-btn {
+      width: 120px;
+      height: 120px;
+    }
+    .orbit-center {
+      width: 68px;
+      height: 68px;
+      margin: -34px 0 0 -34px;
+    }
+    .orbit-ring text {
+      font-size: 10px;
+    }
   }
 
   .footer-base {
