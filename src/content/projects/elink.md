@@ -6,8 +6,8 @@ timeline: "Feb – May 2026"
 team: "5, Esade Business School"
 tools: ["PowerPoint", "Excel"]
 skills: ["Business Case Development", "Stakeholder Analysis", "Project Planning", "Risk Management", "Work Breakdown Structure"]
-tileImage: "/julian-portfolio/images/home/tile-elink.webp"
-tileAlt: "Chart showing ESADE's internship landing rate flat at 35% while IE Business School and Bocconi climb to 45–53%"
+tileImage: "/julian-portfolio/images/home/tile-elink.png"
+tileAlt: "E-Link Professional Network dashboard on a laptop, showing recruiter and alumni group chats by industry"
 summary: "A business case and PM plan to close Esade's internship gap"
 nextOverrideHref: "work/consulting-work"
 nextOverrideTitle: "Consulting Work"

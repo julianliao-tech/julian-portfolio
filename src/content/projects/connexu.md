@@ -7,7 +7,7 @@ team: "In-house at connexU"
 tools: ["Google Docs", "Google Sheets"]
 skills: ["Heuristic Evaluation", "Usability Testing", "Information Architecture", "Client Work"]
 tileImage: "/julian-portfolio/images/home/tile-connexu.png"
-tileAlt: "connexU logo on a dark purple gradient background with the tagline 'B2B Events for Senior Decision-Makers'"
+tileAlt: "connexU homepage on a laptop, reading 'Where Business Leaders Grow', on a purple background with the connexU wordmark"
 summary: "An end-to-end rebuild of a B2B events marketplace site in Sydney"
 ---
 

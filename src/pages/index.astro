@@ -86,15 +86,12 @@ const heroCodeLines = heroCodeSource.map((line) => {
   return { ...line, chars: line.text.length, delayMs, durationMs };
 });
 const heroCodeTotalMs = codeCursorMs;
-const sortedProjects = (await getCollection('projects', (entry) => !entry.data.draft)).sort(
+// Plain order, no featured/standalone item — every tile in the grid
+// below is the same square, so there's no visual reason left to pull
+// one project out of sequence.
+const projects = (await getCollection('projects', (entry) => !entry.data.draft)).sort(
   (a, b) => a.data.order - b.data.order
 );
-// Michigan ChatGPT leads the grid as a standalone, highlighted feature —
-// everything else keeps its normal order behind it.
-const projects = [
-  ...sortedProjects.filter((p) => p.id === 'michigan-chatgpt'),
-  ...sortedProjects.filter((p) => p.id !== 'michigan-chatgpt'),
-];
 
 // Consulting work gets its own section below the case-study grid
 // (two thumbnails, each linking straight to its PDF) rather than a
@@ -139,17 +136,6 @@ const showsFirstFrame = (slug: string) => slug === 'guide' || slug === 'elink';
 // only the hover-triggered playback should ever show the start.
 const idlesAtEnd = (slug: string) => slug === 'michigan-chatgpt';
 
-// Both screen recordings were captured at 960x720 — sizing the tile to
-// that same ratio (rather than the grid's own fixed height) means the
-// box exactly frames the clip, with no cropping and no letterboxed
-// background showing around it. Michigan ChatGPT gets the same
-// treatment via its own `.is-featured` rule, sized to its 1600x1198
-// capture.
-const VIDEO_ASPECT: Record<string, string> = {
-  guide: '4 / 3',
-  elink: '4 / 3',
-};
-
 const cards = projects.map((p) => ({
   href: `${base}work/${p.id}/`,
   title: p.data.title,
@@ -159,7 +145,6 @@ const cards = projects.map((p) => ({
   video: hoverVideo(p.id),
   showsFirstFrame: showsFirstFrame(p.id),
   idlesAtEnd: idlesAtEnd(p.id),
-  videoAspect: VIDEO_ASPECT[p.id] ?? null,
 }));
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -242,54 +227,42 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     </div>
 
     <ol class="work-grid">
-      {cards.map((card, i) => {
-        const isFeatured = i === 0;
-        const cardDelayMs = isFeatured ? 0 : (i % 2) * 90;
-        return (
-          <li
-            class:list={['bento-item', 'rise', { 'is-featured': isFeatured }]}
-            style={`--d: ${cardDelayMs}ms`}
-          >
-            <a class="card" href={card.href}>
-              <span
-                class:list={['card-media', { 'has-native-aspect': !!card.videoAspect }]}
-                data-tilt
-                style={`--card-i: ${i};${card.videoAspect ? ` --video-aspect: ${card.videoAspect};` : ''}`}
-              >
-                {card.video ? (
-                  <video
-                    data-hover-video
-                    data-show-first-frame={card.showsFirstFrame || undefined}
-                    src={card.video}
-                    poster={card.showsFirstFrame ? undefined : card.image}
-                    muted
-                    loop
-                    playsinline
-                    preload={card.showsFirstFrame ? 'auto' : 'metadata'}
-                    aria-hidden="true"
-                  />
-                ) : (
-                  <img src={card.image} alt={card.alt} loading="lazy" decoding="async" />
-                )}
-                {card.idlesAtEnd && (
-                  <img class="card-media-idle-frame" src={card.image} alt="" aria-hidden="true" />
-                )}
-                {isFeatured && <span class="featured-badge">Featured</span>}
-                <span class="card-media-caption">
-                  <span class="card-media-heading">{card.title}</span>
-                  <span class="card-media-sub">{card.summary}</span>
-                </span>
+      {cards.map((card, i) => (
+        <li class="bento-item rise" style={`--d: ${(i % 2) * 90}ms`}>
+          <a class="card" href={card.href}>
+            <span class="card-media" data-tilt style={`--card-i: ${i};`}>
+              {card.video ? (
+                <video
+                  data-hover-video
+                  data-show-first-frame={card.showsFirstFrame || undefined}
+                  src={card.video}
+                  poster={card.showsFirstFrame ? undefined : card.image}
+                  muted
+                  loop
+                  playsinline
+                  preload={card.showsFirstFrame ? 'auto' : 'metadata'}
+                  aria-hidden="true"
+                />
+              ) : (
+                <img src={card.image} alt={card.alt} loading="lazy" decoding="async" />
+              )}
+              {card.idlesAtEnd && (
+                <img class="card-media-idle-frame" src={card.image} alt="" aria-hidden="true" />
+              )}
+              <span class="card-media-caption">
+                <span class="card-media-heading">{card.title}</span>
+                <span class="card-media-sub">{card.summary}</span>
               </span>
-              <span class="card-foot">
-                <span class="card-index" data-count-to={i + 1}>{pad(i + 1)}</span>
-                <span class="card-arrow" data-magnetic aria-hidden="true">
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg>
-                </span>
+            </span>
+            <span class="card-foot">
+              <span class="card-index" data-count-to={i + 1}>{pad(i + 1)}</span>
+              <span class="card-arrow" data-magnetic aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg>
               </span>
-            </a>
-          </li>
-        );
-      })}
+            </span>
+          </a>
+        </li>
+      ))}
     </ol>
   </section>
 
@@ -668,14 +641,13 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   }
 
   /* Work grid --------------------------------------------------------
-     The featured item (.is-featured) always spans the full row on its
-     own; everything else sits in a plain, even grid — one column on
-     phones, an even 2x2 square of equally-sized tiles from tablet up
-     — so the whole section composes as a clean, symmetrical rectangle
-     rather than a bento layout of mismatched sizes. Thumbnails get an
-     actual radius (unlike the rest of the site's zeroed --r-* tokens)
-     so the tiles still read as considered cards rather than a
-     flourish-free display grid. */
+     No featured item — every tile is the exact same perfect square
+     (aspect-ratio, not a fixed height, so it stays square at any
+     viewport width) in a plain, even grid: one column on phones, two
+     from tablet, three from desktop. Thumbnails get an actual radius
+     (unlike the rest of the site's zeroed --r-* tokens) so the tiles
+     still read as considered cards rather than a flourish-free
+     display grid. */
   .work-grid {
     list-style: none;
     margin: 0;
@@ -683,10 +655,6 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     display: grid;
     grid-template-columns: 1fr;
     gap: clamp(1.25rem, 3vw, 2rem);
-  }
-
-  .bento-item.is-featured {
-    grid-column: 1 / -1;
   }
 
   .card {
@@ -702,21 +670,12 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     border-radius: clamp(14px, 1.8vw, 22px);
     border: 1px solid var(--line);
     background: var(--bg-elev);
-    /* Fixed (not aspect-ratio-driven) so every tile in the 2x2 grid
-       bottoms out at the same height regardless of its own image's
-       native proportions. */
-    height: clamp(220px, 24vw, 340px);
-  }
-
-  /* Opt-out of the fixed row height above: for tiles whose video's own
-     aspect ratio is known (--video-aspect, set inline above), the box
-     is sized to match it exactly instead, so the recording fills the
-     tile edge-to-edge with nothing cropped and no background showing
-     around it. This tile may end up a different height than its row
-     neighbors as a tradeoff. */
-  .card-media.has-native-aspect {
-    height: auto;
-    aspect-ratio: var(--video-aspect);
+    /* Every tile the same perfect square, video or still. Screen
+       recordings still use object-fit: contain below, so a clip
+       letterboxes inside its square instead of being cropped to fill
+       it — the square is the tile's shape, not a forced crop of the
+       content inside it. */
+    aspect-ratio: 1 / 1;
   }
 
   /* [data-tilt] (see site.js) keeps --tilt-x/y live while the cursor
@@ -795,38 +754,6 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
   .card:hover .card-media img.card-media-idle-frame,
   .card:focus-visible .card-media img.card-media-idle-frame {
     opacity: 0;
-  }
-
-  /* Featured card ---------------------------------------------------
-     Michigan ChatGPT stands alone in the top row: a wider frame, an
-     accent-tinted border/glow, and a badge instead of just relying on
-     grid position to read as "different." */
-  .is-featured .card-media {
-    /* Matches the hover video's own frame (1600x1198) exactly, so the
-       full clip shows edge-to-edge with no cropping and no
-       letterboxing — unlike the fixed-height bento tiles below, this
-       card is alone in its row, so nothing else needs to match its
-       height. */
-    height: auto;
-    aspect-ratio: 1600 / 1198;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-soft);
-  }
-
-  .featured-badge {
-    position: absolute;
-    top: clamp(0.85rem, 2vw, 1.25rem);
-    left: clamp(0.85rem, 2vw, 1.25rem);
-    z-index: 1;
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: var(--step-micro);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent-ink);
-    background: var(--accent);
-    padding: 0.4rem 0.75rem;
-    border-radius: var(--r-full);
   }
 
   /* Lamp easter egg ---------------------------------------------------
@@ -1003,18 +930,6 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
   }
 
-  .is-featured .card-media-heading {
-    font-size: clamp(1.85rem, 3.4vw, 2.75rem);
-  }
-
-  .is-featured .card-media-sub {
-    font-size: var(--step-body);
-  }
-
-  .is-featured .card-media-caption {
-    padding-inline: clamp(0.85rem, 2vw, 1.25rem);
-  }
-
   .card-foot {
     display: flex;
     align-items: center;
@@ -1074,6 +989,12 @@ const skillsTicker = Array.from(new Set(projects.flatMap((p) => p.data.skills)))
     .work-grid {
       grid-template-columns: repeat(2, 1fr);
       column-gap: clamp(2rem, 4vw, 3rem);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .work-grid {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
