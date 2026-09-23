@@ -1,10 +1,28 @@
 ---
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const base = import.meta.env.BASE_URL;
+
+// Cache-busting: swapping an image at the same filename (as happened
+// twice this week with the connexU/E-LINK thumbnails) otherwise ships
+// a URL a visitor's browser already has cached, showing the old file
+// until they hard-refresh. Appending a short hash of the file's own
+// bytes means the URL itself changes whenever the content does, so a
+// normal load always gets the current version — no manual busting,
+// no stale thumbnails after an edit.
+const publicDir = path.join(process.cwd(), 'public');
+const withVersion = (url: string | null | undefined) => {
+  if (!url) return url;
+  const relPath = url.startsWith(base) ? url.slice(base.length) : url.replace(/^\/+/, '');
+  const filePath = path.join(publicDir, relPath);
+  if (!existsSync(filePath)) return url;
+  const hash = createHash('md5').update(readFileSync(filePath)).digest('hex').slice(0, 8);
+  return `${url}?v=${hash}`;
+};
 
 // One-time opening animation: a fixed, full-viewport 3-column grid of
 // project imagery, shown for 4.5s total before fading away to reveal
@@ -100,7 +118,7 @@ const consultingItems = [
   {
     title: 'Q-Bakehouse',
     href: `${base}files/Q-Bakehouse.pdf`,
-    image: `${base}images/consulting-work/01-q-bakehouse.webp`,
+    image: withVersion(`${base}images/consulting-work/01-q-bakehouse.webp`),
     alt: 'Q-Bakehouse consulting deliverable cover',
     width: 1308,
     height: 1198,
@@ -108,7 +126,7 @@ const consultingItems = [
   {
     title: 'MCBC – Pink Moon Deliverable Presentation',
     href: `${base}files/MCBC_-PinkMoon-Deliverable-Presentation.pdf`,
-    image: `${base}images/consulting-work/02-mcbc-pink-moon.png`,
+    image: withVersion(`${base}images/consulting-work/02-mcbc-pink-moon.png`),
     alt: 'MCBC Pink Moon deliverable presentation cover',
     width: 1540,
     height: 1072,
@@ -122,7 +140,7 @@ const consultingItems = [
 const homeImagesDir = path.join(process.cwd(), 'public', 'images', 'home');
 const hoverVideo = (slug: string) => {
   const file = `tile-${slug}.mp4`;
-  return existsSync(path.join(homeImagesDir, file)) ? `${base}images/home/${file}` : null;
+  return existsSync(path.join(homeImagesDir, file)) ? withVersion(`${base}images/home/${file}`) : null;
 };
 
 // Guide's tile opens on the video's own first frame instead of a
@@ -142,7 +160,7 @@ const cards = projects.map((p) => ({
   href: `${base}work/${p.id}/`,
   title: p.data.title,
   summary: p.data.summary,
-  image: p.data.tileImage,
+  image: withVersion(p.data.tileImage),
   alt: p.data.tileAlt,
   video: hoverVideo(p.id),
   showsFirstFrame: showsFirstFrame(p.id),
