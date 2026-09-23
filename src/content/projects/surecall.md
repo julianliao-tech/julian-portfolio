@@ -6,8 +6,8 @@ timeline: "10 weeks"
 team: "1 PM, 2 Back End Engineers, 1 Designer"
 tools: ["Figma", "Slack", "FigJam"]
 skills: ["Wireframing", "Prototyping", "Design Systems", "Interaction Design", "Information Architecture"]
-tileImage: "/julian-portfolio/images/home/tile-surecall.webp"
-tileAlt: "SureCall app screen showing 5G signal strength"
+tileImage: "/julian-portfolio/images/home/tile-surecall.png"
+tileAlt: "Two SureCall EZ-5G Signal Test app screens on a green background, showing a signal-strength gauge and a 5G UW strength check"
 summary: "A field tool for installing and testing Verizon 5G boosters"
 ---
 
