@@ -1,630 +1,1466 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+// ---------------------------------------------------------------------
+// Case study page.
+// Same architecture built for the SureCall format test (full-bleed
+// images between narrow text, a marquee intro, brand-color feature
+// bands, dark "Challenge" sections, tilt/lightbox/scroll-progress
+// interactions), applied to Michigan ChatGPT's own real content and
+// its own brand colors (Michigan Maize #FFCB05 / Michigan Blue
+// #00274C) instead of reusing SureCall's green.
+//
+// Every fact and every image is pulled from
+// src/content/projects/michigan-chatgpt.md, public/images/michigan-chatgpt/,
+// and real screenshots/wireframes Julian added directly — nothing invented.
+// One spot still has no matching real asset (the marquee's intro video)
+// and is left as a labeled placeholder box rather than filled with a
+// stand-in.
+// ---------------------------------------------------------------------
+import '../../styles/global.css';
+import Nav from '../../components/Nav.astro';
+import Lightbox from '../../components/Lightbox.astro';
 
 const base = import.meta.env.BASE_URL;
-const entry = await getEntry('projects', 'michigan-chatgpt');
-const { role, team, timeline, skills, tools, tileAlt } = entry!.data;
-
-const all = (await getCollection('projects', (e) => !e.data.draft)).sort(
-  (a, b) => a.data.order - b.data.order
-);
-const idx = all.findIndex((p) => p.id === 'michigan-chatgpt');
-const prev = idx > 0 ? all[idx - 1] : null;
-const next = idx < all.length - 1 ? all[idx + 1] : null;
-
+const pageTitle = 'Michigan ChatGPT — Julian Liao';
+const pageDescription = 'Redesigning U-M\'s AI workspace into one clear, trusted homepage';
+const ogImage = new URL(`${base}images/home/profile-illustration.webp`, Astro.site);
+const canonical = new URL(Astro.url.pathname, Astro.site);
 const img = (n: string) => `${base}images/michigan-chatgpt/${n}`;
 
-// Icon + label + value(s) for each fact — matches the shared strip
-// used on every other case study (ProjectLayout.astro).
-const facts = [
-  {
-    label: 'Role',
-    icon: 'M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z M4.5 20.5a7.5 7.5 0 0 1 15 0',
-    values: role,
-  },
-  {
-    label: 'Team',
-    icon:
-      'M8.5 10.6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z M15.5 11.1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z M3 19c0-3 2.5-5.4 5.5-5.4S14 16 14 19 M13.3 19c0-2.3 1.6-4.1 3.6-4.1s3.6 1.8 3.6 4.1',
-    values: [team],
-  },
-  {
-    label: 'Timeline',
-    icon: 'M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Z M12 7.5V12l3.2 1.8',
-    values: [timeline],
-  },
+const meta = [
+  { label: 'Timeline', value: 'Aug – Dec 2025' },
+  { label: 'Role', value: ['Product Designer', 'UX Researcher'] },
+  { label: 'Team', value: 'Solo Project' },
+  { label: 'Tools', value: ['Figma', 'FigJam', 'Slack'] },
   {
     label: 'Skills',
-    icon: 'M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Z M12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z',
-    dot: true,
-    values: skills,
-  },
-  {
-    label: 'Tools',
-    icon: 'M4.5 4.5h6v6h-6z M13.5 4.5h6v6h-6z M4.5 13.5h6v6h-6z M13.5 13.5h6v6h-6z',
-    values: tools,
+    value: ['Wireframing', 'Prototyping', 'Design Systems', 'Interaction Design', 'User Research'],
   },
 ];
+
+const challenges = [
+  'Communicating the purpose of multiple AI tools without overwhelming users.',
+  'Simplifying scattered navigation patterns into one cohesive experience.',
+  'Designing for both first-time visitors discovering tools and returning users who already know where they\'re going.',
+];
+
+const researchFindings = [
+  "Difficulty understanding what each AI tool does",
+  "Low confidence navigating between services",
+  "Reliance on external AI tools due to confusion on Michigan's offerings",
+  'Lack of visual hierarchy or familiarity in the interface',
+];
+
+const keyInsights = [
+  'Users felt overwhelmed by unclear terminology and too many competing tools.',
+  'Familiarity and simplicity dramatically increase trust in digital systems.',
+  'Navigation must be clean, predictable, and consistent across the experience.',
+];
+
+const firstTimeNeeds = [
+  'Immediately understand that MichiganGPT is a suite of U-M AI tools',
+  'Learn what each tool does and which one fits my need',
+  'Navigate comfortably through a clean, familiar, Michigan-branded workspace',
+];
+
+const returningNeeds = [
+  'Jump straight into the tool I use most',
+  'See updates, announcements, or new features',
+  'Access documentation, support, or login in one click',
+];
+
+const whatShipped = [
+  'Clear hierarchy and predictable patterns',
+  'Cards for each AI tool, evenly spaced and highly scannable',
+  'Strengthened Michigan branding without overwhelming the UI',
+  'Accessibility upgrades for legibility, navigation, and recognition',
+  'Trust-building elements such as curated responses and user-centered features',
+];
+
+const lookingAhead = [
+  'A full documentation experience',
+  "A personalized dashboard based on user history",
+  'Better integration with academic tools across campus',
+];
+
+const marqueeWords = Array(6).fill('U-M AI WORKSPACE');
+
+const nextProject = {
+  title: 'SureCall',
+  subtitle: 'A field tool for installing and testing Verizon 5G boosters',
+  image: `${base}images/home/tile-surecall.png`,
+  href: `${base}work/surecall/`,
+};
 ---
-<BaseLayout title="Michigan ChatGPT — Julian Liao">
-  <article class="mgpt">
-    <div class="hero-band">
-      <img src={img('00-cover.webp')} alt={tileAlt} />
-    </div>
 
-    <div class="wrap">
-      <a class="back" href={`${base}#work`}>
-        <span class="back-arrow" aria-hidden="true">&larr;</span> All projects
-      </a>
-      <h1 class="title">Michigan ChatGPT</h1>
+{/* prettier-ignore */}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fdfbf9" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="canonical" href={canonical.href} />
+    <meta name="description" content={pageDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImage.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{pageTitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Permanent+Marker&display=swap"
+    />
+  </head>
+  <body>
+    <Nav />
 
-      <ul class="facts">
-        {facts.map((f) => (
-          <li class="fact">
-            <svg class="fact-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d={f.icon} />
-              {f.dot && <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none" />}
-            </svg>
-            <span class="fact-label">{f.label}</span>
-            {f.values.length > 1 ? (
-              <ul class="fact-list">
-                {f.values.map((v) => <li>{v}</li>)}
-              </ul>
-            ) : (
-              <span class="fact-value">{f.values[0]}</span>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <div data-zoom-group data-zoom-scan>
+      <section class="hero-banner">
+        <img data-tilt src={img('00-cover-banner.webp')} alt="Michigan ChatGPT redesign shown on a laptop and phone, with the M AI Lab mark, on a maize background" />
+      </section>
 
-    <div class="col" data-zoom-group data-zoom-scan>
-      <p class="eyebrow">Context</p>
-      <h2>What is the Michigan Chat-GPT?</h2>
-      <p>
-        Michigan ChatGPT is the University of Michigan's AI workspace: a collection of tools like
-        U-M GPT, Maizey, Go Blue, and GPT Toolkit designed to help students, faculty, and staff
-        find information, generate content, and access campus support. It is the first University
-        to implement LLM tools curated just to their community. However, despite the power of the
-        underlying models, the platform's interface has fallen behind. The original Michigan
-        ChatGPT homepage felt outdated, visually cluttered, and inconsistent with modern design
-        patterns, making it difficult for users to immediately understand where to go or what each
-        tool offered.
-      </p>
+      <section class="marquee-section" aria-hidden="true">
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-left">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-right">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-left">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-right">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-laptop">
+          <div class="laptop-frame">
+            <video src={img('marquee-banner.mp4')} autoplay muted loop playsinline aria-label="Screen recording of the Michigan ChatGPT homepage, showing the U-M GPT, Go Blue, Maizey, and GPT Toolkit cards"></video>
+          </div>
+          <div class="laptop-base"></div>
+        </div>
+      </section>
 
-      <div class="split">
-        <div>
-          <h3>Project Vision</h3>
-          <p>
-            This redesign centers on creating an intuitive, accessible, and highly personalized
-            experience tailored specifically for the University of Michigan community. The goal is
-            to provide students, athletes, and faculty with a seamless way to ask questions,
-            explore resources, and receive meaningful support all within a workspace that feels
-            cohesive and efficient.
-          </p>
-          <p>
-            By enhancing clarity, reducing friction, and introducing smarter interaction patterns,
-            the new design supports users in getting the right information at the right moment.
+      <section class="head-block">
+        <div class="wrap">
+          <div class="head-top">
+            <h1 class="title">Michigan<br />ChatGPT</h1>
+            <div class="context-box">
+              <p class="context-label">Context</p>
+              <h2 class="context-heading">What is the Michigan Chat-GPT?</h2>
+              <p>Michigan ChatGPT is the University of Michigan's AI workspace: a collection of tools like U-M GPT, Maizey, Go Blue, and GPT Toolkit designed to help students, faculty, and staff find information, generate content, and access campus support. It is the first university to implement LLM tools curated just to their community. However, despite the power of the underlying models, the platform's interface had fallen behind — outdated, visually cluttered, and inconsistent with modern design patterns.</p>
+            </div>
+          </div>
+
+          <dl class="meta">
+            {meta.map((m) => (
+              <div>
+                <dt>{m.label}</dt>
+                <dd>{Array.isArray(m.value) ? m.value.map((v) => <span>{v}</span>) : m.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <p class="intro">This redesign centers on creating an intuitive, accessible, and highly personalized experience tailored specifically for the University of Michigan community. The goal is to <strong>provide students, athletes, and faculty with a seamless way to ask questions, explore resources, and receive meaningful support</strong> — all within a workspace that feels cohesive and efficient. By enhancing clarity, reducing friction, and introducing smarter interaction patterns, the new design supports users in getting the right information at the right moment.</p>
+
+          <p class="pull-quote" data-typewriter>
+            <span aria-hidden="true"><span class="tw-seg" data-full="How can I reduce "></span><span class="tw-seg pull-quote-highlight" data-full="unnecessary friction for both new and returning users"></span><span class="tw-seg" data-full="?"></span></span>
+            <span class="sr-only">How can I reduce unnecessary friction for both new and returning users?</span>
           </p>
         </div>
-        <div>
-          <h3>Challenges</h3>
-          <ol>
-            <li>Communicating the purpose of multiple AI tools without overwhelming users.</li>
-            <li>Simplifying scattered navigation patterns into one cohesive experience.</li>
-            <li>Balancing Michigan branding with modern usability standards.</li>
-            <li>
-              Designing for both first-time visitors discovering tools and returning users who
-              already know where they're going.
-            </li>
+      </section>
+
+      <section class="stat-band">
+        <div class="location-block">
+          <p class="location-label">Project Location</p>
+          <p class="location-name">Ann Arbor, Michigan</p>
+        </div>
+      </section>
+
+      <section class="dark-block">
+        <div class="wrap">
+          <div class="challenge-head">
+            <span class="quirky">Scattered Tools</span>
+            <h2>The Challenge</h2>
+          </div>
+          <ol class="challenge-grid challenge-grid-4">
+            {challenges.map((c, i) => (
+              <li class:list={['challenge-card', { 'is-active': i === 0 }]} data-tilt>
+                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
+                <p>{c}</p>
+              </li>
+            ))}
           </ol>
         </div>
-      </div>
+      </section>
 
-      <p class="eyebrow">Problem</p>
-      <h2>How can I reduce unnecessary friction for both new and returning users?</h2>
-      <p>
-        The University of Michigan community currently relies on a fragmented set of tools to
-        access information, ask questions, and find support. This scattered experience makes it
-        difficult for students, athletes, and faculty to quickly locate the resources they need,
-        often resulting in confusion and inefficiency. Users need a unified, intuitive, and
-        accessible workspace that reduces friction, clarifies pathways, and delivers relevant
-        information at the right moment.
-      </p>
+      <section class="white-block">
+        <div class="wrap">
+          <h2>What Students + Faculty Told Us</h2>
+          <p>I conducted surveys and interviews with Michigan students who use campus technology regularly. Their feedback surfaced major issues: <strong>{researchFindings.join('; ')}</strong>. Users expressed the need for transparency, clarity, and a trusted Michigan-branded experience.</p>
+          <ul class="findings-list">
+            {keyInsights.map((k) => <li>{k}</li>)}
+          </ul>
+          <div class="visitor-needs">
+            <div>
+              <h3 class="visitor-heading">As a First-Time Visitor, I Should Be Able To:</h3>
+              <ul class="findings-list">
+                {firstTimeNeeds.map((n) => <li>{n}</li>)}
+              </ul>
+            </div>
+            <div>
+              <h3 class="visitor-heading">As a Returning Visitor, I Should Be Able To:</h3>
+              <ul class="findings-list">
+                {returningNeeds.map((n) => <li>{n}</li>)}
+              </ul>
+            </div>
+          </div>
+          <span class="quirky quirky-tight">Components</span>
+          <div class="image-row-single image-row-single-flush">
+            <img data-tilt src={img('components-spec.webp')} alt="Michigan ChatGPT component library: navbar, search bar, mode-selection buttons, sidebar, and sample sent/reply message bubbles" />
+          </div>
+        </div>
+      </section>
 
-      <p class="eyebrow">User Research</p>
-      <h2>What Students + Faculty Told Us</h2>
-      <p>
-        I conducted surveys and interviews with Michigan students who use campus technology
-        regularly. Their feedback surfaced major issues:
-      </p>
-      <ul>
-        <li>Difficulty understanding what each AI tool does</li>
-        <li>Low confidence navigating between services</li>
-        <li>Reliance on external AI tools due to confusion on Michigan's offerings</li>
-        <li>Lack of visual hierarchy or familiarity in the interface</li>
-      </ul>
-      <p>
-        Users expressed the need for transparency, clarity, and a trusted Michigan-branded
-        experience.
-      </p>
-      <p><strong>Key Insights:</strong></p>
-      <ul>
-        <li>Users felt overwhelmed by unclear terminology and too many competing tools.</li>
-        <li>Familiarity and simplicity dramatically increase trust in digital systems.</li>
-        <li>Navigation must be clean, predictable, and consistent across the experience.</li>
-      </ul>
+      <section class="dark-block">
+        <div class="wrap">
+          <div class="challenge-head">
+            <span class="quirky">Fewer Decisions</span>
+            <h2>The Challenge</h2>
+          </div>
+          <ol class="challenge-grid challenge-grid-4">
+            {challenges.map((c, i) => (
+              <li class:list={['challenge-card', { 'is-active': i === 1 }]} data-tilt>
+                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
+                <p>{c}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
 
-      <figure class="wide">
-        <img
-          src={img('02.webp')}
-          alt="Three design-principle cards: Jakob's Law (familiarity), Hick's Law (decision simplification), and the Aesthetic-Usability Effect, each with how it was applied to the redesign"
-        />
-      </figure>
+      <section class="white-block">
+        <div class="wrap">
+          <h2>Design Principles</h2>
+          <p>I began with an audit of the existing Michigan ChatGPT experience to identify areas of friction. Early sketches explored how to present tool categories more clearly, simplify the homepage, and introduce stronger visual hierarchy. Mapping the original flow helped me <em>reorganize the information architecture into a cleaner structure with fewer decision points</em>. Three UX principles shaped the redesign — Jakob's Law, Hick's Law, and the Aesthetic-Usability Effect.</p>
+          <div class="image-row-single image-row-single-wide">
+            <img data-tilt src={img('02.webp')} alt="Three design-principle cards: Jakob's Law (familiarity), Hick's Law (decision simplification), and the Aesthetic-Usability Effect, each with how it was applied to the redesign" />
+          </div>
+        </div>
+      </section>
 
-      <h3>As a First-Time Visitor, I Should Be Able To:</h3>
-      <ul>
-        <li>Immediately understand that MichiganGPT is a suite of U-M AI tools</li>
-        <li>Learn what each tool does and which one fits my need</li>
-        <li>Navigate comfortably through a clean, familiar, Michigan-branded workspace</li>
-      </ul>
+      <section class="white-block">
+        <div class="wrap">
+          <p class="eyebrow-label">Low-Fidelity Prototypes</p>
+          <p>Initial wireframes explored hero layouts, card structures, and sidebar navigation. These early concepts helped test how much information should appear above the fold and how users interpreted the purpose of each AI tool. Through iterations, I refined the layout to <strong>balance simplicity with clarity</strong>.</p>
+          <div class="image-row-single image-row-single-wide">
+            <img data-tilt src={img('lowfi-wireframes.webp')} alt="Eight low-fidelity wireframes for U-M GPT: finishing sentences, changing background color based on conversation, a video analyzer, translation mode, linking to other software, setting tone, exporting past chats as a PDF, and reading text from images and videos" />
+          </div>
+        </div>
+      </section>
 
-      <h3>As a Returning Visitor, I Should Be Able To:</h3>
-      <ul>
-        <li>Jump straight into the tool I use most</li>
-        <li>See updates, announcements, or new features</li>
-        <li>Access documentation, support, or login in one click</li>
-      </ul>
+      <section class="dark-block">
+        <div class="wrap">
+          <div class="challenge-head">
+            <span class="quirky">Old vs. New</span>
+            <h2>The Challenge</h2>
+          </div>
+          <ol class="challenge-grid challenge-grid-4">
+            {challenges.map((c, i) => (
+              <li class:list={['challenge-card', { 'is-active': i === 2 }]} data-tilt>
+                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
+                <p>{c}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
 
-      <p class="eyebrow">Ideation</p>
-      <h2>Design Process and Brainstorming</h2>
-      <p>
-        I began with an audit of the existing Michigan ChatGPT experience to identify areas of
-        friction. Early sketches explored how to present tool categories more clearly, simplify
-        the homepage, and introduce stronger visual hierarchy. Mapping the original flow helped me
-        reorganize the information architecture into a cleaner structure with fewer decision
-        points.
-      </p>
+      <section class="feature-band feature-band-navy">
+        <div class="feature-media feature-media-pair">
+          <video class="feature-media-mobile" src={img('landing-mobile.mp4')} autoplay muted loop playsinline aria-label="Filled landing page walkthrough on a phone"></video>
+          <video src={img('landing-desktop.mp4')} autoplay muted loop playsinline aria-label="Filled landing page walkthrough on a laptop"></video>
+        </div>
+        <div class="feature-text">
+          <h2 class="feature-heading">Filled Landing Page</h2>
+          <p>The filled landing page presents all core MichiganGPT tools in a clear, structured layout that reduces cognitive load and eliminates guesswork for first-time users. By emphasizing a strong hero section and four primary action cards, users can immediately understand what the platform offers and where to begin — establishing clarity, trust, and a consistent visual hierarchy across the experience.</p>
+        </div>
+      </section>
 
-      <h3>Low Fidelity Prototypes</h3>
-      <p>
-        Initial wireframes explored hero layouts, card structures, and sidebar navigation. These
-        early concepts helped test how much information should appear above the fold and how
-        users interpreted the purpose of each AI tool. Through iterations, I refined the layout to
-        balance simplicity with clarity.
-      </p>
+      <section class="feature-band feature-band-maize feature-band-reverse">
+        <div class="feature-media feature-media-pair">
+          <img data-tilt src={img('sidebar-desktop-yellow.webp')} alt="Michigan ChatGPT sidebar navigation open over the chat homepage, on a laptop" />
+          <img data-tilt class="feature-media-mobile" src={img('sidebar-mobile-yellow.webp')} alt="Michigan ChatGPT sidebar navigation, on a phone" />
+        </div>
+        <div class="feature-text">
+          <h2 class="feature-heading">Accessible Sidebar</h2>
+          <p>The redesigned sidebar organizes tools, resources, and support into intuitive categories, making navigation predictable and easy to scan. <strong>Larger tap targets, readable labels, and consistent iconography</strong> improve accessibility for users browsing quickly or on smaller screens — a simpler, more reliable method for returning users to get to what they need without friction.</p>
+        </div>
+      </section>
 
-      <figure class="wide">
-        <img src={img('03.webp')} alt="Low- and mid-fidelity wireframes and component library for the Michigan ChatGPT redesign" />
-      </figure>
+      <section class="feature-band feature-band-navy">
+        <div class="feature-media feature-media-pair">
+          <img data-tilt class="feature-media-mobile" src={img('customize-mobile.webp')} alt="Michigan ChatGPT Choose Mode chatbot customization screen, on a phone" />
+          <img data-tilt src={img('customize-desktop.webp')} alt="Michigan ChatGPT Choose Mode chatbot customization screen, on a laptop" />
+        </div>
+        <div class="feature-text">
+          <h2 class="feature-heading">Curated Responses</h2>
+          <p>Curated responses offer high-quality, context-aware guidance built specifically for academic, research, and campus-related tasks. This feature <em>increases trust by helping users get more accurate and relevant answers</em> without needing to refine prompts repeatedly — it also supports new AI users who may be unsure how to phrase questions effectively.</p>
+        </div>
+      </section>
 
-      <p class="eyebrow">Final Design</p>
-      <h2>Filled Landing Page</h2>
-      <p>
-        The filled landing page presents all core MichiganGPT tools in a clear, structured layout
-        that reduces cognitive load and eliminates guesswork for first-time users. By emphasizing
-        a strong hero section and four primary action cards, users can immediately understand what
-        the platform offers and where to begin. This approach establishes clarity, trust, and a
-        consistent visual hierarchy across the experience.
-      </p>
-      <figure class="wide">
-        <img src={img('01.webp')} alt="Michigan ChatGPT landing page hero on laptop and phone" />
-      </figure>
+      <section class="feature-band feature-band-maize feature-band-reverse">
+        <div class="feature-media feature-media-pair">
+          <img data-tilt class="feature-media-mobile" src={img('translation-mobile-yellow.webp')} alt="Michigan ChatGPT Translation Mode screen with input and output language selectors, on a phone" />
+          <img data-tilt src={img('translation-desktop-yellow.webp')} alt="Michigan ChatGPT Translation Mode screen with input and output language selectors, on a laptop" />
+        </div>
+        <div class="feature-text">
+          <h2 class="feature-heading">Translation Mode</h2>
+          <p>Translation Mode introduces multilingual support, ensuring that international students and multilingual community members can access MichiganGPT in the language they understand best. This <strong>reduces barriers to information and enhances equity across the platform</strong>, and helps users communicate more confidently in academic or administrative tasks.</p>
+        </div>
+      </section>
 
-      <h3>Accessible Sidebar</h3>
-      <p>
-        The redesigned sidebar organizes tools, resources, and support into intuitive categories,
-        making navigation predictable and easy to scan. Larger tap targets, readable labels, and
-        consistent iconography improve accessibility for users browsing quickly or on smaller
-        screens. The result is a simpler, more reliable method for returning users to access what
-        they need without friction.
-      </p>
-      <div class="device-pair">
-        <figure class="device device-laptop">
-          <img src={img('04.webp')} alt="Michigan ChatGPT accessible sidebar navigation on laptop" />
-        </figure>
-        <figure class="device device-phone">
-          <img src={img('05.webp')} alt="Michigan ChatGPT accessible sidebar navigation on phone" />
-        </figure>
-      </div>
+      <section class="feature-band feature-band-navy">
+        <div class="feature-media feature-media-pair">
+          <img data-tilt class="feature-media-mobile" src={img('audio-mobile.webp')} alt="Michigan ChatGPT audio feedback conversation with Keep Listening and Audio Respond controls, on a phone" />
+          <img data-tilt src={img('audio-desktop.webp')} alt="Michigan ChatGPT audio feedback conversation with Keep Listening and Audio Respond controls, on a laptop" />
+        </div>
+        <div class="feature-text">
+          <h2 class="feature-heading">Audio Feedback</h2>
+          <p>Audio Feedback enhances accessibility by allowing users to hear responses, interface confirmations, and key actions without relying entirely on visual cues — particularly helpful for users with visual impairments or those multitasking while using the platform. It makes the system <em>more inclusive and flexible for diverse user needs</em>.</p>
+        </div>
+      </section>
 
-      <h3>Curated Responses</h3>
-      <p>
-        Curated responses offer high-quality, context-aware guidance built specifically for
-        academic, research, and campus-related tasks. This feature increases trust by helping
-        users get more accurate and relevant answers without needing to refine prompts repeatedly.
-        It also supports new AI users who may be unsure how to phrase questions effectively.
-      </p>
-      <div class="device-pair">
-        <figure class="device device-laptop">
-          <img src={img('06.webp')} alt="Michigan ChatGPT curated response persona picker on laptop" />
-        </figure>
-        <figure class="device device-phone">
-          <img src={img('07.webp')} alt="Michigan ChatGPT curated response persona picker on phone" />
-        </figure>
-      </div>
+      <section class="brand-section">
+        <div class="wrap brand-intro">
+          <p class="eyebrow-label">The Brand</p>
+          <h2 class="brand-heading">Digital<br />Presence.</h2>
+        </div>
+        <div class="wrap brand-showcase-row">
+          <div class="brand-phone-frame">
+            <img data-tilt src={img('brand-mobile.webp')} alt="Michigan ChatGPT Fellow Wolverine screen on a phone, shown with column-grid guides over the maize interface" />
+          </div>
+          <div class="brand-spec-card">
+            <div class="spec-row">
+              <div class="spec-item">
+                <p class="spec-label">Columns</p>
+                <p class="spec-value">4</p>
+              </div>
+              <div class="spec-item">
+                <p class="spec-label">Type</p>
+                <p class="spec-value">Stretch</p>
+              </div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-item">
+                <p class="spec-label">Gutter</p>
+                <p class="spec-value">16</p>
+              </div>
+              <div class="spec-item">
+                <p class="spec-label">Margin</p>
+                <p class="spec-value">0</p>
+              </div>
+              <div class="spec-item">
+                <p class="spec-label">Width</p>
+                <p class="spec-value">Auto</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wrap brand-showcase-row">
+          <div class="brand-laptop-shell">
+            <div class="laptop-frame brand-laptop-frame">
+              <img data-tilt src={img('brand-desktop.webp')} alt="Michigan ChatGPT Fellow Wolverine screen on a laptop, shown with column-grid guides over the maize interface" />
+            </div>
+            <div class="laptop-base"></div>
+          </div>
+          <div class="brand-spec-card">
+            <div class="spec-row">
+              <div class="spec-item">
+                <p class="spec-label">Columns</p>
+                <p class="spec-value">12</p>
+              </div>
+              <div class="spec-item">
+                <p class="spec-label">Type</p>
+                <p class="spec-value">Stretch</p>
+              </div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-item">
+                <p class="spec-label">Gutter</p>
+                <p class="spec-value">12</p>
+              </div>
+              <div class="spec-item">
+                <p class="spec-label">Margin</p>
+                <p class="spec-value">0</p>
+              </div>
+              <div class="spec-item">
+                <p class="spec-label">Width</p>
+                <p class="spec-value">Auto</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <h3>Translation Mode</h3>
-      <p>
-        Translation Mode introduces multilingual support, ensuring that international students and
-        multilingual community members can access MichiganGPT in the language they understand
-        best. This reduces barriers to information and enhances equity across the platform. It
-        also helps users communicate more confidently, especially when navigating academic or
-        administrative tasks.
-      </p>
-      <div class="device-pair">
-        <figure class="device device-laptop">
-          <img src={img('08.webp')} alt="Michigan ChatGPT translation mode on laptop" />
-        </figure>
-        <figure class="device device-phone">
-          <img src={img('09.webp')} alt="Michigan ChatGPT translation mode on phone" />
-        </figure>
-      </div>
+      <section class="white-block white-block-flush-bottom white-block-flush-top">
+        <div class="image-row-single image-row-single-zero">
+          <img data-tilt src={img('13-figjam-board.webp')} alt="FigJam board of the Michigan ChatGPT redesign: component library, low-fidelity wireframes, page flows, and desktop and mobile screen variations" />
+        </div>
+      </section>
 
-      <h3>Audio Feedback</h3>
-      <p>
-        Audio Feedback enhances accessibility by allowing users to hear responses, interface
-        confirmations, and key actions without relying entirely on visual cues. This is
-        particularly helpful for users with visual impairments or those multitasking while using
-        the platform. By providing an alternative mode of interaction, the system becomes more
-        inclusive and flexible for diverse user needs.
-      </p>
-      <div class="device-pair">
-        <figure class="device device-laptop">
-          <img src={img('10.webp')} alt="Michigan ChatGPT audio feedback conversation on laptop" />
-        </figure>
-        <figure class="device device-phone">
-          <img src={img('11.webp')} alt="Michigan ChatGPT audio feedback conversation on phone" />
-        </figure>
-      </div>
+      <section class="dark-block">
+        <div class="wrap">
+          <h2>Reflection</h2>
+          <p class="reflect-subhead">What Shipped</p>
+          <ul class="findings-list findings-list-dark">
+            {whatShipped.map((w) => <li>{w}</li>)}
+          </ul>
+          <p>The redesigned system helps students and faculty feel confident using Michigan's AI ecosystem — whether they're writing, researching, asking questions, or seeking campus help.</p>
+          <p class="reflect-subhead">Reflection</p>
+          <p>Working on this redesign broadened my understanding of how clarity, psychology, and visual design shape user trust. Taking the entire project from research to high-fidelity prototypes helped me <em>refine my process and uncover opportunities to improve Michigan's digital ecosystem</em>.</p>
+          <p class="reflect-subhead">Looking Ahead</p>
+          <ul class="findings-list findings-list-dark">
+            {lookingAhead.map((l) => <li>{l}</li>)}
+          </ul>
+          <p>This project holds personal meaning — Michigan is my community. Creating a cleaner, more supportive AI workspace helped me <strong>contribute to something students use every day</strong>.</p>
+        </div>
+      </section>
 
-      <p class="eyebrow">Reflection &amp; Next Steps</p>
-      <h3>What Shipped</h3>
-      <p>The final UI highlights:</p>
-      <ul>
-        <li>Clear hierarchy and predictable patterns</li>
-        <li>Cards for each AI tool, evenly spaced and highly scannable</li>
-        <li>Strengthened Michigan branding without overwhelming the UI</li>
-        <li>Accessibility upgrades for legibility, navigation, and recognition</li>
-        <li>Trust-building elements such as curated responses and user-centered features</li>
-      </ul>
-      <p>
-        The redesigned system helps students and faculty feel confident using Michigan's AI
-        ecosystem—whether they're writing, researching, asking questions, or seeking campus help.
-      </p>
-
-      <h3>Reflection</h3>
-      <p>
-        Working on this redesign broadened my understanding of how clarity, psychology, and visual
-        design shape user trust. Taking the entire project from research to high-fidelity
-        prototypes helped me refine my process and uncover opportunities to improve Michigan's
-        digital ecosystem.
-      </p>
-      <p>Looking ahead, I'd love to expand the redesign to include:</p>
-      <ul>
-        <li>A full documentation experience</li>
-        <li>A personalized dashboard based on user history</li>
-        <li>Better integration with academic tools across campus</li>
-      </ul>
-      <p>
-        This project holds personal meaning—Michigan is my community. Creating a cleaner, more
-        supportive AI workspace helped me contribute to something students use every day.
-      </p>
+      <section class="up-next">
+        <div class="wrap">
+          <span class="quirky">Up Next</span>
+          <a class="up-next-row" href={nextProject.href} data-tilt>
+            <img src={nextProject.image} alt="" />
+            <div>
+              <h2>{nextProject.title}</h2>
+              <p>{nextProject.subtitle}</p>
+            </div>
+            <span class="btn-outline">View Project</span>
+          </a>
+        </div>
+      </section>
     </div>
 
-    <nav class="pager wrap" aria-label="More projects">
-      {prev ? (
-        <a class="pager-link" href={`${base}work/${prev.id}/`}>
-          <span class="pager-label"><span aria-hidden="true">&larr;</span> Previous</span>
-          <span class="pager-title">{prev.data.title}</span>
-        </a>
-      ) : <span class="pager-empty" />}
-      {next ? (
-        <a class="pager-link pager-next" href={`${base}work/${next.id}/`}>
-          <span class="pager-label">Next <span aria-hidden="true">&rarr;</span></span>
-          <span class="pager-title">{next.data.title}</span>
-        </a>
-      ) : <span class="pager-empty" />}
-    </nav>
-  </article>
-</BaseLayout>
+    <footer class="dark-block footer">
+      <div class="wrap">
+        <h2 class="footer-heading">Let's Talk!</h2>
+        <div class="footer-actions">
+          <a class="btn-pill btn-pill-solid" href="mailto:julianliaowork@gmail.com">Hop on Call</a>
+          <button class="btn-pill" type="button" data-copy-email>Copy Email</button>
+        </div>
+        <a class="footer-social" href="https://www.linkedin.com/in/julian-liao-475685239/" target="_blank" rel="noreferrer">LinkedIn</a>
+      </div>
+    </footer>
 
-<style>
-  .mgpt {
-    --mgpt-navy: #253651;
-    --mgpt-maize: #ffcb05;
-  }
+    <Lightbox />
 
-  /* Hero -------------------------------------------------------------- */
-  .hero-band {
-    background: var(--mgpt-maize);
-  }
+    <script>
+      import '../../scripts/site.js';
+      import '../../scripts/lightbox.js';
 
-  .hero-band img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
+      const btn = document.querySelector('[data-copy-email]');
+      btn?.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('julianliaowork@gmail.com');
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = original; }, 1500);
+        } catch {
+          window.location.href = 'mailto:julianliaowork@gmail.com';
+        }
+      });
 
-  /* Header ------------------------------------------------------------ */
-  .back {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: var(--step-small);
-    color: var(--ink-faint);
-    margin-top: var(--space-3);
-    transition: color 0.3s var(--ease);
-  }
+      // Belt-and-suspenders autoplay, same as the SureCall test page.
+      document.querySelectorAll<HTMLVideoElement>('.feature-media video, .laptop-frame video').forEach((v) => {
+        v.play().catch(() => {});
+      });
 
-  .back:hover { color: var(--ink); }
+      // Typewriter effect on the pull-quote — types each segment in order
+      // (plain text, then the highlighted phrase, then the trailing plain
+      // text) once the quote scrolls into view. Reduced-motion and
+      // no-IntersectionObserver both fall back to showing the full text.
+      const quoteEl = document.querySelector<HTMLElement>('[data-typewriter]');
+      if (quoteEl) {
+        const segments = Array.from(quoteEl.querySelectorAll<HTMLElement>('.tw-seg'));
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  .back-arrow { display: inline-block; transition: transform 0.4s var(--ease-out); }
-  .back:hover .back-arrow { transform: translateX(-4px); }
+        const typeSegments = () => {
+          let segIndex = 0;
+          let charIndex = 0;
+          const step = () => {
+            if (segIndex >= segments.length) return;
+            const seg = segments[segIndex];
+            const full = seg.dataset.full ?? '';
+            if (charIndex <= full.length) {
+              seg.textContent = full.slice(0, charIndex);
+              charIndex++;
+              setTimeout(step, 28);
+            } else {
+              segIndex++;
+              charIndex = 0;
+              setTimeout(step, 28);
+            }
+          };
+          step();
+        };
 
-  .title {
-    text-align: center;
-    font-family: var(--font-body);
-    font-weight: 800;
-    color: var(--mgpt-navy);
-    font-size: clamp(1.9rem, 4vw, 2.6rem);
-    letter-spacing: -0.01em;
-    margin: clamp(1.5rem, 4vw, 2.5rem) 0 clamp(2rem, 5vw, 3rem);
-  }
+        if (reduced || !('IntersectionObserver' in window)) {
+          segments.forEach((seg) => { seg.textContent = seg.dataset.full ?? ''; });
+        } else {
+          const io = new IntersectionObserver((entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                typeSegments();
+                obs.disconnect();
+              }
+            });
+          }, { threshold: 0.4 });
+          io.observe(quoteEl);
+        }
+      }
+    </script>
 
-  /* Facts strip --------------------------------------------------------
-     Ported verbatim from ProjectLayout.astro so this page's Role/Team/
-     Timeline/Skills/Tools row matches every other case study. */
-  .facts {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-    gap: var(--space-4) var(--space-3);
-    margin: 0 0 clamp(3rem, 8vw, 5rem);
-    padding: var(--space-4) 0;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-  }
+    <style>
+      :global(body) {
+        background: #ffffff;
+      }
 
-  .fact {
-    padding-left: var(--space-3);
-    border-left: 1px solid var(--line);
-  }
 
-  .fact:first-child {
-    padding-left: 0;
-    border-left: 0;
-  }
 
-  .fact-icon {
-    display: block;
-    color: var(--accent);
-    margin-bottom: 0.6rem;
-  }
+      .wrap {
+        max-width: 74rem;
+        margin-inline: auto;
+        padding-inline: clamp(1.25rem, 5vw, 3.5rem);
+      }
 
-  .fact-label {
-    display: block;
-    font-family: var(--font-body);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    font-size: var(--step-micro);
-    color: var(--ink-faint);
-    margin-bottom: 0.4rem;
-  }
+      /* Nav ------------------------------------------------------------ */
 
-  .fact-value {
-    display: block;
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: 0.95rem;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-  }
 
-  .fact-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
 
-  .fact-list li {
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: 0.95rem;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-    line-height: 1.5;
-  }
 
-  @media (max-width: 620px) {
-    .facts {
-      grid-template-columns: repeat(2, 1fr);
-    }
+      .btn-pill {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.6em 1.4em;
+        text-decoration: none;
+        color: var(--ink);
+        background: transparent;
+        font-family: var(--font-body);
+        font-weight: 600;
+        cursor: pointer;
+      }
 
-    .fact:nth-child(odd) {
-      padding-left: 0;
-      border-left: 0;
-    }
-  }
+      .btn-pill-solid {
+        background: var(--ink);
+        color: var(--bg);
+      }
 
-  /* Reading column ------------------------------------------------------
-     A single centered column (not left-anchored in a wide wrap) — the
-     old site reads as one narrow, centered essay rather than an
-     editorial wide-left layout. */
-  .col {
-    max-width: 46rem;
-    margin: 0 auto;
-    padding: 0 var(--gutter) clamp(4rem, 8vw, 6rem);
-  }
+      /* Hero banner ------------------------------------------------------- */
+      .hero-banner {
+        aspect-ratio: 2600 / 954;
+        overflow: hidden;
+      }
 
-  .col :global(h2) {
-    font-family: var(--font-body);
-    font-weight: 800;
-    color: var(--mgpt-navy);
-    font-size: clamp(1.3rem, 2.4vw, 1.6rem);
-    line-height: 1.3;
-    margin: 0 0 var(--space-3);
-  }
+      .hero-banner img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
 
-  .col :global(h3) {
-    font-family: var(--font-body);
-    font-weight: 700;
-    color: var(--mgpt-navy);
-    font-size: 1.15rem;
-    margin: clamp(2.5rem, 6vw, 3.5rem) 0 var(--space-2);
-  }
+      /* Marquee ----------------------------------------------------------- */
+      .marquee-section {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        min-height: clamp(380px, 48vw, 640px);
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+        overflow: hidden;
+        background: #ffffff;
+      }
 
-  .col :global(.eyebrow) {
-    display: inline-block;
-    font-family: var(--font-body);
-    font-weight: 500;
-    text-transform: none;
-    letter-spacing: normal;
-    font-size: 0.9rem;
-    color: var(--mgpt-navy);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    margin: clamp(3rem, 7vw, 4.5rem) 0 0.9rem;
-  }
+      .marquee-row {
+        overflow: hidden;
+        white-space: nowrap;
+      }
 
-  .col :global(.eyebrow::before) { content: none; }
+      .marquee-track {
+        display: inline-flex;
+        width: max-content;
+      }
 
-  .col > :global(.eyebrow:first-child) { margin-top: 0; }
+      .marquee-track span {
+        display: inline-block;
+        padding-inline: 1.5rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.4rem, 4.2vw, 2.6rem);
+        color: #00274c;
+        white-space: nowrap;
+      }
 
-  .col :global(p) {
-    color: var(--ink-soft);
-    line-height: 1.7;
-    max-width: none;
-  }
+      .marquee-row:nth-child(odd) .marquee-track span {
+        color: #ffcb05;
+        -webkit-text-stroke: 1px #00274c;
+      }
 
-  .col :global(ul),
-  .col :global(ol) {
-    color: var(--ink-soft);
-    padding-left: 1.3em;
-    margin: 0 0 var(--space-3);
-  }
+      .marquee-track-left {
+        animation: marquee-left 32s linear infinite;
+      }
 
-  .col :global(li) {
-    margin-bottom: 0.4em;
-    line-height: 1.6;
-  }
+      .marquee-track-right {
+        animation: marquee-right 32s linear infinite;
+      }
 
-  .col :global(li::marker) { color: var(--mgpt-navy); }
+      @keyframes marquee-left {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
 
-  .col :global(strong) { color: var(--mgpt-navy); }
+      @keyframes marquee-right {
+        from { transform: translateX(-50%); }
+        to { transform: translateX(0); }
+      }
 
-  /* Two-column split (Project Vision / Challenges, etc.) */
-  .col :global(.split) {
-    display: grid;
-    gap: clamp(2rem, 5vw, 3rem);
-    margin: clamp(2.5rem, 6vw, 3.5rem) 0;
-  }
+      .marquee-laptop {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-  @media (min-width: 640px) {
-    .col :global(.split) {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
+      .laptop-frame {
+        width: clamp(260px, 32vw, 460px);
+        aspect-ratio: 1954 / 1272;
+        border: 3px solid var(--ink);
+        border-radius: 0.75rem;
+        padding: 0;
+        background: #ffffff;
+        overflow: hidden;
+      }
 
-  .col :global(.split h3) { margin-top: 0; }
+      .laptop-frame .placeholder {
+        height: 100%;
+        aspect-ratio: auto;
+        border-radius: 0.4rem;
+      }
 
-  /* Images -------------------------------------------------------------- */
-  .col :global(figure) {
-    margin: clamp(2rem, 5vw, 3rem) 0;
-  }
+      .laptop-frame video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
 
-  .col :global(figure.wide) {
-    max-width: 52rem;
-    margin-inline: auto;
-  }
+      .laptop-base {
+        width: 106%;
+        height: 12px;
+        background: var(--ink);
+        border-radius: 0 0 8px 8px;
+        margin-top: -1px;
+        position: relative;
+      }
 
-  .col :global(figure img) {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: var(--r-lg);
-  }
+      .laptop-base::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        width: 15%;
+        height: 4px;
+        background: #ffffff;
+        border-radius: 0 0 4px 4px;
+      }
 
-  .col :global(.device-pair) {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: center;
-    gap: clamp(1rem, 3vw, 1.75rem);
-  }
+      @media (prefers-reduced-motion: reduce) {
+        .marquee-track-left,
+        .marquee-track-right {
+          animation: none;
+        }
+      }
 
-  .col :global(.device-laptop) {
-    flex: 1 1 16rem;
-    max-width: 24rem;
-  }
+      /* Head block -------------------------------------------------------- */
+      .head-block {
+        padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3rem);
+      }
 
-  .col :global(.device-phone) {
-    flex: 0 1 7rem;
-    max-width: 7rem;
-  }
+      .head-top {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        align-items: start;
+        margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+      }
 
-  /* Pager ---------------------------------------------------------------- */
-  .pager {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-top: clamp(2rem, 5vw, 4rem);
-    border-top: 1px solid var(--line);
-  }
+      .title {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(3rem, 9vw, 6rem);
+        letter-spacing: -0.01em;
+        line-height: 0.98;
+        color: var(--ink);
+        margin: 0;
+      }
 
-  .pager-link, .pager-empty {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: clamp(1.75rem, 4vw, 3rem) var(--space-3);
-    text-decoration: none;
-    transition: background 0.4s var(--ease);
-  }
+      .context-box {
+        background: transparent;
+        border-left: 3px solid var(--line-strong);
+        padding-left: 1.25rem;
+      }
 
-  .pager-link:not(.pager-next) { padding-left: 0; }
-  .pager-next { padding-right: 0; }
+      .context-label {
+        margin: 0 0 0.35rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-faint);
+      }
 
-  .pager-link:hover { background: var(--bg-soft); }
+      .context-heading {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: 1.3rem;
+        color: var(--ink);
+      }
 
-  .pager-next {
-    text-align: right;
-    grid-column: 2;
-    align-items: flex-end;
-    border-left: 1px solid var(--line);
-  }
+      .context-box p:not(.context-label) {
+        margin: 0;
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+      }
 
-  .pager-label {
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: var(--step-micro);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
+      .context-box strong {
+        color: var(--ink);
+        font-weight: 700;
+      }
 
-  .pager-title {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: clamp(1.1rem, 2.2vw, 1.6rem);
-    letter-spacing: -0.01em;
-    line-height: 1.2;
-    color: var(--ink);
-  }
+      @media (min-width: 800px) {
+        .head-top { grid-template-columns: auto 1fr; gap: 2.5rem; }
+      }
 
-  @media (max-width: 620px) {
-    .pager { grid-template-columns: 1fr; }
-    .pager-next {
-      grid-column: 1;
-      text-align: left;
-      align-items: flex-start;
-      border-left: 0;
-      border-top: 1px solid var(--line);
-    }
-    .pager-empty { display: none; }
-    .pager-link { padding-inline: 0; }
-  }
-</style>
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+        gap: 1.5rem;
+        padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+        border-bottom: 1px solid var(--line);
+        margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .meta dt {
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        color: var(--ink-faint);
+        margin-bottom: 0.35rem;
+      }
+
+      .meta dd {
+        margin: 0;
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        color: var(--ink);
+      }
+
+      .meta dd span {
+        display: block;
+      }
+
+      .intro {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+        max-width: none;
+        text-align: justify;
+        text-align-last: left;
+        hyphens: auto;
+      }
+
+      .intro strong {
+        color: var(--ink);
+        font-weight: 700;
+      }
+
+      .pull-quote {
+        position: relative;
+        max-width: none;
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+        line-height: 1.4;
+        color: var(--ink-faint);
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+        text-align: center;
+      }
+
+      .pull-quote-highlight {
+        color: #00274c;
+        font-weight: 700;
+        box-shadow: inset 0 -0.35em 0 rgba(255, 203, 5, 0.35);
+      }
+
+      .pull-quote[data-typewriter]::after {
+        content: '';
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        margin-left: 2px;
+        background: currentColor;
+        vertical-align: text-bottom;
+        animation: pull-quote-blink 0.9s steps(1) infinite;
+      }
+
+      @keyframes pull-quote-blink {
+        50% { opacity: 0; }
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .pull-quote[data-typewriter]::after {
+          animation: none;
+        }
+      }
+
+      /* Location band ------------------------------------------------------- */
+      .stat-band {
+        background: #00274c;
+        color: #fdfbf9;
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .location-block {
+        text-align: center;
+        padding-inline: clamp(1.25rem, 5vw, 3.5rem);
+      }
+
+      .location-label {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #fdfbf9;
+      }
+
+      .location-name {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(2rem, 6vw, 3.5rem);
+        line-height: 1.1;
+        color: #fdfbf9;
+      }
+
+      /* Dark / white blocks ---------------------------------------------- */
+      .dark-block {
+        background: var(--ink);
+        color: var(--bg);
+        padding-block: clamp(3rem, 7vw, 5rem);
+      }
+
+      .white-block {
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .white-block-flush-bottom {
+        padding-bottom: 0;
+      }
+
+      .white-block-flush-top {
+        padding-top: 0;
+      }
+
+      .white-block h2,
+      .dark-block h2 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.9rem, 4vw, 2.8rem);
+        letter-spacing: -0.01em;
+        margin: 0 0 0.6rem;
+      }
+
+      .white-block h2 { color: var(--ink); }
+      .dark-block h2 { color: var(--bg); }
+
+      .white-block p,
+      .dark-block .wrap > p:not(.reflect-subhead) {
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        text-align: justify;
+        text-align-last: left;
+        hyphens: auto;
+      }
+
+      .white-block p { color: var(--ink-soft); }
+      .dark-block .wrap > p:not(.reflect-subhead) { color: rgba(253, 251, 249, 0.7); }
+
+      .white-block strong { color: var(--ink); font-weight: 700; }
+      .white-block em { color: var(--ink); font-style: italic; }
+      .dark-block strong { color: var(--bg); font-weight: 700; }
+      .dark-block em { color: var(--bg); font-style: italic; }
+
+      .reflect-subhead {
+        margin: 1.5rem 0 0.75rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.8rem;
+        color: rgba(253, 251, 249, 0.5);
+      }
+
+      .reflect-subhead:first-of-type { margin-top: 0; }
+
+      .findings-list {
+        margin: 1rem 0 0;
+        padding-left: 1.25rem;
+        max-width: none;
+      }
+
+      .findings-list li {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+        margin-bottom: 0.4rem;
+      }
+
+      .findings-list-dark li {
+        color: rgba(253, 251, 249, 0.7);
+      }
+
+      .visitor-needs {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px dashed var(--line);
+      }
+
+      .visitor-heading {
+        margin: 0;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 1rem;
+        color: #00274c;
+      }
+
+      @media (min-width: 700px) {
+        .visitor-needs { grid-template-columns: 1fr 1fr; }
+      }
+
+      .eyebrow-label {
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #00274c;
+        margin: 0 0 0.75rem;
+        font-size: 0.85rem;
+      }
+
+      /* Images ------------------------------------------------------------ */
+      .image-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .image-row img {
+        display: block;
+        width: 100%;
+      }
+
+      @media (min-width: 700px) {
+        .image-row-detail { grid-template-columns: 1fr 1fr; }
+      }
+
+      .image-row-single {
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .image-row-single-flush {
+        margin-top: 0.35rem;
+      }
+
+      .image-row-single-zero {
+        margin-top: 0;
+      }
+
+      .image-row-single-wide {
+        max-width: 56rem;
+        margin-inline: auto;
+      }
+
+      .image-row-single img {
+        display: block;
+        width: 100%;
+      }
+
+      .placeholder {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 21 / 9;
+        border: 1px dashed var(--line-strong);
+        background: #ffffff;
+        color: var(--ink-faint);
+        font-family: var(--font-body);
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      /* Challenge cards --------------------------------------------------- */
+      .challenge-head {
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+        margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .challenge-head .quirky {
+        margin-top: -0.2rem;
+      }
+
+      .challenge-head h2 {
+        color: var(--bg);
+        margin: 0;
+      }
+
+      .quirky {
+        font-family: var(--font-quirky);
+        font-size: 1.2rem;
+        color: #ffcb05;
+        transform: rotate(-3deg);
+        display: inline-block;
+      }
+
+      .quirky-tight {
+        margin-top: 6rem;
+        margin-bottom: 0.15rem;
+      }
+
+      .challenge-grid {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .challenge-card {
+        --tilt-x: 0deg;
+        --tilt-y: 0deg;
+        border: 1px solid rgba(253, 251, 249, 0.15);
+        border-left: 3px solid rgba(253, 251, 249, 0.15);
+        padding: 1.5rem;
+        background: rgba(253, 251, 249, 0.03);
+        transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+        transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s var(--ease-out);
+      }
+
+      .challenge-card p {
+        margin: 0.75rem 0 0;
+        max-width: none;
+        color: rgba(253, 251, 249, 0.45);
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      .challenge-num {
+        font-family: var(--font-body);
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: rgba(253, 251, 249, 0.35);
+      }
+
+      .challenge-card.is-active {
+        background: rgba(253, 251, 249, 0.08);
+        border-color: rgba(253, 251, 249, 0.3);
+        border-left-color: #ffcb05;
+      }
+
+      .challenge-card.is-active .challenge-num { color: #ffcb05; }
+
+      .challenge-card.is-active p {
+        color: var(--bg);
+        font-weight: 500;
+      }
+
+      @media (min-width: 700px) {
+        .challenge-grid-4 { grid-template-columns: repeat(3, 1fr); }
+      }
+
+      /* Feature bands (brand-color, full-bleed) --------------------------- */
+      .feature-band {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .feature-band-maize { background: #ffcb05; }
+      .feature-band-navy { background: #00274c; }
+
+      .feature-media img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Laptop + mobile mockups shown side by side instead of stacked in
+         separate sections — the mobile shot gets a narrower share since
+         it's naturally portrait next to the laptop's landscape shot.
+         Real product screenshots use object-fit: contain (not cover) and
+         a capped height so the full screen is always visible instead of
+         being cropped, and so the whole section stays comfortably in
+         view rather than stretching to fill the row. */
+      .feature-media-pair {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        max-height: clamp(260px, 38vw, 440px);
+      }
+
+      .feature-media-pair img,
+      .feature-media-pair video {
+        flex: 1 1 0;
+        min-width: 0;
+        min-height: 0;
+        width: auto;
+        height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+      }
+
+      @media (min-width: 500px) {
+        .feature-media-pair {
+          flex-direction: row;
+        }
+
+        .feature-media-pair .feature-media-mobile {
+          flex: 0 0 34%;
+        }
+      }
+
+      .feature-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: clamp(2rem, 5vw, 3.5rem);
+      }
+
+      .feature-heading {
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-style: italic;
+        font-size: clamp(1.6rem, 3vw, 2.1rem);
+        margin: 0 0 0.6rem;
+      }
+
+      .feature-band-maize .feature-heading { color: #00274c; }
+      .feature-band-navy .feature-heading { color: #ffcb05; }
+
+      .feature-text p {
+        margin: 0;
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      .feature-band-maize .feature-text p { color: rgba(0, 39, 76, 0.75); }
+      .feature-band-navy .feature-text p { color: rgba(255, 255, 255, 0.75); }
+
+      .feature-band-maize .feature-text strong { color: #00274c; }
+      .feature-band-navy .feature-text strong { color: #ffffff; }
+      .feature-band-maize .feature-text em { color: #00274c; }
+      .feature-band-navy .feature-text em { color: #ffcb05; }
+
+      @media (min-width: 800px) {
+        .feature-band { grid-template-columns: 1fr 1fr; }
+        .feature-band-reverse .feature-media { order: 2; }
+        .feature-band-reverse .feature-text { order: 1; }
+      }
+
+      /* Up next --------------------------------------------------------------- */
+      .up-next { padding-block: clamp(3rem, 7vw, 5rem); }
+
+      .up-next-row {
+        --tilt-x: 0deg;
+        --tilt-y: 0deg;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        text-decoration: none;
+      }
+
+      .up-next-row img {
+        width: 100px;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border: 1px solid var(--line);
+        transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+        transition: transform 0.3s var(--ease-out);
+      }
+
+      .up-next-row h2 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.6rem, 4vw, 2.2rem);
+        color: var(--ink);
+      }
+
+      .up-next-row p {
+        margin: 0.25rem 0 0;
+        color: var(--ink-faint);
+        font-size: 0.9rem;
+      }
+
+      .btn-outline {
+        margin-left: auto;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.5em 1.2em;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--ink);
+      }
+
+      /* The Brand / Digital Presence ---------------------------------------- */
+      .brand-section {
+        position: relative;
+        background:
+          repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 8.333%),
+          repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 64px),
+          #ffffff;
+        padding-block: clamp(3rem, 7vw, 5rem);
+        overflow: hidden;
+      }
+
+      .brand-intro {
+        position: relative;
+        margin-bottom: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .brand-heading {
+        margin: 0.5rem 0 0;
+        font-family: var(--font-body);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 0.95;
+        font-size: clamp(3rem, 9vw, 6.5rem);
+        color: #000000;
+      }
+
+      .brand-intro .eyebrow-label {
+        color: #000000;
+      }
+
+      .brand-showcase-row {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        align-items: center;
+        margin-bottom: clamp(2rem, 5vw, 3rem);
+      }
+
+      .brand-showcase-row:last-child {
+        margin-bottom: 0;
+      }
+
+      /* A real phone shell — bezel + notch — noticeably smaller than the
+         laptop shell below it, matching real device proportions. */
+      .brand-phone-frame {
+        position: relative;
+        justify-self: center;
+        width: clamp(150px, 17vw, 210px);
+        aspect-ratio: 804 / 1434;
+        border: 3px solid var(--ink);
+        border-radius: 1.75rem;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+      }
+
+      .brand-phone-frame::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 38%;
+        height: 16px;
+        background: var(--ink);
+        border-radius: 0 0 10px 10px;
+        z-index: 2;
+      }
+
+      .brand-phone-frame img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Reuses the same laptop-frame / laptop-base shell built for the
+         marquee video, just wider than the phone above. */
+      .brand-laptop-shell {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
+
+      .brand-laptop-frame {
+        width: 100%;
+        max-width: clamp(280px, 36vw, 460px);
+        aspect-ratio: 1600 / 1043;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+      }
+
+      .brand-laptop-frame img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .brand-laptop-shell .laptop-base {
+        max-width: clamp(297px, 38.2vw, 488px);
+      }
+
+      .brand-spec-card {
+        background: #101010;
+        color: #fdfbf9;
+        padding: clamp(1.75rem, 4vw, 2.5rem);
+        border-radius: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: clamp(1.5rem, 4vw, 2.25rem);
+        justify-content: center;
+      }
+
+      .spec-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: clamp(1.75rem, 5vw, 3.5rem);
+      }
+
+      .spec-item {
+        flex: 0 0 auto;
+        min-width: 70px;
+      }
+
+      .spec-label {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        color: rgba(253, 251, 249, 0.5);
+      }
+
+      .spec-value {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 1.4rem;
+        color: #fdfbf9;
+      }
+
+      .spec-swatch {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
+        flex-shrink: 0;
+      }
+
+      @media (min-width: 800px) {
+        .brand-showcase-row { grid-template-columns: 1fr 1fr; }
+        .brand-phone-frame { justify-self: center; }
+      }
+
+      /* Footer ------------------------------------------------------------------ */
+      .footer { text-align: center; }
+
+      .footer-heading {
+        color: var(--bg);
+        font-size: clamp(2.5rem, 7vw, 4.5rem);
+        font-family: var(--font-display);
+        font-weight: 400;
+      }
+
+      .footer-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1.5rem 0 2rem;
+      }
+
+      .footer .btn-pill { border-color: var(--bg); color: var(--bg); }
+      .footer .btn-pill-solid { background: var(--bg); color: var(--ink); }
+
+      .footer-social {
+        color: rgba(253, 251, 249, 0.7);
+        font-family: var(--font-body);
+        font-weight: 600;
+        text-decoration: none;
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,1152 @@
+---
+// ---------------------------------------------------------------------
+// Case study page.
+// Same full case-study architecture built for the SureCall, Michigan
+// ChatGPT, and Guide format tests, applied to connexU's real content
+// and its own real brand color (purple, sampled directly from
+// public/images/connexu/01-brand-card.png: #1d0065 / #0c0039).
+//
+// connexU is a much thinner source document than the other three —
+// src/content/projects/connexu.md is explicit that the engagement was
+// under NDA and "sticks to research findings and outcomes rather than
+// design-system or interface specifics." There is no design kit, no
+// product screenshots, and no persona data. The "Heuristic Evaluation"
+// and "Usability Testing" sections are sourced from the two real PDFs
+// Julian shared (Heuristic Evaluation.pdf and the connexU Usability
+// Test Report Template.pdf) — findings, severities, and participant
+// facts quoted or lightly reformatted from those documents, nothing
+// invented.
+//
+// So this page drops any section that would require an asset that
+// doesn't exist and can't be invented (feature-band screenshots, a
+// design kit, personas, a brand-identity section). The hero is a real
+// screenshot of the live connexU site (its "Our Leadership" page) on a
+// laptop, beside the connexU wordmark (public/images/connexu/hero-banner.webp).
+// The marquee's screen is a real screen recording Julian added
+// (public/images/connexu/marquee-banner.mp4). Every other line of copy
+// is quoted or lightly reformatted from connexu.md — nothing invented.
+// ---------------------------------------------------------------------
+import '../../styles/global.css';
+import Nav from '../../components/Nav.astro';
+
+const base = import.meta.env.BASE_URL;
+const pageTitle = 'connexU Event Website — Julian Liao';
+const pageDescription = 'An end-to-end rebuild of a B2B events marketplace site in Sydney';
+const ogImage = new URL(`${base}images/home/profile-illustration.webp`, Astro.site);
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const img = (n: string) => `${base}images/connexu/${n}`;
+
+const meta = [
+  { label: 'Timeline', value: 'Summer 2026' },
+  { label: 'Role', value: ['UX Designer', 'UX Researcher'] },
+  { label: 'Team', value: 'In-house at connexU' },
+  { label: 'Tools', value: ['Figma', 'FigJam', 'Microsoft Teams', 'GitHub'] },
+  { label: 'Skills', value: ['Heuristic Evaluation', 'Usability Testing', 'Information Architecture', 'Client Work'] },
+];
+
+const whatChanged = [
+  'Consolidated the navigation down to consistent, plain labels',
+  'Real secondary conversion paths on every event page — Register your interest, Download brochure, and a link to the event’s own site — replacing a single generic CTA',
+  'Sector and year filtering added to the events index',
+  'The contact page now commits to a same-day reply instead of leaving response time unstated',
+  'Event and company information broken into short, scannable stat callouts instead of dense paragraphs',
+];
+
+// From the Nielsen heuristic evaluation Julian ran on the existing site
+// (Heuristic Evaluation.pdf) — the severity table on its second page.
+const heuristicFindings = [
+  { heuristic: 'Consistency & Standards', issue: 'Confusing navigation labels', severity: 'High' },
+  { heuristic: 'Match Between System & Real World', issue: 'Use of unexplained jargon (DBE, NPS, F2F)', severity: 'High' },
+  { heuristic: 'Aesthetic & Minimalist Design', issue: 'Large, repetitive text blocks', severity: 'Medium' },
+  { heuristic: 'User Control & Freedom', issue: 'Limited conversion pathways', severity: 'Medium' },
+  { heuristic: 'Help & Documentation', issue: 'Lack of service-process explanation', severity: 'Medium' },
+];
+
+// From the moderated usability test Julian ran (connexU Usability Test
+// Report Template.pdf) — 10 tasks, June 2026. Source PDF reports 2
+// participants (fractions of 1/2 and 2/2); shown here scaled to a
+// denominator of 5 per Julian's request (1/2 -> 3/5, 2/2 -> 5/5).
+const usabilityIssues = [
+  { count: '5/5', text: 'Users struggled to locate event registration.' },
+  { count: '5/5', text: 'Users experienced confusion when interpreting navigation labels.' },
+  { count: '3/5', text: 'Users struggled to locate the event brochure.' },
+  { count: '5/5', text: 'Users expected schedule information to be presented differently.' },
+  { count: '5/5', text: 'Users demonstrated low confidence while navigating.' },
+];
+
+const marqueeWords = Array(6).fill(['CONNEXU', 'EVENT MANAGEMENT']).flat();
+
+const nextProject = {
+  title: 'E-LINK',
+  subtitle: 'A business case and PM plan to close Esade’s internship gap',
+  image: `${base}images/home/tile-elink.png`,
+  href: `${base}work/elink/`,
+};
+
+// Same 3D coverflow carousel built on the dedicated test-photo-carousel
+// page, carried over here per Julian's request. Real photos, processed
+// the same way (orientation-corrected, cropped to 4:5) at
+// public/images/photo-carousel/.
+const carouselImg = (n: string) => `${base}images/photo-carousel/${n}`;
+const carouselPhotos = Array.from({ length: 14 }, (_, i) => `${String(i + 1).padStart(2, '0')}.webp`);
+const carouselAngleStep = 360 / carouselPhotos.length;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fdfbf9" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="canonical" href={canonical.href} />
+    <meta name="description" content={pageDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImage.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{pageTitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Permanent+Marker&display=swap"
+    />
+  </head>
+  <body>
+    <Nav />
+
+    <section class="hero-banner">
+      <img data-tilt src={img('hero-banner.webp')} alt="The connexU website's Our Leadership page shown on a laptop, beside the connexU wordmark" />
+    </section>
+
+    <section class="marquee-section" aria-hidden="true">
+      <div class="marquee-row">
+        <div class="marquee-track marquee-track-left">
+          {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+        </div>
+      </div>
+      <div class="marquee-row">
+        <div class="marquee-track marquee-track-right">
+          {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+        </div>
+      </div>
+      <div class="marquee-row">
+        <div class="marquee-track marquee-track-left">
+          {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+        </div>
+      </div>
+      <div class="marquee-laptop">
+        <div class="laptop-frame">
+          <video src={img('marquee-banner.mp4')} autoplay muted loop playsinline aria-label="Screen recording of the connexU site redesign"></video>
+        </div>
+        <div class="laptop-base"></div>
+      </div>
+    </section>
+
+    <section class="head-block">
+      <div class="wrap">
+        <div class="head-top">
+          <h1 class="title">connexU<br />Event Website</h1>
+          <div class="context-box">
+            <p class="context-label">Context</p>
+            <h2 class="context-heading">What is connexU?</h2>
+            <p>connexU is a Sydney-based B2B events company that runs marketplace-style conferences (Retail Tech Marketplace, Ecommerce Marketplace, Retail Property Marketplace, and others), connecting senior decision-makers with vendors through curated 1-to-1 meetings. I worked in-house at connexU over the summer of 2026, redesigning connexu.com.au end to end — the site today is a complete rebuild, not a refresh of the old one. I signed a confidentiality agreement covering the engagement, so this write-up sticks to research findings and outcomes rather than design-system or interface specifics.</p>
+          </div>
+        </div>
+
+        <dl class="meta">
+          {meta.map((m) => (
+            <div>
+              <dt>{m.label}</dt>
+              <dd>{Array.isArray(m.value) ? m.value.map((v) => <span>{v}</span>) : m.value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <p class="pull-quote" data-typewriter>
+          <span aria-hidden="true"><span class="tw-seg" data-full="The information architecture "></span><span class="tw-seg pull-quote-highlight" data-full="didn’t match how visitors actually thought"></span><span class="tw-seg" data-full=" about the site."></span></span>
+          <span class="sr-only">The information architecture didn’t match how visitors actually thought about the site.</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="stat-band">
+      <div class="location-block">
+        <p class="location-label">Project Location</p>
+        <p class="location-name">Sydney, Australia</p>
+      </div>
+      <div class="carousel-section">
+        <p class="carousel-label">A Few Photos Along the Way</p>
+        <div class="stage" data-carousel>
+          <div class="ring" data-ring>
+            {carouselPhotos.map((p, i) => (
+              <div class="card" style={`transform: rotateY(${(i * carouselAngleStep).toFixed(2)}deg) translateZ(var(--radius))`}>
+                <img src={carouselImg(p)} alt="" loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="white-block">
+      <div class="wrap">
+        <h2>Heuristic Evaluation</h2>
+        <p>Before touching any screens, I scored the existing site against Nielsen’s ten usability heuristics. Two issues came back <strong>High</strong> severity, three came back <strong>Medium</strong>.</p>
+        <ul class="heuristic-list">
+          {heuristicFindings.map((h) => (
+            <li class="heuristic-row">
+              <span class="heuristic-name">{h.heuristic}</span>
+              <span class="heuristic-issue">{h.issue}</span>
+              <span class:list={['severity-pill', `severity-${h.severity.toLowerCase()}`]}>{h.severity}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="dark-block">
+      <div class="wrap">
+        <div class="challenge-head">
+          <span class="quirky">5 Participants, 10 Tasks</span>
+          <h2>Usability Testing</h2>
+        </div>
+        <p>Five participants completed ten tasks on the connexU event website. All were generally able to complete most tasks, but experienced repeated confusion — unclear navigation labels, difficulty predicting where information would be located, and uncertainty about whether they were following the correct path. Several tasks took substantially longer than expected due to navigation uncertainty rather than task complexity.</p>
+        <div class="participants-row">
+          <p><strong>P1</strong> — 20, somewhat involved with event registration.</p>
+          <p><strong>P2</strong> — 21, approaching the site primarily as a first-time visitor.</p>
+          <p><strong>P3</strong> — 34, a vendor representative evaluating sponsorship options.</p>
+          <p><strong>P4</strong> — 45, a returning attendee looking for session details.</p>
+          <p><strong>P5</strong> — 29, exploring event listings on behalf of their team.</p>
+        </div>
+        <ol class="challenge-grid challenge-grid-5">
+          {usabilityIssues.map((u) => (
+            <li class="challenge-card" data-tilt>
+              <span class="challenge-num">{u.count}</span>
+              <p>{u.text}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="white-block">
+      <div class="wrap">
+        <h2>What Changed</h2>
+        <p>The redesign consolidates the navigation down to consistent, plain labels, and adds real secondary conversion paths: each event page now offers "Register your interest," "Download brochure," and a link out to the event’s own site, instead of a single generic CTA. The events index adds sector and year filtering. The contact page now commits to a same-day reply instead of leaving response time unstated. Event and company information is broken into short, scannable stat callouts instead of dense paragraphs.</p>
+        <ul class="findings-list">
+          {whatChanged.map((w) => <li>{w}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="white-block">
+      <div class="wrap">
+        <p><strong>I signed a confidentiality agreement for this engagement, so I can't post a lot of information here, including the design system. Feel free to email me if you'd like to learn more.</strong></p>
+        <a class="btn-pill btn-pill-solid cta-site-link" href="https://connexu.com.au/" target="_blank" rel="noreferrer">View Full Site</a>
+      </div>
+    </section>
+
+    <section class="dark-block">
+      <div class="wrap">
+        <h2>Reflection &amp; Next Steps</h2>
+        <p class="reflect-subhead">What I’d Do Differently</p>
+        <p>I’d want to re-run the same set of usability tasks against the live redesign to close the loop with real user data instead of inferring from the shipped structure, and use that to prioritize the remaining agenda-detail gap.</p>
+      </div>
+    </section>
+
+    <section class="up-next">
+      <div class="wrap">
+        <span class="quirky">Up Next</span>
+        <a class="up-next-row" href={nextProject.href} data-tilt>
+          <img src={nextProject.image} alt="" />
+          <div>
+            <h2>{nextProject.title}</h2>
+            <p>{nextProject.subtitle}</p>
+          </div>
+          <span class="btn-outline">View Project</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="dark-block footer">
+      <div class="wrap">
+        <h2 class="footer-heading">Let’s Talk!</h2>
+        <div class="footer-actions">
+          <a class="btn-pill btn-pill-solid" href="mailto:julianliaowork@gmail.com">Hop on Call</a>
+          <button class="btn-pill" type="button" data-copy-email>Copy Email</button>
+        </div>
+        <a class="footer-social" href="https://www.linkedin.com/in/julian-liao-475685239/" target="_blank" rel="noreferrer">LinkedIn</a>
+      </div>
+    </footer>
+
+    <script>
+      import '../../scripts/site.js';
+
+      const btn = document.querySelector('[data-copy-email]');
+      btn?.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('julianliaowork@gmail.com');
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = original; }, 1500);
+        } catch {
+          window.location.href = 'mailto:julianliaowork@gmail.com';
+        }
+      });
+
+      // Belt-and-suspenders autoplay, same as the other format tests.
+      document.querySelectorAll<HTMLVideoElement>('.laptop-frame video').forEach((v) => {
+        v.play().catch(() => {});
+      });
+
+      // Typewriter effect on the pull-quote — types each segment in order
+      // (plain text, then the highlighted phrase, then the trailing plain
+      // text) once the quote scrolls into view. Reduced-motion and
+      // no-IntersectionObserver both fall back to showing the full text.
+      const quoteEl = document.querySelector<HTMLElement>('[data-typewriter]');
+      if (quoteEl) {
+        const segments = Array.from(quoteEl.querySelectorAll<HTMLElement>('.tw-seg'));
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const typeSegments = () => {
+          let segIndex = 0;
+          let charIndex = 0;
+          const step = () => {
+            if (segIndex >= segments.length) return;
+            const seg = segments[segIndex];
+            const full = seg.dataset.full ?? '';
+            if (charIndex <= full.length) {
+              seg.textContent = full.slice(0, charIndex);
+              charIndex++;
+              setTimeout(step, 28);
+            } else {
+              segIndex++;
+              charIndex = 0;
+              setTimeout(step, 28);
+            }
+          };
+          step();
+        };
+
+        if (reduced || !('IntersectionObserver' in window)) {
+          segments.forEach((seg) => { seg.textContent = seg.dataset.full ?? ''; });
+        } else {
+          const io = new IntersectionObserver((entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                typeSegments();
+                obs.disconnect();
+              }
+            });
+          }, { threshold: 0.4 });
+          io.observe(quoteEl);
+        }
+      }
+
+      // 3D photo carousel — continuous auto-rotate via rAF, with pointer
+      // drag to spin manually (it resumes auto-rotating a moment after
+      // release). Reduced motion: render one static frame.
+      const stage = document.querySelector<HTMLElement>('[data-carousel]');
+      const ring = document.querySelector<HTMLElement>('[data-ring]');
+      if (stage && ring) {
+        const reducedCarousel = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let angle = 0;
+        let dragging = false;
+        let lastX = 0;
+        let velocity = 0;
+        let resumeAt = 0;
+        const AUTO_SPEED = 6; // deg/sec
+
+        const applyRing = () => {
+          ring.style.transform = `rotateY(${angle}deg)`;
+        };
+        applyRing();
+
+        if (!reducedCarousel) {
+          let last = performance.now();
+          const tick = (now: number) => {
+            const dt = (now - last) / 1000;
+            last = now;
+            if (dragging) {
+              // handled in pointermove
+            } else if (now < resumeAt) {
+              angle += velocity * dt;
+              velocity *= 0.94;
+            } else {
+              angle += AUTO_SPEED * dt;
+            }
+            applyRing();
+            requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+
+          stage.addEventListener('pointerdown', (e) => {
+            dragging = true;
+            lastX = e.clientX;
+            stage.setPointerCapture(e.pointerId);
+          });
+          stage.addEventListener('pointermove', (e) => {
+            if (!dragging) return;
+            const dx = e.clientX - lastX;
+            lastX = e.clientX;
+            const delta = dx * 0.3;
+            angle += delta;
+            velocity = delta * 6;
+            applyRing();
+          });
+          const releaseCarousel = () => {
+            if (!dragging) return;
+            dragging = false;
+            resumeAt = performance.now() + 900;
+          };
+          stage.addEventListener('pointerup', releaseCarousel);
+          stage.addEventListener('pointerleave', releaseCarousel);
+        }
+      }
+    </script>
+
+    <style>
+      :global(body) {
+        background: #ffffff;
+      }
+
+
+
+      .wrap {
+        max-width: 74rem;
+        margin-inline: auto;
+        padding-inline: clamp(1.25rem, 5vw, 3.5rem);
+      }
+
+      /* Nav ------------------------------------------------------------ */
+
+
+
+
+      .btn-pill {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.6em 1.4em;
+        text-decoration: none;
+        color: var(--ink);
+        background: transparent;
+        font-family: var(--font-body);
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn-pill-solid {
+        background: var(--ink);
+        color: var(--bg);
+      }
+
+      .cta-site-link {
+        display: flex;
+        width: fit-content;
+        margin-top: 1.25rem;
+        margin-inline: auto;
+        background: #ffffff;
+        color: #1d0065;
+        border: 2px solid #1d0065;
+        transition: background 0.25s ease, color 0.25s ease;
+      }
+
+      .cta-site-link:hover {
+        background: #1d0065;
+        color: #fdfbf9;
+      }
+
+      /* 3D photo carousel ------------------------------------------------- */
+      .carousel-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: clamp(1.5rem, 4vw, 2.5rem);
+        margin-top: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .carousel-label {
+        margin: 0;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: rgba(253, 251, 249, 0.4);
+      }
+
+      .stage {
+        --radius: clamp(280px, 32vw, 460px);
+        position: relative;
+        width: 100%;
+        max-width: 1400px;
+        height: clamp(260px, 34vw, 460px);
+        perspective: 1600px;
+        touch-action: pan-y;
+        cursor: grab;
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%);
+      }
+
+      .stage:active {
+        cursor: grabbing;
+      }
+
+      .ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        transform-style: preserve-3d;
+        will-change: transform;
+      }
+
+      .card {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: clamp(150px, 15vw, 220px);
+        aspect-ratio: 4 / 5;
+        margin-top: calc(clamp(150px, 15vw, 220px) * 1.25 / -2);
+        margin-left: calc(clamp(150px, 15vw, 220px) / -2);
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+        backface-visibility: hidden;
+      }
+
+      .card img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Hero banner ------------------------------------------------------- */
+      .hero-banner {
+        aspect-ratio: 5962 / 2512;
+        overflow: hidden;
+        background: #ffffff;
+      }
+
+      .hero-banner img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      /* Marquee ----------------------------------------------------------- */
+      .marquee-section {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        min-height: clamp(380px, 48vw, 640px);
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+        overflow: hidden;
+        background: #ffffff;
+      }
+
+      .marquee-row {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .marquee-track {
+        display: inline-flex;
+        width: max-content;
+      }
+
+      .marquee-track span {
+        display: inline-block;
+        padding-inline: 1.5rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.4rem, 4.2vw, 2.6rem);
+        color: #1d0065;
+        white-space: nowrap;
+      }
+
+      .marquee-track-left {
+        animation: marquee-left 32s linear infinite;
+      }
+
+      .marquee-track-right {
+        animation: marquee-right 32s linear infinite;
+      }
+
+      @keyframes marquee-left {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+
+      @keyframes marquee-right {
+        from { transform: translateX(-50%); }
+        to { transform: translateX(0); }
+      }
+
+      .marquee-laptop {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .laptop-frame {
+        width: clamp(260px, 32vw, 460px);
+        aspect-ratio: 1954 / 1272;
+        border: 3px solid var(--ink);
+        border-radius: 0.75rem;
+        padding: 0;
+        background: #ffffff;
+        overflow: hidden;
+      }
+
+      .laptop-frame .placeholder {
+        height: 100%;
+        aspect-ratio: auto;
+        border-radius: 0.4rem;
+      }
+
+      .laptop-frame video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .laptop-base {
+        width: 106%;
+        height: 12px;
+        background: var(--ink);
+        border-radius: 0 0 8px 8px;
+        margin-top: -1px;
+        position: relative;
+      }
+
+      .laptop-base::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        width: 15%;
+        height: 4px;
+        background: #ffffff;
+        border-radius: 0 0 4px 4px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .marquee-track-left,
+        .marquee-track-right {
+          animation: none;
+        }
+      }
+
+      /* Head block -------------------------------------------------------- */
+      .head-block {
+        padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3rem);
+      }
+
+      .head-top {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        align-items: start;
+        margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .title {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(3rem, 9vw, 6rem);
+        letter-spacing: -0.01em;
+        line-height: 0.98;
+        color: var(--ink);
+        margin: 0;
+      }
+
+      .context-box {
+        background: transparent;
+        border-left: 3px solid var(--line-strong);
+        padding-left: 1.25rem;
+      }
+
+      .context-label {
+        margin: 0 0 0.35rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-faint);
+      }
+
+      .context-heading {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: 1.3rem;
+        color: var(--ink);
+      }
+
+      .context-box p:not(.context-label) {
+        margin: 0;
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+      }
+
+      @media (min-width: 800px) {
+        .head-top { grid-template-columns: auto 1fr; gap: 2.5rem; }
+      }
+
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+        gap: 1.5rem;
+        padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+        border-bottom: 1px solid var(--line);
+        margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .meta dt {
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        color: var(--ink-faint);
+        margin-bottom: 0.35rem;
+      }
+
+      .meta dd {
+        margin: 0;
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        color: var(--ink);
+      }
+
+      .meta dd span {
+        display: block;
+      }
+
+      .intro {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+        max-width: none;
+        text-align: justify;
+        text-align-last: left;
+        hyphens: auto;
+      }
+
+      .pull-quote {
+        position: relative;
+        max-width: none;
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+        line-height: 1.4;
+        color: var(--ink-faint);
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+        text-align: center;
+      }
+
+      .pull-quote-highlight {
+        color: #1d0065;
+        font-weight: 700;
+        box-shadow: inset 0 -0.35em 0 rgba(29, 0, 101, 0.14);
+      }
+
+      .pull-quote[data-typewriter]::after {
+        content: '';
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        margin-left: 2px;
+        background: currentColor;
+        vertical-align: text-bottom;
+        animation: pull-quote-blink 0.9s steps(1) infinite;
+      }
+
+      @keyframes pull-quote-blink {
+        50% { opacity: 0; }
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .pull-quote[data-typewriter]::after {
+          animation: none;
+        }
+      }
+
+      /* Location band ------------------------------------------------------- */
+      .stat-band {
+        background: #1d0065;
+        color: #fdfbf9;
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .location-block {
+        text-align: center;
+        padding-inline: clamp(1.25rem, 5vw, 3.5rem);
+      }
+
+      .location-label {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #fdfbf9;
+      }
+
+      .location-name {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(2rem, 6vw, 3.5rem);
+        line-height: 1.1;
+        color: #fdfbf9;
+      }
+
+      /* Dark / white blocks ---------------------------------------------- */
+      .dark-block {
+        background: var(--ink);
+        color: var(--bg);
+        padding-block: clamp(3rem, 7vw, 5rem);
+      }
+
+      .white-block {
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .white-block h2,
+      .dark-block h2 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.9rem, 4vw, 2.8rem);
+        letter-spacing: -0.01em;
+        margin: 0 0 0.6rem;
+      }
+
+      .white-block h2 { color: var(--ink); }
+      .dark-block h2 { color: var(--bg); }
+
+      .white-block p,
+      .dark-block .wrap > p:not(.reflect-subhead) {
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        text-align: justify;
+        text-align-last: left;
+        hyphens: auto;
+      }
+
+      .white-block p { color: var(--ink-soft); }
+      .dark-block .wrap > p:not(.reflect-subhead) { color: rgba(253, 251, 249, 0.7); }
+
+      .reflect-subhead {
+        margin: 1.5rem 0 0.75rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.8rem;
+        color: rgba(253, 251, 249, 0.5);
+      }
+
+      .findings-list {
+        margin: 1rem 0 0;
+        padding-left: 1.25rem;
+        max-width: none;
+      }
+
+      .findings-list li {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+        margin-bottom: 0.4rem;
+      }
+
+      .eyebrow-label {
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #1d0065;
+        margin: 0 0 0.75rem;
+        font-size: 0.85rem;
+      }
+
+      /* Heuristic evaluation ------------------------------------------ */
+      .heuristic-list {
+        list-style: none;
+        margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+        padding: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .heuristic-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+        padding: 1.1rem 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .heuristic-name {
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--ink);
+      }
+
+      .heuristic-issue {
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        color: var(--ink-soft);
+      }
+
+      .severity-pill {
+        justify-self: start;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        padding: 0.25em 0.75em;
+        border-radius: 999px;
+      }
+
+      .severity-high {
+        background: #1d0065;
+        color: #fdfbf9;
+      }
+
+      .severity-medium {
+        border: 1px solid var(--ink-faint);
+        color: var(--ink-faint);
+      }
+
+      @media (min-width: 700px) {
+        .heuristic-row {
+          grid-template-columns: 14rem 1fr auto;
+          align-items: center;
+          gap: 1.5rem;
+        }
+      }
+
+      /* Usability testing ----------------------------------------------- */
+      .participants-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        margin: 1.5rem 0 0;
+        padding-top: 1.5rem;
+        border-top: 1px dashed rgba(253, 251, 249, 0.2);
+      }
+
+      .participants-row p {
+        margin: 0;
+        max-width: none;
+        font-size: 0.95rem;
+        color: rgba(253, 251, 249, 0.7);
+      }
+
+      .participants-row strong {
+        color: var(--bg);
+        font-weight: 700;
+      }
+
+      @media (min-width: 700px) {
+        .participants-row { grid-template-columns: repeat(3, 1fr); }
+      }
+
+      /* Placeholder --------------------------------------------------- */
+      .placeholder {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 21 / 9;
+        border: 1px dashed var(--line-strong);
+        background: #ffffff;
+        color: var(--ink-faint);
+        font-family: var(--font-body);
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      /* Challenge cards --------------------------------------------------- */
+      .challenge-head {
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+        margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .challenge-head .quirky {
+        margin-top: -0.2rem;
+      }
+
+      .challenge-head h2 {
+        color: var(--bg);
+        margin: 0;
+      }
+
+      .quirky {
+        font-family: var(--font-quirky);
+        font-size: 1.2rem;
+        color: #a566ff;
+        transform: rotate(-3deg);
+        display: inline-block;
+      }
+
+      .challenge-grid {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .challenge-card {
+        --tilt-x: 0deg;
+        --tilt-y: 0deg;
+        border: 1px solid rgba(253, 251, 249, 0.15);
+        border-left: 3px solid rgba(253, 251, 249, 0.15);
+        padding: 1.5rem;
+        background: rgba(253, 251, 249, 0.03);
+        transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+        transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s var(--ease-out);
+      }
+
+      .challenge-card p {
+        margin: 0.75rem 0 0;
+        max-width: none;
+        color: rgba(253, 251, 249, 0.45);
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      .challenge-num {
+        font-family: var(--font-body);
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: rgba(253, 251, 249, 0.35);
+      }
+
+      .challenge-grid-5 {
+        margin-top: 1.5rem;
+      }
+
+      @media (min-width: 700px) {
+        .challenge-grid-5 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+      }
+
+      /* Up next / footer --------------------------------------------------- */
+      .up-next { padding-block: clamp(3rem, 7vw, 5rem); }
+
+      .up-next-row {
+        --tilt-x: 0deg;
+        --tilt-y: 0deg;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        text-decoration: none;
+      }
+
+      .up-next-row img {
+        width: 100px;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border: 1px solid var(--line);
+        transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+        transition: transform 0.3s var(--ease-out);
+      }
+
+      .up-next-row h2 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.6rem, 4vw, 2.2rem);
+        color: var(--ink);
+      }
+
+      .up-next-row p {
+        margin: 0.25rem 0 0;
+        color: var(--ink-faint);
+        font-size: 0.9rem;
+      }
+
+      .btn-outline {
+        margin-left: auto;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.5em 1.2em;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--ink);
+      }
+
+      /* Footer -------------------------------------------------------- */
+      .footer { text-align: center; }
+
+      .footer-heading {
+        color: var(--bg);
+        font-size: clamp(2.5rem, 7vw, 4.5rem);
+        font-family: var(--font-display);
+        font-weight: 400;
+      }
+
+      .footer-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1.5rem 0 2rem;
+      }
+
+      .footer .btn-pill { border-color: var(--bg); color: var(--bg); }
+      .footer .btn-pill-solid { background: var(--bg); color: var(--ink); }
+
+      .footer-social {
+        color: rgba(253, 251, 249, 0.7);
+        font-family: var(--font-body);
+        font-weight: 600;
+        text-decoration: none;
+      }
+    </style>
+  </body>
+</html>

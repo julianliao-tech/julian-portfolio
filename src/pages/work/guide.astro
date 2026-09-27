@@ -1,0 +1,1319 @@
+---
+// ---------------------------------------------------------------------
+// Case study page.
+// Same architecture built for the SureCall and Michigan ChatGPT format
+// tests (full-bleed images between narrow text, a marquee intro, a
+// brand-color stat band, dark "Challenge" sections, brand-color
+// feature bands, tilt/lightbox/scroll-progress interactions), applied
+// here to the Guide app's own real content and its own real brand
+// colors — periwinkle blue #97ADD1, coral #E28A8A, and mint green
+// #97D1A3, all pulled directly from the Design Kit asset (15.webp),
+// not guessed.
+//
+// Every fact and every image is pulled from
+// src/content/projects/guide.md and public/images/guide/ — nothing
+// invented. Guide has exactly three challenges in the source doc, so
+// (like SureCall) this uses three separate interleaved "Challenge"
+// sections rather than one combined grid. There's no stated project
+// location in the source doc, so — unlike the SureCall/Michigan
+// pages — there's no location band here; a real stat band (4-week
+// timeline, 20+ survey responses, 3 core functions, all literally
+// counted from the source doc) stands in its place instead.
+// ---------------------------------------------------------------------
+import '../../styles/global.css';
+import Nav from '../../components/Nav.astro';
+import Lightbox from '../../components/Lightbox.astro';
+
+const base = import.meta.env.BASE_URL;
+const pageTitle = 'Guide Mobile Application — Julian Liao';
+const pageDescription = 'A wheelchair-accessible navigation app for safer, independent travel';
+const ogImage = new URL(`${base}images/home/profile-illustration.webp`, Astro.site);
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const img = (n: string) => `${base}images/guide/${n}`;
+
+const meta = [
+  { label: 'Timeline', value: '4 Weeks' },
+  { label: 'Role', value: ['UX Designer', 'UX Researcher'] },
+  { label: 'Team', value: 'Just Me!' },
+  { label: 'Tools', value: ['Figma', 'FigJam', 'Miro'] },
+  {
+    label: 'Skills',
+    value: ['Wireframing', 'Prototyping', 'Design Systems', 'Interaction Design', 'User Research'],
+  },
+];
+
+const challenges = [
+  'Determining what obstructions were most important to cover during travel.',
+  'How to exactly show/notify users of an elevator location or other important landmark in their path.',
+  'Designing for users who may be traveling quickly or unable to analyze all the content on their phone.',
+];
+
+const painPoints = ['Elevators', 'Ramps', 'Crowds', 'Bathrooms', 'Report'];
+const trustPoints = ['Elevator Status', 'Ramp Conditions', 'Reported Obstacles'];
+
+// Percentages measured directly from the real donut charts (surveytwo.png,
+// the Confidence Level screenshot) — not invented.
+const surveyCharts = [
+  {
+    title: 'Knowledge',
+    question: 'Have you ever used an app, map or website that included accessibility information about a public space?',
+    segments: [
+      { label: 'No', pct: 80, color: '#162e5f' },
+      { label: 'Yes', pct: 20, color: '#1a50e0' },
+    ],
+  },
+  {
+    title: 'Confidence Level',
+    question: 'If a friend/family member asked you for advice about which public spaces are accessible, how confident would you feel giving them accurate info?',
+    segments: [
+      { label: 'Not Very Confident', pct: 58, color: '#162e5f' },
+      { label: 'Somewhat Confident', pct: 32, color: '#1c50de' },
+      { label: 'Other', pct: 10, color: '#6093e4' },
+    ],
+  },
+];
+
+const conicGradient = (segments: { pct: number; color: string }[]) => {
+  let acc = 0;
+  const stops = segments.map((s) => {
+    const start = acc;
+    acc += s.pct;
+    return `${s.color} ${start}% ${acc}%`;
+  });
+  return `conic-gradient(${stops.join(', ')})`;
+};
+
+const marqueeWords = Array(6).fill('TRAVELIN’ SAFE');
+
+const nextProject = {
+  title: 'Michigan ChatGPT',
+  subtitle: 'Redesigning the University of Michigan’s AI workspace',
+  image: `${base}images/home/tile-michigan-chatgpt.webp`,
+  href: `${base}work/michigan-chatgpt/`,
+};
+---
+
+{/* prettier-ignore */}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fdfbf9" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="canonical" href={canonical.href} />
+    <meta name="description" content={pageDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImage.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{pageTitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Permanent+Marker&display=swap"
+    />
+  </head>
+  <body>
+    <Nav />
+
+    <div data-zoom-group data-zoom-scan>
+      <section class="hero-banner">
+        <img data-tilt src={img('01.webp')} alt="Guide app screens on a blue background: the Travelin' Safe title screen, a Nearby listing of accessible spots, and the G logo" />
+      </section>
+
+      <section class="marquee-section" aria-hidden="true">
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-left">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-right">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-left">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-right">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-phone">
+          <div class="phone-frame">
+            <video src={img('marquee-banner.mp4')} autoplay muted loop playsinline aria-label="Screen recording of the Guide app opening to the G logo"></video>
+          </div>
+        </div>
+      </section>
+
+      <section class="head-block">
+        <div class="wrap">
+          <div class="head-top">
+            <h1 class="title">Guide</h1>
+            <div class="context-box">
+              <p class="context-label">Context</p>
+              <h2 class="context-heading">What is the Guide App?</h2>
+              <p>Guide is a mobile navigation app designed specifically for wheelchair users to promote safer, more accessible travel. The app helps users identify key accessibility features in real time, including elevators, ramps, handicapped restrooms, and areas with high foot traffic. Guide focuses on three core functions: mapping out ADA compliant routes, alerting users to potential obstacles or crowd density, and highlighting nearby accessibility features to support on-the-go decision making.</p>
+            </div>
+          </div>
+
+          <dl class="meta">
+            {meta.map((m) => (
+              <div>
+                <dt>{m.label}</dt>
+                <dd>{Array.isArray(m.value) ? m.value.map((v) => <span>{v}</span>) : m.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      <section class="white-block personal-section">
+        <div class="wrap personal-grid">
+          <div class="personal-text">
+            <p class="eyebrow-label">Why This Project</p>
+            <h2>Personal to Me</h2>
+            <p>Growing up, two of my brothers, Nate and Jake, both used wheelchairs. They lived with epidermolysis bullosa, a condition that leaves the skin extremely fragile and prone to blistering which made even short trips outside the house genuinely difficult to plan for and navigate.</p>
+            <p>As their brother, I realized how often people with disabilities are left out of everyday experiences and how rarely that gap gets addressed. When I became a designer, Guide had been an idea I had been thinking about for many years. It's the most personal project in this portfolio, and there's genuine intent behind it: making independent travel a little less uncertain for people who don't have the luxury of assuming a route will simply work for them.</p>
+          </div>
+          <div class="personal-photos">
+            <img data-tilt src={img('personal-01.webp')} alt="Julian as a child with his brothers, one recovering from a bandaged arm, in a family photo" />
+            <img data-tilt src={img('personal-02.webp')} alt="An earlier childhood photo of Julian with his brothers Nate and Jake" />
+          </div>
+        </div>
+      </section>
+
+      <section class="head-block head-block-tail">
+        <div class="wrap">
+          <p class="pull-quote" data-typewriter>
+            <span aria-hidden="true"><span class="tw-seg" data-full="How can I help users in wheelchairs "></span><span class="tw-seg pull-quote-highlight" data-full="feel confident while traveling, especially alone"></span><span class="tw-seg" data-full="?"></span></span>
+            <span class="sr-only">How can I help users in wheelchairs feel confident while traveling, especially alone?</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="dark-block">
+        <div class="wrap">
+          <div class="challenge-head">
+            <span class="quirky">Real-Time Obstacles</span>
+            <h2>The Challenge</h2>
+          </div>
+          <ol class="challenge-grid">
+            {challenges.map((c, i) => (
+              <li class:list={['challenge-card', { 'is-active': i === 0 }]} data-tilt>
+                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
+                <p>{c}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="white-block tight">
+        <div class="wrap">
+          <h2>User Research</h2>
+          <p>I conducted a survey with 20+ responses, then interviewed people who either have a disability or frequently travel with someone who does. Their feedback highlighted common frustrations around inaccessible pathways and the lack of reliable information when planning routes.</p>
+        </div>
+        <div class="image-row-single image-row-single-wide">
+          <img data-tilt src={img('02-quotes-cropped.webp')} alt="Three quotes from survey respondents about inconsistent doors and elevators, missing ADA-accessible entrances, and difficulty maneuvering a wheelchair through crowds" />
+        </div>
+      </section>
+
+      <section class="white-block tight">
+        <div class="wrap">
+          <p class="eyebrow-label">Key Insights</p>
+        </div>
+        <div class="image-row-single image-row-single-wide">
+          <img data-tilt src={img('04.webp')} alt="Four key insights: most common travel issues, low confidence providing accessibility info, high demand for real-time data, and frequent visitors noticing accessibility issues firsthand" />
+        </div>
+      </section>
+
+      <section class="white-block tight">
+        <div class="image-row-single image-row-single-wide">
+          <img data-tilt src={img('03.webp')} alt="Accessibility App Affinity Diagram grouping wheelchair-user research feedback into themes: Physical Barriers in Public, Information Gaps, Inconsistent Maintenance & Upkeep, Confidence in Recommending Accessible Spaces, and Desired App Features" />
+        </div>
+      </section>
+
+      <section class="white-block tight">
+        <div class="wrap">
+          <p class="eyebrow-label">Survey Results</p>
+          <div class="chart-grid">
+            {surveyCharts.map((chart) => (
+              <div class="chart-card">
+                <h3 class="chart-title">{chart.title}</h3>
+                <div class="chart-row">
+                  <div class="donut" style={{ background: conicGradient(chart.segments) }}>
+                    <span class="donut-hole"></span>
+                  </div>
+                  <ul class="chart-legend">
+                    {chart.segments.map((s) => (
+                      <li>
+                        <span class="swatch" style={{ background: s.color }}></span>
+                        {s.label}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <p class="chart-question">"{chart.question}"</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="dark-block tight">
+        <div class="wrap">
+          <div class="challenge-head">
+            <span class="quirky">Wayfinding Clarity</span>
+            <h2>The Challenge</h2>
+          </div>
+          <ol class="challenge-grid">
+            {challenges.map((c, i) => (
+              <li class:list={['challenge-card', { 'is-active': i === 1 }]} data-tilt>
+                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
+                <p>{c}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="white-block tight">
+        <div class="wrap">
+          <h2>User Personas</h2>
+          <p>Upon analyzing my research, I developed user personas expressing their goals, frustrations, and pain points — helping me understand the diverse needs of both wheelchair users and those who support them.</p>
+          <div class="image-row image-row-detail image-row-personas">
+            <img data-tilt src={img('05.webp')} alt="User persona: Joseph, 33, an Occupational Therapist with moderate tech comfort, with his goals, pain points, and needs" />
+            <img data-tilt src={img('16.webp')} alt="User persona: Sarah, 28, a freelance graphic designer and wheelchair user in an urban area, with her goals, pain points, and needs" />
+          </div>
+        </div>
+      </section>
+
+      <section class="white-block tight">
+        <div class="wrap">
+          <p class="eyebrow-label">Mapping the <span class="accent">Flow</span></p>
+        </div>
+        <div class="image-row-single image-row-single-wide">
+          <img data-tilt src={img('08.webp')} alt="User flow diagram for the Guide navigation app" />
+        </div>
+      </section>
+
+      <section class="white-block tight">
+        <div class="wrap">
+          <h2>Low-Fidelity Prototypes</h2>
+          <p>Based on user feedback and ideation, I sketched low-fidelity wireframes to explore flows, layouts, and features — validating what accessibility information users needed most and how they preferred it presented.</p>
+          <div class="image-row-single">
+            <img data-tilt src={img('09.webp')} alt="Low-fidelity wireframes exploring the Guide app's core screens" />
+          </div>
+        </div>
+      </section>
+
+      <section class="dark-block tight">
+        <div class="wrap">
+          <div class="challenge-head">
+            <span class="quirky">Designing On the Move</span>
+            <h2>The Challenge</h2>
+          </div>
+          <ol class="challenge-grid">
+            {challenges.map((c, i) => (
+              <li class:list={['challenge-card', { 'is-active': i === 2 }]} data-tilt>
+                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
+                <p>{c}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="white-block tight">
+        <div class="wrap">
+          <h2>Navigation Page Iteration</h2>
+          <p>The first version showed the path and obstructions but lacked an end button and didn't explain the iconography. I chose Option 3 for its <strong>combination of functional completeness and improved clarity</strong>.</p>
+        </div>
+        <div class="image-row-single image-row-single-wide">
+          <img data-tilt src={img('10.webp')} alt="Three iterations of the navigation page, from a version without an end button to the final option with labeled icons" />
+        </div>
+      </section>
+
+      <section class="white-block tight">
+        <div class="wrap">
+          <h2>Location Page Iteration</h2>
+          <p>Option 1 lacked key information like address or hours. I selected Option 3 for its <em>clear hierarchy, layered composition, and action-oriented layout</em> — testing showed the dedicated "Call" button improved task completion.</p>
+        </div>
+        <div class="image-row-single image-row-single-wide">
+          <img data-tilt src={img('11.webp')} alt="Three iterations of the location detail page, ending in a version with a dedicated Call button and segmented data" />
+        </div>
+      </section>
+
+      <section class="feature-band feature-band-blue feature-band-reverse tight">
+        <div class="feature-media">
+          <img data-tilt src={img('12.webp')} alt="Two Guide app screens showing an elevator-location callout and an important-alert callout over the map" />
+        </div>
+        <div class="feature-text">
+          <h2 class="feature-heading">Solved Pain Points</h2>
+          <p>During the design process, I identified <em>the most effective way to clearly communicate the accessible features of a route</em>. I incorporated five main pinpoints along a route: elevators, ramps, large crowds, handicapped bathrooms, and an additional feature to report something.</p>
+          <ul class="pinpoint-row">
+            {painPoints.map((p) => <li>{p}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <section class="feature-band feature-band-blue tight">
+        <div class="feature-media">
+          <img data-tilt src={img('13.webp')} alt="Two Guide app screens: turn-by-turn directions to Warm Springs Plaza with an accessibility icon bar, and the surrounding map view" />
+        </div>
+        <div class="feature-text">
+          <h2 class="feature-heading">Built on Trust</h2>
+          <p>To build trust and confidence for the user, the app only surfaces the most accessible route with the least detours or interruptions, prioritizing paths that are well-maintained, clearly marked, and <strong>verified by recent user feedback</strong>. Users can view detailed information about each route, including elevator status, ramp conditions, and any reported obstacles. This ensures they can travel with greater independence, certainty, and reduced stress in unfamiliar environments.</p>
+          <ul class="pinpoint-row">
+            {trustPoints.map((p) => <li>{p}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <section class="white-block tight">
+        <div class="wrap">
+          <h2>Final Prototype</h2>
+        </div>
+        <div class="prototype-phone">
+          <video src={img('prototype.mp4')} autoplay muted loop playsinline aria-label="Screen recording of the Guide prototype: navigating from Home and Nearby through location detail, directions, and alerts"></video>
+        </div>
+      </section>
+
+      <section class="white-block tight">
+        <div class="wrap">
+          <p class="eyebrow-label">Design Kit</p>
+        </div>
+        <div class="image-row-single image-row-single-wide">
+          <img data-tilt src={img('15.webp')} alt="Guide app design kit: Work Sans typography scale, a blue/gray/coral color palette with hex codes, and the app's icon and button assets" />
+        </div>
+      </section>
+
+      <section class="white-block white-block-flush-bottom tight">
+        <div class="image-row-single image-row-single-full">
+          <img data-tilt src={img('14.webp')} alt="A map of the full Guide app screen flow, from Home and Nearby through location detail, directions, search, and alert-description screens" />
+        </div>
+      </section>
+
+      <section class="dark-block tight">
+        <div class="wrap">
+          <h2>Reflection</h2>
+          <p class="reflect-subhead">Opening My Third Eye</p>
+          <p>Working on this project deepened my understanding of how digital products can bridge gaps in accessibility in the real world. Designing for users in motion challenged me to <em>simplify everything down to the essentials</em>, focusing on core needs.</p>
+          <p>Taking on this solo UX project gave me the chance to lead every stage, from research to prototyping. I not only strengthened my design process, but developed a deeper awareness of the daily navigation challenges people in wheelchairs face. This project holds meaning to me — <strong>something very personal</strong> — and I'm glad it worked out well.</p>
+        </div>
+      </section>
+
+      <section class="up-next tight">
+        <div class="wrap">
+          <span class="quirky">Up Next</span>
+          <a class="up-next-row" href={nextProject.href} data-tilt>
+            <img src={nextProject.image} alt="" />
+            <div>
+              <h2>{nextProject.title}</h2>
+              <p>{nextProject.subtitle}</p>
+            </div>
+            <span class="btn-outline">View Project</span>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <footer class="dark-block footer">
+      <div class="wrap">
+        <h2 class="footer-heading">Let's Talk!</h2>
+        <div class="footer-actions">
+          <a class="btn-pill btn-pill-solid" href="mailto:julianliaowork@gmail.com">Hop on Call</a>
+          <button class="btn-pill" type="button" data-copy-email>Copy Email</button>
+        </div>
+        <a class="footer-social" href="https://www.linkedin.com/in/julian-liao-475685239/" target="_blank" rel="noreferrer">LinkedIn</a>
+      </div>
+    </footer>
+
+    <Lightbox />
+
+    <script>
+      import '../../scripts/site.js';
+      import '../../scripts/lightbox.js';
+
+      const btn = document.querySelector('[data-copy-email]');
+      btn?.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('julianliaowork@gmail.com');
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = original; }, 1500);
+        } catch {
+          window.location.href = 'mailto:julianliaowork@gmail.com';
+        }
+      });
+
+      document.querySelectorAll<HTMLVideoElement>('.marquee-phone video, .feature-media video, .prototype-phone video').forEach((v) => {
+        v.play().catch(() => {});
+      });
+
+      // Typewriter effect on the pull-quote — types each segment in order
+      // (plain text, then the highlighted phrase, then the trailing plain
+      // text) once the quote scrolls into view. Reduced-motion and
+      // no-IntersectionObserver both fall back to showing the full text.
+      const quoteEl = document.querySelector<HTMLElement>('[data-typewriter]');
+      if (quoteEl) {
+        const segments = Array.from(quoteEl.querySelectorAll<HTMLElement>('.tw-seg'));
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const typeSegments = () => {
+          let segIndex = 0;
+          let charIndex = 0;
+          const step = () => {
+            if (segIndex >= segments.length) return;
+            const seg = segments[segIndex];
+            const full = seg.dataset.full ?? '';
+            if (charIndex <= full.length) {
+              seg.textContent = full.slice(0, charIndex);
+              charIndex++;
+              setTimeout(step, 28);
+            } else {
+              segIndex++;
+              charIndex = 0;
+              setTimeout(step, 28);
+            }
+          };
+          step();
+        };
+
+        if (reduced || !('IntersectionObserver' in window)) {
+          segments.forEach((seg) => { seg.textContent = seg.dataset.full ?? ''; });
+        } else {
+          const io = new IntersectionObserver((entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                typeSegments();
+                obs.disconnect();
+              }
+            });
+          }, { threshold: 0.4 });
+          io.observe(quoteEl);
+        }
+      }
+    </script>
+
+    <style>
+      :global(body) {
+        background: #ffffff;
+      }
+
+
+
+      .wrap {
+        max-width: 74rem;
+        margin-inline: auto;
+        padding-inline: clamp(1.25rem, 5vw, 3.5rem);
+      }
+
+      /* Nav ------------------------------------------------------------ */
+
+
+
+
+      .btn-pill {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.6em 1.4em;
+        text-decoration: none;
+        color: var(--ink);
+        background: transparent;
+        font-family: var(--font-body);
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn-pill-solid {
+        background: var(--ink);
+        color: var(--bg);
+      }
+
+      /* Hero banner ------------------------------------------------------- */
+      .hero-banner {
+        aspect-ratio: 8 / 3;
+        overflow: hidden;
+      }
+
+      .hero-banner img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 35%;
+      }
+
+      /* Marquee ----------------------------------------------------------- */
+      .marquee-section {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        min-height: clamp(380px, 48vw, 640px);
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+        overflow: hidden;
+        background: #ffffff;
+      }
+
+      .marquee-row {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .marquee-track {
+        display: inline-flex;
+        width: max-content;
+      }
+
+      .marquee-track span {
+        display: inline-block;
+        padding-inline: 1.5rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.4rem, 4.2vw, 2.6rem);
+        color: #97add1;
+        white-space: nowrap;
+      }
+
+      .marquee-row:nth-child(odd) .marquee-track span {
+        color: rgba(151, 173, 209, 0.45);
+      }
+
+      .marquee-track-left {
+        animation: marquee-left 32s linear infinite;
+      }
+
+      .marquee-track-right {
+        animation: marquee-right 32s linear infinite;
+      }
+
+      @keyframes marquee-left {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+
+      @keyframes marquee-right {
+        from { transform: translateX(-50%); }
+        to { transform: translateX(0); }
+      }
+
+      .marquee-phone {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+      }
+
+      .phone-frame {
+        width: clamp(140px, 16vw, 220px);
+        aspect-ratio: 654 / 1416;
+        border: 3px solid var(--ink);
+        border-radius: 1.5rem;
+        padding: 0;
+        background: #ffffff;
+        overflow: hidden;
+      }
+
+      .phone-frame .placeholder {
+        height: 100%;
+        aspect-ratio: auto;
+        border-radius: 0;
+      }
+
+      .phone-frame video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .marquee-track-left,
+        .marquee-track-right {
+          animation: none;
+        }
+      }
+
+      /* Head block -------------------------------------------------------- */
+      .head-block {
+        padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3rem);
+      }
+
+      .head-block-tail {
+        padding-top: 0;
+      }
+
+      /* Personal note ------------------------------------------------- */
+      .personal-section {
+        padding-top: 0;
+      }
+
+      .personal-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: clamp(1.5rem, 4vw, 2.5rem);
+        align-items: center;
+      }
+
+      .personal-photos {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .personal-photos img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+      }
+
+      @media (min-width: 800px) {
+        .personal-grid { grid-template-columns: 1.15fr 1fr; }
+      }
+
+      .head-top {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        align-items: start;
+        margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .title {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(3.5rem, 10vw, 7rem);
+        letter-spacing: -0.01em;
+        line-height: 0.98;
+        color: var(--ink);
+        margin: 0;
+      }
+
+      .context-box {
+        background: transparent;
+        border-left: 3px solid var(--line-strong);
+        padding-left: 1.25rem;
+      }
+
+      .context-label {
+        margin: 0 0 0.35rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-faint);
+      }
+
+      .context-heading {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: 1.3rem;
+        color: var(--ink);
+      }
+
+      .context-box p:not(.context-label) {
+        margin: 0;
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+      }
+
+      @media (min-width: 800px) {
+        .head-top { grid-template-columns: auto 1fr; gap: 2.5rem; }
+      }
+
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+        gap: 1.5rem;
+        padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+        border-bottom: 1px solid var(--line);
+        margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .meta dt {
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        color: var(--ink-faint);
+        margin-bottom: 0.35rem;
+      }
+
+      .meta dd {
+        margin: 0;
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        color: var(--ink);
+      }
+
+      .meta dd span {
+        display: block;
+      }
+
+      .intro {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+        max-width: none;
+        text-align: justify;
+        text-align-last: left;
+        hyphens: auto;
+      }
+
+      .intro strong {
+        color: var(--ink);
+        font-weight: 700;
+      }
+
+      .pull-quote {
+        position: relative;
+        max-width: none;
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+        line-height: 1.4;
+        color: var(--ink-faint);
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+        text-align: center;
+      }
+
+      .pull-quote-highlight {
+        color: #1d2b3f;
+        font-weight: 700;
+        box-shadow: inset 0 -0.35em 0 rgba(151, 173, 209, 0.35);
+      }
+
+      .pull-quote[data-typewriter]::after {
+        content: '';
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        margin-left: 2px;
+        background: currentColor;
+        vertical-align: text-bottom;
+        animation: pull-quote-blink 0.9s steps(1) infinite;
+      }
+
+      @keyframes pull-quote-blink {
+        50% { opacity: 0; }
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .pull-quote[data-typewriter]::after {
+          animation: none;
+        }
+      }
+
+      /* Dark / white blocks ---------------------------------------------- */
+      .dark-block {
+        background: var(--ink);
+        color: var(--bg);
+        padding-block: clamp(3rem, 7vw, 5rem);
+      }
+
+      .white-block {
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .white-block-flush-bottom {
+        padding-bottom: 0;
+      }
+
+      /* Tighter vertical rhythm for the run of sections below Challenge 2. */
+      .tight.white-block {
+        padding-block: clamp(1.25rem, 3vw, 2rem);
+      }
+
+      .tight.dark-block {
+        padding-block: clamp(1.5rem, 3.5vw, 2.25rem);
+      }
+
+      .tight.feature-band .feature-text {
+        padding-block: clamp(1.25rem, 3vw, 2rem);
+      }
+
+      .white-block.tint-blue { background: rgba(151, 173, 209, 0.12); }
+      .white-block.tint-coral { background: rgba(226, 138, 138, 0.1); }
+
+      .white-block h2,
+      .dark-block h2 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.9rem, 4vw, 2.8rem);
+        letter-spacing: -0.01em;
+        margin: 0 0 0.6rem;
+      }
+
+      .white-block h2 { color: var(--ink); }
+      .dark-block h2 { color: var(--bg); }
+
+      .white-block p,
+      .dark-block .wrap > p:not(.reflect-subhead) {
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        text-align: justify;
+        text-align-last: left;
+        hyphens: auto;
+      }
+
+      .white-block p { color: var(--ink-soft); }
+      .dark-block .wrap > p:not(.reflect-subhead) { color: rgba(253, 251, 249, 0.7); }
+
+      .white-block strong { color: var(--ink); font-weight: 700; }
+      .white-block em { color: var(--ink); font-style: italic; }
+      .dark-block strong { color: var(--bg); font-weight: 700; }
+      .dark-block em { color: var(--bg); font-style: italic; }
+
+      .reflect-subhead {
+        margin: 0 0 0.75rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.8rem;
+        color: rgba(253, 251, 249, 0.5);
+      }
+
+      .eyebrow-label {
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #97add1;
+        margin: 0 0 0.75rem;
+        font-size: 0.85rem;
+      }
+
+      .eyebrow-label .accent { color: #e28a8a; }
+
+      /* Images ------------------------------------------------------------ */
+      .image-row-single {
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .image-row-single-wide {
+        max-width: 56rem;
+        margin-inline: auto;
+      }
+
+      .image-row-single-full {
+        max-width: none;
+        width: 100%;
+      }
+
+      .prototype-phone {
+        width: clamp(240px, 26vw, 340px);
+        aspect-ratio: 792 / 1720;
+        margin: clamp(1.5rem, 4vw, 2.5rem) auto 0;
+        border: 3px solid var(--ink);
+        border-radius: 15% / 6.9%;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.14);
+      }
+
+      .prototype-phone video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .image-row-single img {
+        display: block;
+        width: 100%;
+      }
+
+      .image-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .image-row img {
+        display: block;
+        width: 100%;
+      }
+
+      .image-row-personas img {
+        aspect-ratio: 1775 / 1205;
+        object-fit: contain;
+      }
+
+      /* Survey donut charts — built with a CSS conic-gradient, not
+         images. Percentages are measured from the real source charts. */
+      .chart-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        margin-top: 1.5rem;
+      }
+
+      @media (min-width: 700px) {
+        .chart-grid { grid-template-columns: 1fr 1fr; }
+      }
+
+      .chart-card {
+        border: 1px solid var(--line);
+        padding: clamp(1.5rem, 3vw, 2rem);
+      }
+
+      .chart-title {
+        margin: 0 0 1.25rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: 1.6rem;
+        color: var(--ink);
+      }
+
+      .chart-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.75rem;
+      }
+
+      .donut {
+        position: relative;
+        width: clamp(140px, 22vw, 190px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .donut-hole {
+        position: absolute;
+        inset: 30%;
+        border-radius: 50%;
+        background: #ffffff;
+        display: block;
+      }
+
+      .chart-legend {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        flex: 1 1 160px;
+      }
+
+      .chart-legend li {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        color: var(--ink);
+      }
+
+      .chart-legend .swatch {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+
+      .chart-question {
+        margin: 1.5rem 0 0;
+        max-width: none;
+        font-family: var(--font-serif);
+        font-style: italic;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: var(--ink-soft);
+      }
+
+      @media (min-width: 700px) {
+        .image-row-detail { grid-template-columns: 1fr 1fr; }
+      }
+
+      .placeholder {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 21 / 9;
+        border: 1px dashed var(--line-strong);
+        background: #ffffff;
+        color: var(--ink-faint);
+        font-family: var(--font-body);
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      /* Feature bands (brand-color, full-bleed) --------------------------- */
+      .feature-band {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .feature-band-blue { background: #97add1; }
+      .feature-band-coral { background: #e28a8a; }
+
+      /* Guide's Solved Pain Points / Built on Trust images (12.webp,
+         13.webp) are tall phone-portrait screenshots, unlike SureCall's
+         wider feature-band images. Capping + insetting them here (rather
+         than stretching full-bleed) matches the smaller, padded phone
+         footprint SureCall's feature bands render at. */
+      .feature-media {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: clamp(2rem, 5vw, 3.5rem);
+      }
+
+      .feature-media img {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        max-height: clamp(220px, 28vw, 360px);
+        object-fit: contain;
+      }
+
+      .feature-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: clamp(2rem, 5vw, 3.5rem);
+      }
+
+      .feature-heading {
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-style: italic;
+        font-size: clamp(1.6rem, 3vw, 2.1rem);
+        color: #1d2b3f;
+        margin: 0 0 0.6rem;
+      }
+
+      .feature-text p {
+        margin: 0;
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: rgba(29, 43, 63, 0.75);
+      }
+
+      .pinpoint-row {
+        list-style: none;
+        margin: 1.5rem 0 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+
+      .pinpoint-row li {
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: #1d2b3f;
+        background: rgba(253, 251, 249, 0.55);
+        border: 1px solid rgba(29, 43, 63, 0.2);
+        border-radius: 999px;
+        padding: 0.4em 0.9em;
+      }
+
+      .feature-text strong,
+      .feature-text em { color: #1d2b3f; }
+
+      @media (min-width: 800px) {
+        .feature-band { grid-template-columns: 1fr 1fr; }
+        .feature-band-reverse .feature-media { order: 2; }
+        .feature-band-reverse .feature-text { order: 1; }
+      }
+
+      /* Challenge cards --------------------------------------------------- */
+      .challenge-head {
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+        margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .challenge-head .quirky {
+        margin-top: -0.2rem;
+      }
+
+      .challenge-head h2 {
+        color: var(--bg);
+        margin: 0;
+      }
+
+      .quirky {
+        font-family: var(--font-quirky);
+        font-size: 1.2rem;
+        color: #97add1;
+        transform: rotate(-3deg);
+        display: inline-block;
+      }
+
+      .challenge-grid {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .challenge-card {
+        --tilt-x: 0deg;
+        --tilt-y: 0deg;
+        border: 1px solid rgba(253, 251, 249, 0.15);
+        border-left: 3px solid rgba(253, 251, 249, 0.15);
+        padding: 1.5rem;
+        background: rgba(253, 251, 249, 0.03);
+        transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+        transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s var(--ease-out);
+      }
+
+      .challenge-card p {
+        margin: 0.75rem 0 0;
+        max-width: none;
+        color: rgba(253, 251, 249, 0.45);
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      .challenge-num {
+        font-family: var(--font-body);
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: rgba(253, 251, 249, 0.35);
+      }
+
+      .challenge-card.is-active {
+        background: rgba(253, 251, 249, 0.08);
+        border-color: rgba(253, 251, 249, 0.3);
+        border-left-color: #97add1;
+      }
+
+      .challenge-card.is-active .challenge-num { color: #97add1; }
+
+      .challenge-card.is-active p {
+        color: var(--bg);
+        font-weight: 500;
+      }
+
+      @media (min-width: 700px) {
+        .challenge-grid { grid-template-columns: repeat(3, 1fr); }
+      }
+
+      /* Up next --------------------------------------------------------------- */
+      .up-next { padding-block: clamp(3rem, 7vw, 5rem); }
+
+      .tight.up-next { padding-block: clamp(1.5rem, 3.5vw, 2.25rem); }
+
+      .up-next-row {
+        --tilt-x: 0deg;
+        --tilt-y: 0deg;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        text-decoration: none;
+      }
+
+      .up-next-row img {
+        width: 100px;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border: 1px solid var(--line);
+        transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+        transition: transform 0.3s var(--ease-out);
+      }
+
+      .up-next-row h2 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.6rem, 4vw, 2.2rem);
+        color: var(--ink);
+      }
+
+      .up-next-row p {
+        margin: 0.25rem 0 0;
+        color: var(--ink-faint);
+        font-size: 0.9rem;
+      }
+
+      .btn-outline {
+        margin-left: auto;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.5em 1.2em;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--ink);
+      }
+
+      /* Footer ------------------------------------------------------------------ */
+      .footer { text-align: center; }
+
+      .footer-heading {
+        color: var(--bg);
+        font-size: clamp(2.5rem, 7vw, 4.5rem);
+        font-family: var(--font-display);
+        font-weight: 400;
+      }
+
+      .footer-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1.5rem 0 2rem;
+      }
+
+      .footer .btn-pill { border-color: var(--bg); color: var(--bg); }
+      .footer .btn-pill-solid { background: var(--bg); color: var(--ink); }
+
+      .footer-social {
+        color: rgba(253, 251, 249, 0.7);
+        font-family: var(--font-body);
+        font-weight: 600;
+        text-decoration: none;
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,1191 @@
+---
+// ---------------------------------------------------------------------
+// Case study page.
+// Rebuilt to match surecallcasepage.png (uploaded to the repo root)
+// section-for-section: hero banner, a two-direction horizontal marquee
+// with a phone video slot, a context callout beside the title, the
+// "Signal Page Iteration" and C-Band comparison images, two full-bleed
+// green feature bands (Confidence During Setup / Signal Strength,
+// Translated), Design Kit, and the closing phone collage. Sections
+// present in earlier drafts but absent from this reference (Pain
+// Points, Mapping the Flow) are dropped to match it exactly.
+//
+// Two things called out as intentional, not bugs: images/video frames
+// that don't fill their box are left as-is (reference does this too),
+// and any text box whose fill didn't match its section's background in
+// the reference has been converted to match (the "SureCall partnered
+// with Verizon..." context box, and the two feature captions in the
+// green bands) rather than reproduced as a mismatched white box.
+//
+// Two pieces of media are real videos in the reference (the phone in
+// the marquee, and the final prototype phone) that don't exist as
+// files yet — left as empty labeled placeholders per your instruction,
+// ready to swap in once you add them. Everything else is a real asset
+// already in public/images/surecall/ — nothing invented.
+// ---------------------------------------------------------------------
+import '../../styles/global.css';
+import Nav from '../../components/Nav.astro';
+import Lightbox from '../../components/Lightbox.astro';
+
+const base = import.meta.env.BASE_URL;
+const pageTitle = 'SureCall and Verizon Mobile Application — Julian Liao';
+const pageDescription = 'A field tool for installing and testing Verizon 5G boosters';
+const ogImage = new URL(`${base}images/home/profile-illustration.webp`, Astro.site);
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const img = (n: string) => `${base}images/surecall/${n}`;
+
+const meta = [
+  { label: 'Timeline', value: '10 Weeks' },
+  { label: 'Role', value: 'UX Designer' },
+  { label: 'Type of Work', value: ['Mobile App', 'Client Work'] },
+  { label: 'Tools', value: ['Figma', 'Slack', 'FigJam', 'Miro'] },
+  {
+    label: 'Skills',
+    value: ['Wireframing', 'Prototyping', 'Design Systems', 'Interaction Design', 'Information Architecture'],
+  },
+];
+
+const challenges = [
+  'Translating live signal data into a visual, user-friendly format.',
+  'Educating users on 5G UW technology without overwhelming them.',
+  'Designing for low friction — hands full, on a ladder, in the field.',
+];
+
+const takeaways = [
+  {
+    title: 'Designing for the Field',
+    body: 'Non-ideal conditions meant every screen had to hold its own weight, with no room for a second guess.',
+  },
+  {
+    title: 'Working Cross-Functionally',
+    body: "SureCall's back-end engineers flagged what was easy or hard to build — that fed straight back into the design.",
+  },
+];
+
+const marqueeWords = Array(6).fill('5G BOOSTER APP');
+
+const nextProject = {
+  title: 'connexU',
+  subtitle: 'An end-to-end rebuild of a B2B events marketplace site in Sydney',
+  image: `${base}images/home/tile-connexu.png`,
+  href: `${base}work/connexu/`,
+};
+---
+
+{/* prettier-ignore */}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fdfbf9" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="canonical" href={canonical.href} />
+    <meta name="description" content={pageDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImage.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{pageTitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Permanent+Marker&display=swap"
+    />
+  </head>
+  <body>
+    <Nav />
+
+    <div data-zoom-group data-zoom-scan>
+      <section class="hero-banner">
+        <img data-tilt src={img('01.webp')} alt="Two SureCall EZ-5G Signal Test app screens on a green background, showing a signal-strength check and the SureCall wordmark" />
+      </section>
+
+      <section class="marquee-section" aria-hidden="true">
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-left">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-right">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-left">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-right">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-phone">
+          <div class="phone-frame">
+            <video class="phone-video" src={`${base}images/surecall/opening.mp4`} autoplay muted loop playsinline aria-label="SureCall app opening screen with an animated signal waveform"></video>
+          </div>
+        </div>
+      </section>
+
+      <section class="head-block">
+        <div class="wrap">
+          <div class="head-top">
+            <h1 class="title">SureCall</h1>
+            <div class="context-box">
+              <p class="context-label">Context</p>
+              <h2 class="context-heading">What is the EZ-5G Signal Test App?</h2>
+              <p>SureCall partnered with Verizon to design a mobile tool that helps users identify the optimal location for installing a 5G booster. The app guides users through three core features: signal testing at a physical location, confirming successful booster installation with live strength updates, and educating users with intuitive tips about 5G UW technology and booster setup. Designed with field use in mind, this tool needed to be <strong>fast, friendly, and built for utility over complexity</strong>.</p>
+            </div>
+          </div>
+
+          <dl class="meta">
+            {meta.map((m) => (
+              <div>
+                <dt>{m.label}</dt>
+                <dd>{Array.isArray(m.value) ? m.value.map((v) => <span>{v}</span>) : m.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <p class="intro">Setups for 5G boosters are often done in tough environments such as garages, basements, or rural areas with weak signal visibility. Technicians and homeowners needed an app that <em>simplified the decision-making process around placement</em> and gave immediate feedback about booster performance. Verizon's goal was to reduce support calls by <strong>empowering users with clear instructions and feedback tools</strong> within a focused, step-by-step app.</p>
+
+          <p class="pull-quote" data-typewriter>
+            <span aria-hidden="true"><span class="tw-seg" data-full="How do we help someone "></span><span class="tw-seg pull-quote-highlight" data-full="confidently choose where and how to install"></span><span class="tw-seg" data-full=" a signal booster?"></span></span>
+            <span class="sr-only">How do we help someone confidently choose where and how to install a signal booster?</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="stat-band">
+        <div class="location-block">
+          <p class="location-label">Project Location</p>
+          <p class="location-name">Silicon Valley, California</p>
+        </div>
+      </section>
+
+      <section class="dark-block">
+        <div class="wrap">
+          <div class="challenge-head">
+            <span class="quirky quirky-blue">Signal Data</span>
+            <h2>The Challenge</h2>
+          </div>
+          <ol class="challenge-grid">
+            {challenges.map((c, i) => (
+              <li class:list={['challenge-card', 'challenge-card-blue', { 'is-active': i === 0 }]} data-tilt>
+                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
+                <p>{c}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="white-block">
+        <div class="wrap">
+          <h2>What We Heard</h2>
+          <p>I didn't collect direct user research, but I was given a clear brief from the SureCall and Verizon project managers: most clients don't know what a good or bad dBm value means, <span class="callout-phrase">people want to "see it work" in real time to build trust</span>, and technical instructions need to be <strong>skimmable with optional depth</strong>. From that, we built two personas.</p>
+          <div class="image-row image-row-personas">
+            <img data-tilt src={img('03.webp')} alt="User persona: Sarah Scott, 38, a remote marketing worker in Wisconsin installing her first signal booster, with her goals, pain points, and needs from the app" />
+            <img data-tilt src={img('04.webp')} alt="User persona: Jamal Ortiz, 29, a field technician in Texas who installs boosters professionally, with his goals, pain points, and needs from the app" />
+          </div>
+        </div>
+      </section>
+
+      <section class="white-block">
+        <div class="wrap">
+          <p class="eyebrow-label">Signal Page Iteration</p>
+          <p>For the signal page, we had to determine <strong>what information was needed on the page versus what could be cut</strong>. This page is meant to test the signal of the booster once the user has installed it already.</p>
+          <div class="image-row-single image-row-single-wide">
+            <img data-tilt src={img('09.webp')} alt="Two iteration options for the signal-test page: Option 1 with Test Again and Learn More buttons, and Option 2 showing an automatic rescan with a Close button" />
+          </div>
+        </div>
+      </section>
+
+      <section class="feature-band">
+        <div class="feature-media">
+          <img data-tilt src={img('13.webp')} alt="Two SureCall screens showing the signal search state and the color-coded Great signal-strength result" />
+        </div>
+        <div class="feature-text">
+          <h2 class="feature-heading">Signal Strength, Translated</h2>
+          <p>A color-coded meter with clear labels like "Good" and "Great" turns a technical value like -80 dBm into <em>something intuitive at a glance</em>. Large tap targets and step-by-step screens keep the whole thing usable one-handed, in the field. Rather than relying on a "Test Again" button, the app <strong>automatically rescans the signal after installation</strong>, cutting out a manual step. A "Close" button guides users straight back to the home screen instead of dead-ending on a results page, and the RSRP value stays visible alongside the plain-language label for anyone who wants the technical reading too.</p>
+        </div>
+      </section>
+
+      <section class="dark-block">
+        <div class="wrap">
+          <div class="challenge-head">
+            <span class="quirky quirky-sage">Plain-Language Education</span>
+            <h2>The Challenge</h2>
+          </div>
+          <ol class="challenge-grid">
+            {challenges.map((c, i) => (
+              <li class:list={['challenge-card', 'challenge-card-sage', { 'is-active': i === 1 }]} data-tilt>
+                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
+                <p>{c}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="white-block">
+        <div class="wrap">
+          <div class="image-row-single image-row-single-wide">
+            <img data-tilt src={img('08.webp')} alt="Three iteration options for explaining 5G C-Band and UW technology: plain information with no aesthetic, relevant information in a gradient bubble, and relevant information with color-coded signal specifics" />
+          </div>
+        </div>
+      </section>
+
+      <section class="feature-band feature-band-reverse">
+        <div class="feature-media">
+          <img data-tilt src={img('14.webp')} alt="Three SureCall screens guiding a user to move near a window, checking 5G UW strength, and offering booster tips" />
+        </div>
+        <div class="feature-text">
+          <h2 class="feature-heading">Confidence During Setup</h2>
+          <p>Instant testing tools deliver feedback within seconds, so users feel reassured instead of second-guessing whether the install actually worked — no advanced understanding required. Boosters are often installed in tough spots — garages, basements, rural areas with weak signal to begin with — so <strong>a clear pass-or-fail moment mattered more than a polished readout</strong>. Mid-fidelity iterations leaned on the <em>aesthetic-usability effect</em>: a balanced, uncluttered layout that felt trustworthy before a user read a single word on the screen.</p>
+        </div>
+      </section>
+
+      <section class="dark-block">
+        <div class="wrap">
+          <div class="challenge-head">
+            <span class="quirky quirky-coral">Low-Friction Field Use</span>
+            <h2>The Challenge</h2>
+          </div>
+          <ol class="challenge-grid">
+            {challenges.map((c, i) => (
+              <li class:list={['challenge-card', 'challenge-card-coral', { 'is-active': i === 2 }]} data-tilt>
+                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
+                <p>{c}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="white-block">
+        <div class="wrap">
+          <h2>Low-Fidelity Prototypes</h2>
+          <p>Given the feedback from my project manager and Verizon, I sketched low-fidelity concepts to <strong>explore user flow, potential screens, and features</strong> that addressed the specific needs of users.</p>
+          <div class="image-row-single image-row-single-wide">
+            <img data-tilt src={img('07.webp')} alt="Low-fidelity wireframes for the SureCall app" />
+          </div>
+        </div>
+      </section>
+
+      <section class="white-block">
+        <div class="wrap">
+          <p class="eyebrow-label">Final Prototype</p>
+          <div class="image-row-single image-row-single-phone">
+            <video class="prototype-video" src={`${base}images/surecall/prototype.mp4`} autoplay muted loop playsinline aria-label="Walkthrough of the final SureCall prototype, from the signal-strength check through booster setup"></video>
+          </div>
+        </div>
+      </section>
+
+      <section class="white-block">
+        <div class="wrap">
+          <p class="eyebrow-label">Design Kit</p>
+          <div class="image-row-single image-row-single-wide">
+            <img data-tilt src={img('12.webp')} alt="SureCall design kit: typography scale, color palette, and logo and icon assets" />
+          </div>
+        </div>
+      </section>
+
+      <section class="white-block white-block-flush-bottom">
+        <div class="image-row-single">
+          <img data-tilt src={img('02.webp')} alt="Collage of SureCall app screens arranged at an angle, showing the signal test, booster setup, and information flows" />
+        </div>
+      </section>
+
+      <section class="dark-block">
+        <div class="wrap">
+          <h2>Reflection</h2>
+          <p class="reflect-subhead">Opening My Third Eye</p>
+          <p>Working on this project deepened my understanding of how UX can bridge digital interfaces and physical environments. Designing for non ideal conditions from bad lighting to a user on the move <em>challenged me to make every screen hold meaning</em>.</p>
+          <p>Working in a start up environment for a small to medium sized company was a great experience. I really got to be hands on with every step of this process along the way. I not only enhanced my design skills but learned something about cellular boosters as well. Additionally, I got to work with back end engineers to see how the engineering actually took place. They recommended things for me to change or add based on <strong>how easy/hard it was to code an element</strong>. This was definitely a challenge for me but worth all of the hard work. Thank you SureCall for having me!</p>
+        </div>
+      </section>
+
+      <section class="dark-block">
+        <div class="wrap">
+          <h2 class="takeaways-heading">Key Takeaways</h2>
+          <div class="takeaways-grid">
+            {takeaways.map((t) => (
+              <div class="takeaway-card">
+                <span class="takeaway-dot" aria-hidden="true"></span>
+                <h3>{t.title}</h3>
+                <p>{t.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="up-next">
+        <div class="wrap">
+          <span class="quirky quirky-blue">Up Next</span>
+          <a class="up-next-row" href={nextProject.href} data-tilt>
+            <img src={nextProject.image} alt="" />
+            <div>
+              <h2>{nextProject.title}</h2>
+              <p>{nextProject.subtitle}</p>
+            </div>
+            <span class="btn-outline">View Project</span>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <footer class="dark-block footer">
+      <div class="wrap">
+        <h2 class="footer-heading">Let's Talk!</h2>
+        <div class="footer-actions">
+          <a class="btn-pill btn-pill-solid" href="mailto:julianliaowork@gmail.com">Hop on Call</a>
+          <button class="btn-pill" type="button" data-copy-email>Copy Email</button>
+        </div>
+        <a class="footer-social" href="https://www.linkedin.com/in/julian-liao-475685239/" target="_blank" rel="noreferrer">LinkedIn</a>
+      </div>
+    </footer>
+
+    <Lightbox />
+
+    <script>
+      import '../../scripts/site.js';
+      import '../../scripts/lightbox.js';
+
+      const btn = document.querySelector('[data-copy-email]');
+      btn?.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('julianliaowork@gmail.com');
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = original; }, 1500);
+        } catch {
+          window.location.href = 'mailto:julianliaowork@gmail.com';
+        }
+      });
+
+      // Belt-and-suspenders: the autoplay/muted/loop/playsinline attributes
+      // already handle this in every modern browser, but some browsers
+      // silently drop a programmatic play() if it's called before the
+      // element is attached — this re-triggers it once the page is ready.
+      document.querySelectorAll<HTMLVideoElement>('.phone-video, .prototype-video').forEach((v) => {
+        v.play().catch(() => {});
+      });
+
+      // Typewriter effect on the pull-quote — types each segment in order
+      // (plain text, then the highlighted phrase, then the trailing plain
+      // text) once the quote scrolls into view. Reduced-motion and
+      // no-IntersectionObserver both fall back to showing the full text.
+      const quoteEl = document.querySelector<HTMLElement>('[data-typewriter]');
+      if (quoteEl) {
+        const segments = Array.from(quoteEl.querySelectorAll<HTMLElement>('.tw-seg'));
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const typeSegments = () => {
+          let segIndex = 0;
+          let charIndex = 0;
+          const step = () => {
+            if (segIndex >= segments.length) return;
+            const seg = segments[segIndex];
+            const full = seg.dataset.full ?? '';
+            if (charIndex <= full.length) {
+              seg.textContent = full.slice(0, charIndex);
+              charIndex++;
+              setTimeout(step, 28);
+            } else {
+              segIndex++;
+              charIndex = 0;
+              setTimeout(step, 28);
+            }
+          };
+          step();
+        };
+
+        if (reduced || !('IntersectionObserver' in window)) {
+          segments.forEach((seg) => { seg.textContent = seg.dataset.full ?? ''; });
+        } else {
+          const io = new IntersectionObserver((entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                typeSegments();
+                obs.disconnect();
+              }
+            });
+          }, { threshold: 0.4 });
+          io.observe(quoteEl);
+        }
+      }
+    </script>
+
+    <style>
+      :global(body) {
+        background: #ffffff;
+      }
+
+
+
+      .wrap {
+        max-width: 74rem;
+        margin-inline: auto;
+        padding-inline: clamp(1.25rem, 5vw, 3.5rem);
+      }
+
+      /* Nav ------------------------------------------------------------ */
+
+
+
+
+      .btn-pill {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.6em 1.4em;
+        text-decoration: none;
+        color: var(--ink);
+        background: transparent;
+        font-family: var(--font-body);
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn-pill-solid {
+        background: var(--ink);
+        color: var(--bg);
+      }
+
+      /* Hero banner ------------------------------------------------------- */
+      .hero-banner {
+        aspect-ratio: 8 / 3;
+        overflow: hidden;
+      }
+
+      .hero-banner img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      /* Marquee ----------------------------------------------------------- */
+      .marquee-section {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        min-height: clamp(380px, 48vw, 640px);
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+        overflow: hidden;
+        background: #ffffff;
+      }
+
+      .marquee-row {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .marquee-track {
+        display: inline-flex;
+        width: max-content;
+      }
+
+      .marquee-track span {
+        display: inline-block;
+        padding-inline: 1.5rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.6rem, 5vw, 3rem);
+        color: #4fd8ae;
+        white-space: nowrap;
+      }
+
+      .marquee-row:nth-child(odd) .marquee-track span {
+        color: rgba(79, 216, 174, 0.55);
+      }
+
+      .marquee-track-left {
+        animation: marquee-left 32s linear infinite;
+      }
+
+      .marquee-track-right {
+        animation: marquee-right 32s linear infinite;
+      }
+
+      @keyframes marquee-left {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+
+      @keyframes marquee-right {
+        from { transform: translateX(-50%); }
+        to { transform: translateX(0); }
+      }
+
+      .marquee-phone {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+      }
+
+      .phone-frame {
+        width: clamp(140px, 16vw, 220px);
+        aspect-ratio: 658 / 1396;
+        border: 3px solid var(--ink);
+        border-radius: 1.5rem;
+        padding: 0.5rem;
+        background: var(--bg);
+      }
+
+      .phone-frame .placeholder {
+        height: 100%;
+        aspect-ratio: auto;
+        border-radius: 1rem;
+      }
+
+      .phone-video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 1rem;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .marquee-track-left,
+        .marquee-track-right {
+          animation: none;
+        }
+      }
+
+      /* Head block -------------------------------------------------------- */
+      .head-block {
+        padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3rem);
+      }
+
+      .head-top {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        align-items: start;
+        margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .title {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(3.5rem, 10vw, 7rem);
+        letter-spacing: -0.01em;
+        line-height: 0.98;
+        color: var(--ink);
+        margin: 0;
+      }
+
+      /* Fill matches the section background on purpose — the reference
+         had this as a plain white box floating on the page's cream
+         background, which read as a mismatched card rather than part
+         of the page. */
+      .context-box {
+        background: transparent;
+        border-left: 3px solid var(--line-strong);
+        padding-left: 1.25rem;
+      }
+
+      .context-label {
+        margin: 0 0 0.35rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-faint);
+      }
+
+      .context-heading {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: 1.3rem;
+        color: var(--ink);
+      }
+
+      .context-box p:not(.context-label) {
+        margin: 0;
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+      }
+
+      @media (min-width: 800px) {
+        .head-top { grid-template-columns: auto 1fr; gap: 2.5rem; }
+      }
+
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+        gap: 1.5rem;
+        padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+        border-bottom: 1px solid var(--line);
+        margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .meta dt {
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        color: var(--ink-faint);
+        margin-bottom: 0.35rem;
+      }
+
+      .meta dd {
+        margin: 0;
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        color: var(--ink);
+      }
+
+      .meta dd span {
+        display: block;
+      }
+
+      .intro {
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+        text-align: justify;
+        text-align-last: left;
+        hyphens: auto;
+      }
+
+      .pull-quote {
+        position: relative;
+        max-width: none;
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+        line-height: 1.4;
+        color: var(--ink-faint);
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+        text-align: center;
+      }
+
+      .pull-quote-highlight {
+        color: #06251e;
+        font-weight: 700;
+        box-shadow: inset 0 -0.35em 0 rgba(0, 179, 133, 0.22);
+      }
+
+      .pull-quote[data-typewriter]::after {
+        content: '';
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        margin-left: 2px;
+        background: currentColor;
+        vertical-align: text-bottom;
+        animation: pull-quote-blink 0.9s steps(1) infinite;
+      }
+
+      @keyframes pull-quote-blink {
+        50% { opacity: 0; }
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .pull-quote[data-typewriter]::after {
+          animation: none;
+        }
+      }
+
+      /* By the numbers ------------------------------------------------------- */
+      .stat-band {
+        background: #00b38a;
+        color: #fdfbf9;
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .location-block {
+        text-align: center;
+        padding-inline: clamp(1.25rem, 5vw, 3.5rem);
+      }
+
+      .location-label {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #fdfbf9;
+      }
+
+      .location-name {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(2rem, 6vw, 3.5rem);
+        line-height: 1.1;
+        color: #fdfbf9;
+      }
+
+      /* Dark / white blocks ---------------------------------------------- */
+      .dark-block {
+        background: var(--ink);
+        color: var(--bg);
+        padding-block: clamp(3rem, 7vw, 5rem);
+      }
+
+      .white-block {
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .white-block-flush-bottom {
+        padding-bottom: 0;
+      }
+
+      .white-block h2 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.9rem, 4vw, 2.8rem);
+        letter-spacing: -0.01em;
+        margin: 0 0 0.6rem;
+        color: var(--ink);
+      }
+
+      .dark-block h2 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.9rem, 4vw, 2.8rem);
+        letter-spacing: -0.01em;
+        margin: 0 0 0.6rem;
+      }
+
+      .white-block p {
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+        text-align: justify;
+        text-align-last: left;
+        hyphens: auto;
+      }
+
+      .dark-block .wrap > p:not(.reflect-subhead) {
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: rgba(253, 251, 249, 0.7);
+        text-align: justify;
+        text-align-last: left;
+        hyphens: auto;
+      }
+
+      .reflect-subhead {
+        margin: 0 0 0.75rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.8rem;
+        color: rgba(253, 251, 249, 0.5);
+      }
+
+      /* Typographic emphasis experiment — bold marks a design decision,
+         italic marks an insight/rationale, and .callout-phrase (used once,
+         on the single clearest insight on the page) bumps size + color for
+         a magazine-pull-quote-within-a-paragraph effect. */
+      .white-block strong,
+      .context-box strong,
+      .feature-text strong {
+        color: var(--ink);
+        font-weight: 700;
+      }
+
+      .dark-block strong {
+        color: var(--bg);
+        font-weight: 700;
+      }
+
+      .white-block em,
+      .context-box em,
+      .feature-text em {
+        font-style: italic;
+        color: var(--ink);
+      }
+
+      .dark-block em {
+        font-style: italic;
+        color: var(--bg);
+      }
+
+      .callout-phrase {
+        font-size: 1.2em;
+        font-weight: 700;
+        color: #00b385;
+      }
+
+      .eyebrow-label {
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #00b385;
+        margin: 0 0 0.75rem;
+        font-size: 0.85rem;
+      }
+
+      /* Images ------------------------------------------------------------ */
+      .image-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .image-row img {
+        display: block;
+        width: 100%;
+      }
+
+      @media (min-width: 700px) {
+        .image-row-personas { grid-template-columns: 1fr 1fr; }
+      }
+
+      .image-row-single {
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .image-row-single-wide {
+        max-width: 56rem;
+        margin-inline: auto;
+      }
+
+      .image-row-single img {
+        display: block;
+        width: 100%;
+      }
+
+      .image-row-single-phone {
+        max-width: 20rem;
+        margin-inline: auto;
+      }
+
+      .prototype-video {
+        display: block;
+        width: 100%;
+        aspect-ratio: 912 / 1800;
+        border-radius: 1.5rem;
+      }
+
+      .placeholder {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 21 / 9;
+        border: 1px dashed var(--line-strong);
+        background: #ffffff;
+        color: var(--ink-faint);
+        font-family: var(--font-body);
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .placeholder-phone {
+        aspect-ratio: 9 / 19;
+      }
+
+      /* Feature bands (green, full-bleed) --------------------------------- */
+      .feature-band {
+        display: grid;
+        grid-template-columns: 1fr;
+        background: #00b38a;
+      }
+
+      .feature-media img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .feature-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: clamp(2rem, 5vw, 3.5rem);
+      }
+
+      .feature-heading {
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-style: italic;
+        font-size: clamp(1.6rem, 3vw, 2.1rem);
+        color: var(--ink);
+        margin: 0 0 0.6rem;
+      }
+
+      /* Fill matches the section background on purpose — same fix as the
+         context box above; the reference had a white card sitting on
+         this green band. */
+      .feature-text p {
+        margin: 0;
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: rgba(6, 37, 30, 0.75);
+      }
+
+      @media (min-width: 800px) {
+        .feature-band { grid-template-columns: 1fr 1fr; }
+        .feature-band-reverse .feature-media { order: 2; }
+        .feature-band-reverse .feature-text { order: 1; }
+      }
+
+      /* Challenge cards --------------------------------------------------- */
+      .challenge-head {
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+        margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .challenge-head .quirky {
+        margin-top: -0.2rem;
+      }
+
+      .challenge-head h2 {
+        color: var(--bg);
+        margin: 0;
+      }
+
+      .quirky {
+        font-family: var(--font-quirky);
+        font-size: 1.2rem;
+        transform: rotate(-3deg);
+        display: inline-block;
+      }
+
+      /* All three challenge sections (and Up Next) share one accent now —
+         SureCall's own brand green (#00B385, from the Design Kit asset)
+         instead of the earlier blue/sage/coral rotation. */
+      .quirky-blue,
+      .quirky-sage,
+      .quirky-coral {
+        color: #00b385;
+      }
+
+      .challenge-grid {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .challenge-card {
+        --tilt-x: 0deg;
+        --tilt-y: 0deg;
+        border: 1px solid rgba(253, 251, 249, 0.15);
+        border-left: 3px solid rgba(253, 251, 249, 0.15);
+        padding: 1.5rem;
+        background: rgba(253, 251, 249, 0.03);
+        transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+        transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s var(--ease-out);
+      }
+
+      .challenge-card p {
+        margin: 0.75rem 0 0;
+        max-width: none;
+        color: rgba(253, 251, 249, 0.45);
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      .challenge-num {
+        font-family: var(--font-body);
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: rgba(253, 251, 249, 0.35);
+      }
+
+      .challenge-card.is-active {
+        background: rgba(253, 251, 249, 0.08);
+        border-color: rgba(253, 251, 249, 0.3);
+      }
+
+      .challenge-card-blue.is-active,
+      .challenge-card-sage.is-active,
+      .challenge-card-coral.is-active {
+        border-left-color: #00b385;
+      }
+
+      .challenge-card-blue.is-active .challenge-num,
+      .challenge-card-sage.is-active .challenge-num,
+      .challenge-card-coral.is-active .challenge-num {
+        color: #00b385;
+      }
+
+      .challenge-card.is-active p {
+        color: var(--bg);
+        font-weight: 500;
+      }
+
+      @media (min-width: 700px) {
+        .challenge-grid { grid-template-columns: repeat(3, 1fr); }
+      }
+
+      /* Key takeaways ------------------------------------------------------- */
+      .takeaways-heading { color: var(--bg); }
+
+      .takeaways-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+        padding-top: clamp(1.5rem, 4vw, 2.5rem);
+        border-top: 1px solid rgba(253, 251, 249, 0.15);
+      }
+
+      .takeaway-card {
+        padding-left: 0;
+      }
+
+      .takeaway-dot {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        background: var(--accent-light);
+        margin-bottom: 1rem;
+      }
+
+      .takeaway-card h3 {
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--bg);
+        margin: 0 0 0.5rem;
+      }
+
+      .takeaway-card p {
+        margin: 0;
+        max-width: none;
+        color: rgba(253, 251, 249, 0.6);
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      @media (min-width: 700px) {
+        .takeaways-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .takeaways-grid .takeaway-card:last-child {
+          border-left: 1px solid rgba(253, 251, 249, 0.15);
+          padding-left: 2rem;
+        }
+      }
+
+      /* Up next --------------------------------------------------------------- */
+      .up-next { padding-block: clamp(3rem, 7vw, 5rem); }
+
+      .up-next-row {
+        --tilt-x: 0deg;
+        --tilt-y: 0deg;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        text-decoration: none;
+      }
+
+      .up-next-row img {
+        width: 100px;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border: 1px solid var(--line);
+        transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+        transition: transform 0.3s var(--ease-out);
+      }
+
+      .up-next-row h2 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.6rem, 4vw, 2.2rem);
+        color: var(--ink);
+      }
+
+      .up-next-row p {
+        margin: 0.25rem 0 0;
+        color: var(--ink-faint);
+        font-size: 0.9rem;
+      }
+
+      .btn-outline {
+        margin-left: auto;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.5em 1.2em;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--ink);
+      }
+
+      /* Footer ------------------------------------------------------------------ */
+      .footer { text-align: center; }
+
+      .footer-heading {
+        color: var(--bg);
+        font-size: clamp(2.5rem, 7vw, 4.5rem);
+        font-family: var(--font-display);
+        font-weight: 400;
+      }
+
+      .footer-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1.5rem 0 2rem;
+      }
+
+      .footer .btn-pill { border-color: var(--bg); color: var(--bg); }
+      .footer .btn-pill-solid { background: var(--bg); color: var(--ink); }
+
+      .footer-social {
+        color: rgba(253, 251, 249, 0.7);
+        font-family: var(--font-body);
+        font-weight: 600;
+        text-decoration: none;
+      }
+    </style>
+  </body>
+</html>

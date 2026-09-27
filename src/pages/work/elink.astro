@@ -1,0 +1,2376 @@
+---
+// ---------------------------------------------------------------------
+// Case study page.
+// Same full case-study architecture built for the SureCall, Michigan
+// ChatGPT, Guide, and connexU format tests, applied to E-LINK.
+//
+// E-LINK is a business case / project-management deliverable, not a UI
+// design project, so this page adapts the shape rather than forcing UX
+// sections that don't apply — no design kit, no personas, no UI
+// feature-bands.
+//
+// None of the 8 real slide screenshots (public/images/elink/01-08.webp)
+// are shown directly — every number, label, and structure was
+// transcribed from them and rebuilt natively: 01 -> a real SVG line
+// chart (exact per-year values, colors sampled from the plotted lines);
+// 02 -> already-native pillar cards, image dropped as redundant; 03 ->
+// a native SharePoint-style tab mockup; 04 -> stakeholder cards + the
+// success-factors list; 05 -> a native milestone timeline; 06 -> the
+// WBS's 5 phases and their real 3 branch names (the diagram's deeper
+// task-level chains cross columns in a way that isn't safely
+// verifiable at this resolution, so that level was left at the
+// original-image detail rather than guessed); 07 -> a native
+// phase-level Gantt bar chart (real date ranges read off the chart's
+// own week gridlines, status colors matched to its legend); 08 -> a
+// full native risk-register table, all 7 rows. The four real prototype
+// screen recordings (alumni-network.mp4, dinners.mp4,
+// mentorship-program.mp4, pro-network.mp4) are still used as-is, since
+// those are the actual prototype, not a chart to extract. The hero
+// reuses the real marketing shot already on the homepage
+// (public/images/home/tile-elink.png). The accent color (#00579D) and
+// the chart's 3 line colors are all sampled directly from 01.webp and
+// 03.webp — not invented.
+//
+// Every line of copy is quoted or lightly reformatted from
+// src/content/projects/elink.md and the 8 real slides — nothing invented.
+// ---------------------------------------------------------------------
+import '../../styles/global.css';
+import Nav from '../../components/Nav.astro';
+
+const base = import.meta.env.BASE_URL;
+const pageTitle = 'E-LINK — Julian Liao';
+const pageDescription = 'A business case and PM plan to close Esade\'s internship gap';
+const ogImage = new URL(`${base}images/home/profile-illustration.webp`, Astro.site);
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const img = (n: string) => `${base}images/elink/${n}`;
+
+const meta = [
+  { label: 'Timeline', value: 'Feb – May 2026' },
+  { label: 'Role', value: ['Project Manager', 'Business Analyst'] },
+  { label: 'Team', value: '5, Esade Business School' },
+  { label: 'Tools', value: ['Figma Make', 'Claude', 'Microsoft Office'] },
+  { label: 'Skills', value: ['Business Case Development', 'Stakeholder Analysis', 'Project Planning', 'Risk Management', 'Work Breakdown Structure'] },
+];
+
+// Each of the 3 real problems, paired with the real pillar(s) and real
+// prototype demo(s) that solved it. The pairing itself is grounded in
+// the source text — e.g. the alumni-network demo's own caption already
+// says it's "the matching-buddies pillar and the information-gap
+// problem solved in one screen" — nothing here is a new fact, just the
+// existing facts regrouped by which problem each one answers.
+const challenges = [
+  {
+    label: 'Information Gap',
+    problem: 'Information gap — students had no structured way to learn what alumni actually did after graduating, or what a given employer’s interview process looked like.',
+    pillars: [
+      { name: 'Centralized Resources', text: 'A student-governed repository of interview transcripts, technical test prep, and company-specific "culture codes."' },
+      { name: 'Matching Buddies', text: 'Pairing students preparing for the same interviews to study together.' },
+    ],
+    demos: [
+      {
+        video: 'alumni-network.mp4',
+        alt: 'Alumni database page, filterable by career field and location, with student cards showing a Connect button',
+        caption: 'The alumni database — filterable by career field and location — is the matching-buddies pillar and the information-gap problem solved in one screen: a student can find someone a few years ahead in the exact role they’re prepping for, instead of cold-emailing whoever answers first.',
+      },
+    ],
+  },
+  {
+    label: 'International Underdevelopment',
+    problem: 'International underdevelopment — Esade’s alumni network is large but scattered; there was no single place pulling it together for the specific job of interview prep.',
+    pillars: [
+      { name: 'Mentorships', text: 'Structured "coffee chat" and mock-interview scheduling, so networking has a format instead of being cold outreach.' },
+    ],
+    demos: [
+      {
+        video: 'mentorship-program.mp4',
+        alt: 'Mentorship program page listing available mentors with their specialty and interview-prep documents, plus upcoming one-on-one workshops',
+        caption: 'Mentorship is the structured version of a coffee chat: a mentor’s specialty and prep documents are visible before a student reaches out, and one-on-one workshop slots are booked directly instead of over email back-and-forth.',
+      },
+      {
+        video: 'pro-network.mp4',
+        alt: 'Group chats page organized by industry — Finance and Banking, Tech and Innovation, Consulting, Marketing, Entrepreneurship, and Luxury and Retail — each with a member count and Join Chat button',
+        caption: 'Group chats sort by industry rather than class year, so a third-year deciding between consulting and tech can sit in both conversations instead of picking one identity to network under — pulling the scattered alumni network into one organized place.',
+      },
+    ],
+  },
+  {
+    label: 'Reputational Risk',
+    problem: 'Reputational risk — a landing rate that keeps losing ground to direct competitors affects the school’s pitch to prospective students and recruiters alike.',
+    pillars: [
+      { name: 'Fast Track', text: 'A referral system letting alumni in leadership positions flag high-potential candidates directly.' },
+    ],
+    demos: [
+      {
+        video: 'dinners.mp4',
+        alt: 'Recruiter dinners page showing McKinsey and Goldman Sachs dinner listings with a Reserve My Spot button and a remaining-spots counter',
+        caption: 'Recruiter dinners make the incentive from the stakeholder analysis real — a firm-hosted dinner with a capped headcount and a visible "spots remaining" counter, giving recruiters a direct reason to stay engaged with the school instead of drifting to competitors.',
+      },
+    ],
+  },
+];
+
+// Real success metrics, transcribed from elink.md. Every number and date
+// below is from the source; bar lengths are simply value / axis max.
+const roadmapSteps = [
+  { when: 'By Mar 2027', label: 'Engage 60–80 students' },
+  { when: 'By Jun 2027', label: 'Activate 10–15 alumni mentors' },
+  { when: 'Mar–Oct 2027', label: 'Host 3 recruiter dinners' },
+  { when: 'By Jan 2028', label: 'Centralize 30–40 prep resources' },
+  { when: 'By Jun 2028', label: 'Grow to 30 alumni mentors' },
+  { when: 'By Jan 2029', label: 'Grow to 140–200 students' },
+];
+const growthMetrics = [
+  {
+    name: 'Students engaged',
+    max: 200,
+    stages: [
+      { when: 'By Mar 2027', lo: 60, hi: 80 },
+      { when: 'By Jan 2029', lo: 140, hi: 200 },
+    ],
+  },
+  {
+    name: 'Alumni mentors',
+    max: 30,
+    stages: [
+      { when: 'By Jun 2027', lo: 10, hi: 15 },
+      { when: 'By Jun 2028', lo: 30, hi: 30 },
+    ],
+  },
+];
+const leadingIndicators = ['Participants', 'Daily connections', 'Students who contacted an alumnus'];
+
+// Real per-year data points, read directly off 01.webp's line chart.
+// Colors sampled directly from the chart's plotted lines (not invented).
+const landingRateYears = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+const landingRateSeries = [
+  { name: 'ESADE', color: '#e76f33', values: [34, 35, 33, 34, 35, 34, 35, 35] },
+  { name: 'IE Business School', color: '#1c6727', values: [30, 32, 34, 36, 39, 41, 43, 45] },
+  { name: 'Bocconi', color: '#12a0d0', values: [40, 42, 44, 46, 48, 50, 53, 53] },
+];
+
+const chartW = 640;
+const chartH = 320;
+const chartPad = { top: 16, right: 16, bottom: 28, left: 34 };
+const chartYMin = 25;
+const chartYMax = 55;
+const chartPlotW = chartW - chartPad.left - chartPad.right;
+const chartPlotH = chartH - chartPad.top - chartPad.bottom;
+const chartX = (i: number) => chartPad.left + (i / (landingRateYears.length - 1)) * chartPlotW;
+const chartY = (v: number) => chartPad.top + chartPlotH - ((v - chartYMin) / (chartYMax - chartYMin)) * chartPlotH;
+const chartLine = (values: number[]) => values.map((v, i) => `${i === 0 ? 'M' : 'L'} ${chartX(i).toFixed(1)} ${chartY(v).toFixed(1)}`).join(' ');
+const chartGridValues = [30, 35, 40, 45, 50, 55];
+
+// Real stakeholder groups, transcribed verbatim from 04.webp.
+const stakeholderGroups = [
+  { name: 'Students', sub: 'Primary Beneficiaries of E-Link', points: ['Would gain access to alumni network & employers, structured and precise interview formation.', 'Main gain: higher internship success rate.'] },
+  { name: 'Alumni Mentors & Esade Alumni Network', points: ['Would gain access to pre-selected candidates and recognition within Esade.', 'Increased alumni engagement strengthening bonds and recognition of the network.'] },
+  { name: 'Employers (external)', points: ['Access to well prepared candidates while reducing companies’ screening costs.', 'Opportunity of strengthening their company’s attractivity to qualified candidates.'] },
+  { name: 'Career Services & Esade', points: ['Stronger employer relationships, precise data insight on students aspiration.', 'Improved school reputation through higher internship landing rate for students.'] },
+];
+const successFactors = ['Clear alignment with Career Services', 'Clear model of formation and commitment for Alumni mentors', 'Quality control of student preparation', 'Strong engagement incentives for all stakeholders'];
+
+// Real timeline data, transcribed verbatim from 05.webp.
+const timelinePhaseNames = ['Discovery & Problem', 'Outreach & Network', 'Design & Prototyping', 'Testing & Q&A', 'Launch & Execution', 'Expansion & Closure'];
+const timelineMilestones = [
+  { date: 'March 30, 2026', label: 'Inform students & gather sign-ups' },
+  { date: 'April 27, 2026', label: 'Execute 48h pilot test cycle' },
+  { date: 'May 1, 2026', label: 'Go-Live: Launch core platform' },
+  { date: 'May 9, 2026', label: 'Compare results vs baseline' },
+  { date: 'May 11, 2026', label: 'Formalize project completion' },
+];
+
+// Real WBS phase + branch names, transcribed verbatim from 06.webp. The
+// diagram's individual task chains cross columns in a way that isn't
+// possible to map back to the correct branch with full confidence at
+// this resolution, so this native version keeps the level that's
+// unambiguous — the 5 phases and their real 3 branches each — rather
+// than guess at task-to-branch pairings and risk misrepresenting the
+// real structure.
+const wbsPhases = [
+  { phase: 'Phase 1', branches: ['Project Foundation', 'Stakeholder Research', 'Scope Finalization'] },
+  { phase: 'Phase 2', branches: ['Interface & Experience', 'Resource Architecture', 'Networking Features'] },
+  { phase: 'Phase 3', branches: ['Pilot Readiness', 'Testing & Refinement', 'Validation'] },
+  { phase: 'Phase 4', branches: ['Core System Deployment', 'Engagement Initiatives', 'Strategic Partnerships'] },
+  { phase: 'Phase 5', branches: ['Scale-Up Operations', 'Performance Auditing', 'Project Closing'] },
+];
+
+// Real phase date ranges, read off 07.webp's Gantt chart against its own
+// week/date gridlines — simplified to one bar per phase (the source
+// tracks ~30 individual tasks per phase; the phase-level range is the
+// real, verifiable level here). Status colors match the chart's own
+// Completed/In Progress/Not Started legend.
+const ganttPhases = [
+  { name: 'Discovery & Problem', start: 'Feb 24', end: 'Mar 15', status: 'Completed' },
+  { name: 'Outreach & Network', start: 'Mar 9', end: 'Apr 13', status: 'Completed' },
+  { name: 'Design & Prototyping', start: 'Apr 13', end: 'Apr 20', status: 'In Progress' },
+  { name: 'Testing & QA', start: 'Apr 20', end: 'Apr 28', status: 'Not Started' },
+  { name: 'Launch & Execution', start: 'Apr 27', end: 'May 2', status: 'Not Started' },
+  { name: 'Expansion & Closure', start: 'May 1', end: 'May 11', status: 'Not Started' },
+];
+const ganttRangeStart = new Date('2026-02-20').getTime();
+const ganttRangeEnd = new Date('2026-05-26').getTime();
+const ganttPct = (label: string) => {
+  const t = new Date(`${label}, 2026`).getTime();
+  return ((t - ganttRangeStart) / (ganttRangeEnd - ganttRangeStart)) * 100;
+};
+const ganttStatusColor: Record<string, string> = {
+  Completed: '#12a0d0',
+  'In Progress': '#f2c94c',
+  'Not Started': '#e76f33',
+};
+
+// Real risk register, transcribed verbatim from 08.webp.
+const risks = [
+  { code: 'EXT-1', name: 'Low Student Engagement', detail: 'Students are "lazy" or disinterested in attending sessions.', probability: 'High', impact: 'High', grade: 'A', mitigation: ['Incentivize attendance with social events (dinners/drinks).', 'Showcase success statistics early to prove value.'] },
+  { code: 'EXT-2', name: 'Recruiter Non-Participation', detail: 'Employers do not see the value in the platform.', probability: 'Medium', impact: 'High', grade: 'A', mitigation: ['Highlight reduced screening costs and access to "well-prepared" candidates.', 'Create a sense of competition/urgency among firms.'] },
+  { code: 'EXT-3', name: 'Alumni Fatigue', detail: 'Mentors feel overwhelmed by student requests or lack of structure.', probability: 'Medium', impact: 'Medium', grade: 'B', mitigation: ['Implement structured "Coffee Chat" modules and clear templates to reduce workload.', 'Guarantee recognition or stipends for their help.'] },
+  { code: 'INT-1', name: 'Technical Platform Failure', detail: 'The "Study Buddy" or matching algorithm fails.', probability: 'Low', impact: 'High', grade: 'A', mitigation: ['Conduct a rigorous 48-hour pilot testing phase before core launch.', 'Perform rapid technical iterations based on error reports.'] },
+  { code: 'INT-2', name: 'Data Privacy Breach', detail: 'Leak of private alumni contact info or student interview transcripts.', probability: 'Low', impact: 'Critical', grade: 'A', mitigation: ['Restrict access to "Esade-private" network only.', 'Implement strict quality control and student-governed repository rules.'] },
+  { code: 'INT-3', name: 'Misalignment with Career Services', detail: 'Project duplicates work or creates extra burden for school staff.', probability: 'Medium', impact: 'High', grade: 'A', mitigation: ['Offer logistical support and co-organization for all joint events.', 'Ensure complete transparency on data, objectives, and results.'] },
+  { code: 'INT-4', name: 'Poor Quality of Prep Material', detail: 'Students share inaccurate "culture codes" or transcripts.', probability: 'Medium', impact: 'Medium', grade: 'B', mitigation: ['Establish a quality control protocol for all uploaded resources.', 'Assign leadership roles to Student Club reps for moderation.'] },
+];
+
+// Same 3D coverflow carousel built for the Guide/connexU test pages.
+// Real Barcelona photos (orientation-corrected, cropped to 4:5 cards).
+const carouselImg = (n: string) => `${base}images/elink/carousel/${n}`;
+const carouselPhotos = Array.from({ length: 9 }, (_, i) => `${String(i + 1).padStart(2, '0')}.webp`);
+const carouselAngleStep = 360 / carouselPhotos.length;
+
+const marqueeWords = Array(6).fill(['E-LINK', 'ESADE BUSINESS SCHOOL']).flat();
+
+const nextProject = {
+  title: 'Consulting Work',
+  subtitle: 'A couple of client deliverables from outside the case-study projects above.',
+  image: `${base}images/consulting-work/01-q-bakehouse.webp`,
+  href: `${base}work/consulting-work/`,
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fdfbf9" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="canonical" href={canonical.href} />
+    <meta name="description" content={pageDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImage.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{pageTitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Permanent+Marker&display=swap"
+    />
+  </head>
+  <body>
+    <Nav />
+
+    <section class="hero-banner">
+      <img data-tilt src={img('esade-banner.webp')} alt="Esade wordmark beside a laptop showing the E-Link platform inside Esade's intranet" />
+    </section>
+
+    <section class="marquee-section" aria-hidden="true">
+      <div class="marquee-row">
+        <div class="marquee-track marquee-track-left">
+          {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+        </div>
+      </div>
+      <div class="marquee-row">
+        <div class="marquee-track marquee-track-right">
+          {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+        </div>
+      </div>
+      <div class="marquee-row">
+        <div class="marquee-track marquee-track-left">
+          {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+        </div>
+      </div>
+      <div class="marquee-laptop">
+        <div class="laptop-frame">
+          <video src={img('alumni-network.mp4')} autoplay muted loop playsinline aria-label="Alumni database page from the E-LINK prototype"></video>
+        </div>
+        <div class="laptop-base"></div>
+      </div>
+    </section>
+
+    <section class="head-block">
+      <div class="wrap">
+        <div class="head-top">
+          <h1 class="title">E-LINK</h1>
+          <div class="context-box">
+            <p class="context-label">Context</p>
+            <h2 class="context-heading">What is E-LINK?</h2>
+            <p>E-LINK is a business case and project-management plan I built at Esade Business School in Barcelona with a team of classmates — Ira von Below, Héloïse Vieillescazes, Emily Acosta, and, on the earlier business-case draft, Noah Chang. It started as a business-case assignment and grew into a full project-management deliverable: a stakeholder analysis, a work-breakdown structure, a Gantt-scheduled rollout, and a risk register, on top of the original pitch. My focus was the project-management side — scoping the work, building the schedule, and stress-testing the plan against the people who’d actually have to run it.</p>
+          </div>
+        </div>
+
+        <dl class="meta">
+          {meta.map((m) => (
+            <div>
+              <dt>{m.label}</dt>
+              <dd>{Array.isArray(m.value) ? m.value.map((v) => <span>{v}</span>) : m.value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <p class="intro">The idea: an online platform connecting Esade students, alumni, and recruiters to close the gap between Esade’s internship landing rate and its peer schools’. We proposed E-LINK: a tiered mentorship and knowledge-exchange network with one target — <strong>raise the interview landing rate by 20%</strong> — built on four pillars.</p>
+
+        <p class="pull-quote" data-typewriter>
+          <span aria-hidden="true"><span class="tw-seg" data-full="Esade’s third-year students were landing interviews into summer internships at a "></span><span class="tw-seg pull-quote-highlight" data-full="35% rate, while direct competitors climbed to 45–53%"></span><span class="tw-seg" data-full=" over the same seven years."></span></span>
+          <span class="sr-only">Esade’s third-year students were landing interviews into summer internships at a 35% rate, while direct competitors climbed to 45–53% over the same seven years.</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="stat-band">
+      <div class="location-block">
+        <p class="location-label">Project Location</p>
+        <p class="location-name">Barcelona, Spain</p>
+      </div>
+      <div class="carousel-section">
+        <p class="carousel-label">A Few Photos Along the Way</p>
+        <div class="stage" data-carousel>
+          <div class="ring" data-ring>
+            {carouselPhotos.map((p, i) => (
+              <div class="card" style={`transform: rotateY(${(i * carouselAngleStep).toFixed(2)}deg) translateZ(var(--radius))`}>
+                <img src={carouselImg(p)} alt="" loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="white-block">
+      <div class="wrap">
+        <figure class="compare" data-compare style="--pos:50%">
+          <div class="compare-frame">
+            <img class="compare-img" src={img('after-homepage.webp')} alt="The redesigned myesade SharePoint homepage in a dark theme, with shortcuts for Courses, Campus, Library, IT Support, Exam Info, On Going, E-Link, and Alumni" />
+            <img class="compare-img compare-before" src={img('before-homepage.webp')} alt="The original myesade SharePoint homepage with notification cards and shortcuts for eOffice, eCampus, Surveys, Library, IT Support, Esade mail, and Do Better" />
+            <span class="compare-pill compare-pill-before">Before</span>
+            <span class="compare-pill compare-pill-after">After</span>
+            <span class="compare-divider" aria-hidden="true"><span class="compare-handle">&harr;</span></span>
+            <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Drag to compare the original and redesigned homepage" />
+          </div>
+          <figcaption class="compare-caption">Esade’s myesade intranet homepage — the original is on the left. Drag to reveal the redesign, with E-Link added as its own shortcut.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="dark-block">
+      <div class="wrap">
+        <div class="challenge-head">
+          <span class="quirky">35% vs. 45–53%</span>
+          <h2>The Problem</h2>
+        </div>
+        <p>We proposed E-LINK: a tiered mentorship and knowledge-exchange network built on four pillars, in response to three specific problems.</p>
+        <ol class="challenge-grid challenge-grid-4">
+          {challenges.map((c, i) => (
+            <li class="challenge-card" data-tilt tabindex="0">
+              <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
+              <p>{c.problem}</p>
+            </li>
+          ))}
+        </ol>
+        <figure class="chart-card">
+          <figcaption class="chart-title">Evolution of internship landing rates over the last 7 years</figcaption>
+          <svg class="chart-svg" viewBox={`0 0 ${chartW} ${chartH}`} role="img" aria-label="Line chart: ESADE's landing rate stays flat between 33% and 35% from 2018 to 2025, while IE Business School rises from 30% to 45% and Bocconi rises from 40% to 53%.">
+            {chartGridValues.map((v) => (
+              <g>
+                <line x1={chartPad.left} x2={chartW - chartPad.right} y1={chartY(v)} y2={chartY(v)} class="chart-gridline" />
+                <text x={chartPad.left - 8} y={chartY(v) + 4} class="chart-axis-label" text-anchor="end">{v}%</text>
+              </g>
+            ))}
+            {landingRateYears.map((yr, i) => (
+              <text x={chartX(i)} y={chartH - 6} class="chart-axis-label" text-anchor="middle">{yr}</text>
+            ))}
+            {landingRateSeries.map((s) => (
+              <g>
+                <path d={chartLine(s.values)} fill="none" stroke={s.color} stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                {s.values.map((v, i) => <circle cx={chartX(i)} cy={chartY(v)} r="3.5" fill={s.color} />)}
+              </g>
+            ))}
+          </svg>
+          <ul class="chart-legend">
+            {landingRateSeries.map((s) => (
+              <li><span class="chart-swatch" style={`background:${s.color}`}></span>{s.name}</li>
+            ))}
+          </ul>
+        </figure>
+      </div>
+    </section>
+
+    {challenges.map((c, i) => (
+      <section class="dark-block">
+        <div class="wrap">
+          <div class="challenge-head">
+            <span class="quirky">Challenge {String(i + 1).padStart(2, '0')}</span>
+            <h2>{c.label}</h2>
+          </div>
+          <p>{c.problem}</p>
+          <p class="solved-label">How It Was Solved</p>
+          <div class="pillar-grid">
+            {c.pillars.map((p) => (
+              <div class="pillar-card">
+                <p class="pillar-name">{p.name}</p>
+                <p class="pillar-text">{p.text}</p>
+              </div>
+            ))}
+          </div>
+          {c.demos.map((d) => (
+            <>
+              <div class="wide-video">
+                <video src={img(d.video)} autoplay muted loop playsinline aria-label={d.alt}></video>
+              </div>
+              <p>{d.caption}</p>
+            </>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <section class="dark-block">
+      <div class="wrap">
+        <h2>Stakeholder Analysis</h2>
+        <p>The riskiest assumption in the plan wasn’t the platform — it was whether the people who’d need to actually use it would. We mapped students, alumni, recruiters, and Career Services (whose workload we’d be adding to) against what each group stood to gain and what we’d be asking of them in return.</p>
+        <div class="stakeholder-grid">
+          {stakeholderGroups.map((g) => (
+            <div class="stakeholder-card">
+              <p class="stakeholder-name">{g.name}</p>
+              {g.sub && <p class="stakeholder-sub">{g.sub}</p>}
+              <ul class="stakeholder-points">
+                {g.points.map((pt) => <li>{pt}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div class="success-factors">
+          <p class="success-factors-label">4 Key Success Factors</p>
+          <ol class="success-factors-list">
+            {successFactors.map((f) => <li>{f}</li>)}
+          </ol>
+        </div>
+        <p>The two hardest groups to win over were students — likely to skip sessions without a reason to show up — and Career Services, who’d carry most of the added event workload. For students, that meant pairing every session with a real incentive (dinners, drinks) and leading with proof the program worked. For Career Services, it meant offering logistical support and ready-to-use templates so E-LINK reduced their workload rather than adding to it.</p>
+      </div>
+    </section>
+
+    <section class="white-block">
+      <div class="wrap">
+        <h2>Project Plan</h2>
+        <p>We broke the work into a five-phase work-breakdown structure — from problem definition through pilot testing to expansion and closure — then scheduled it against a 12-week window from late February to mid-May, with milestones for informing students, running a 48-hour pilot test, going live, and comparing results against baseline.</p>
+
+        <p class="plan-sublabel">Timeline — Feb 23, 2026 – May 11, 2026</p>
+        <ol class="timeline-list">
+          {timelineMilestones.map((m) => (
+            <li>
+              <span class="timeline-dot" aria-hidden="true"></span>
+              <span class="timeline-label">{m.label}</span>
+              <span class="timeline-date">{m.date}</span>
+            </li>
+          ))}
+        </ol>
+        <ul class="phase-tags">
+          {timelinePhaseNames.map((p) => <li>{p}</li>)}
+        </ul>
+
+        <p class="plan-sublabel">Work-Breakdown Structure</p>
+        <div class="wbs-grid">
+          {wbsPhases.map((p) => (
+            <div class="wbs-phase">
+              <p class="wbs-phase-name">{p.phase}</p>
+              <ul class="wbs-branches">
+                {p.branches.map((b) => <li>{b}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <p class="plan-sublabel">Gantt — Phase Schedule</p>
+        <div class="gantt">
+          {ganttPhases.map((p) => (
+            <div class="gantt-row">
+              <span class="gantt-row-name">{p.name}</span>
+              <div class="gantt-track">
+                <div
+                  class="gantt-bar"
+                  style={`left:${ganttPct(p.start).toFixed(1)}%; width:${(ganttPct(p.end) - ganttPct(p.start)).toFixed(1)}%; background:${ganttStatusColor[p.status]}`}
+                ></div>
+              </div>
+              <span class="gantt-row-dates">{p.start} – {p.end}</span>
+            </div>
+          ))}
+          <div class="gantt-legend">
+            {Object.entries(ganttStatusColor).map(([label, color]) => (
+              <span class="gantt-legend-item"><span class="gantt-swatch" style={`background:${color}`}></span>{label}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark-block">
+      <div class="wrap">
+        <h2>Risk Management</h2>
+        <p>Before pitching the plan, we ran it through a risk register — three external risks (student engagement, recruiter buy-in, alumni fatigue) and four internal ones (platform failures, data privacy, misalignment with Career Services, and low-quality prep material), each graded on probability and impact with a specific mitigation.</p>
+        <div class="risk-table-wrap">
+          <table class="risk-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Risk</th>
+                <th>Probability</th>
+                <th>Impact</th>
+                <th>Grade</th>
+                <th>Mitigation</th>
+              </tr>
+            </thead>
+            <tbody>
+              {risks.map((r) => (
+                <tr>
+                  <td class="risk-code">{r.code}</td>
+                  <td>
+                    <p class="risk-name">{r.name}</p>
+                    <p class="risk-detail">{r.detail}</p>
+                  </td>
+                  <td>{r.probability}</td>
+                  <td>{r.impact}</td>
+                  <td><span class:list={['risk-grade', `risk-grade-${r.grade.toLowerCase()}`]}>{r.grade}</span></td>
+                  <td>
+                    <ul class="risk-mitigation">
+                      {r.mitigation.map((m) => <li>{m}</li>)}
+                    </ul>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p>The two "A"-grade risks that shaped the plan most: <strong>low student engagement</strong> (high probability, high impact) is why every milestone pairs a session with a social incentive, and <strong>data privacy</strong> (low probability, critical impact) is why the repository was scoped as Esade-private with student-governed access controls rather than open to anyone with a link.</p>
+      </div>
+    </section>
+
+    <section class="white-block metrics-section">
+      <div class="wrap" data-metrics>
+        <h2>Success Metrics &amp; Goals</h2>
+
+        <div class="metrics-hero">
+          <p class="metrics-hero-num" aria-label="Plus 20 percent">+<span data-count="20">20</span>%</p>
+          <div class="metrics-hero-text">
+            <p class="metrics-hero-title">Interview landing rate</p>
+            <p>The core target — a two-year outcome, measured by comparing post-launch results against the pre-E-LINK baseline of about 35%.</p>
+          </div>
+        </div>
+
+        <p class="metrics-sublabel">Adoption roadmap</p>
+        <ol class="roadmap">
+          {roadmapSteps.map((st) => (
+            <li class="roadmap-step" tabindex="0">
+              <span class="roadmap-dot" aria-hidden="true"></span>
+              <span class="roadmap-when">{st.when}</span>
+              <span class="roadmap-label">{st.label}</span>
+            </li>
+          ))}
+        </ol>
+
+        <p class="metrics-sublabel">Growth targets</p>
+        <div class="metric-grid">
+          {growthMetrics.map((m) => (
+            <div class="metric-card">
+              <p class="metric-name">{m.name}</p>
+              {m.stages.map((st) => (
+                <div class="metric-stage">
+                  <div class="metric-stage-head">
+                    <span class="metric-when">{st.when}</span>
+                    <span class="metric-value">
+                      <span data-count={st.lo}>{st.lo}</span>{st.hi !== st.lo && <><span>–</span><span data-count={st.hi}>{st.hi}</span></>}
+                    </span>
+                  </div>
+                  <div class="metric-track">
+                    <span class="metric-fill" style={`--w:${(st.lo / m.max) * 100}%`}></span>
+                    {st.hi !== st.lo && <span class="metric-fill metric-fill-range" style={`--l:${(st.lo / m.max) * 100}%; --w:${((st.hi - st.lo) / m.max) * 100}%`}></span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+          <div class="metric-card metric-card-tile">
+            <p class="metric-name">Recruiter dinners</p>
+            <p class="metric-big"><span data-count="3">3</span></p>
+            <ul class="metric-dots" aria-hidden="true">
+              <li></li><li></li><li></li>
+            </ul>
+            <p class="metric-note">Between March and October 2027</p>
+          </div>
+          <div class="metric-card metric-card-tile">
+            <p class="metric-name">Prep resources centralized</p>
+            <p class="metric-big"><span data-count="30">30</span>–<span data-count="40">40</span></p>
+            <div class="metric-track">
+              <span class="metric-fill" style="--w:75%"></span>
+              <span class="metric-fill metric-fill-range" style="--l:75%; --w:25%"></span>
+            </div>
+            <p class="metric-note">By January 2028</p>
+          </div>
+        </div>
+
+        <p class="metrics-sublabel">Leading indicators</p>
+        <div class="indicator-row">
+          {leadingIndicators.map((ind) => (
+            <div class="indicator">
+              <span class="indicator-pulse" aria-hidden="true"></span>
+              <span>{ind}</span>
+            </div>
+          ))}
+        </div>
+        <p class="indicator-note">We tracked platform engagement directly as a leading indicator that would show up well before two years of interview data could.</p>
+      </div>
+    </section>
+
+    <section class="dark-block">
+      <div class="wrap">
+        <h2>Reflection</h2>
+        <p>This was a proposal, not a shipped product — the value was in building a plan disciplined enough that Esade’s Career Services could pick it up and run with it. Working through the stakeholder analysis was the most useful part: it’s easy to design a platform that’s good for students and forget it also has to be good for the Career Services staff running events and the alumni giving up their time, and the mitigation strategies changed real scope decisions (like putting the resource repository under student governance instead of open access).</p>
+        <p class="reflect-subhead">If I Kept Going</p>
+        <p>The next step would be validating the riskiest assumption directly — a small pilot with actual Career Services buy-in — rather than only stress-testing it on paper through the stakeholder and risk analysis.</p>
+      </div>
+    </section>
+
+    <section class="up-next">
+      <div class="wrap">
+        <span class="quirky">Up Next</span>
+        <a class="up-next-row" href={nextProject.href} data-tilt>
+          <img src={nextProject.image} alt="" />
+          <div>
+            <h2>{nextProject.title}</h2>
+            <p>{nextProject.subtitle}</p>
+          </div>
+          <span class="btn-outline">View Project</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="dark-block footer">
+      <div class="wrap">
+        <h2 class="footer-heading">Let’s Talk!</h2>
+        <div class="footer-actions">
+          <a class="btn-pill btn-pill-solid" href="mailto:julianliaowork@gmail.com">Hop on Call</a>
+          <button class="btn-pill" type="button" data-copy-email>Copy Email</button>
+        </div>
+        <a class="footer-social" href="https://www.linkedin.com/in/julian-liao-475685239/" target="_blank" rel="noreferrer">LinkedIn</a>
+      </div>
+    </footer>
+
+    <script>
+      import '../../scripts/site.js';
+
+      const btn = document.querySelector('[data-copy-email]');
+      btn?.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('julianliaowork@gmail.com');
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = original; }, 1500);
+        } catch {
+          window.location.href = 'mailto:julianliaowork@gmail.com';
+        }
+      });
+
+      // Belt-and-suspenders autoplay, same as the other format tests.
+      document.querySelectorAll<HTMLVideoElement>('.laptop-frame video, .wide-video video').forEach((v) => {
+        v.play().catch(() => {});
+      });
+
+      // Typewriter effect on the pull-quote — types each segment in order
+      // (plain text, then the highlighted phrase, then the trailing plain
+      // text) once the quote scrolls into view. Reduced-motion and
+      // no-IntersectionObserver both fall back to showing the full text.
+      const quoteEl = document.querySelector<HTMLElement>('[data-typewriter]');
+      if (quoteEl) {
+        const segments = Array.from(quoteEl.querySelectorAll<HTMLElement>('.tw-seg'));
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const typeSegments = () => {
+          let segIndex = 0;
+          let charIndex = 0;
+          const step = () => {
+            if (segIndex >= segments.length) return;
+            const seg = segments[segIndex];
+            const full = seg.dataset.full ?? '';
+            if (charIndex <= full.length) {
+              seg.textContent = full.slice(0, charIndex);
+              charIndex++;
+              setTimeout(step, 28);
+            } else {
+              segIndex++;
+              charIndex = 0;
+              setTimeout(step, 28);
+            }
+          };
+          step();
+        };
+
+        if (reduced || !('IntersectionObserver' in window)) {
+          segments.forEach((seg) => { seg.textContent = seg.dataset.full ?? ''; });
+        } else {
+          const io = new IntersectionObserver((entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                typeSegments();
+                obs.disconnect();
+              }
+            });
+          }, { threshold: 0.4 });
+          io.observe(quoteEl);
+        }
+      }
+
+      // Success metrics — when the block scrolls into view, bars grow and
+      // numbers count up. No-JS / reduced motion just shows the final state.
+      const metricsEl = document.querySelector<HTMLElement>('[data-metrics]');
+      if (metricsEl) {
+        const reducedMetrics = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const counters = Array.from(metricsEl.querySelectorAll<HTMLElement>('[data-count]'));
+        const run = () => {
+          metricsEl.classList.add('metrics-in');
+          counters.forEach((c) => {
+            const to = Number(c.dataset.count);
+            const start = performance.now();
+            const dur = 1200;
+            const tickCount = (now: number) => {
+              const t = Math.min(1, (now - start) / dur);
+              c.textContent = String(Math.round(to * (1 - Math.pow(1 - t, 3))));
+              if (t < 1) requestAnimationFrame(tickCount);
+            };
+            c.textContent = '0';
+            requestAnimationFrame(tickCount);
+          });
+        };
+        if (reducedMetrics || !('IntersectionObserver' in window)) {
+          metricsEl.classList.add('metrics-in');
+        } else {
+          const ioMetrics = new IntersectionObserver((entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                run();
+                obs.disconnect();
+              }
+            });
+          }, { threshold: 0.25 });
+          ioMetrics.observe(metricsEl);
+        }
+      }
+
+      // Before/after slider — the transparent range input sits over the
+      // frame, so mouse, touch, and keyboard all drive the same --pos value.
+      document.querySelectorAll<HTMLElement>('[data-compare]').forEach((el) => {
+        const range = el.querySelector<HTMLInputElement>('.compare-range');
+        if (!range) return;
+        const update = () => el.style.setProperty('--pos', `${range.value}%`);
+        range.addEventListener('input', update);
+        update();
+      });
+
+      // 3D photo carousel — continuous auto-rotate via rAF, with pointer
+      // drag to spin manually (resumes auto-rotating a moment after
+      // release). Reduced motion: render one static frame.
+      const stage = document.querySelector<HTMLElement>('[data-carousel]');
+      const ring = document.querySelector<HTMLElement>('[data-ring]');
+      if (stage && ring) {
+        const reducedCarousel = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let angle = 0;
+        let dragging = false;
+        let lastX = 0;
+        let velocity = 0;
+        let resumeAt = 0;
+        const AUTO_SPEED = 6; // deg/sec
+
+        const applyRing = () => {
+          ring.style.transform = `rotateY(${angle}deg)`;
+        };
+        applyRing();
+
+        if (!reducedCarousel) {
+          let last = performance.now();
+          const tick = (now: number) => {
+            const dt = (now - last) / 1000;
+            last = now;
+            if (dragging) {
+              // handled in pointermove
+            } else if (now < resumeAt) {
+              angle += velocity * dt;
+              velocity *= 0.94;
+            } else {
+              angle += AUTO_SPEED * dt;
+            }
+            applyRing();
+            requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+
+          stage.addEventListener('pointerdown', (e) => {
+            dragging = true;
+            lastX = e.clientX;
+            stage.setPointerCapture(e.pointerId);
+          });
+          stage.addEventListener('pointermove', (e) => {
+            if (!dragging) return;
+            const dx = e.clientX - lastX;
+            lastX = e.clientX;
+            const delta = dx * 0.3;
+            angle += delta;
+            velocity = delta * 6;
+            applyRing();
+          });
+          const releaseCarousel = () => {
+            if (!dragging) return;
+            dragging = false;
+            resumeAt = performance.now() + 900;
+          };
+          stage.addEventListener('pointerup', releaseCarousel);
+          stage.addEventListener('pointerleave', releaseCarousel);
+        }
+      }
+    </script>
+
+    <style>
+      :global(body) {
+        background: #ffffff;
+      }
+
+
+
+      .wrap {
+        max-width: 74rem;
+        margin-inline: auto;
+        padding-inline: clamp(1.25rem, 5vw, 3.5rem);
+      }
+
+      /* Nav ------------------------------------------------------------ */
+
+
+
+
+      .btn-pill {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.6em 1.4em;
+        text-decoration: none;
+        color: var(--ink);
+        background: transparent;
+        font-family: var(--font-body);
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn-pill-solid {
+        background: var(--ink);
+        color: var(--bg);
+      }
+
+      /* Hero banner ------------------------------------------------------- */
+      .hero-banner {
+        aspect-ratio: 6751 / 2520;
+        overflow: hidden;
+        background: #ffffff;
+      }
+
+      .hero-banner img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+      }
+
+      /* Marquee ----------------------------------------------------------- */
+      .marquee-section {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        min-height: clamp(380px, 48vw, 640px);
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+        overflow: hidden;
+        background: #ffffff;
+      }
+
+      .marquee-row {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .marquee-track {
+        display: inline-flex;
+        width: max-content;
+      }
+
+      .marquee-track span {
+        display: inline-block;
+        padding-inline: 1.5rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.4rem, 4.2vw, 2.6rem);
+        color: #00579d;
+        white-space: nowrap;
+      }
+
+      .marquee-track-left {
+        animation: marquee-left 32s linear infinite;
+      }
+
+      .marquee-track-right {
+        animation: marquee-right 32s linear infinite;
+      }
+
+      @keyframes marquee-left {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+
+      @keyframes marquee-right {
+        from { transform: translateX(-50%); }
+        to { transform: translateX(0); }
+      }
+
+      .marquee-laptop {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .laptop-frame {
+        width: clamp(260px, 32vw, 460px);
+        aspect-ratio: 1400 / 790;
+        border: 3px solid var(--ink);
+        border-radius: 0.75rem;
+        padding: 0;
+        background: #ffffff;
+        overflow: hidden;
+      }
+
+      .laptop-frame video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .laptop-base {
+        width: 106%;
+        height: 12px;
+        background: var(--ink);
+        border-radius: 0 0 8px 8px;
+        margin-top: -1px;
+        position: relative;
+      }
+
+      .laptop-base::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        width: 15%;
+        height: 4px;
+        background: #ffffff;
+        border-radius: 0 0 4px 4px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .marquee-track-left,
+        .marquee-track-right {
+          animation: none;
+        }
+      }
+
+      /* Head block -------------------------------------------------------- */
+      .head-block {
+        padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3rem);
+      }
+
+      .head-top {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        align-items: start;
+        margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .title {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(3rem, 9vw, 6rem);
+        letter-spacing: -0.01em;
+        line-height: 0.98;
+        color: var(--ink);
+        margin: 0;
+      }
+
+      .context-box {
+        background: transparent;
+        border-left: 3px solid var(--line-strong);
+        padding-left: 1.25rem;
+      }
+
+      .context-label {
+        margin: 0 0 0.35rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-faint);
+      }
+
+      .context-heading {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: 1.3rem;
+        color: var(--ink);
+      }
+
+      .context-box p:not(.context-label) {
+        margin: 0;
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+      }
+
+      @media (min-width: 800px) {
+        .head-top { grid-template-columns: auto 1fr; gap: 2.5rem; }
+      }
+
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+        gap: 1.5rem;
+        padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+        border-bottom: 1px solid var(--line);
+        margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .meta dt {
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        color: var(--ink-faint);
+        margin-bottom: 0.35rem;
+      }
+
+      .meta dd {
+        margin: 0;
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        color: var(--ink);
+      }
+
+      .meta dd span {
+        display: block;
+      }
+
+      .intro {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+        max-width: none;
+        text-align: justify;
+        text-align-last: left;
+        hyphens: auto;
+      }
+
+      .intro strong {
+        color: var(--ink);
+        font-weight: 700;
+      }
+
+      .pull-quote {
+        position: relative;
+        max-width: none;
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+        line-height: 1.4;
+        color: var(--ink-faint);
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+        text-align: center;
+      }
+
+      .pull-quote-highlight {
+        color: #00579d;
+        font-weight: 700;
+        box-shadow: inset 0 -0.35em 0 rgba(0, 87, 157, 0.14);
+      }
+
+      .pull-quote[data-typewriter]::after {
+        content: '';
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        margin-left: 2px;
+        background: currentColor;
+        vertical-align: text-bottom;
+        animation: pull-quote-blink 0.9s steps(1) infinite;
+      }
+
+      @keyframes pull-quote-blink {
+        50% { opacity: 0; }
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .pull-quote[data-typewriter]::after {
+          animation: none;
+        }
+      }
+
+      /* Location band ------------------------------------------------------- */
+      .stat-band {
+        background: #00579d;
+        color: #fdfbf9;
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .location-block {
+        text-align: center;
+        padding-inline: clamp(1.25rem, 5vw, 3.5rem);
+      }
+
+      .location-label {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #fdfbf9;
+      }
+
+      .location-name {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(2rem, 6vw, 3.5rem);
+        line-height: 1.1;
+        color: #fdfbf9;
+      }
+
+      /* 3D photo carousel ------------------------------------------------- */
+      .carousel-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: clamp(1.5rem, 4vw, 2.5rem);
+        margin-top: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .carousel-label {
+        margin: 0;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: rgba(253, 251, 249, 0.6);
+      }
+
+      .stage {
+        --radius: clamp(280px, 32vw, 460px);
+        position: relative;
+        width: 100%;
+        max-width: 1400px;
+        height: clamp(260px, 34vw, 460px);
+        perspective: 1600px;
+        touch-action: pan-y;
+        cursor: grab;
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%);
+      }
+
+      .stage:active {
+        cursor: grabbing;
+      }
+
+      .ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        transform-style: preserve-3d;
+        will-change: transform;
+      }
+
+      .card {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: clamp(150px, 15vw, 220px);
+        aspect-ratio: 4 / 5;
+        margin-top: calc(clamp(150px, 15vw, 220px) * 1.25 / -2);
+        margin-left: calc(clamp(150px, 15vw, 220px) / -2);
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+        backface-visibility: hidden;
+      }
+
+      .card img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Dark / white blocks ---------------------------------------------- */
+      .dark-block {
+        background: var(--ink);
+        color: var(--bg);
+        padding-block: clamp(3rem, 7vw, 5rem);
+      }
+
+      .white-block {
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+      }
+
+      .tint-blue { background: rgba(0, 87, 157, 0.06); }
+
+      .white-block h2,
+      .dark-block h2 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.9rem, 4vw, 2.8rem);
+        letter-spacing: -0.01em;
+        margin: 0 0 0.6rem;
+      }
+
+      .white-block h2 { color: var(--ink); }
+      .dark-block h2 { color: var(--bg); }
+
+      .white-block p,
+      .dark-block .wrap > p:not(.reflect-subhead) {
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        text-align: justify;
+        text-align-last: left;
+        hyphens: auto;
+      }
+
+      .white-block p { color: var(--ink-soft); }
+      .dark-block .wrap > p:not(.reflect-subhead) { color: rgba(253, 251, 249, 0.7); }
+
+      .white-block strong { color: var(--ink); font-weight: 700; }
+      .dark-block strong { color: var(--bg); font-weight: 700; }
+
+      .reflect-subhead {
+        margin: 1.5rem 0 0.75rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.8rem;
+        color: rgba(253, 251, 249, 0.5);
+      }
+
+      .findings-list {
+        margin: 1rem 0 0;
+        padding-left: 1.25rem;
+        max-width: none;
+      }
+
+      .findings-list li {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+        margin-bottom: 0.4rem;
+      }
+
+      .eyebrow-label {
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #00579d;
+        margin: 0 0 0.75rem;
+        font-size: 0.85rem;
+      }
+
+      /* Images ------------------------------------------------------------ */
+      .image-row-single {
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .image-row-single-wide {
+        max-width: 56rem;
+        margin-inline: auto;
+      }
+
+      .image-row-single img {
+        display: block;
+        width: 100%;
+        border: 1px solid var(--line);
+      }
+
+      /* Prototype videos --------------------------------------------------- */
+      .wide-video {
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+        margin-bottom: 1rem;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        aspect-ratio: 1400 / 790;
+        max-width: 56rem;
+        margin-inline: auto;
+      }
+
+      .wide-video video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Challenge + solution pairing ------------------------------------------ */
+      .solved-label {
+        margin: clamp(1.75rem, 4vw, 2.5rem) 0 0;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--ink-faint);
+      }
+
+      .dark-block .solved-label {
+        color: rgba(253, 251, 249, 0.5);
+      }
+
+      /* Solution pillars ---------------------------------------------------- */
+      .pillar-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .pillar-card {
+        border: 1px solid var(--line);
+        border-left: 3px solid #00579d;
+        padding: 1.25rem 1.5rem;
+      }
+
+      .pillar-name {
+        margin: 0 0 0.4rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--ink);
+      }
+
+      .pillar-text {
+        margin: 0;
+        max-width: none;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+      }
+
+      .dark-block .pillar-card {
+        border-color: rgba(253, 251, 249, 0.15);
+        border-left-color: #4d9fdb;
+      }
+
+      .dark-block .pillar-name {
+        color: var(--bg);
+      }
+
+      .dark-block .pillar-text {
+        color: rgba(253, 251, 249, 0.65);
+      }
+
+      @media (min-width: 700px) {
+        .pillar-grid { grid-template-columns: 1fr 1fr; }
+      }
+
+      /* Challenge cards --------------------------------------------------- */
+      .challenge-head {
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+        margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .challenge-head .quirky {
+        margin-top: -0.2rem;
+      }
+
+      .challenge-head h2 {
+        color: var(--bg);
+        margin: 0;
+      }
+
+      .quirky {
+        font-family: var(--font-quirky);
+        font-size: 1.2rem;
+        color: #00579d;
+        transform: rotate(-3deg);
+        display: inline-block;
+      }
+
+      .dark-block .quirky {
+        color: #4d9fdb;
+      }
+
+      .challenge-grid {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .challenge-card {
+        --tilt-x: 0deg;
+        --tilt-y: 0deg;
+        border: 1px solid rgba(253, 251, 249, 0.15);
+        border-left: 3px solid rgba(253, 251, 249, 0.15);
+        padding: 1.5rem;
+        background: rgba(253, 251, 249, 0.03);
+        transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+        transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s var(--ease-out);
+      }
+
+      .challenge-card p {
+        margin: 0.75rem 0 0;
+        max-width: none;
+        color: rgba(253, 251, 249, 0.45);
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      .challenge-num {
+        font-family: var(--font-body);
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: rgba(253, 251, 249, 0.35);
+      }
+
+      .challenge-card:hover,
+      .challenge-card:focus-visible {
+        background: rgba(253, 251, 249, 0.08);
+        border-color: rgba(253, 251, 249, 0.3);
+        border-left-color: #4d9fdb;
+      }
+
+      .challenge-card:hover .challenge-num,
+      .challenge-card:focus-visible .challenge-num { color: #4d9fdb; }
+
+      .challenge-card:hover p,
+      .challenge-card:focus-visible p {
+        color: var(--bg);
+        font-weight: 500;
+      }
+
+      @media (min-width: 700px) {
+        .challenge-grid-4 { grid-template-columns: repeat(3, 1fr); }
+      }
+
+      /* Up next / footer --------------------------------------------------- */
+      .up-next { padding-block: clamp(3rem, 7vw, 5rem); }
+
+      .up-next-row {
+        --tilt-x: 0deg;
+        --tilt-y: 0deg;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        text-decoration: none;
+      }
+
+      .up-next-row img {
+        width: 100px;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border: 1px solid var(--line);
+        transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+        transition: transform 0.3s var(--ease-out);
+      }
+
+      .up-next-row h2 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.6rem, 4vw, 2.2rem);
+        color: var(--ink);
+      }
+
+      .up-next-row p {
+        margin: 0.25rem 0 0;
+        color: var(--ink-faint);
+        font-size: 0.9rem;
+      }
+
+      .btn-outline {
+        margin-left: auto;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.5em 1.2em;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--ink);
+      }
+
+      /* Line chart ---------------------------------------------------------- */
+      .chart-card {
+        margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+        padding: clamp(1.25rem, 3vw, 2rem);
+        border: 1px solid rgba(253, 251, 249, 0.15);
+        max-width: 44rem;
+        margin-inline: auto;
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .chart-title {
+        margin: 0 0 1rem;
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        color: rgba(253, 251, 249, 0.6);
+        text-align: center;
+      }
+
+      .chart-svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .chart-gridline {
+        stroke: rgba(253, 251, 249, 0.12);
+        stroke-width: 1;
+      }
+
+      .chart-axis-label {
+        font-family: var(--font-body);
+        font-size: 11px;
+        fill: rgba(253, 251, 249, 0.45);
+      }
+
+      .chart-legend {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.25rem;
+        margin: 1rem 0 0;
+        padding: 0;
+      }
+
+      .chart-legend li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        color: rgba(253, 251, 249, 0.7);
+      }
+
+      .chart-swatch {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+      }
+
+      /* Before / after slider ------------------------------------------------- */
+      .compare {
+        margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+      }
+
+      .compare-frame {
+        position: relative;
+        aspect-ratio: 2880 / 1600;
+        overflow: hidden;
+        border-radius: 1.25rem;
+        border: 1px solid var(--line);
+        background: #0e1b2b;
+        user-select: none;
+      }
+
+      .compare-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+        pointer-events: none;
+      }
+
+      .compare-before {
+        clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+        filter: grayscale(0.7) brightness(0.93);
+      }
+
+      .compare-pill {
+        position: absolute;
+        top: 1rem;
+        z-index: 3;
+        font-family: var(--font-body);
+        font-weight: 800;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #fdfbf9;
+        padding: 0.65em 1.2em;
+        border-radius: 999px;
+        pointer-events: none;
+      }
+
+      .compare-pill-before { left: 1rem; background: #2f3238; }
+      .compare-pill-after { right: 1rem; background: #00579d; }
+
+      .compare-divider {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: var(--pos);
+        width: 2px;
+        margin-left: -1px;
+        background: #00579d;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .compare-handle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 44px;
+        height: 44px;
+        margin: -22px 0 0 -22px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 2px solid #00579d;
+        color: #101010;
+        font-size: 1.1rem;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      }
+
+      .compare-range {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        opacity: 0;
+        cursor: ew-resize;
+        z-index: 4;
+      }
+
+      .compare-frame:focus-within .compare-handle {
+        outline: 3px solid rgba(0, 87, 157, 0.4);
+        outline-offset: 2px;
+      }
+
+      .compare-caption {
+        margin: 0.9rem 0 0;
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        color: var(--ink-faint);
+      }
+
+
+
+
+      /* Stakeholder cards ------------------------------------------------------ */
+      .stakeholder-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .stakeholder-card {
+        border: 1px solid rgba(253, 251, 249, 0.15);
+        border-left: 3px solid #4d9fdb;
+        padding: 1.25rem 1.5rem;
+      }
+
+      .stakeholder-name {
+        margin: 0;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--bg);
+      }
+
+      .stakeholder-sub {
+        margin: 0.15rem 0 0;
+        max-width: none;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: rgba(253, 251, 249, 0.45);
+      }
+
+      .stakeholder-points {
+        margin: 0.6rem 0 0;
+        padding-left: 1.1rem;
+        max-width: none;
+      }
+
+      .stakeholder-points li {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: rgba(253, 251, 249, 0.65);
+        margin-bottom: 0.3rem;
+      }
+
+      .success-factors {
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+        padding: 1.25rem 1.5rem;
+        background: rgba(253, 251, 249, 0.05);
+      }
+
+      .success-factors-label {
+        margin: 0 0 0.6rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: #4d9fdb;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .success-factors-list {
+        margin: 0;
+        padding-left: 1.1rem;
+        max-width: none;
+      }
+
+      .success-factors-list li {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: rgba(253, 251, 249, 0.7);
+      }
+
+      @media (min-width: 700px) {
+        .stakeholder-grid { grid-template-columns: 1fr 1fr; }
+      }
+
+      /* Project plan: timeline / WBS / Gantt ----------------------------------- */
+      .plan-sublabel {
+        margin: clamp(2rem, 5vw, 3rem) 0 0.5rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #00579d;
+      }
+
+      .timeline-list {
+        list-style: none;
+        margin: 1rem 0 0;
+        padding: 0;
+        border-left: 2px solid var(--line);
+      }
+
+      .timeline-list li {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.5rem 1rem;
+        padding: 0.6rem 0 0.6rem 1.25rem;
+      }
+
+      .timeline-dot {
+        position: absolute;
+        left: -5px;
+        top: 1.1rem;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #00579d;
+      }
+
+      .timeline-label {
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: var(--ink);
+      }
+
+      .timeline-date {
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        color: var(--ink-faint);
+      }
+
+      .phase-tags {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1.25rem 0 0;
+        padding: 0;
+      }
+
+      .phase-tags li {
+        font-family: var(--font-body);
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--ink-soft);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.35em 0.85em;
+      }
+
+      .wbs-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .wbs-phase {
+        border: 1px solid var(--line);
+        padding: 1rem 1.25rem;
+      }
+
+      .wbs-phase-name {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: #00579d;
+      }
+
+      .wbs-branches {
+        margin: 0;
+        padding-left: 1.1rem;
+        max-width: none;
+      }
+
+      .wbs-branches li {
+        font-size: 0.85rem;
+        line-height: 1.5;
+        color: var(--ink-soft);
+      }
+
+      @media (min-width: 900px) {
+        .wbs-grid { grid-template-columns: repeat(5, 1fr); }
+      }
+
+      .gantt {
+        margin-top: 1rem;
+      }
+
+      .gantt-row {
+        display: grid;
+        grid-template-columns: 8.5rem 1fr;
+        grid-template-rows: auto auto;
+        align-items: center;
+        gap: 0.25rem 0.75rem;
+        padding: 0.6rem 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .gantt-row-name {
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        color: var(--ink);
+      }
+
+      .gantt-track {
+        position: relative;
+        height: 10px;
+        background: var(--bg-soft);
+        border-radius: 999px;
+      }
+
+      .gantt-bar {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        border-radius: 999px;
+      }
+
+      .gantt-row-dates {
+        grid-column: 2;
+        font-family: var(--font-body);
+        font-size: 0.7rem;
+        color: var(--ink-faint);
+      }
+
+      .gantt-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+        margin-top: 1.25rem;
+      }
+
+      .gantt-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        color: var(--ink-soft);
+      }
+
+      .gantt-swatch {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+      }
+
+      @media (min-width: 700px) {
+        .gantt-row { grid-template-columns: 10rem 1fr 6rem; grid-template-rows: auto; }
+        .gantt-row-dates { grid-column: 3; text-align: right; }
+      }
+
+      /* Risk table ---------------------------------------------------------- */
+      .risk-table-wrap {
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+        overflow-x: auto;
+      }
+
+      .risk-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+      }
+
+      .risk-table th {
+        text-align: left;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: rgba(253, 251, 249, 0.45);
+        padding: 0.5rem 0.75rem;
+        border-bottom: 1px solid rgba(253, 251, 249, 0.2);
+        white-space: nowrap;
+      }
+
+      .risk-table td {
+        vertical-align: top;
+        padding: 0.75rem;
+        border-bottom: 1px solid rgba(253, 251, 249, 0.1);
+        color: rgba(253, 251, 249, 0.7);
+      }
+
+      .risk-code {
+        font-weight: 700;
+        color: var(--bg);
+        white-space: nowrap;
+      }
+
+      .risk-name {
+        margin: 0 0 0.25rem;
+        font-weight: 700;
+        color: var(--bg);
+        max-width: none;
+      }
+
+      .risk-detail {
+        margin: 0;
+        max-width: none;
+        font-size: 0.8rem;
+        color: rgba(253, 251, 249, 0.55);
+      }
+
+      .risk-grade {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.6rem;
+        height: 1.6rem;
+        border-radius: 4px;
+        font-weight: 700;
+      }
+
+      .risk-grade-a { background: #e76f33; color: #1a0d05; }
+      .risk-grade-b { background: rgba(253, 251, 249, 0.15); color: var(--bg); }
+
+      .risk-mitigation {
+        margin: 0;
+        padding-left: 1rem;
+        max-width: none;
+      }
+
+      .risk-mitigation li {
+        font-size: 0.8rem;
+        line-height: 1.5;
+        color: rgba(253, 251, 249, 0.65);
+      }
+
+      /* Success metrics ------------------------------------------------------ */
+      .metrics-hero {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem 2.5rem;
+        align-items: center;
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+        padding: clamp(1.75rem, 4vw, 3rem);
+        background: #00579d;
+        border-radius: 1.25rem;
+        color: #fdfbf9;
+      }
+
+      .metrics-section .metrics-hero-num {
+        margin: 0;
+        max-width: none;
+        font-family: var(--font-display);
+        font-size: clamp(4.5rem, 16vw, 9rem);
+        line-height: 0.9;
+        color: #fdfbf9;
+      }
+
+      .metrics-section .metrics-hero-title {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-body);
+        font-weight: 800;
+        font-size: 1.25rem;
+        color: #fdfbf9;
+      }
+
+      .metrics-section .metrics-hero-text p:not(.metrics-hero-title) {
+        margin: 0;
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: rgba(253, 251, 249, 0.85);
+        text-align: left;
+      }
+
+      @media (min-width: 800px) {
+        .metrics-hero { grid-template-columns: auto 1fr; }
+      }
+
+      .metrics-section .metrics-sublabel {
+        margin: clamp(2rem, 5vw, 3rem) 0 0.75rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #00579d;
+      }
+
+      .roadmap {
+        list-style: none;
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin: 0;
+        padding: 0 0 0 1.5rem;
+        border-left: 2px solid var(--line);
+      }
+
+      .roadmap-step {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        outline: none;
+      }
+
+      .roadmap-dot {
+        position: absolute;
+        left: calc(-1.5rem - 7px);
+        top: 0.3rem;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 2px solid #00579d;
+        transition: background 0.25s ease, transform 0.25s ease;
+      }
+
+      .roadmap-when {
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--ink-faint);
+      }
+
+      .roadmap-label {
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--ink-soft);
+        transition: color 0.25s ease;
+      }
+
+      .roadmap-step:hover .roadmap-dot,
+      .roadmap-step:focus-visible .roadmap-dot {
+        background: #00579d;
+        transform: scale(1.35);
+      }
+
+      .roadmap-step:hover .roadmap-label,
+      .roadmap-step:focus-visible .roadmap-label {
+        color: var(--ink);
+      }
+
+      @media (min-width: 900px) {
+        .roadmap {
+          grid-template-columns: repeat(6, 1fr);
+          gap: 1rem;
+          padding: 1.75rem 0 0;
+          border-left: 0;
+          border-top: 2px solid var(--line);
+        }
+        .roadmap-dot {
+          left: 0;
+          top: -8px;
+        }
+      }
+
+      .metric-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .metric-card {
+        border: 1px solid var(--line);
+        border-radius: 1rem;
+        padding: 1.5rem;
+      }
+
+      .metrics-section .metric-name {
+        margin: 0 0 1rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--ink);
+      }
+
+      .metric-stage + .metric-stage {
+        margin-top: 1.1rem;
+      }
+
+      .metric-stage-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 0.4rem;
+      }
+
+      .metric-when {
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        color: var(--ink-faint);
+      }
+
+      .metric-value {
+        font-family: var(--font-display);
+        font-size: 1.6rem;
+        line-height: 1;
+        color: #00579d;
+      }
+
+      .metric-track {
+        position: relative;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--bg-soft);
+        overflow: hidden;
+      }
+
+      .metric-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: var(--w);
+        background: #00579d;
+        transform-origin: left center;
+        transform: scaleX(0);
+        transition: transform 1s var(--ease-out) 0.15s;
+      }
+
+      .metric-fill-range {
+        left: var(--l);
+        background: repeating-linear-gradient(135deg, rgba(0, 87, 157, 0.55) 0 4px, rgba(0, 87, 157, 0.25) 4px 8px);
+        transition-delay: 0.5s;
+      }
+
+      .metrics-in .metric-fill { transform: scaleX(1); }
+
+      .metric-card-tile {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .metrics-section .metric-big {
+        margin: 0 0 0.75rem;
+        max-width: none;
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 6vw, 3.5rem);
+        line-height: 1;
+        color: #00579d;
+      }
+
+      .metric-dots {
+        list-style: none;
+        display: flex;
+        gap: 0.5rem;
+        margin: 0 0 0.75rem;
+        padding: 0;
+      }
+
+      .metric-dots li {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #00579d;
+        transform: scale(0);
+        transition: transform 0.5s var(--ease-out);
+      }
+
+      .metrics-in .metric-dots li:nth-child(1) { transform: scale(1); transition-delay: 0.2s; }
+      .metrics-in .metric-dots li:nth-child(2) { transform: scale(1); transition-delay: 0.45s; }
+      .metrics-in .metric-dots li:nth-child(3) { transform: scale(1); transition-delay: 0.7s; }
+
+      .metrics-section .metric-note {
+        margin: 0.75rem 0 0;
+        max-width: none;
+        font-size: 0.85rem;
+        color: var(--ink-faint);
+        text-align: left;
+      }
+
+      @media (min-width: 800px) {
+        .metric-grid { grid-template-columns: 1fr 1fr; }
+      }
+
+      .indicator-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.7em 1.1em;
+        border-radius: 999px;
+        background: rgba(0, 87, 157, 0.08);
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--ink);
+      }
+
+      .indicator-pulse {
+        position: relative;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #00579d;
+      }
+
+      .indicator-pulse::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: #00579d;
+        animation: indicator-ping 1.8s ease-out infinite;
+      }
+
+      @keyframes indicator-ping {
+        from { transform: scale(1); opacity: 0.6; }
+        to { transform: scale(3); opacity: 0; }
+      }
+
+      .metrics-section .indicator-note {
+        margin: 0.9rem 0 0;
+        max-width: none;
+        font-size: 0.9rem;
+        color: var(--ink-faint);
+        text-align: left;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .metric-fill, .metric-dots li { transition: none; transform: none; }
+        .indicator-pulse::after { animation: none; }
+      }
+
+      /* Footer -------------------------------------------------------- */
+      .footer { text-align: center; }
+
+      .footer-heading {
+        color: var(--bg);
+        font-size: clamp(2.5rem, 7vw, 4.5rem);
+        font-family: var(--font-display);
+        font-weight: 400;
+      }
+
+      .footer-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1.5rem 0 2rem;
+      }
+
+      .footer .btn-pill { border-color: var(--bg); color: var(--bg); }
+      .footer .btn-pill-solid { background: var(--bg); color: var(--ink); }
+
+      .footer-social {
+        color: rgba(253, 251, 249, 0.7);
+        font-family: var(--font-body);
+        font-weight: 600;
+        text-decoration: none;
+      }
+    </style>
+  </body>
+</html>
