@@ -235,11 +235,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
         ))}
       </div>
     </div>
-
-    <a class="scroll-cue rise" style="--d: 620ms" href="#work">
-      <span>Scroll</span>
-      <span class="cue-rail" aria-hidden="true"><span class="cue-dot"></span></span>
-    </a>
   </section>
 
   <section id="work" class="work wrap">
@@ -608,50 +603,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   @keyframes hero-caret {
     50% { border-right-color: transparent; }
-  }
-
-  .scroll-cue {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-top: clamp(0.75rem, 2vw, 1.25rem);
-    margin-left: var(--gutter);
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: var(--step-micro);
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    text-decoration: none;
-    transition: color 0.3s var(--ease);
-  }
-
-  .scroll-cue:hover { color: var(--ink); }
-
-  .cue-rail {
-    position: relative;
-    width: 1px;
-    height: 20px;
-    background: var(--line-strong);
-    overflow: hidden;
-  }
-
-  .cue-dot {
-    position: absolute;
-    left: -1px;
-    top: 0;
-    width: 3px;
-    height: 12px;
-    border-radius: 2px;
-    background: var(--accent);
-    animation: cue 2.4s var(--ease) infinite;
-  }
-
-  @keyframes cue {
-    0% { transform: translateY(-6px); opacity: 0; }
-    35% { opacity: 1; }
-    100% { transform: translateY(20px); opacity: 0; }
   }
 
   @media (min-width: 900px) {
@@ -1215,7 +1166,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   @media (prefers-reduced-motion: reduce) {
     .rise { animation: none; }
-    .wave, .cue-dot { animation: none; }
+    .wave { animation: none; }
     /* No hop, just the lamp already resting where it lands, head
        bowed and spotlight lit. */
     .lamp-jump { animation: none; opacity: 1; transform: translate(-50%, 0); }
