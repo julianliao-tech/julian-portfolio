@@ -7,16 +7,14 @@ builder.
 
 ## Structure
 
-- `src/content/projects/*.md` — the five main case studies (Guide, Michigan
-  ChatGPT, SureCall, Timecapsule Tunes, Dominos). Each is one markdown file:
-  frontmatter for the metadata block (role, timeline, tools, etc.), body
-  copy for the case study itself. **To add a new project**, drop in a new
-  `.md` file here with an `order` after the existing ones — no code changes
-  needed, it shows up on the Home grid and in the prev/next chain
-  automatically.
-- `src/pages/` — Home, About, Photos, and the one-off Consulting Work page
-  (it doesn't follow the case-study template, so it isn't in the
-  collection).
+- `src/content/projects/*.md` — one markdown file per project. The frontmatter
+  (title, order, tile image, summary, role, tools) feeds the Home grid and the
+  prev/next order. Guide, Michigan ChatGPT, SureCall, connexU and E-LINK each
+  have their own hand-built page in `src/pages/work/`; the others render
+  through `src/pages/work/[slug].astro`.
+- `src/pages/` — Home, About, Photos, Travel, plus `work/` for the case-study
+  pages and the one-off Consulting Work page.
+- `src/components/` — the shared Nav, Footer and Lightbox.
 - `src/layouts/` — `BaseLayout` (nav + footer, used everywhere) and
   `ProjectLayout` (case-study header/metadata/prev-next, used by every
   project page).
@@ -28,8 +26,11 @@ builder.
   parallax) and `lightbox.js` (click-to-expand image viewer).
 - `tests/` — Node test-runner tests for those two scripts, against a small
   hand-rolled DOM stub. Run with `npm test`.
-- `public/images/` — every image from the original site, downloaded and
-  organized by page/project.
+- `public/images/` — every image and video the site uses, organized by
+  page/project (`home/`, `about/`, `guide/`, `michigan-chatgpt/`, `surecall/`,
+  `connexu/`, `elink/`, `photos/`, `photo-carousel/`, and so on). Raw source
+  files (screenshots, screen recordings, original photos) are not kept in the
+  repo.
 - `public/files/` — the two consulting-work PDFs.
 
 ## Running locally
