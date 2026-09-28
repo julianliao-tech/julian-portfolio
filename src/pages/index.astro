@@ -1195,6 +1195,24 @@ const pad = (n: number) => String(n).padStart(2, '0');
     to { opacity: 1; transform: none; }
   }
 
+  /* Phones only: the lamp bows all the way down and its light falls straight
+     onto the first card. Desktop keeps the angled beam above, unchanged. */
+  @media (max-width: 640px) {
+    .lamp-head { animation-name: lamp-look-down-straight; }
+
+    .lamp-spotlight {
+      /* The shade sits left of center when it points straight down. */
+      left: 40%;
+      top: 46%;
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes lamp-look-down-straight {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(180deg); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .rise { animation: none; }
     .wave, .cue-dot { animation: none; }
@@ -1208,6 +1226,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
       width: var(--code-ch-width);
       border-right-color: transparent;
     }
+  }
+
+  @media (prefers-reduced-motion: reduce) and (max-width: 640px) {
+    .lamp-head { transform: rotate(180deg); }
   }
 </style>
 
