@@ -443,15 +443,15 @@ const carouselAngleStep = 360 / carouselPhotos.length;
         width: fit-content;
         margin-top: 1.25rem;
         margin-inline: auto;
-        background: #ffffff;
-        color: #1d0065;
+        background: #1d0065;
+        color: #fdfbf9;
         border: 2px solid #1d0065;
         transition: background 0.25s ease, color 0.25s ease;
       }
 
       .cta-site-link:hover {
-        background: #1d0065;
-        color: #fdfbf9;
+        background: #ffffff;
+        color: #1d0065;
       }
 
       /* 3D photo carousel ------------------------------------------------- */
@@ -1076,6 +1076,13 @@ const carouselAngleStep = 360 / carouselPhotos.length;
 
       @media (min-width: 700px) {
         .challenge-grid-5 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+      }
+
+      /* Desktop: all five outcomes on one row. */
+      @media (min-width: 1000px) {
+        .challenge-grid-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.75rem; }
+        .challenge-grid-5 .challenge-card { padding: 1.15rem 1rem; }
+        .challenge-grid-5 .challenge-card p { font-size: 0.9rem; line-height: 1.5; overflow-wrap: anywhere; }
       }
 
       /* Up next / footer --------------------------------------------------- */
