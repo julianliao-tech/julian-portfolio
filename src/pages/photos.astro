@@ -181,24 +181,6 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
       </figure>
     ))}
   </section>
-
-  <footer class="film-footer">
-    <div class="ff-col ff-left">
-      <p class="ff-strong">Appreciate you dropping in!</p>
-      <p>Want to team up? Let's make it happen!</p>
-    </div>
-    <div class="ff-col ff-icons">
-      <a href="https://www.linkedin.com/in/julian-liao-475685239/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
-      </a>
-      <a href="mailto:julianliaowork@gmail.com" aria-label="Email Julian">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-      </a>
-    </div>
-    <div class="ff-col ff-right">
-      <a class="ff-mail" href="mailto:julianliaowork@gmail.com">julianliaowork@gmail.com</a>
-    </div>
-  </footer>
 </BaseLayout>
 
 <!-- Darkroom palette for this page only: every var the nav, footer and text
@@ -219,8 +201,8 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
     --line-strong: rgba(236, 226, 207, 0.28);
   }
   html { background: #0c0a08; color-scheme: dark; }
-  /* This page carries its own slim footer (see .film-footer), so hide the shared one. */
-  body > .footer { display: none; }
+  /* Keep the footer above the film overlays so the vignette and grain don't dim it. */
+  body .footer { z-index: 25; }
   body { background: transparent; }
 </style>
 
@@ -555,7 +537,7 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
   .sign {
     position: absolute;
     top: 0.4rem;
-    left: calc(100% + 0.75rem);
+    left: calc(100% + 5rem);
     width: 9.5rem;
     transform-origin: 50% 0;
     animation: sign-swing 4.8s ease-in-out infinite alternate;
@@ -733,40 +715,6 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
 
   @media (min-width: 1040px) {
     .photo-grid { column-count: 3; }
-  }
-
-  /* Slim footer: message, icons and email in three evenly spaced columns,
-     kept above the film overlays so the vignette and grain don't dim it. */
-  .film-footer {
-    position: relative;
-    z-index: 25;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    align-items: center;
-    padding-block: clamp(4rem, 9vw, 8rem);
-    color: #ffffff;
-  }
-
-  .ff-col {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-
-  .ff-left { flex-direction: column; gap: 0.15rem; }
-  .ff-left p { margin: 0; font-size: 0.95rem; line-height: 1.5; font-weight: 400; color: #ffffff; }
-  .ff-left .ff-strong { font-weight: 700; }
-
-  .ff-icons { gap: 1.1rem; }
-  .ff-icons a, .ff-mail { color: #ffffff; text-decoration: none; transition: color 0.25s var(--ease); }
-  .ff-icons a { display: grid; place-items: center; }
-  .ff-icons a:hover, .ff-mail:hover, .ff-icons a:focus-visible, .ff-mail:focus-visible { color: var(--accent-light); }
-
-  .ff-mail { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.005em; overflow-wrap: anywhere; }
-
-  @media (max-width: 760px) {
-    .film-footer { grid-template-columns: 1fr; gap: 1.75rem; padding-block: 4rem 5rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {

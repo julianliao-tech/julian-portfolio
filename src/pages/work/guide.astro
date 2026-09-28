@@ -22,6 +22,7 @@
 // ---------------------------------------------------------------------
 import '../../styles/global.css';
 import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
 import Lightbox from '../../components/Lightbox.astro';
 
 const base = import.meta.env.BASE_URL;
@@ -426,16 +427,7 @@ const nextProject = {
       </section>
     </div>
 
-    <footer class="dark-block footer">
-      <div class="wrap">
-        <h2 class="footer-heading">Let's Talk!</h2>
-        <div class="footer-actions">
-          <a class="btn-pill btn-pill-solid" href="mailto:julianliaowork@gmail.com">Hop on Call</a>
-          <button class="btn-pill" type="button" data-copy-email>Copy Email</button>
-        </div>
-        <a class="footer-social" href="https://www.linkedin.com/in/julian-liao-475685239/" target="_blank" rel="noreferrer">LinkedIn</a>
-      </div>
-    </footer>
+    <Footer />
 
     <Lightbox />
 
