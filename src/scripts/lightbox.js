@@ -98,6 +98,16 @@ function init() {
 
   const paint = (source) => {
     img.src = source.currentSrc || source.src;
+    // Grid images may be smaller stand-ins; swap in the full file once loaded.
+    const full = source.dataset.full;
+    img._paintedFor = source;
+    if (full && full !== img.src) {
+      const hi = new Image();
+      hi.onload = () => {
+        if (img._paintedFor === source) img.src = full;
+      };
+      hi.src = full;
+    }
     img.alt = source.alt || '';
     if (caption) caption.textContent = source.alt || '';
     if (counter) {

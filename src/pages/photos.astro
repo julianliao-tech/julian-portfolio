@@ -92,7 +92,7 @@ const stripA = stripSvg(['#38505a', '#5a4630', '#2f3f4a', '#5e4a3a']);
 const stripB = stripSvg(['#5a4a3a', '#33454f', '#5f3f33', '#2e3d46']);
 
 // Dust drifting up through the light.
-const motes = Array.from({ length: 18 }, (_, i) => ({
+const motes = Array.from({ length: 10 }, (_, i) => ({
   x: (i * 53 + 11) % 100,
   size: 2 + (i % 3),
   dur: 16 + ((i * 7) % 14),
@@ -108,6 +108,7 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
   <div class="film-vignette" aria-hidden="true"></div>
   <div class="film-leak" aria-hidden="true"></div>
   <div class="film-scratches" aria-hidden="true"></div>
+  <div class="film-flicker" aria-hidden="true"></div>
   <div class="film-grain" aria-hidden="true"></div>
   <div class="film-safelight" aria-hidden="true"></div>
   <div class="film-flash" aria-hidden="true"></div>
@@ -165,7 +166,10 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
     {photos.map((p, i) => (
       <figure class="frame" data-zoom-frame data-reveal data-reveal-delay={(i % 3) * 70}>
         <img
-          src={`${base}images/photos/${p.n}.webp`}
+          src={`${base}images/photos/grid/${p.n}-1280.webp`}
+          srcset={`${base}images/photos/grid/${p.n}-800.webp 800w, ${base}images/photos/grid/${p.n}-1280.webp 1280w`}
+          sizes="(min-width: 1040px) min(26rem, 33vw), (min-width: 640px) 50vw, 100vw"
+          data-full={`${base}images/photos/${p.n}.webp`}
           alt={p.alt}
           width={p.w}
           height={p.h}
@@ -202,7 +206,7 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
 
 <style>
   /* --- Film layers ------------------------------------------------- */
-  .film-vignette, .film-leak, .film-scratches, .film-grain, .film-safelight, .film-flash {
+  .film-vignette, .film-leak, .film-scratches, .film-flicker, .film-grain, .film-safelight, .film-flash {
     position: fixed;
     pointer-events: none;
   }
@@ -217,7 +221,6 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
   .film-leak {
     inset: 0;
     z-index: 22;
-    mix-blend-mode: screen;
     opacity: 0.32;
     background:
       radial-gradient(ellipse 38% 55% at 0% 30%, rgba(255, 96, 40, 0.75), transparent 70%),
@@ -241,20 +244,20 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
     animation: scratch 9s steps(1) infinite;
   }
   @keyframes scratch {
-    0%   { opacity: 0; background-position: 0 0; }
-    6%   { opacity: 0.55; background-position: 3vw 0; }
+    0%   { opacity: 0; transform: translateX(0); }
+    6%   { opacity: 0.55; transform: translateX(3vw); }
     8%   { opacity: 0; }
-    31%  { opacity: 0.45; background-position: -5vw 0; }
+    31%  { opacity: 0.45; transform: translateX(-5vw); }
     32.5% { opacity: 0; }
-    58%  { opacity: 0.5; background-position: 9vw 0; }
+    58%  { opacity: 0.5; transform: translateX(9vw); }
     59.5% { opacity: 0; }
-    83%  { opacity: 0.4; background-position: -2vw 0; }
+    83%  { opacity: 0.4; transform: translateX(-2vw); }
     84.5%, 100% { opacity: 0; }
   }
 
   /* Grain: noise tile, jittered in steps so it crawls like real film. */
   .film-grain {
-    inset: -50%;
+    inset: -6%;
     z-index: 24;
     opacity: 0.16;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .96 0 0 0 0 .9 1.7 0 0 0 -.45'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -264,23 +267,36 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
   }
   @keyframes grain {
     0%   { transform: translate(0, 0); }
-    16%  { transform: translate(-6%, -9%); }
-    33%  { transform: translate(7%, 4%); }
-    50%  { transform: translate(-4%, 8%); }
-    66%  { transform: translate(5%, -6%); }
-    83%  { transform: translate(-8%, 2%); }
+    20%  { transform: translate(-3%, -4%); }
+    40%  { transform: translate(3%, 2%); }
+    60%  { transform: translate(-2%, 3%); }
+    80%  { transform: translate(2%, -3%); }
   }
 
   /* A warm safelight that follows the cursor. */
   .film-safelight {
-    inset: 0;
+    left: 0;
+    top: 0;
+    width: 640px;
+    height: 640px;
+    margin: -320px 0 0 -320px;
     z-index: 20;
-    mix-blend-mode: screen;
     opacity: 0;
     transition: opacity 0.6s ease;
-    background: radial-gradient(circle 300px at var(--mx, 50%) var(--my, 40%), rgba(255, 140, 60, 0.2), transparent 70%);
+    background: radial-gradient(circle, rgba(255, 140, 60, 0.2), transparent 68%);
+    will-change: transform;
   }
   .film-safelight.is-on { opacity: 1; }
+
+  /* Projector flicker: a dark veil that dips in and out. Only its opacity
+     changes, which the browser handles without repainting the photos. */
+  .film-flicker {
+    inset: 0;
+    z-index: 24;
+    background: #000;
+    opacity: 0;
+    animation: projector 5.5s steps(1) infinite;
+  }
 
   /* Camera flash when a frame is opened. */
   .film-flash {
@@ -332,7 +348,6 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
     width: 520px;
     height: 520px;
     background: radial-gradient(circle, rgba(255, 45, 30, 0.42), rgba(255, 45, 30, 0.12) 40%, transparent 68%);
-    mix-blend-mode: screen;
     animation: red-pulse 3.4s ease-in-out infinite alternate;
   }
   @keyframes red-pulse {
@@ -474,7 +489,6 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
     margin-left: -230px;
     background: linear-gradient(to bottom, rgba(255, 224, 150, 0.28), rgba(255, 224, 150, 0));
     clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
-    mix-blend-mode: screen;
   }
 
   /* --- Page ------------------------------------------------------- */
@@ -511,6 +525,7 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
     line-height: 1;
     max-width: 14ch;
     margin: 0;
+    color: #ffffff;
     text-shadow: 0 0 40px rgba(233, 133, 58, 0.18);
   }
 
@@ -591,9 +606,11 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
     align-items: center;
     gap: 0.6rem;
     font-size: var(--step-small);
-    color: var(--ink-faint);
+    color: #ffffff;
     margin: 0;
   }
+
+  .photos-head .eyebrow { color: #ffffff; }
 
   .hint-key {
     display: grid;
@@ -612,16 +629,14 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
     padding-block: 0 var(--space-6);
     column-count: 1;
     column-gap: clamp(0.75rem, 2vw, 1.5rem);
-    animation: projector 5.5s steps(1) infinite;
   }
 
-  /* Faint projector flicker across the whole set. */
   @keyframes projector {
-    0%, 100% { opacity: 1; }
-    41% { opacity: 0.97; }
-    42% { opacity: 1; }
-    77% { opacity: 0.975; }
-    78% { opacity: 1; }
+    0%, 100% { opacity: 0; }
+    41% { opacity: 0.06; }
+    42% { opacity: 0; }
+    77% { opacity: 0.05; }
+    78% { opacity: 0; }
   }
 
   .frame {
@@ -632,28 +647,36 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
     overflow: hidden;
     background: #000;
     box-shadow: 0 0 0 1px var(--line), 0 24px 44px -22px rgba(0, 0, 0, 0.95);
-    transition: box-shadow 0.5s var(--ease);
   }
 
   .frame img {
+    display: block;
     width: 100%;
     height: auto;
-    transition: transform 1.2s var(--ease-out), filter 1.8s ease-out, opacity 0.6s var(--ease);
+    transition: transform 1.2s var(--ease-out);
   }
 
-  /* "Developing": a frame starts dark, sepia and soft, and comes up to the
-     photo as it scrolls into view. At rest the photo is untouched. */
-  html.js .frame:not(.is-in) img {
-    filter: brightness(0.2) sepia(1) contrast(1.3) blur(3px);
+  /* "Developing": a frame starts under a dark, warm veil that fades away as
+     it scrolls into view. Opacity only, so no image is re-filtered. */
+  .frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: #1c1209;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.6s ease-out;
   }
+  html.js .frame:not(.is-in)::before { opacity: 0.9; }
 
   .frame::after {
     content: '';
     position: absolute;
     inset: 0;
+    z-index: 2;
     box-shadow: inset 0 0 0 1px var(--line);
     pointer-events: none;
-    transition: box-shadow 0.4s var(--ease);
   }
 
   .frame:hover {
@@ -662,8 +685,6 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
 
   .frame:hover img {
     transform: scale(1.035);
-    filter: brightness(1.07) contrast(1.05);
-    transition: transform 1.2s var(--ease-out), filter 0.5s ease-out;
   }
 
   /* Frame number, printed like the edge markings on a roll. */
@@ -676,6 +697,7 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
     letter-spacing: 0.2em;
     color: #ff9a45;
     text-shadow: 0 0 8px rgba(255, 140, 50, 0.8);
+    z-index: 3;
     opacity: 0.55;
     transition: opacity 0.35s var(--ease);
   }
@@ -691,38 +713,39 @@ const motes = Array.from({ length: 18 }, (_, i) => ({
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .film-leak, .film-scratches, .film-grain, .edge-print, .photo-grid,
+    .film-leak, .film-scratches, .film-flicker, .film-grain, .edge-print,
     .red-glow, .strip, .print, .lamp, .mote, .sign, .board { animation: none; }
     .mote { display: none; }
     .film-scratches { display: none; }
-    html.js .frame:not(.is-in) img { filter: none; }
+    html.js .frame:not(.is-in)::before { opacity: 0; }
+    .film-flicker { display: none; }
   }
 </style>
 
 <script>
-  // Cursor safelight, scroll-driven sprocket holes, and a flash when a
-  // frame is opened. All cosmetic; the photos themselves are untouched.
+  // Cursor light and a flash when a frame is opened. Both are cosmetic and
+  // both only touch their own element, never the whole page.
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const root = document.documentElement;
+  const canHover = window.matchMedia('(hover: hover)').matches;
   const light = document.querySelector<HTMLElement>('.film-safelight');
   const flash = document.querySelector<HTMLElement>('.film-flash');
 
   if (!reduce) {
-    let raf = 0;
-    let mx = 0;
-    let my = 0;
-    window.addEventListener('pointermove', (e) => {
-      mx = e.clientX;
-      my = e.clientY;
-      light?.classList.add('is-on');
-      if (!raf) {
+    if (light && canHover) {
+      let raf = 0;
+      let mx = 0;
+      let my = 0;
+      window.addEventListener('pointermove', (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+        if (raf) return;
         raf = requestAnimationFrame(() => {
           raf = 0;
-          root.style.setProperty('--mx', `${mx}px`);
-          root.style.setProperty('--my', `${my}px`);
+          light.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
+          light.classList.add('is-on');
         });
-      }
-    });
+      }, { passive: true });
+    }
 
     document.addEventListener('click', (e) => {
       if (!(e.target as HTMLElement).closest?.('img[data-zoomable]') || !flash) return;
