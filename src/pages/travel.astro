@@ -415,6 +415,13 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
   .bl3 { right: 8%; top: 20%; }
 
   .block-frame { position: absolute; inset: 0; }
+
+  /* Bigger hit area than the 32px sprite, for fingers. */
+  .block::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+  }
   .block-b, .block-used { visibility: hidden; }
   .block:not(.is-used) .block-a { animation: flash-a 1s steps(1) infinite; }
   .block:not(.is-used) .block-b { animation: flash-b 1s steps(1) infinite; }
@@ -578,11 +585,16 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
     .bl2 { right: calc(var(--gutter) + var(--px) * 18); }
     .bl1 { right: calc(var(--gutter) + var(--px) * 36); }
 
+    /* Pinned to the screen, not the scene, so the note is always in view
+       however far down the page the dino and blocks are. */
     .popup {
+      position: fixed;
       left: 50% !important;
       top: auto !important;
-      bottom: calc(var(--ground) + 0.75rem);
-      margin-left: calc(min(22rem, 100% - 1.5rem) / -2);
+      bottom: 1rem;
+      z-index: 60;
+      width: min(22rem, calc(100vw - 1.5rem));
+      margin-left: calc(min(22rem, 100vw - 1.5rem) / -2);
     }
   }
 
@@ -792,6 +804,7 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
     let dragging = false;
     let moved = false;
     let last = { x: 0, y: 0, t: 0 };
+    let start = { x: 0, y: 0 };
     let hovered = -1;
     let size = 0;
     let dpr = 1;
@@ -1057,12 +1070,12 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
     }
 
     // Nearest visible marker within reach of a screen point, or -1.
-    function pick(clientX: number, clientY: number) {
+    function pick(clientX: number, clientY: number, reach = 14) {
       const rect = canvas!.getBoundingClientRect();
       const mx = ((clientX - rect.left) / rect.width) * size;
       const my = ((clientY - rect.top) / rect.height) * size;
       let hit = -1;
-      let best = 14;
+      let best = reach;
       places.forEach((p, i) => {
         if (visibility(p) <= 0) return;
         const pt = projection([p.lon, p.lat]);
@@ -1084,6 +1097,7 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
       moved = false;
       vx = vy = 0;
       last = { x: e.clientX, y: e.clientY, t: performance.now() };
+      start = { x: e.clientX, y: e.clientY };
       canvas.setPointerCapture(e.pointerId);
       canvas.classList.add('is-dragging');
     });
@@ -1092,7 +1106,8 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
       if (dragging) {
         const dx = e.clientX - last.x;
         const dy = e.clientY - last.y;
-        if (Math.abs(dx) + Math.abs(dy) > 2) moved = true;
+        // A finger always wobbles a little; only a real drag counts as one.
+        if (Math.hypot(e.clientX - start.x, e.clientY - start.y) > 10) moved = true;
         const k = degPerPx();
         lambda += dx * k;
         phi = Math.max(-90, Math.min(90, phi - dy * k));
@@ -1115,7 +1130,7 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
       dragging = false;
       canvas.classList.remove('is-dragging');
       if (!moved) {
-        hovered = pick(e.clientX, e.clientY);
+        hovered = pick(e.clientX, e.clientY, e.pointerType === 'touch' ? 28 : 14);
         dirty = true;
       }
       // A pause before release means no fling.
@@ -1124,7 +1139,10 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
     };
     canvas.addEventListener('pointerup', endDrag);
     canvas.addEventListener('pointercancel', endDrag);
-    canvas.addEventListener('pointerleave', () => {
+    canvas.addEventListener('pointerleave', (e) => {
+      // On touch the pointer "leaves" as soon as the finger lifts, which
+      // would clear the label that was just tapped.
+      if (e.pointerType === 'touch') return;
       if (!dragging && hovered !== -1) {
         hovered = -1;
         dirty = true;
