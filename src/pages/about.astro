@@ -2,226 +2,160 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL;
 
-// Each graphic already bakes in its own label, doodle and collage —
-// no card/border needed, just place them at the four corners around
-// the text, matching Julian's reference layout.
-const corners = {
-  tl: {
-    src: `${base}images/about/about-2.webp`,
-    alt: 'DJ/Music Production collage: Julian DJing outdoors on turntables, and producing music at a laptop and keyboard',
-  },
-  tr: {
+// The four interest collages already bake in their own label and doodles;
+// they are pinned to a corkboard with cartoon objects from each interest
+// stuck on beside them. The objects are original drawings.
+const collage = {
+  film: {
     src: `${base}images/about/about-1.webp`,
     alt: "Photography/Film Making collage: Julian at Michigan Stadium in a photo-crew vest, with film festival selection notices for his short 'The Letter'",
   },
-  bl: {
-    src: `${base}images/about/about-4.webp`,
-    alt: 'Furniture Design collage: a handmade wooden stool with a woven cord seat, plus a close-up of the weave pattern',
+  dj: {
+    src: `${base}images/about/about-2.webp`,
+    alt: 'DJ/Music Production collage: Julian DJing outdoors on turntables, and producing music at a laptop and keyboard',
   },
-  br: {
+  sport: {
     src: `${base}images/about/about-3.webp`,
     alt: 'Sports collage: Julian playing baseball, basketball, and soccer, with his Michigan Squash team and a sectional-champion award',
   },
+  wood: {
+    src: `${base}images/about/about-4.webp`,
+    alt: 'Furniture Design collage: a handmade wooden stool with a woven cord seat, plus a close-up of the weave pattern',
+  },
 };
----
+
+const copy = [
+  'I\'m Julian, a student at the <strong>University</strong> of <strong>Michigan</strong> studying UX Design with a double minor in Digital Studies and Business at the Ross School of Business.',
+  'Growing up, I spent my summers bringing my ambitious ideas to life at a short film camp with my friends; writing, shooting, and editing stories that turned imagination into reality.',
+  'Over the years, I\'ve been creative through sports, street photography, music production and furniture design.',
+  'While studying in the library as a freshman in college, I stumbled across a flyer advertising a UX Design opportunity. Being my curious self I looked into it and the craft immediately clicked with me.',
+  'UX Design blends my creative instincts with a structured, thoughtful process I genuinely enjoy. Today, I design digital experiences that are intuitive, accessible, and meaningful; driven by the same passion that first had me holding a camera and chasing a story.',
+];
+
+// Cartoon objects (original SVG drawings, thick outlines, flat colors)
+const K = '#1a1a1a';
+const O = `stroke="${K}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"`;
+const svg = (inner: string) => `<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">${inner}</svg>`;
+
+const objects: Record<string, string> = {
+  record: svg(`<circle cx="50" cy="50" r="46" fill="${K}"/><circle cx="50" cy="50" r="37" fill="none" stroke="#3a3a3a" stroke-width="2"/><circle cx="50" cy="50" r="29" fill="none" stroke="#3a3a3a" stroke-width="2"/><circle cx="50" cy="50" r="18" fill="#1a73e8" ${O}/><circle cx="50" cy="50" r="3.5" fill="#fff"/><path d="M20 30a36 36 0 0 1 22-15" stroke="#fff" stroke-opacity=".55" stroke-width="4" fill="none" stroke-linecap="round"/>`),
+  headphones: svg(`<path d="M18 64V50a32 32 0 0 1 64 0v14" fill="none" stroke="${K}" stroke-width="10" stroke-linecap="round"/><path d="M18 64V50a32 32 0 0 1 64 0v14" fill="none" stroke="#1a73e8" stroke-width="4" stroke-linecap="round"/><rect x="8" y="58" width="22" height="32" rx="9" fill="#1a73e8" ${O}/><rect x="70" y="58" width="22" height="32" rx="9" fill="#1a73e8" ${O}/><path d="M14 66v12" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round"/>`),
+  camera: svg(`<path d="M36 32l6-13h16l6 13z" fill="#9aa0a8" ${O}/><rect x="72" y="20" width="14" height="10" rx="2" fill="#f1e6c8" ${O}/><rect x="16" y="22" width="12" height="9" rx="3" fill="#d6453d" ${O}/><rect x="6" y="30" width="88" height="58" rx="11" fill="#2b2b2e" ${O}/><path d="M6 46V41a11 11 0 0 1 11-11h66a11 11 0 0 1 11 11v5z" fill="#0fc6b0" ${O}/><circle cx="50" cy="62" r="21" fill="#14161b" ${O}/><circle cx="50" cy="62" r="13" fill="#27406a" ${O}/><circle cx="50" cy="62" r="5" fill="#0b0d12"/><circle cx="44" cy="55" r="3.5" fill="#fff" opacity=".8"/>`),
+  clapper: svg(`<rect x="10" y="40" width="80" height="50" rx="4" fill="#2b2b2e" ${O}/><path d="M18 56h44M18 68h30" stroke="#fff" stroke-width="4" stroke-linecap="round"/><rect x="18" y="76" width="16" height="6" rx="2" fill="#0fc6b0"/><g transform="rotate(-14 10 40)"><rect x="10" y="22" width="80" height="17" rx="3" fill="#fff" ${O}/><path d="M24 22l-8 17M42 22l-8 17M60 22l-8 17M78 22l-8 17" stroke="${K}" stroke-width="7"/></g>`),
+  stool: svg(`<path d="M30 58v30M70 58v30" stroke="#e8d2a6" stroke-width="9" stroke-linecap="round"/><path d="M30 58v30M70 58v30" stroke="${K}" stroke-width="2" stroke-linecap="round" fill="none" opacity="0"/><path d="M16 60v28M84 60v28" stroke="${K}" stroke-width="13" stroke-linecap="round"/><path d="M16 60v28M84 60v28" stroke="#f0dcb0" stroke-width="7" stroke-linecap="round"/><path d="M10 46L22 32H78L90 46V58H10z" fill="#d9b878" ${O}/><path d="M10 46H90" stroke="${K}" stroke-width="3"/><path d="M26 34l-8 12M38 34l-8 12M50 34l-8 12M62 34l-8 12M74 34l-8 12M84 38l-6 8" stroke="#b98f4e" stroke-width="3"/><path d="M18 52h64" stroke="#b98f4e" stroke-width="3"/>`),
+  baseball: svg(`<circle cx="50" cy="50" r="44" fill="#fff" ${O}/><path d="M26 18c14 14 14 50 0 64" fill="none" stroke="#d63a3a" stroke-width="3.5" stroke-dasharray="5 5" stroke-linecap="round"/><path d="M74 18c-14 14-14 50 0 64" fill="none" stroke="#d63a3a" stroke-width="3.5" stroke-dasharray="5 5" stroke-linecap="round"/>`),
+  basketball: svg(`<circle cx="50" cy="50" r="44" fill="#f28c28" ${O}/><path d="M6 50h88M50 6v88" stroke="${K}" stroke-width="3.5" fill="none"/><path d="M20 16c24 18 24 50 0 68M80 16c-24 18-24 50 0 68" stroke="${K}" stroke-width="3.5" fill="none"/>`),
+  soccer: svg(`<defs><clipPath id="sc"><circle cx="50" cy="50" r="44"/></clipPath></defs><circle cx="50" cy="50" r="44" fill="#fff" ${O}/><g clip-path="url(#sc)" fill="${K}" stroke="${K}" stroke-width="2.5" stroke-linejoin="round"><polygon points="50,36 63,45 58,60 42,60 37,45"/><polygon points="50,2 60,8 56,18 44,18 40,8"/><polygon points="98,38 100,52 90,58 82,50 86,40"/><polygon points="2,38 14,40 18,50 10,58 0,52"/><polygon points="24,96 28,84 40,82 46,92 36,100"/><polygon points="76,96 64,100 54,92 60,82 72,84"/></g><path d="M50 36V18M63 45l19 5M58 60l10 16M42 60L32 76M37 45L18 50" stroke="${K}" stroke-width="3" fill="none" stroke-linecap="round"/>`),
+};---
 <BaseLayout
   title="About — Julian Liao"
   description="Julian Liao is a UX design student at the University of Michigan."
 >
-  <section class="wrap about-head">
-    <h1>A bit about me</h1>
-  </section>
-
-  <section class="wrap about-body">
-    <div class="about-layout" data-zoom-group>
-      <figure class="shot shot-tl" data-reveal data-reveal-delay="0">
-        <img
-          class="reveal-zoom"
-          data-zoom-frame
-          src={corners.tl.src}
-          alt={corners.tl.alt}
-          width="2500"
-          height="1932"
-          loading="lazy"
-          decoding="async"
-          data-zoomable
-        />
+  <section class="wrap about-wrap">
+    <div class="board" data-zoom-group>
+      <figure class="pin pin-film" data-reveal>
+        <img data-zoom-frame src={collage.film.src} alt={collage.film.alt} width="2500" height="1932" loading="lazy" decoding="async" data-zoomable />
+        <span class="obj sticker o-camera" set:html={objects.camera} />
+        <span class="obj sticker o-clapper" set:html={objects.clapper} />
       </figure>
 
-      <figure class="shot shot-tr" data-reveal data-reveal-delay="60">
-        <img
-          class="reveal-zoom"
-          data-zoom-frame
-          src={corners.tr.src}
-          alt={corners.tr.alt}
-          width="2500"
-          height="1932"
-          loading="lazy"
-          decoding="async"
-          data-zoomable
-        />
+      <figure class="pin pin-dj" data-reveal data-reveal-delay="60">
+        <img data-zoom-frame src={collage.dj.src} alt={collage.dj.alt} width="2500" height="1932" loading="lazy" decoding="async" data-zoomable />
+        <span class="obj sticker o-record" set:html={objects.record} />
+        <span class="obj sticker o-headphones" set:html={objects.headphones} />
       </figure>
 
-      <div class="about-copy">
-        <p data-reveal>
-          I'm Julian, a student at the <strong>University</strong> of <strong>Michigan</strong> studying UX
-          Design with a double minor in Digital Studies and Business at the Ross School of Business.
-        </p>
-        <p data-reveal>
-          Growing up, I spent my summers bringing my ambitious ideas to life at a short film camp with my
-          friends; writing, shooting, and editing stories that turned imagination into reality.
-        </p>
-        <p data-reveal>
-          Over the years, I've been creative through sports, street photography, music production and
-          furniture design.
-        </p>
-        <p data-reveal>
-          While studying in the library as a freshman in college, I stumbled across a flyer advertising a
-          UX Design opportunity. Being my curious self I looked into it and the craft immediately clicked
-          with me.
-        </p>
-        <p data-reveal>
-          UX Design blends my creative instincts with a structured, thoughtful process I genuinely enjoy.
-          Today, I design digital experiences that are intuitive, accessible, and meaningful; driven by the
-          same passion that first had me holding a camera and chasing a story.
-        </p>
-      </div>
+      <article class="card" data-reveal data-reveal-delay="30">
+        <h1>A bit about me</h1>
+        {copy.map((t) => <p set:html={t} />)}
+      </article>
 
-      <figure class="shot shot-bl" data-reveal data-reveal-delay="60">
-        <img
-          class="reveal-zoom"
-          data-zoom-frame
-          src={corners.bl.src}
-          alt={corners.bl.alt}
-          width="2500"
-          height="1932"
-          loading="lazy"
-          decoding="async"
-          data-zoomable
-        />
+      <figure class="pin pin-wood" data-reveal data-reveal-delay="60">
+        <img data-zoom-frame src={collage.wood.src} alt={collage.wood.alt} width="2500" height="1932" loading="lazy" decoding="async" data-zoomable />
+        <span class="obj sticker o-stool" set:html={objects.stool} />
       </figure>
 
-      <figure class="shot shot-br" data-reveal data-reveal-delay="0">
-        <img
-          class="reveal-zoom"
-          data-zoom-frame
-          src={corners.br.src}
-          alt={corners.br.alt}
-          width="2500"
-          height="1932"
-          loading="lazy"
-          decoding="async"
-          data-zoomable
-        />
+      <figure class="pin pin-sport" data-reveal>
+        <img data-zoom-frame src={collage.sport.src} alt={collage.sport.alt} width="2500" height="1932" loading="lazy" decoding="async" data-zoomable />
+        <span class="obj sticker o-basket" set:html={objects.basketball} />
+        <span class="obj sticker o-soccer" set:html={objects.soccer} />
+        <span class="obj sticker o-base" set:html={objects.baseball} />
       </figure>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .about-head {
-    padding-block: clamp(3.5rem, 9vw, 7rem) clamp(2rem, 5vw, 3.5rem);
-  }
+  .about-wrap { padding-block: clamp(2rem, 5vw, 4rem) clamp(3rem, 8vw, 6rem); }
 
-  .about-head h1 {
-    font-size: var(--step-display);
-    line-height: 1;
-    margin: 0;
-  }
+  /* Cartoon objects */
+  .obj { display: block; }
+  .obj :global(svg) { display: block; width: 100%; height: auto; overflow: visible; }
+  .sticker { filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 8px 8px rgba(0, 0, 0, 0.28)); }
+  @keyframes bob { 50% { transform: translateY(-8px) rotate(var(--r, 0deg)); } }
 
-  .about-body {
-    padding-bottom: clamp(3rem, 8vw, 6rem);
-    /* Wider than the site's default --max-width so the four corner
-       graphics have room to sit outside the text column. */
-    max-width: 100rem;
-  }
-
-  /* Mobile-first: the two top shots side by side, then the text, then
-     the two bottom shots side by side. The four-corner arrangement
-     only kicks in once there's room for real margins either side of
-     the text — see the min-width query below. */
-  .about-layout {
+  /* Pinboard ------------------------------------------------------------ */
+  .board {
+    position: relative;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      'tl tr'
-      'text text'
-      'bl br';
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-areas: 'film card dj' 'wood card sport';
+    gap: clamp(1.5rem, 3vw, 2.5rem);
     align-items: center;
-    gap: clamp(1.5rem, 5vw, 3rem);
+    padding: clamp(1.5rem, 4vw, 3rem);
+    background:
+      radial-gradient(circle at 20% 30%, rgba(120, 78, 36, 0.35) 0 2px, transparent 3px) 0 0 / 22px 22px,
+      radial-gradient(circle at 70% 70%, rgba(255, 220, 160, 0.3) 0 2px, transparent 3px) 0 0 / 30px 30px,
+      #c99a5e;
+    border: 14px solid #7a4e2a;
+    border-radius: 12px;
+    box-shadow: inset 0 0 40px rgba(60, 30, 5, 0.35), 0 24px 50px -28px rgba(0, 0, 0, 0.55);
+  }
+  .pin { position: relative; margin: 0; }
+  .pin img { display: block; width: 100%; height: auto; filter: drop-shadow(0 12px 14px rgba(40, 20, 0, 0.35)); }
+  .pin::before { content: ''; position: absolute; z-index: 3; top: -6px; left: 50%; width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ff8a80, #d63a3a 70%); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); transform: translateX(-50%); }
+  .pin-film { grid-area: film; transform: rotate(-3deg); }
+  .pin-dj { grid-area: dj; transform: rotate(2.5deg); }
+  .pin-wood { grid-area: wood; transform: rotate(2deg); }
+  .pin-sport { grid-area: sport; transform: rotate(-2.5deg); }
+  .pin-dj::before { background: radial-gradient(circle at 35% 30%, #8ab4ff, #1a73e8 70%); }
+  .pin-wood::before { background: radial-gradient(circle at 35% 30%, #ffd98a, #f4a11d 70%); }
+  .pin-sport::before { background: radial-gradient(circle at 35% 30%, #8ee6b0, #1fa055 70%); }
+
+  .board .card {
+    grid-area: card;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background: #fffdf6;
+    background-image: repeating-linear-gradient(transparent 0 27px, rgba(80, 120, 200, 0.18) 27px 28px);
+    border-radius: 4px;
+    box-shadow: 0 16px 30px -14px rgba(40, 20, 0, 0.5);
+    transform: rotate(-0.8deg);
+    color: #1a1a1a;
+  }
+  .board .card h1 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.05; margin: 0 0 0.8rem; color: #1a1a1a; }
+  .board .card p { margin: 0 0 0.8rem; font-size: 0.98rem; line-height: 1.75; color: #2a2a2a; max-width: none; text-wrap: wrap; }
+
+  .pin .obj { position: absolute; z-index: 2; width: clamp(3rem, 6vw, 5rem); animation: bob 4s ease-in-out infinite; }
+  .o-camera { left: -1.2rem; bottom: -1.2rem; --r: -8deg; transform: rotate(-8deg); }
+  .o-clapper { right: -0.6rem; top: 28%; --r: 10deg; transform: rotate(10deg); animation-delay: -1.5s !important; width: clamp(2.6rem, 5vw, 4.2rem) !important; }
+  .o-record { right: -1rem; bottom: -1.2rem; }
+  .o-headphones { left: -1.4rem; top: 30%; --r: -6deg; transform: rotate(-6deg); animation-delay: -2s !important; }
+  .o-stool { right: -1rem; bottom: -1rem; width: clamp(3.4rem, 7vw, 5.6rem) !important; }
+  .o-basket { left: -1.4rem; top: 32%; }
+  .o-soccer { right: -0.8rem; bottom: -1rem; animation-delay: -1s !important; }
+  .o-base { right: 22%; top: -1.4rem; width: clamp(2.2rem, 4vw, 3.4rem) !important; animation-delay: -2.4s !important; }
+
+  @media (max-width: 860px) {
+    .board { grid-template-columns: 1fr 1fr; grid-template-areas: 'card card' 'film dj' 'wood sport'; }
   }
 
-  .shot-tl { grid-area: tl; }
-  .shot-tr { grid-area: tr; }
-  .shot-bl { grid-area: bl; }
-  .shot-br { grid-area: br; }
-
-  .about-copy {
-    grid-area: text;
-    max-width: 42rem;
-    margin-inline: auto;
-    border-top: 1px solid var(--line);
-    padding-top: clamp(1.5rem, 4vw, 2.5rem);
+  /* Phones: one collage per row so their labels and stickers stay readable. */
+  @media (max-width: 520px) {
+    .board { grid-template-columns: 1fr; grid-template-areas: 'card' 'film' 'dj' 'wood' 'sport'; gap: 2rem; }
+    .pin .obj { width: 3.2rem !important; }
   }
 
-  .about-copy p {
-    font-size: clamp(1.05rem, 1.6vw, 1.35rem);
-    line-height: 1.55;
-    max-width: none;
-    margin-bottom: var(--space-3);
-  }
-
-  /* The opening line carries the weight. */
-  .about-copy p:first-child {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: clamp(1.35rem, 2.6vw, 2.1rem);
-    line-height: 1.28;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-    margin-bottom: var(--space-4);
-  }
-
-  /* Each graphic already contains its own label, doodle and collage
-     on a transparent ground — no card, border or crop, just sized
-     down and dropped into place. */
-  .shot {
-    margin: 0;
-  }
-
-  .shot img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  /* Four true corners flanking the text, vertically centered against
-     it, once there's enough width to hold them. */
-  @media (min-width: 1300px) {
-    .about-layout {
-      grid-template-columns: minmax(12rem, 19rem) minmax(0, 42rem) minmax(12rem, 19rem);
-      grid-template-areas:
-        'tl text tr'
-        'bl text br';
-      justify-content: center;
-    }
-
-    .about-copy {
-      margin-inline: 0;
-    }
-
-    /* Images fill their column (width: 100%), so only the vertical
-       placement matters here: top pair hugs the top edge, bottom
-       pair hugs the bottom edge, leaving open space toward the text
-       at vertical center — matching the reference layout. */
-    .shot-tl,
-    .shot-tr {
-      align-self: start;
-    }
-
-    .shot-bl,
-    .shot-br {
-      align-self: end;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    .pin .obj { animation: none; }
   }
 </style>
