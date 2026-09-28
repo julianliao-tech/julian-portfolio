@@ -6,7 +6,7 @@ timeline: "Summer 2026"
 team: "In-house at connexU"
 tools: ["Google Docs", "Google Sheets"]
 skills: ["Heuristic Evaluation", "Usability Testing", "Information Architecture", "Client Work"]
-tileImage: "/julian-portfolio/images/home/tile-connexu.png"
+tileImage: "/images/home/tile-connexu.png"
 tileAlt: "connexU homepage on a laptop, reading 'Where Business Leaders Grow', on a purple background with the connexU wordmark"
 summary: "An end-to-end rebuild of a B2B events marketplace site in Sydney"
 ---
@@ -15,7 +15,7 @@ summary: "An end-to-end rebuild of a B2B events marketplace site in Sydney"
 
 connexU is a Sydney-based B2B events company that runs marketplace-style conferences (Retail Tech Marketplace, Ecommerce Marketplace, Retail Property Marketplace, and others), connecting senior decision-makers with vendors through curated 1-to-1 meetings. I worked in-house at connexU over the summer of 2026, redesigning [connexu.com.au](https://connexu.com.au/) end to end — the site today is a complete rebuild, not a refresh of the old one. I signed an NDA covering the engagement, so this write-up sticks to research findings and outcomes rather than design-system or interface specifics.
 
-![connexU brand card: the connexU logo on a dark purple gradient, with the tagline "B2B Events for Senior Decision-Makers"](/julian-portfolio/images/connexu/01-brand-card.png)
+![connexU brand card: the connexU logo on a dark purple gradient, with the tagline "B2B Events for Senior Decision-Makers"](/images/connexu/01-brand-card.png)
 
 ## The Research
 

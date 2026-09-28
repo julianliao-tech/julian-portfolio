@@ -6,7 +6,7 @@ timeline: "Aug – Dec 2025"
 team: "Solo project"
 tools: ["Figma", "FigJam"]
 skills: ["Wireframing", "Prototyping", "Design Systems", "Interaction Design", "User Research"]
-tileImage: "/julian-portfolio/images/home/tile-michigan-chatgpt.webp"
+tileImage: "/images/home/tile-michigan-chatgpt.webp"
 tileAlt: "Michigan ChatGPT redesigned homepage with tool cards"
 summary: "Redesigning U-M's AI workspace into one clear, trusted homepage"
 ---
@@ -17,7 +17,7 @@ summary: "Redesigning U-M's AI workspace into one clear, trusted homepage"
 
 Michigan ChatGPT is the University of Michigan's AI workspace: a collection of tools like U-M GPT, Maizey, Go Blue, and GPT Toolkit designed to help students, faculty, and staff find information, generate content, and access campus support. It is the first University to implement LLM tools curated just to their community. However, despite the power of the underlying models, the platform's interface has fallen behind. The original Michigan ChatGPT homepage felt outdated, visually cluttered, and inconsistent with modern design patterns, making it difficult for users to immediately understand where to go or what each tool offered.
 
-![Michigan ChatGPT redesigned interface, an overview of the AI workspace](/julian-portfolio/images/michigan-chatgpt/01.webp)
+![Michigan ChatGPT redesigned interface, an overview of the AI workspace](/images/michigan-chatgpt/01.webp)
 
 ### Project Vision
 
@@ -77,7 +77,7 @@ I began with an audit of the existing Michigan ChatGPT experience to identify ar
 
 Three UX principles that shaped the redesign, and how each was applied:
 
-![Three design-principle cards: Jakob's Law (familiarity), Hick's Law (decision simplification), and the Aesthetic-Usability Effect, each with how it was applied to the redesign](/julian-portfolio/images/michigan-chatgpt/02.webp)
+![Three design-principle cards: Jakob's Law (familiarity), Hick's Law (decision simplification), and the Aesthetic-Usability Effect, each with how it was applied to the redesign](/images/michigan-chatgpt/02.webp)
 
 ### Low Fidelity Prototypes
 
@@ -92,11 +92,11 @@ Initial wireframes explored hero layouts, card structures, and sidebar navigatio
     <p>The filled landing page presents all core MichiganGPT tools in a clear, structured layout that reduces cognitive load and eliminates guesswork for first-time users. By emphasizing a strong hero section and four primary action cards, users can immediately understand what the platform offers and where to begin. This approach establishes clarity, trust, and a consistent visual hierarchy across the experience.</p>
   </div>
   <div class="split-media">
-    <img src="/julian-portfolio/images/michigan-chatgpt/03.webp" alt="Michigan ChatGPT filled landing page with hero section and tool cards" />
+    <img src="/images/michigan-chatgpt/03.webp" alt="Michigan ChatGPT filled landing page with hero section and tool cards" />
   </div>
 </div>
 
-![Michigan ChatGPT landing page detail view](/julian-portfolio/images/michigan-chatgpt/04.webp)
+![Michigan ChatGPT landing page detail view](/images/michigan-chatgpt/04.webp)
 
 ### Accessible Sidebar
 
@@ -105,11 +105,11 @@ Initial wireframes explored hero layouts, card structures, and sidebar navigatio
     <p>The redesigned sidebar organizes tools, resources, and support into intuitive categories, making navigation predictable and easy to scan. Larger tap targets, readable labels, and consistent iconography improve accessibility for users browsing quickly or on smaller screens. The result is a simpler, more reliable method for returning users to access what they need without friction.</p>
   </div>
   <div class="split-media">
-    <img src="/julian-portfolio/images/michigan-chatgpt/05.webp" alt="Michigan ChatGPT accessible sidebar navigation" />
+    <img src="/images/michigan-chatgpt/05.webp" alt="Michigan ChatGPT accessible sidebar navigation" />
   </div>
 </div>
 
-![Michigan ChatGPT sidebar detail view](/julian-portfolio/images/michigan-chatgpt/06.webp)
+![Michigan ChatGPT sidebar detail view](/images/michigan-chatgpt/06.webp)
 
 ### Curated Responses
 
@@ -118,27 +118,27 @@ Initial wireframes explored hero layouts, card structures, and sidebar navigatio
     <p>Curated responses offer high-quality, context-aware guidance built specifically for academic, research, and campus-related tasks. This feature increases trust by helping users get more accurate and relevant answers without needing to refine prompts repeatedly. It also supports new AI users who may be unsure how to phrase questions effectively.</p>
   </div>
   <div class="split-media">
-    <img src="/julian-portfolio/images/michigan-chatgpt/07.webp" alt="Michigan ChatGPT curated response screen" />
+    <img src="/images/michigan-chatgpt/07.webp" alt="Michigan ChatGPT curated response screen" />
   </div>
 </div>
 
-![Michigan ChatGPT curated response detail view](/julian-portfolio/images/michigan-chatgpt/08.webp)
+![Michigan ChatGPT curated response detail view](/images/michigan-chatgpt/08.webp)
 
 ### Translation Mode
 
 Translation Mode introduces multilingual support, ensuring that international students and multilingual community members can access MichiganGPT in the language they understand best. This reduces barriers to information and enhances equity across the platform. It also helps users communicate more confidently, especially when navigating academic or administrative tasks.
 
-![Michigan ChatGPT translation mode screen](/julian-portfolio/images/michigan-chatgpt/09.webp)
+![Michigan ChatGPT translation mode screen](/images/michigan-chatgpt/09.webp)
 
-![Michigan ChatGPT translation mode detail view](/julian-portfolio/images/michigan-chatgpt/10.webp)
+![Michigan ChatGPT translation mode detail view](/images/michigan-chatgpt/10.webp)
 
 ### Audio Feedback
 
 Audio Feedback enhances accessibility by allowing users to hear responses, interface confirmations, and key actions without relying entirely on visual cues. This is particularly helpful for users with visual impairments or those multitasking while using the platform. By providing an alternative mode of interaction, the system becomes more inclusive and flexible for diverse user needs.
 
-![Michigan ChatGPT audio feedback screen](/julian-portfolio/images/michigan-chatgpt/11.webp)
+![Michigan ChatGPT audio feedback screen](/images/michigan-chatgpt/11.webp)
 
-![Michigan ChatGPT audio feedback detail view](/julian-portfolio/images/michigan-chatgpt/12.webp)
+![Michigan ChatGPT audio feedback detail view](/images/michigan-chatgpt/12.webp)
 
 ## Reflection & Next Steps
 

@@ -6,7 +6,7 @@ timeline: "8 weeks"
 team: "1 PM, 1 Back End Engineer, 1 Designer"
 tools: ["Figma", "Slack", "FigJam", "Python", "Spotipy (API)"]
 skills: ["Wireframing", "Prototyping", "Design Systems", "Interaction Design", "Information Architecture"]
-tileImage: "/julian-portfolio/images/home/tile-timecapsule-tunes.webp"
+tileImage: "/images/home/tile-timecapsule-tunes.webp"
 tileAlt: "Timecapsule Tunes app screen showing music-based group discovery"
 summary: "Matching people into friend groups through shared music taste"
 draft: true
@@ -18,7 +18,7 @@ draft: true
 
 Time Capsule Tunes is a social app that connects users based on shared music tastes. In addition to group creation and chatting, the app uses Spotify's API to recommend music, helping spark conversation and new friendships. As this was my first project within the industry, our goal was to build a fun, lightweight space where users can meet others with similar tastes and discover new music through conversation.
 
-![Timecapsule Tunes app screens introducing music-based group discovery](/julian-portfolio/images/timecapsule-tunes/01.webp)
+![Timecapsule Tunes app screens introducing music-based group discovery](/images/timecapsule-tunes/01.webp)
 
 ### Project Vision
 
@@ -51,9 +51,9 @@ To better understand how we could fill gaps in the current market for social mus
 
 Upon analyzing our research, we developed two user personas expressing their goals, frustrations and pain points.
 
-![User persona: Samantha Lee, 21, Music Major at the University of Michigan, with her bio, goals, frustrations, and pain points](/julian-portfolio/images/timecapsule-tunes/02.webp)
+![User persona: Samantha Lee, 21, Music Major at the University of Michigan, with her bio, goals, frustrations, and pain points](/images/timecapsule-tunes/02.webp)
 
-![User persona: Morgan Thompson, 20, Communications Major at the University of Michigan, with her bio, goals, frustrations, and pain points](/julian-portfolio/images/timecapsule-tunes/03.webp)
+![User persona: Morgan Thompson, 20, Communications Major at the University of Michigan, with her bio, goals, frustrations, and pain points](/images/timecapsule-tunes/03.webp)
 
 After compiling the interview data and key insights, we were better able to comprehend the desires and needs of students when it came to their music taste. It became evident what the 2 most aching pain points were in need of handling:
 
@@ -63,13 +63,13 @@ After compiling the interview data and key insights, we were better able to comp
 
 Upon our efforts thus far, we concluded what we wanted some of our key features to be and mapped out the initial information architecture of how our platform was going to be structured.
 
-![Information architecture / page flow for the Timecapsule Tunes app](/julian-portfolio/images/timecapsule-tunes/05.webp)
+![Information architecture / page flow for the Timecapsule Tunes app](/images/timecapsule-tunes/05.webp)
 
 ### Low Fidelity Prototypes
 
 Given the results from our conducted interviews, I sketched out low fidelity concepts to help explore user flow, potential screens, and features to better address the concerns and specific needs of fellow passionate music enthusiasts.
 
-![Low- and mid-fidelity wireframes for the Timecapsule Tunes app](/julian-portfolio/images/timecapsule-tunes/04.webp)
+![Low- and mid-fidelity wireframes for the Timecapsule Tunes app](/images/timecapsule-tunes/04.webp)
 
 ## Iterations
 
@@ -81,9 +81,9 @@ After completing the low fidelity prototypes, we moved on to mid fidelity design
 
 For the homepage, we faced challenges in determining what content we wanted to display exactly. We decided on recommending music based on what you have been listening to and a discover groups preview as well.
 
-![Draft explorations for the Timecapsule Tunes home page](/julian-portfolio/images/timecapsule-tunes/06.webp)
+![Draft explorations for the Timecapsule Tunes home page](/images/timecapsule-tunes/06.webp)
 
-![Three iteration options for the Timecapsule Tunes home page](/julian-portfolio/images/timecapsule-tunes/07.webp)
+![Three iteration options for the Timecapsule Tunes home page](/images/timecapsule-tunes/07.webp)
 
 In the end, I chose to go with Option 3 because it offers the most balanced approach between clarity, structure, and visual hierarchy. While Option 1 felt overwhelming and Option 2 lacked depth, Option 3 successfully organizes information in a way that feels both intuitive and visually digestible. The use of dropdowns, consistent spacing, and Spotify icons enhances usability without cluttering the screen. Including a group preview section also adds context and encourages user engagement. Overall, this version best supports quick navigation while still delivering a polished, engaging experience.
 
@@ -91,7 +91,7 @@ In the end, I chose to go with Option 3 because it offers the most balanced appr
 
 On the My Groups page, we encountered challenges in determining the optimal layout and deciding which features to implement to ensure the best possible user experience.
 
-![Iteration options for the My Groups page](/julian-portfolio/images/timecapsule-tunes/08.webp)
+![Iteration options for the My Groups page](/images/timecapsule-tunes/08.webp)
 
 In the end, I chose Option 2 for its improved structure, visual clarity, and enhanced user support. Compared to the more basic and unengaging layout of Option 1, this version introduces a search bar and organized filter/sort features that streamline the user's ability to manage and locate groups. The colorful, rounded group containers not only create a more compelling visual hierarchy but also improve scannability. By combining function with creativity, Option 2 delivers a more polished and intuitive experience while still maintaining access to all user groups.
 
@@ -108,9 +108,9 @@ In this iteration, users are given the opportunity to:
 - Provide space for "curation and conversation"
 - Have all genres included, with any playlist able to be made
 
-![Timecapsule Tunes final screens on a phone, showing group discovery](/julian-portfolio/images/timecapsule-tunes/09.webp)
+![Timecapsule Tunes final screens on a phone, showing group discovery](/images/timecapsule-tunes/09.webp)
 
-![Timecapsule Tunes final screens on a phone, showing a group's music feed](/julian-portfolio/images/timecapsule-tunes/10.webp)
+![Timecapsule Tunes final screens on a phone, showing a group's music feed](/images/timecapsule-tunes/10.webp)
 
 ### Solved Challenges
 
@@ -120,7 +120,7 @@ Second, to foster engagement and recognize user activity, we implemented a badge
 
 ### Final Prototype
 
-![Final high-fidelity prototype screens for the Timecapsule Tunes app](/julian-portfolio/images/timecapsule-tunes/11.webp)
+![Final high-fidelity prototype screens for the Timecapsule Tunes app](/images/timecapsule-tunes/11.webp)
 
 ## Development
 

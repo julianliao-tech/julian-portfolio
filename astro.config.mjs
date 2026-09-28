@@ -1,9 +1,8 @@
 import { defineConfig } from 'astro/config';
 
-// GitHub Pages project-site config. If you later move this to a custom
-// domain (e.g. julianliao.net), change `site` to the domain and delete
-// `base` — see README.md.
+// Custom-domain config. Previously a GitHub Pages project-site path
+// (base: '/julian-portfolio/'); now served at the domain's root via
+// public/CNAME. See README.md.
 export default defineConfig({
-  site: 'https://julianliao-tech.github.io',
-  base: '/julian-portfolio/',
+  site: 'https://julianliao.net',
 });
