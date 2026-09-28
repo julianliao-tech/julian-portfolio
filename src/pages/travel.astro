@@ -290,7 +290,7 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
     </div>
 
   <section class="travel wrap">
-    <h1 class="travel-title eyebrow">Travel</h1>
+    <h1 class="sr-only">Travel</h1>
 
     <div class="globe-stage">
       <div class="globe-holder">
@@ -625,18 +625,6 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
   }
 
   .travel > * { pointer-events: auto; }
-
-  .travel-title {
-    align-self: flex-start;
-    margin: 0;
-    font-family: 'Press Start 2P', var(--font-mono);
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-    color: #ffffff;
-    text-shadow: 3px 3px 0 #000;
-  }
-
-  .travel-title::before { background: #ffffff; }
 
   .globe-stage {
     flex: 1 1 auto;
