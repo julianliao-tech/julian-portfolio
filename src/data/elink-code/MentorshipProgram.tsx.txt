@@ -1,0 +1,180 @@
+import { Link } from "react-router";
+import { ArrowLeft, BookOpen, Video, FileText, Calendar } from "lucide-react";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+
+export function MentorshipProgram() {
+  const mentors = [
+    {
+      id: 1,
+      name: "David Chen",
+      role: "Senior Consultant @ Bain & Company",
+      specialty: "Case Interview Prep",
+      sessions: 24,
+      imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150",
+      documents: ["Case Framework Guide", "Market Sizing Examples", "Behavioral Questions"],
+    },
+    {
+      id: 2,
+      name: "Emma Thompson",
+      role: "VP @ J.P. Morgan",
+      specialty: "Finance Interviews",
+      sessions: 18,
+      imageUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150",
+      documents: ["Valuation Methods", "M&A Process Overview", "Technical Q&A"],
+    },
+    {
+      id: 3,
+      name: "Lucas Silva",
+      role: "Product Manager @ Meta",
+      specialty: "Tech Interviews",
+      sessions: 31,
+      imageUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150",
+      documents: ["Product Case Studies", "PM Interview Framework", "Metrics Deep-Dive"],
+    },
+  ];
+
+  const upcomingWorkshops = [
+    {
+      id: 1,
+      title: "Investment Banking Interview Bootcamp",
+      mentor: "Emma Thompson",
+      date: "May 5, 2026",
+      time: "18:00 - 20:00 CET",
+      spots: 8,
+    },
+    {
+      id: 2,
+      title: "Consulting Case Practice Session",
+      mentor: "David Chen",
+      date: "May 8, 2026",
+      time: "19:00 - 21:00 CET",
+      spots: 12,
+    },
+    {
+      id: 3,
+      title: "Tech PM Interview Masterclass",
+      mentor: "Lucas Silva",
+      date: "May 12, 2026",
+      time: "17:30 - 19:30 CET",
+      spots: 5,
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      <div className="max-w-7xl mx-auto p-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <Link to="/">
+            <Button variant="ghost" className="mb-6 hover:bg-[#0B1E3D]/10">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Button>
+          </Link>
+          <h1 className="text-5xl font-bold text-[#0B1E3D] mb-4">Alumni Mentorship Program</h1>
+          <p className="text-gray-600 text-lg">Learn from experienced alumni through documents and workshops</p>
+        </div>
+
+        {/* Navigation */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-10 max-w-4xl mx-auto border border-gray-200">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Link to="/elink/group-chats" className="w-full">
+              <Button variant="outline" className="w-full border-[#0B1E3D] text-[#0B1E3D] hover:bg-[#0B1E3D]/10">Group Chats</Button>
+            </Link>
+            <Link to="/elink/alumni-database" className="w-full">
+              <Button variant="outline" className="w-full border-[#0B1E3D] text-[#0B1E3D] hover:bg-[#0B1E3D]/10">Alumni Database</Button>
+            </Link>
+            <Link to="/elink/mentorship" className="w-full">
+              <Button className="w-full bg-[#0B1E3D] hover:bg-[#0a1929] text-white">Mentorship Program</Button>
+            </Link>
+            <Link to="/elink/dinners" className="w-full">
+              <Button variant="outline" className="w-full border-[#0B1E3D] text-[#0B1E3D] hover:bg-[#0B1E3D]/10">Recruiter Dinners</Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Mentors Section */}
+        <div className="mb-12">
+          <h2 className="text-3xl font-bold text-[#0B1E3D] mb-6 text-center">Available Mentors</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {mentors.map((mentor) => (
+              <Card key={mentor.id} className="hover:shadow-xl transition-all hover:-translate-y-1 border-gray-200">
+                <CardHeader>
+                  <div className="flex items-center gap-4 mb-2">
+                    <img
+                      src={mentor.imageUrl}
+                      alt={mentor.name}
+                      className="w-16 h-16 rounded-full object-cover"
+                    />
+                    <div>
+                      <CardTitle className="text-lg">{mentor.name}</CardTitle>
+                      <CardDescription className="text-sm">{mentor.role}</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="mb-4">
+                    <p className="text-sm font-medium text-gray-700 mb-2">Specialty</p>
+                    <p className="text-sm text-gray-600">{mentor.specialty}</p>
+                  </div>
+                  <div className="mb-4">
+                    <p className="text-sm font-medium text-gray-700 mb-2">Interview Prep Documents</p>
+                    <div className="space-y-1">
+                      {mentor.documents.map((doc, idx) => (
+                        <div key={idx} className="flex items-center gap-2 text-sm text-gray-600">
+                          <FileText className="w-4 h-4 text-[#0B1E3D]" />
+                          <span>{doc}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="text-xs text-gray-500 mb-4">
+                    {mentor.sessions} students mentored
+                  </div>
+                  <Button className="w-full bg-[#0B1E3D] hover:bg-[#0a1929] text-white">
+                    <BookOpen className="w-4 h-4 mr-2" />
+                    View Documents
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Upcoming Workshops */}
+        <div>
+          <h2 className="text-3xl font-bold text-[#0B1E3D] mb-6 text-center">Upcoming One-on-One Workshops</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {upcomingWorkshops.map((workshop) => (
+              <Card key={workshop.id} className="hover:shadow-xl transition-all hover:-translate-y-1 border-gray-200">
+                <CardHeader>
+                  <CardTitle className="text-lg">{workshop.title}</CardTitle>
+                  <CardDescription>Led by {workshop.mentor}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3 mb-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <Calendar className="w-4 h-4" />
+                      <span>{workshop.date}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <Video className="w-4 h-4" />
+                      <span>{workshop.time}</span>
+                    </div>
+                    <div className="text-sm">
+                      <span className={`font-medium ${workshop.spots <= 5 ? 'text-orange-600' : 'text-[#0B1E3D]'}`}>
+                        {workshop.spots} spots remaining
+                      </span>
+                    </div>
+                  </div>
+                  <Button className="w-full bg-[#0B1E3D] hover:bg-[#0a1929] text-white">Register Now</Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

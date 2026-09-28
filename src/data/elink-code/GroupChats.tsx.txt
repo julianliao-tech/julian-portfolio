@@ -1,0 +1,129 @@
+import { Link } from "react-router";
+import { ArrowLeft, MessageCircle, Users, Search } from "lucide-react";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+
+export function GroupChats() {
+  const groupChats = [
+    {
+      id: 1,
+      name: "Finance & Banking Professionals",
+      members: 234,
+      description: "Connect with alumni and recruiters in finance and banking sectors",
+      activeNow: 12,
+    },
+    {
+      id: 2,
+      name: "Tech & Innovation",
+      members: 189,
+      description: "Network with professionals in technology, startups, and innovation",
+      activeNow: 8,
+    },
+    {
+      id: 3,
+      name: "Consulting Network",
+      members: 156,
+      description: "Join consultants and consulting recruiters for career opportunities",
+      activeNow: 15,
+    },
+    {
+      id: 4,
+      name: "Marketing & Brand Management",
+      members: 142,
+      description: "Connect with marketing professionals and brand managers",
+      activeNow: 6,
+    },
+    {
+      id: 5,
+      name: "Entrepreneurship Hub",
+      members: 98,
+      description: "Network with founders, entrepreneurs, and venture capitalists",
+      activeNow: 4,
+    },
+    {
+      id: 6,
+      name: "Luxury & Retail",
+      members: 87,
+      description: "Connect with professionals in luxury goods and retail sectors",
+      activeNow: 3,
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      <div className="max-w-7xl mx-auto p-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <Link to="/">
+            <Button variant="ghost" className="mb-6 hover:bg-[#0B1E3D]/10">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Button>
+          </Link>
+          <h1 className="text-5xl font-bold text-[#0B1E3D] mb-4">E-Link Professional Network</h1>
+          <p className="text-gray-600 text-lg">Connect with recruiters and alumni in large group chats</p>
+        </div>
+
+        {/* Navigation */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-10 max-w-4xl mx-auto border border-gray-200">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Link to="/elink/group-chats" className="w-full">
+              <Button className="w-full bg-[#0B1E3D] hover:bg-[#0a1929] text-white">Group Chats</Button>
+            </Link>
+            <Link to="/elink/alumni-database" className="w-full">
+              <Button variant="outline" className="w-full border-[#0B1E3D] text-[#0B1E3D] hover:bg-[#0B1E3D]/10">Alumni Database</Button>
+            </Link>
+            <Link to="/elink/mentorship" className="w-full">
+              <Button variant="outline" className="w-full border-[#0B1E3D] text-[#0B1E3D] hover:bg-[#0B1E3D]/10">Mentorship Program</Button>
+            </Link>
+            <Link to="/elink/dinners" className="w-full">
+              <Button variant="outline" className="w-full border-[#0B1E3D] text-[#0B1E3D] hover:bg-[#0B1E3D]/10">Recruiter Dinners</Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Search */}
+        <div className="mb-8 max-w-2xl mx-auto">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#0B1E3D] w-5 h-5" />
+            <Input
+              type="text"
+              placeholder="Search group chats by industry or interest..."
+              className="pl-12 h-12 border-2 border-gray-200 focus:border-[#0B1E3D] rounded-xl"
+            />
+          </div>
+        </div>
+
+        {/* Group Chats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          {groupChats.map((chat) => (
+            <div key={chat.id} className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-200">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-14 h-14 rounded-2xl bg-[#0B1E3D] flex items-center justify-center shadow-lg">
+                    <MessageCircle className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg text-gray-900">{chat.name}</h3>
+                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <Users className="w-4 h-4" />
+                      <span>{chat.members} members</span>
+                    </div>
+                  </div>
+                </div>
+                {chat.activeNow > 0 && (
+                  <div className="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                    {chat.activeNow} active
+                  </div>
+                )}
+              </div>
+              <p className="text-gray-600 text-sm mb-4">{chat.description}</p>
+              <Button className="w-full bg-[#0B1E3D] hover:bg-[#0a1929] text-white">Join Chat</Button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

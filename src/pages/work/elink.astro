@@ -37,6 +37,11 @@
 import '../../styles/global.css';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
+import { Code } from 'astro:components';
+import alumniCode from '../../data/elink-code/AlumniDatabase.tsx.txt?raw';
+import groupChatsCode from '../../data/elink-code/GroupChats.tsx.txt?raw';
+import mentorshipCode from '../../data/elink-code/MentorshipProgram.tsx.txt?raw';
+import dinnersCode from '../../data/elink-code/RecruiterDinners.tsx.txt?raw';
 
 const base = import.meta.env.BASE_URL;
 const pageTitle = 'E-LINK — Julian Liao';
@@ -44,6 +49,15 @@ const pageDescription = 'A business case and PM plan to close Esade\'s internshi
 const ogImage = new URL(`${base}images/home/profile-illustration.webp`, Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const img = (n: string) => `${base}images/elink/${n}`;
+
+// The four prototype pages, each with its screen recording and the React
+// component behind it (the real source files, stored as text in src/data).
+const codePages = [
+  { key: 'alumni', name: 'Alumni Database', file: 'AlumniDatabase.tsx', video: 'alumni-network.mp4', code: alumniCode },
+  { key: 'groups', name: 'Groupchats', file: 'GroupChats.tsx', video: 'pro-network.mp4', code: groupChatsCode },
+  { key: 'mentor', name: 'Mentorship Program', file: 'MentorshipProgram.tsx', video: 'mentorship-program.mp4', code: mentorshipCode },
+  { key: 'dinners', name: 'Recruiter Dinners', file: 'RecruiterDinners.tsx', video: 'dinners.mp4', code: dinnersCode },
+].map((p) => ({ ...p, lines: p.code.trimEnd().split('\n').length }));
 
 const meta = [
   { label: 'Timeline', value: 'Feb – May 2026' },
@@ -437,6 +451,62 @@ const nextProject = {
       </section>
     ))}
 
+    <section class="white-block codex">
+      <div class="wrap">
+        <span class="quirky">Behind the Prototype</span>
+        <h2>The Code, Page by Page</h2>
+        <p>Each page of the prototype next to the React component behind it. Pick a page to watch it run and read its code. E-LINK was a proposal, not a shipped product, so the people and companies in the prototype are sample data.</p>
+
+        <div class="codex-widget" data-codex>
+          <div class="codex-tabs" role="tablist" aria-label="E-LINK prototype pages">
+            {codePages.map((cp, i) => (
+              <button
+                class="codex-tab"
+                role="tab"
+                type="button"
+                id={`codex-tab-${cp.key}`}
+                aria-controls={`codex-panel-${cp.key}`}
+                aria-selected={i === 0 ? 'true' : 'false'}
+                tabindex={i === 0 ? 0 : -1}
+                data-key={cp.key}
+                data-video={img(cp.video)}
+                data-name={cp.name}
+                data-file={cp.file}
+                data-lines={cp.lines}
+              >
+                {cp.name}
+              </button>
+            ))}
+          </div>
+
+          <div class="codex-body">
+            <div class="codex-stage">
+              <div class="codex-frame-bar" aria-hidden="true">
+                <span class="codex-dot codex-dot-1"></span><span class="codex-dot codex-dot-2"></span><span class="codex-dot codex-dot-3"></span>
+                <span class="codex-frame-title" data-codex-name>{codePages[0].name}</span>
+              </div>
+              <video src={img(codePages[0].video)} autoplay muted loop playsinline aria-label="Screen recording of the selected E-LINK prototype page" data-codex-video></video>
+            </div>
+
+            <div class="codex-code">
+              <div class="codex-code-inner">
+                <div class="codex-code-head">
+                  <span class="codex-file" data-codex-file>{codePages[0].file}</span>
+                  <span class="codex-meta" data-codex-meta>{codePages[0].lines} lines</span>
+                  <button class="codex-copy" type="button" data-codex-copy>Copy</button>
+                </div>
+                {codePages.map((cp, i) => (
+                  <div class="codex-panel" role="tabpanel" id={`codex-panel-${cp.key}`} aria-labelledby={`codex-tab-${cp.key}`} hidden={i !== 0} data-key={cp.key}>
+                    <Code code={cp.code} lang="tsx" theme="github-dark-default" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="dark-block">
       <div class="wrap">
         <h2>Stakeholder Analysis</h2>
@@ -657,6 +727,59 @@ const nextProject = {
     </section>
 
     <Footer />
+
+    <script>
+      // Code section: tabs (click and arrow keys), the video swap and copy button.
+      document.querySelectorAll<HTMLElement>('[data-codex]').forEach((widget) => {
+        const tabs = Array.from(widget.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+        const panels = Array.from(widget.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+        const video = widget.querySelector<HTMLVideoElement>('[data-codex-video]');
+        const nameEl = widget.querySelector<HTMLElement>('[data-codex-name]');
+        const fileEl = widget.querySelector<HTMLElement>('[data-codex-file]');
+        const metaEl = widget.querySelector<HTMLElement>('[data-codex-meta]');
+        const copy = widget.querySelector<HTMLButtonElement>('[data-codex-copy]');
+
+        const select = (tab: HTMLButtonElement, focus = false) => {
+          tabs.forEach((t) => {
+            const on = t === tab;
+            t.setAttribute('aria-selected', String(on));
+            t.tabIndex = on ? 0 : -1;
+          });
+          panels.forEach((p) => (p.hidden = p.dataset.key !== tab.dataset.key));
+          if (nameEl) nameEl.textContent = tab.dataset.name ?? '';
+          if (fileEl) fileEl.textContent = tab.dataset.file ?? '';
+          if (metaEl) metaEl.textContent = `${tab.dataset.lines} lines`;
+          if (video && tab.dataset.video) {
+            video.src = tab.dataset.video;
+            video.play().catch(() => {});
+          }
+          if (focus) tab.focus();
+        };
+
+        tabs.forEach((tab, i) => {
+          tab.addEventListener('click', () => select(tab));
+          tab.addEventListener('keydown', (e) => {
+            if (!['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return;
+            e.preventDefault();
+            const dir = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : -1;
+            const next = e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : (i + dir + tabs.length) % tabs.length;
+            select(tabs[next], true);
+          });
+        });
+
+        copy?.addEventListener('click', async () => {
+          const text = panels.find((p) => !p.hidden)?.querySelector('code')?.textContent ?? '';
+          try {
+            await navigator.clipboard.writeText(text);
+            const original = copy.textContent;
+            copy.textContent = 'Copied';
+            setTimeout(() => { copy.textContent = original; }, 1400);
+          } catch {
+            copy.textContent = 'Press Cmd+C';
+          }
+        });
+      });
+    </script>
 
     <script>
       import '../../scripts/site.js';
@@ -2423,6 +2546,167 @@ const nextProject = {
         font-family: var(--font-body);
         font-weight: 600;
         text-decoration: none;
+      }
+
+      /* Code section: page recording beside the React code behind it ------- */
+      .codex-widget { margin-top: clamp(1.5rem, 4vw, 2.5rem); }
+
+      .codex-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+
+      .codex-tab {
+        appearance: none;
+        font: inherit;
+        font-size: 0.95rem;
+        cursor: pointer;
+        padding: 0.6rem 1.1rem;
+        border-radius: 999px;
+        border: 1px solid rgba(16, 16, 16, 0.22);
+        background: #ffffff;
+        color: #4a473f;
+        transition: background 0.2s, color 0.2s, border-color 0.2s;
+      }
+
+      .codex-tab:hover { border-color: #00579d; color: #00579d; }
+
+      .codex-tab[aria-selected='true'] {
+        background: #00579d;
+        border-color: #00579d;
+        color: #ffffff;
+        font-weight: 600;
+      }
+
+      .codex-tab:focus-visible,
+      .codex-copy:focus-visible,
+      .codex-panel :global(pre):focus-visible { outline: 2px solid #00579d; outline-offset: 2px; }
+
+      .codex-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        gap: clamp(1rem, 2vw, 1.5rem);
+        align-items: stretch;
+      }
+
+      .codex-stage {
+        border-radius: 12px;
+        overflow: hidden;
+        background: #0e1116;
+        border: 1px solid #202730;
+        box-shadow: 0 30px 70px -35px rgba(0, 20, 50, 0.55);
+      }
+
+      .codex-frame-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.6rem 0.9rem;
+        background: #171c25;
+        border-bottom: 1px solid #202730;
+      }
+
+      .codex-dot { width: 11px; height: 11px; border-radius: 50%; }
+      .codex-dot-1 { background: #ff5f57; }
+      .codex-dot-2 { background: #febc2e; }
+      .codex-dot-3 { background: #28c840; }
+
+      .codex-frame-title {
+        flex: 1;
+        text-align: center;
+        margin-right: 40px;
+        font-family: var(--font-body);
+        font-size: 0.75rem;
+        color: #8a94a6;
+      }
+
+      .codex-stage video {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1400 / 790;
+        background: #f4f5f7;
+      }
+
+      /* The code panel takes the video's height and scrolls inside it. */
+      .codex-code {
+        position: relative;
+        min-height: 22rem;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #0d1117;
+        border: 1px solid #202730;
+      }
+
+      .codex-code-inner { position: absolute; inset: 0; display: flex; flex-direction: column; }
+
+      .codex-code-head {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.6rem 1rem;
+        background: #161b22;
+        border-bottom: 1px solid #202730;
+      }
+
+      .codex-file { font-family: var(--font-mono); font-size: 0.78rem; color: #cbd5e1; }
+      .codex-meta { font-family: var(--font-body); font-size: 0.72rem; color: #64748b; }
+
+      .codex-copy {
+        margin-left: auto;
+        font-family: var(--font-body);
+        font-size: 0.75rem;
+        color: #e2e8f0;
+        background: #232b36;
+        border: 1px solid #334155;
+        border-radius: 6px;
+        padding: 0.2rem 0.7rem;
+        cursor: pointer;
+      }
+
+      .codex-copy:hover { background: #2c3644; }
+
+      .codex-panel { flex: 1; min-height: 0; }
+      .codex-panel:not([hidden]) { display: flex; }
+
+      .codex-panel :global(pre.astro-code) {
+        flex: 1;
+        min-width: 0;
+        min-height: 0;
+        margin: 0;
+        overflow: auto;
+        padding: 0.8rem 0 1rem;
+        background-color: #0d1117 !important;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        line-height: 1.7;
+        tab-size: 2;
+        counter-reset: codex-ln;
+      }
+
+      .codex-panel :global(pre.astro-code code) { display: block; width: max-content; min-width: 100%; }
+
+      .codex-panel :global(.line) {
+        display: inline-block;
+        min-width: 100%;
+        padding-right: 1.5rem;
+      }
+
+      .codex-panel :global(.line::before) {
+        counter-increment: codex-ln;
+        content: counter(codex-ln);
+        position: sticky;
+        left: 0;
+        display: inline-block;
+        width: 3rem;
+        margin-right: 1rem;
+        padding-right: 0.75rem;
+        text-align: right;
+        color: #475569;
+        background: #0d1117;
+        user-select: none;
+      }
+
+      @media (max-width: 860px) {
+        .codex-body { grid-template-columns: 1fr; }
+        .codex-code { min-height: 0; height: 340px; }
       }
     </style>
   </body>

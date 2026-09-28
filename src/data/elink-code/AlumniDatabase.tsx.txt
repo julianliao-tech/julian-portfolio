@@ -1,0 +1,202 @@
+import { Link } from "react-router";
+import { ArrowLeft, Search, Filter, MapPin, Briefcase, Calendar } from "lucide-react";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { useState } from "react";
+
+export function AlumniDatabase() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [careerFilter, setCareerFilter] = useState("all");
+  const [locationFilter, setLocationFilter] = useState("all");
+
+  const alumni = [
+    {
+      id: 1,
+      name: "Maria Garcia",
+      career: "Investment Banking",
+      company: "Goldman Sachs",
+      location: "London, UK",
+      graduationYear: 2019,
+      age: 28,
+      imageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150",
+    },
+    {
+      id: 2,
+      name: "Carlos Rodriguez",
+      career: "Management Consulting",
+      company: "McKinsey & Company",
+      location: "Barcelona, Spain",
+      graduationYear: 2018,
+      age: 29,
+      imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
+    },
+    {
+      id: 3,
+      name: "Sophie Laurent",
+      career: "Technology",
+      company: "Google",
+      location: "Paris, France",
+      graduationYear: 2020,
+      age: 27,
+      imageUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150",
+    },
+    {
+      id: 4,
+      name: "Alessandro Rossi",
+      career: "Private Equity",
+      company: "KKR",
+      location: "Milan, Italy",
+      graduationYear: 2017,
+      age: 30,
+      imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150",
+    },
+    {
+      id: 5,
+      name: "Laura Martinez",
+      career: "Marketing",
+      company: "LVMH",
+      location: "Madrid, Spain",
+      graduationYear: 2021,
+      age: 26,
+      imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
+    },
+    {
+      id: 6,
+      name: "Thomas Müller",
+      career: "Entrepreneurship",
+      company: "Founder @ TechStart",
+      location: "Berlin, Germany",
+      graduationYear: 2016,
+      age: 31,
+      imageUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150",
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      <div className="max-w-7xl mx-auto p-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <Link to="/">
+            <Button variant="ghost" className="mb-6 hover:bg-[#0B1E3D]/10">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Button>
+          </Link>
+          <h1 className="text-5xl font-bold text-[#0B1E3D] mb-4">Alumni Database</h1>
+          <p className="text-gray-600 text-lg">Find and connect with ESADE alumni worldwide</p>
+        </div>
+
+        {/* Navigation */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-10 max-w-4xl mx-auto border border-gray-200">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Link to="/elink/group-chats" className="w-full">
+              <Button variant="outline" className="w-full border-[#0B1E3D] text-[#0B1E3D] hover:bg-[#0B1E3D]/10">Group Chats</Button>
+            </Link>
+            <Link to="/elink/alumni-database" className="w-full">
+              <Button className="w-full bg-[#0B1E3D] hover:bg-[#0a1929] text-white">Alumni Database</Button>
+            </Link>
+            <Link to="/elink/mentorship" className="w-full">
+              <Button variant="outline" className="w-full border-[#0B1E3D] text-[#0B1E3D] hover:bg-[#0B1E3D]/10">Mentorship Program</Button>
+            </Link>
+            <Link to="/elink/dinners" className="w-full">
+              <Button variant="outline" className="w-full border-[#0B1E3D] text-[#0B1E3D] hover:bg-[#0B1E3D]/10">Recruiter Dinners</Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 max-w-5xl mx-auto border border-gray-200">
+          <div className="flex items-center gap-2 mb-6">
+            <Filter className="w-5 h-5 text-[#0B1E3D]" />
+            <h2 className="text-xl font-semibold text-[#0B1E3D]">Filter Alumni</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Search by name</label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#0B1E3D] w-4 h-4" />
+                <Input
+                  type="text"
+                  placeholder="Search alumni..."
+                  className="pl-10 border-2 focus:border-[#0B1E3D]"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Career Field</label>
+              <Select value={careerFilter} onValueChange={setCareerFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="All careers" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Careers</SelectItem>
+                  <SelectItem value="banking">Investment Banking</SelectItem>
+                  <SelectItem value="consulting">Management Consulting</SelectItem>
+                  <SelectItem value="tech">Technology</SelectItem>
+                  <SelectItem value="pe">Private Equity</SelectItem>
+                  <SelectItem value="marketing">Marketing</SelectItem>
+                  <SelectItem value="entrepreneurship">Entrepreneurship</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+              <Select value={locationFilter} onValueChange={setLocationFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="All locations" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Locations</SelectItem>
+                  <SelectItem value="spain">Spain</SelectItem>
+                  <SelectItem value="uk">United Kingdom</SelectItem>
+                  <SelectItem value="france">France</SelectItem>
+                  <SelectItem value="germany">Germany</SelectItem>
+                  <SelectItem value="italy">Italy</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+
+        {/* Alumni Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          {alumni.map((person) => (
+            <div key={person.id} className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-200">
+              <div className="flex items-center gap-4 mb-4">
+                <img
+                  src={person.imageUrl}
+                  alt={person.name}
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+                <div>
+                  <h3 className="font-semibold text-lg text-gray-900">{person.name}</h3>
+                  <p className="text-sm text-gray-500">Class of {person.graduationYear}</p>
+                </div>
+              </div>
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <Briefcase className="w-4 h-4" />
+                  <span>{person.career}</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <MapPin className="w-4 h-4" />
+                  <span>{person.location}</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <Calendar className="w-4 h-4" />
+                  <span>{person.age} years old</span>
+                </div>
+              </div>
+              <p className="text-sm text-gray-700 mb-4">{person.company}</p>
+              <Button className="w-full bg-[#0B1E3D] hover:bg-[#0a1929] text-white">Connect</Button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

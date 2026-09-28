@@ -1,0 +1,188 @@
+import { Link } from "react-router";
+import { ArrowLeft, Utensils, MapPin, Clock, Users, Calendar } from "lucide-react";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { Badge } from "../ui/badge";
+
+export function RecruiterDinners() {
+  const dinners = [
+    {
+      id: 1,
+      company: "McKinsey & Company",
+      recruiter: "Sarah Williams",
+      recruiterRole: "Senior Recruiting Manager",
+      date: "May 10, 2026",
+      time: "19:30",
+      location: "Restaurant Moments, Barcelona",
+      totalSpots: 12,
+      spotsLeft: 4,
+      cuisine: "Mediterranean",
+      imageUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500",
+      description: "Intimate dinner to learn about consulting careers and the McKinsey recruiting process",
+    },
+    {
+      id: 2,
+      company: "Goldman Sachs",
+      recruiter: "Michael Chen",
+      recruiterRole: "Head of Campus Recruiting EMEA",
+      date: "May 15, 2026",
+      time: "20:00",
+      location: "ABaC Restaurant, Barcelona",
+      totalSpots: 10,
+      spotsLeft: 2,
+      cuisine: "Fine Dining",
+      imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500",
+      description: "Exclusive opportunity to network with Goldman Sachs recruiters over dinner",
+    },
+    {
+      id: 3,
+      company: "Google",
+      recruiter: "Ana Rodriguez",
+      recruiterRole: "Tech Recruiting Lead",
+      date: "May 18, 2026",
+      time: "19:00",
+      location: "Cinc Sentits, Barcelona",
+      totalSpots: 15,
+      spotsLeft: 9,
+      cuisine: "Contemporary Catalan",
+      imageUrl: "https://images.unsplash.com/photo-1515669097368-22e68427d265?w=500",
+      description: "Meet Google's recruiting team and learn about tech career opportunities",
+    },
+    {
+      id: 4,
+      company: "LVMH",
+      recruiter: "Sophie Laurent",
+      recruiterRole: "Talent Acquisition Director",
+      date: "May 22, 2026",
+      time: "20:30",
+      location: "Disfrutar, Barcelona",
+      totalSpots: 12,
+      spotsLeft: 12,
+      cuisine: "Modern Spanish",
+      imageUrl: "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?w=500",
+      description: "Network with LVMH recruiters and explore luxury brand management careers",
+    },
+  ];
+
+  const getStatusBadge = (spotsLeft: number, totalSpots: number) => {
+    const percentage = (spotsLeft / totalSpots) * 100;
+    if (percentage <= 20) {
+      return <Badge variant="destructive">Almost Full</Badge>;
+    } else if (percentage <= 50) {
+      return <Badge className="bg-orange-500">Filling Up</Badge>;
+    } else {
+      return <Badge className="bg-green-500">Available</Badge>;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      <div className="max-w-7xl mx-auto p-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <Link to="/">
+            <Button variant="ghost" className="mb-6 hover:bg-[#0B1E3D]/10">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Button>
+          </Link>
+          <h1 className="text-5xl font-bold text-[#0B1E3D] mb-4">Recruiter Dinners</h1>
+          <p className="text-gray-600 text-lg">Exclusive networking dinners with top recruiters - First come, first served</p>
+        </div>
+
+        {/* Navigation */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-10 max-w-4xl mx-auto border border-gray-200">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Link to="/elink/group-chats" className="w-full">
+              <Button variant="outline" className="w-full border-[#0B1E3D] text-[#0B1E3D] hover:bg-[#0B1E3D]/10">Group Chats</Button>
+            </Link>
+            <Link to="/elink/alumni-database" className="w-full">
+              <Button variant="outline" className="w-full border-[#0B1E3D] text-[#0B1E3D] hover:bg-[#0B1E3D]/10">Alumni Database</Button>
+            </Link>
+            <Link to="/elink/mentorship" className="w-full">
+              <Button variant="outline" className="w-full border-[#0B1E3D] text-[#0B1E3D] hover:bg-[#0B1E3D]/10">Mentorship Program</Button>
+            </Link>
+            <Link to="/elink/dinners" className="w-full">
+              <Button className="w-full bg-[#0B1E3D] hover:bg-[#0a1929] text-white">Recruiter Dinners</Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Info Banner */}
+        <div className="bg-[#0B1E3D]/5 border-2 border-[#0B1E3D]/20 rounded-2xl p-6 mb-8 max-w-4xl mx-auto">
+          <div className="flex items-start gap-3">
+            <Utensils className="w-5 h-5 text-[#0B1E3D] mt-0.5" />
+            <div>
+              <h3 className="font-semibold text-[#0B1E3D] mb-1">How It Works</h3>
+              <p className="text-sm text-gray-700">
+                These intimate dinners are limited to 10-15 students per event. Register quickly as spots fill up fast!
+                All dinners are hosted at premium Barcelona restaurants and are complimentary for ESADE students.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Dinners Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          {dinners.map((dinner) => (
+            <Card key={dinner.id} className="overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 border-gray-200">
+              <div className="relative h-48">
+                <img
+                  src={dinner.imageUrl}
+                  alt={dinner.location}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-4 right-4">
+                  {getStatusBadge(dinner.spotsLeft, dinner.totalSpots)}
+                </div>
+              </div>
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div>
+                    <CardTitle className="text-xl">{dinner.company}</CardTitle>
+                    <CardDescription className="mt-1">
+                      with {dinner.recruiter}, {dinner.recruiterRole}
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-4">{dinner.description}</p>
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Calendar className="w-4 h-4" />
+                    <span>{dinner.date}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Clock className="w-4 h-4" />
+                    <span>{dinner.time}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <MapPin className="w-4 h-4" />
+                    <span>{dinner.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Utensils className="w-4 h-4" />
+                    <span>{dinner.cuisine}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Users className="w-4 h-4" />
+                    <span className={dinner.spotsLeft <= 3 ? 'text-orange-600 font-medium' : 'text-gray-600'}>
+                      {dinner.spotsLeft} of {dinner.totalSpots} spots remaining
+                    </span>
+                  </div>
+                </div>
+                <Button
+                  className="w-full bg-[#0B1E3D] hover:bg-[#0a1929] text-white disabled:bg-gray-400"
+                  disabled={dinner.spotsLeft === 0}
+                >
+                  {dinner.spotsLeft === 0 ? 'Fully Booked' : 'Reserve My Spot'}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
