@@ -263,7 +263,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
                   data-hover-video
                   data-show-first-frame={card.showsFirstFrame || undefined}
                   src={card.video}
-                  poster={card.showsFirstFrame ? undefined : card.image}
+                  poster={card.image}
                   muted
                   loop
                   playsinline

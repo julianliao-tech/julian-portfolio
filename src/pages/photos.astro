@@ -186,7 +186,9 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
 <!-- Darkroom palette for this page only: every var the nav, footer and text
      use is redefined, so they all follow along. -->
 <style is:global>
-  :root {
+  /* html:root beats global.css's plain :root no matter which stylesheet loads
+     last, so the nav and footer really do pick up this palette. */
+  html:root {
     --bg: #0c0a08;
     --bg-soft: #13100d;
     --bg-elev: #1a1612;
@@ -200,10 +202,10 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
     --line: rgba(236, 226, 207, 0.12);
     --line-strong: rgba(236, 226, 207, 0.28);
   }
-  html { background: #0c0a08; color-scheme: dark; }
+  html:root { background: #0c0a08; color-scheme: dark; }
   /* Keep the footer above the film overlays so the vignette and grain don't dim it. */
   body .footer { z-index: 25; }
-  body { background: transparent; }
+  html:root body { background: transparent; }
 </style>
 
 <style>
@@ -513,6 +515,9 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
     position: relative;
     z-index: 5;
     padding-block: clamp(9rem, 13vw, 11rem) clamp(2rem, 4vw, 3rem);
+    /* The lamp's light cone reaches past the screen edge on phones; clip it
+       so it can't widen the page. */
+    overflow-x: clip;
   }
 
   .title-wrap {
@@ -599,10 +604,18 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
   }
 
   @media (max-width: 900px) {
-    /* No room beside the heading: hang it over the top right corner. */
-    .sign { left: auto; right: 0; top: -4.6rem; width: 7.5rem; }
-    .board-1 { font-size: 0.78rem; }
-    .board-2 { font-size: 0.56rem; }
+    /* No room beside the heading: the sign hangs just below it, in the flow,
+       so it can't cover the heading or the label above. */
+    .sign {
+      position: relative;
+      left: auto;
+      top: auto;
+      width: 8rem;
+      margin: 0.6rem 0 0 0.25rem;
+    }
+    .board-1 { font-size: 0.8rem; }
+    .board-2 { font-size: 0.58rem; }
+    .cone { width: min(460px, 100vw); margin-left: calc(min(460px, 100vw) / -2); }
   }
 
   .hint {

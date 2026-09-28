@@ -724,6 +724,29 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
     white-space: nowrap;
     border: 0;
   }
+
+  /* Phones: keep the globe clear of the dino's speech bubble by reserving
+     room for the bubble under it, and make the hint compact. */
+  @media (max-width: 640px) {
+    .travel { padding-bottom: calc(var(--ground) + 20rem); }
+
+    .hint {
+      padding: 0.5rem 0.7rem;
+      font-size: 0.5rem;
+      border-width: 2px;
+      box-shadow: 0 0 0 2px #000;
+    }
+
+    .dino-bubble {
+      right: 1rem;
+      width: min(14.5rem, calc(100% - 2rem));
+      padding: 0.65rem 0.75rem;
+      font-size: 0.5rem;
+      line-height: 1.85;
+    }
+
+    .dino-bubble::after { right: 2.2rem; }
+  }
 </style>
 
 <script>

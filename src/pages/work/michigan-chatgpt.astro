@@ -1180,6 +1180,25 @@ const nextProject = {
         }
       }
 
+      /* Stacked on phones: the container has no fixed height, so the
+         percentage heights above resolve to 0 and the screenshots and
+         videos vanish. Size them from their own aspect ratio instead. */
+      @media (max-width: 499px) {
+        .feature-media-pair {
+          max-height: none;
+          padding: 1.25rem;
+        }
+
+        .feature-media-pair img,
+        .feature-media-pair video {
+          flex: 0 0 auto;
+          width: auto;
+          height: auto;
+          max-width: 100%;
+          max-height: 300px;
+        }
+      }
+
       .feature-text {
         display: flex;
         flex-direction: column;
