@@ -1,0 +1,1261 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Places on the globe. Add or remove entries here; the globe reads
+// this list, nothing else needs to change. Coordinates are [longitude,
+// latitude] in degrees (west and south are negative). Cities, plus
+// islands, plus the United States and Costa Rica as single markers at
+// their centers.
+const places = [
+  // North America
+  { name: 'United States', lon: -98.5, lat: 39.8 },
+  { name: 'Toronto', lon: -79.383, lat: 43.653 },
+  { name: 'Windsor', lon: -83.035, lat: 42.317 },
+  { name: 'Montreal', lon: -73.567, lat: 45.502 },
+  { name: 'Cancún', lon: -86.851, lat: 21.161 },
+  { name: 'Cabo San Lucas', lon: -109.912, lat: 22.89 },
+  { name: 'Costa Rica', lon: -84.0, lat: 9.75 },
+  { name: 'Eleuthera, Bahamas', lon: -76.15, lat: 24.95 },
+  { name: 'Virgin Islands', lon: -64.85, lat: 18.34 },
+  { name: 'Nantucket', lon: -70.1, lat: 41.283 },
+  // Hawaii, one marker per island
+  { name: 'Niihau', lon: -160.16, lat: 21.9 },
+  { name: 'Kauai', lon: -159.5, lat: 22.05 },
+  { name: 'Oahu', lon: -157.98, lat: 21.47 },
+  { name: 'Molokai', lon: -157.02, lat: 21.13 },
+  { name: 'Lanai', lon: -156.92, lat: 20.83 },
+  { name: 'Kahoolawe', lon: -156.6, lat: 20.55 },
+  { name: 'Maui', lon: -156.33, lat: 20.8 },
+  { name: 'Hawaii (Big Island)', lon: -155.5, lat: 19.6 },
+  // Europe
+  { name: 'Barcelona', lon: 2.169, lat: 41.387 },
+  { name: 'Seville', lon: -5.984, lat: 37.389 },
+  { name: 'Valencia', lon: -0.376, lat: 39.47 },
+  { name: 'Lisbon', lon: -9.139, lat: 38.722 },
+  { name: 'Zurich', lon: 8.541, lat: 47.377 },
+  { name: 'Interlaken', lon: 7.863, lat: 46.686 },
+  { name: 'Copenhagen', lon: 12.568, lat: 55.676 },
+  { name: 'Stockholm', lon: 18.069, lat: 59.329 },
+  { name: 'Krakow', lon: 19.945, lat: 50.065 },
+  { name: 'Dublin', lon: -6.26, lat: 53.35 },
+  { name: 'Berlin', lon: 13.405, lat: 52.52 },
+  { name: 'Munich', lon: 11.582, lat: 48.135 },
+  { name: 'Prague', lon: 14.421, lat: 50.088 },
+  { name: 'Bratislava', lon: 17.107, lat: 48.149 },
+  { name: 'Budapest', lon: 19.04, lat: 47.498 },
+  { name: 'Vienna', lon: 16.373, lat: 48.208 },
+  { name: 'London', lon: -0.128, lat: 51.507 },
+  { name: 'Amsterdam', lon: 4.9, lat: 52.367 },
+  { name: 'Rome', lon: 12.496, lat: 41.903 },
+  { name: 'Milan', lon: 9.19, lat: 45.464 },
+  { name: 'Paris', lon: 2.352, lat: 48.857 },
+  { name: 'Niort', lon: -0.459, lat: 46.324 },
+  // Africa
+  { name: 'Marrakech', lon: -7.981, lat: 31.629 },
+  { name: 'Ouarzazate', lon: -6.894, lat: 30.919 },
+  // Australia
+  { name: 'Sydney', lon: 151.209, lat: -33.869 },
+  { name: 'Cairns', lon: 145.778, lat: -16.919 },
+  // Asia
+  { name: 'Beijing', lon: 116.407, lat: 39.904 },
+  { name: 'Shanghai', lon: 121.474, lat: 31.23 },
+  { name: 'Shenzhen', lon: 114.058, lat: 22.543 },
+  { name: 'Chengdu', lon: 104.066, lat: 30.573 },
+  { name: 'Chongqing', lon: 106.551, lat: 29.563 },
+  { name: 'Wuhan', lon: 114.305, lat: 30.593 },
+  { name: 'Yichang', lon: 111.286, lat: 30.692 },
+];
+
+// One note per question block (the layout has room for three), left to
+// right. The country count is worked out from the places Julian listed:
+// 5 in North America (United States, Bahamas, Canada, Mexico, Costa
+// Rica), 16 in Europe, plus Morocco, China and Australia. Territories
+// like the Virgin Islands are not counted as separate countries.
+const notes = [
+  { title: 'Countries', text: 'I have been to 24 countries across 5 continents so far.' },
+  {
+    title: 'Adventures',
+    text: 'I have been skydiving over the Swiss Alps, cold plunged in the Nordic Sea, sandboarded in the Sahara and ridden a rollercoaster down the Great Wall of China.',
+  },
+  { title: 'Someday', text: 'I really want to live in Africa for a long period of time at some point in my life.' },
+];
+
+// 8-bit backdrop. Every sprite is drawn from a small character map (one
+// character per pixel) and turned into crisp SVG rects at build time, so
+// there are no image files to ship. Original pixel art in the spirit of
+// classic NES platformers.
+type Palette = Record<string, string>;
+
+function svg(rows: string[], pal: Palette, style = '') {
+  const w = rows[0].length;
+  const h = rows.length;
+  let rects = '';
+  rows.forEach((row, y) => {
+    let x = 0;
+    while (x < w) {
+      const ch = row[x];
+      if (!pal[ch]) { x++; continue; }
+      let e = x;
+      while (e < w && row[e] === ch) e++;
+      rects += `<rect x="${x}" y="${y}" width="${e - x}" height="1" fill="${pal[ch]}"/>`;
+      x = e;
+    }
+  });
+  const size = style ? `style="${style}"` : `width="${w}" height="${h}"`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" shape-rendering="crispEdges" aria-hidden="true" ${size}>${rects}</svg>`;
+}
+
+// Inline sprite scaled by the page's --px unit (one sprite pixel = --px).
+const scaled = (rows: string[], pal: Palette, k = 1) =>
+  svg(rows, pal, `display:block;width:calc(var(--px) * ${rows[0].length * k});height:auto`);
+
+const cloudRows = [
+  '....wwww........',
+  '...wwwwww.wwww..',
+  '..wwwwwwwwwwwwb.',
+  '.wwwwwwwwwwwwwwb',
+  'wwwwwwwwwwwwwwwb',
+  'wwwwwwwwwwwwwwbb',
+  '.bbbbbbbbbbbbbb.',
+];
+const cloud = scaled(cloudRows, { w: '#ffffff', b: '#a4e4fc' }, 3);
+const bush = scaled(cloudRows, { w: '#38c838', b: '#006800' }, 2);
+
+// Half-ellipse hill with a darker rim and two eyes.
+function hillRows(w: number, h: number) {
+  const rows: string[] = [];
+  for (let r = 0; r < h; r++) {
+    const half = Math.round((w / 2) * Math.sqrt(1 - ((h - 1 - r) / h) ** 2));
+    const row = Array.from({ length: w }, (_, x) => {
+      const d = x - (w - 1) / 2;
+      if (Math.abs(d) > half - 0.5) return ' ';
+      return Math.abs(d) > half - 1.5 || r === 0 ? 'd' : 'g';
+    });
+    rows.push(row.join(''));
+  }
+  const mid = Math.floor(w / 2);
+  const eyeRow = Math.floor(h * 0.45);
+  [mid - 3, mid + 2].forEach((x) => {
+    for (let dy = 0; dy < 3; dy++) rows[eyeRow + dy] = rows[eyeRow + dy].slice(0, x) + 'k' + rows[eyeRow + dy].slice(x + 1);
+  });
+  return rows;
+}
+const hillBig = scaled(hillRows(40, 17), { g: '#00a800', d: '#006800', k: '#000000' }, 2);
+const hillSmall = scaled(hillRows(24, 10), { g: '#00a800', d: '#006800', k: '#000000' }, 2);
+
+// Question block, in two flash frames, plus the spent block.
+function blockRows() {
+  const g = Array.from({ length: 16 }, () => Array(16).fill('y'));
+  for (let i = 0; i < 16; i++) { g[0][i] = g[15][i] = g[i][0] = g[i][15] = 'o'; }
+  [[2, 2], [2, 13], [13, 2], [13, 13]].forEach(([y, x]) => { g[y][x] = 'o'; });
+  const q = ['.oooo.', 'oo..oo', 'oo..oo', '....oo', '...oo.', '..oo..', '......', '..oo..'];
+  q.forEach((line, dy) => [...line].forEach((ch, dx) => { if (ch === 'o') g[4 + dy][5 + dx] = 'q'; }));
+  return g.map((r) => r.join(''));
+}
+const blockA = scaled(blockRows(), { y: '#f8b800', o: '#000000', q: '#a84800' });
+const blockB = scaled(blockRows(), { y: '#fcd860', o: '#000000', q: '#c86818' });
+const blockUsed = scaled(blockRows().map((r) => r.replace(/q/g, 'y')), { y: '#a05000', o: '#000000' });
+
+// Spinning coin (the squash-and-stretch happens in CSS).
+const coinRows = ['..yyyy..', '.yyllyy.', 'yyyllyyy', 'yyyllyyy', 'yyyllyyy', 'yyyllyyy', 'yyyllyyy', 'yyyllyyy', 'yyyllyyy', 'yyyllyyy', 'yyyllyyy', 'yyyllyyy', '.yyllyy.', '..yyyy..'];
+const coin = scaled(coinRows, { y: '#f8b800', l: '#fcfc90' });
+
+// Bouncing star.
+const starRows = [
+  '.......yy.......',
+  '.......yy.......',
+  '......yyyy......',
+  '......yyyy......',
+  'yyyyyyyyyyyyyyyy',
+  '.yyyyykyykyyyyy.',
+  '..yyyykyykyyyy..',
+  '...yyyyyyyyyy...',
+  '....yyyyyyyy....',
+  '...yyyyyyyyyy...',
+  '..yyyyy..yyyyy..',
+  '.yyyyy....yyyyy.',
+  '.yyy........yyy.',
+];
+const star = scaled(starRows, { y: '#fcd020', k: '#000000' });
+
+// Mini green dino, head and chest only, facing left. Original pixel art
+// in the spirit of the classic platformer sidekick.
+const dinoRows = [
+  '.....kkkk.......',
+  '....kwwwwkkrr...',
+  '...kwwkkwkrrrr..',
+  '...kwwkkwkkrr...',
+  '..kkgwwwwgkgk...',
+  '.kgggkkkggggk...',
+  'kggggggggggggk..',
+  'kgggggkkggggggk.',
+  'kggggggggggggggk',
+  '.kkgggggggkkkwk.',
+  '..kgggggkwwwwwk.',
+  '..kgggggkwwwwwk.',
+  '..kkggggkwwwwwk.',
+  '...kkkkkkkkkkkk.',
+];
+const dino = scaled(dinoRows, { k: '#000000', g: '#3cc83c', w: '#ffffff', r: '#e52521' }, 1.5);
+
+// Warp pipe of a given body height.
+function pipeRows(body: number) {
+  const rows: string[] = [];
+  for (let r = 0; r < 14; r++) {
+    rows.push(Array.from({ length: 32 }, (_, x) => {
+      if (r === 0 || r === 13 || x === 0 || x === 31) return 'k';
+      if (x >= 3 && x <= 5) return 'l';
+      if (x >= 26) return 'd';
+      return 'g';
+    }).join(''));
+  }
+  for (let r = 0; r < body; r++) {
+    rows.push(Array.from({ length: 32 }, (_, x) => {
+      if (x < 2 || x > 29) return ' ';
+      if (x === 2 || x === 29) return 'k';
+      if (x >= 5 && x <= 7) return 'l';
+      if (x >= 22) return 'd';
+      return 'g';
+    }).join(''));
+  }
+  return rows;
+}
+const pipe = scaled(pipeRows(18), { g: '#00a800', l: '#b8f818', d: '#006800', k: '#000000' });
+
+// Ground brick tile, repeated as a CSS background.
+function brickRows() {
+  const g = Array.from({ length: 16 }, () => Array(16).fill('c'));
+  for (let x = 0; x < 16; x++) { g[0][x] = 'k'; g[8][x] = 'k'; g[1][x] = 'h'; g[9][x] = 'h'; }
+  for (let y = 1; y < 8; y++) { g[y][7] = 'k'; g[y][15] = 'k'; }
+  for (let y = 9; y < 16; y++) { g[y][3] = 'k'; g[y][11] = 'k'; }
+  for (const y of [1, 9]) { g[y][7] = g[y][15] = 'k'; }
+  g[9][3] = g[9][11] = 'k';
+  return g.map((r) => r.join(''));
+}
+const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(), { c: '#c84c0c', k: '#000000', h: '#fc9838' }))}")`;
+---
+<BaseLayout
+  title="Travel — Julian Liao"
+  description="An interactive globe of places Julian Liao has been. Drag to rotate."
+>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
+  <div class="scene" style={`--brick: ${brickTile}`}>
+    <div class="backdrop" aria-hidden="true">
+      <span class="cloud c1" set:html={cloud} />
+      <span class="cloud c2" set:html={cloud} />
+      <span class="cloud c3" set:html={cloud} />
+      <span class="cloud c4" set:html={cloud} />
+      <span class="prop hill-big" set:html={hillBig} />
+      <span class="prop hill-small" set:html={hillSmall} />
+      <span class="prop bush b1" set:html={bush} />
+      <span class="prop bush b2" set:html={bush} />
+      <span class="dino"><span class="dino-body" set:html={dino} /></span>
+      <span class="prop pipe" set:html={pipe} />
+      <span class="coin k1" set:html={coin} />
+      <span class="coin k2" set:html={coin} />
+      <span class="coin k3" set:html={coin} />
+      <span class="star-run"><span class="star-hop" set:html={star} /></span>
+      <div class="ground"></div>
+    </div>
+
+    <div class="dino-bubble" data-bubble role="status">
+      <p>Click on the question marks to learn more about Julian's Journeys!</p>
+      <p>Click on the Earth to find out where he's been!</p>
+    </div>
+
+    <div class="blocks">
+      {notes.map((note, i) => (
+        <button
+          class={`block bl${i + 1}`}
+          type="button"
+          data-title={note.title}
+          data-text={note.text}
+          aria-haspopup="dialog"
+          aria-expanded="false"
+          aria-label={`Question block: ${note.title}`}
+        >
+          <span class="block-frame block-a" set:html={blockA} />
+          <span class="block-frame block-b" set:html={blockB} />
+          <span class="block-frame block-used" set:html={blockUsed} />
+          <span class="block-coin" set:html={coin} />
+        </button>
+      ))}
+    </div>
+
+    <div class="popup" data-popup role="dialog" aria-labelledby="popup-title" aria-describedby="popup-text" hidden>
+      <button class="popup-close" type="button" aria-label="Close">×</button>
+      <p class="popup-title" id="popup-title"></p>
+      <p class="popup-text" id="popup-text"></p>
+      <span class="popup-next" aria-hidden="true">▼</span>
+    </div>
+
+  <section class="travel wrap">
+    <h1 class="travel-title eyebrow">Travel</h1>
+
+    <div class="globe-stage">
+      <div class="globe-holder">
+      <div class="globe-shadow" aria-hidden="true"></div>
+      <canvas
+        class="globe"
+        data-globe
+        data-places={JSON.stringify(places)}
+        tabindex="0"
+        role="img"
+        aria-label={`Interactive globe marking ${places.length} places Julian has been. Drag, or use the arrow keys, to rotate.`}
+      ></canvas>
+      </div>
+    </div>
+
+    <p class="hint">
+      <span class="hint-key" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
+      </span>
+      Drag to spin it yourself · Hover or tap a dot for its name
+    </p>
+
+    <ul class="sr-only">
+      {places.map((p) => <li>{p.name}</li>)}
+    </ul>
+  </section>
+  </div>
+</BaseLayout>
+
+<style>
+  /* 8-bit scene. One sprite pixel = --px; everything scales together. */
+  .scene {
+    --px: 3px;
+    --ground: calc(var(--px) * 32);
+    position: relative;
+    overflow: hidden;
+    background: #5c94fc;
+    image-rendering: pixelated;
+  }
+
+  .backdrop { position: absolute; inset: 0; pointer-events: none; }
+
+  .backdrop > *, .blocks > * { position: absolute; }
+
+  .ground {
+    left: 0; right: 0; bottom: 0;
+    height: var(--ground);
+    background-image: var(--brick);
+    background-size: calc(var(--px) * 16) calc(var(--px) * 16);
+    background-repeat: repeat;
+    image-rendering: pixelated;
+  }
+
+  .prop { bottom: var(--ground); }
+  .hill-big { left: -2%; }
+  .hill-small { left: 30%; }
+  .b1 { left: 18%; }
+  .b2 { right: 26%; }
+  .pipe { right: 6%; }
+
+  /* Clouds drift across the sky at different heights and speeds. */
+  .cloud {
+    left: 0;
+    opacity: 0.95;
+    animation: drift var(--t, 90s) linear infinite;
+    animation-delay: var(--d, 0s);
+  }
+  .c1 { top: 8%;  --t: 110s; --d: -20s; }
+  .c2 { top: 22%; --t: 80s;  --d: -55s; transform-origin: left; }
+  .c3 { top: 5%;  --t: 140s; --d: -95s; }
+  .c4 { top: 34%; --t: 100s; --d: -70s; }
+  .c2 :global(svg), .c4 :global(svg) { zoom: 0.75; }
+
+  @keyframes drift {
+    from { transform: translateX(-25vw); }
+    to   { transform: translateX(105vw); }
+  }
+
+  /* Coins hover and spin in place. */
+  .coin { animation: bob 1.6s ease-in-out infinite; }
+  .coin :global(svg) { animation: spin 1.1s steps(6) infinite; }
+  .k1 { left: 10%; top: 46%; }
+  .k2 { left: 12.5%; top: 42%; animation-delay: -0.4s; }
+  .k3 { right: 12%; top: 50%; animation-delay: -0.8s; }
+  @keyframes bob { 50% { transform: translateY(calc(var(--px) * -3)); } }
+  @keyframes spin {
+    0%   { transform: scaleX(1); }
+    50%  { transform: scaleX(0.12); }
+    100% { transform: scaleX(1); }
+  }
+
+  /* A star hops along the ground, then goes off for a while. */
+  .star-run {
+    left: 0;
+    bottom: var(--ground);
+    animation: star-run 16s linear infinite;
+  }
+  .star-hop { display: block; animation: star-hop 0.7s cubic-bezier(0.3, 0.6, 0.5, 1) infinite; }
+  @keyframes star-run {
+    0%   { transform: translateX(-12vw); }
+    45%  { transform: translateX(108vw); }
+    100% { transform: translateX(108vw); }
+  }
+  @keyframes star-hop {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(calc(var(--px) * -18)); }
+  }
+
+  /* Question blocks: flash between two shades, bump and pay out when hit. */
+  .blocks { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+  .block {
+    pointer-events: auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    width: calc(var(--px) * 16);
+    height: calc(var(--px) * 16);
+  }
+  .bl1 { left: 6%;  top: 14%; }
+  .bl2 { left: calc(6% + var(--px) * 16); top: 14%; }
+  .bl3 { right: 8%; top: 20%; }
+
+  .block-frame { position: absolute; inset: 0; }
+  .block-b, .block-used { visibility: hidden; }
+  .block:not(.is-used) .block-a { animation: flash-a 1s steps(1) infinite; }
+  .block:not(.is-used) .block-b { animation: flash-b 1s steps(1) infinite; }
+  @keyframes flash-a { 0% { visibility: visible; } 50% { visibility: hidden; } }
+  @keyframes flash-b { 0% { visibility: hidden; } 50% { visibility: visible; } }
+  .block.is-used .block-a, .block.is-used .block-b { visibility: hidden; animation: none; }
+  .block.is-used .block-used { visibility: visible; }
+  .block.is-bumped { animation: bump 0.28s ease-out; }
+  @keyframes bump { 40% { transform: translateY(calc(var(--px) * -6)); } }
+
+  .block-coin {
+    position: absolute;
+    left: calc(var(--px) * 4);
+    top: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .block.is-bumped .block-coin { animation: coin-pop 0.9s ease-out forwards; }
+  .block-coin :global(svg) { animation: spin 0.5s steps(4) infinite; }
+  @keyframes coin-pop {
+    0%   { opacity: 1; transform: translateY(0); }
+    45%  { opacity: 1; transform: translateY(calc(var(--px) * -30)); }
+    100% { opacity: 0; transform: translateY(calc(var(--px) * -22)); }
+  }
+
+  /* The dino pops up out of the pipe (behind its lip), then says hello. */
+  .dino {
+    right: calc(6% + var(--px) * 4);
+    bottom: calc(var(--ground) + var(--px) * 28);
+    animation: dino-rise 1s steps(8) 1.2s both;
+  }
+  .dino-body { display: block; animation: dino-idle 1.2s steps(1) 2.4s infinite; }
+
+  @keyframes dino-rise {
+    from { transform: translateY(calc(var(--px) * 22)); }
+    to   { transform: translateY(0); }
+  }
+  @keyframes dino-idle { 50% { transform: translateY(calc(var(--px) * -1)); } }
+
+  .dino-bubble {
+    position: absolute;
+    z-index: 3;
+    right: calc(6% - var(--px) * 2);
+    bottom: calc(var(--ground) + var(--px) * 28 + var(--px) * 21 + 1.1rem);
+    width: min(15.5rem, calc(100% - 2rem));
+    margin: 0;
+    padding: 0.8rem 0.9rem;
+    font-family: 'Press Start 2P', var(--font-mono);
+    font-size: 0.55rem;
+    line-height: 1.9;
+    color: #000;
+    background: #fff;
+    border: 4px solid #000;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+    animation: bubble-in 0.25s steps(4) 2.3s both;
+  }
+
+  /* Tail pointing down at the dino. */
+  .dino-bubble::after {
+    content: '';
+    position: absolute;
+    right: calc(var(--px) * 12);
+    bottom: -11px;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-right: 4px solid #000;
+    border-bottom: 4px solid #000;
+    transform: rotate(45deg);
+  }
+
+  .dino-bubble p { margin: 0; }
+  .dino-bubble p + p { margin-top: 0.8rem; padding-top: 0.8rem; border-top: 3px dotted #000; }
+
+  .dino-bubble.is-gone { display: none; }
+
+  @keyframes bubble-in {
+    from { transform: scale(0.4); opacity: 0; transform-origin: 85% 100%; }
+    to   { transform: scale(1); opacity: 1; transform-origin: 85% 100%; }
+  }
+
+  /* Travel-note pop-up: an NES-style dialogue box that types itself out. */
+  .popup {
+    position: absolute;
+    z-index: 4;
+    width: min(22rem, calc(100% - 1.5rem));
+    padding: 1rem 1.1rem 1.35rem;
+    font-family: 'Press Start 2P', var(--font-mono);
+    color: #ffffff;
+    background: #000;
+    border: 4px solid #ffffff;
+    box-shadow: 0 0 0 4px #000, 6px 10px 0 4px rgba(0, 0, 0, 0.25);
+    animation: popup-in 0.18s steps(4) both;
+    cursor: pointer;
+  }
+
+  .popup[hidden] { display: none; }
+
+  .popup-title {
+    margin: 0 1.5rem 0.75rem 0;
+    font-size: 0.62rem;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    color: #fcd020;
+    text-transform: uppercase;
+  }
+
+  .popup-text {
+    margin: 0;
+    min-height: 3.6em;
+    font-size: 0.6rem;
+    line-height: 2;
+    color: #ffffff;
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.6rem;
+    padding: 0 0.25rem;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  .popup-close:hover, .popup-close:focus-visible { color: #fcd020; outline: none; }
+
+  .popup-next {
+    position: absolute;
+    right: 0.9rem;
+    bottom: 0.45rem;
+    font-size: 0.6rem;
+    color: #ffffff;
+    animation: popup-blink 0.8s steps(1) infinite;
+  }
+
+  .popup.is-typing .popup-next { visibility: hidden; animation: none; }
+
+  @keyframes popup-in {
+    from { transform: scale(0.6); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  @keyframes popup-blink { 50% { visibility: hidden; } }
+
+  .block[aria-expanded='true'] { filter: drop-shadow(0 0 calc(var(--px) * 3) rgba(252, 216, 96, 0.9)); }
+  .block:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; }
+
+  @media (max-width: 640px) {
+    .scene { --px: 2px; }
+    .coin, .b2, .hill-small { display: none; }
+
+    /* Blocks sit in a row at the top right, beside the title; the note
+       opens as a box above the ground instead of beside its block. */
+    .bl1, .bl2, .bl3 { left: auto; top: 0.75rem; }
+    .bl3 { right: var(--gutter); }
+    .bl2 { right: calc(var(--gutter) + var(--px) * 18); }
+    .bl1 { right: calc(var(--gutter) + var(--px) * 36); }
+
+    .popup {
+      left: 50% !important;
+      top: auto !important;
+      bottom: calc(var(--ground) + 0.75rem);
+      margin-left: calc(min(22rem, 100% - 1.5rem) / -2);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .popup, .popup-next { animation: none; }
+    .dino, .dino-body, .dino-bubble { animation: none; }
+    .cloud { animation: none; transform: translateX(10vw); }
+    .cloud.c2 { transform: translateX(45vw); }
+    .cloud.c3 { transform: translateX(70vw); }
+    .cloud.c4 { transform: translateX(28vw); }
+    .coin, .coin :global(svg), .star-run, .star-hop,
+    .block:not(.is-used) .block-a, .block:not(.is-used) .block-b { animation: none; }
+    .star-run { display: none; }
+  }
+
+  .travel {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Nav sits above in normal flow; leave room for it and the hint so
+       the globe fills one screen without pushing the hint below the fold. */
+    min-height: calc(100svh - 4.75rem);
+    /* Bottom padding clears the brick ground so the globe "stands" on it. */
+    padding-block: clamp(1.25rem, 3vw, 2rem) calc(var(--ground) + 1.25rem);
+    pointer-events: none;
+  }
+
+  .travel > * { pointer-events: auto; }
+
+  .travel-title {
+    align-self: flex-start;
+    margin: 0;
+    font-family: 'Press Start 2P', var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    text-shadow: 3px 3px 0 #000;
+  }
+
+  .travel-title::before { background: #ffffff; }
+
+  .globe-stage {
+    flex: 1 1 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  }
+
+  /* The holder stays put; the canvas floats up and down inside it while
+     the shadow beneath shrinks and fades as the globe rises. */
+  .globe-holder {
+    position: relative;
+    /* Square, as large as the free height and width allow. */
+    width: min(100%, calc(100svh - 12rem - var(--ground)));
+    min-width: 260px;
+    aspect-ratio: 1;
+  }
+
+  .globe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+    /* The globe owns touch drags; the rest of the page still scrolls. */
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 50%;
+    animation: globe-float 5s ease-in-out infinite;
+  }
+
+  .globe-shadow {
+    position: absolute;
+    left: 50%;
+    bottom: 1%;
+    width: 58%;
+    height: 5%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0));
+    transform: translateX(-50%);
+    animation: shadow-breathe 5s ease-in-out infinite;
+  }
+
+  @keyframes globe-float {
+    0%, 100% { transform: translateY(6px); }
+    50% { transform: translateY(-14px); }
+  }
+
+  @keyframes shadow-breathe {
+    0%, 100% { transform: translateX(-50%) scaleX(1); opacity: 1; }
+    50% { transform: translateX(-50%) scaleX(0.82); opacity: 0.6; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .globe, .globe-shadow { animation: none; }
+  }
+
+  .globe.is-dragging { cursor: grabbing; }
+
+  .globe:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 6px;
+  }
+
+  .hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: var(--space-2) 0 0;
+    padding: 0.6rem 0.9rem;
+    font-family: 'Press Start 2P', var(--font-mono);
+    font-size: 0.6rem;
+    line-height: 1.6;
+    color: #ffffff;
+    background: #000;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 3px #000;
+  }
+
+  .hint-key {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    color: #fcd020;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<script>
+  import { geoOrthographic, geoPath, geoCircle, geoDistance } from 'd3-geo';
+  import { feature } from 'topojson-client';
+  import landTopology from 'world-atlas/land-110m.json';
+
+  type Place = { name: string; lon: number; lat: number };
+
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-globe]');
+  const ctx = canvas?.getContext('2d');
+
+  if (canvas && ctx) {
+    const places: Place[] = JSON.parse(canvas.dataset.places ?? '[]');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const land = feature(landTopology as any, (landTopology as any).objects.land) as any;
+    const poleSouth = geoCircle().center([0, -90]).radius(30)();
+    const poleNorth = geoCircle().center([0, 90]).radius(14)();
+    const sphere = { type: 'Sphere' } as const;
+
+    const css = getComputedStyle(document.documentElement);
+    const v = (name: string, fallback: string) => css.getPropertyValue(name).trim() || fallback;
+    const colors = {
+      ink: v('--ink', '#101010'),
+      accent: v('--accent', '#0057ff'),
+      bg: v('--bg', '#fdfbf9'),
+      ocean: v('--bg-soft', '#f6f1e9'),
+      land: v('--ink-faint', '#726c60'),
+      line: v('--line-strong', 'rgba(16,16,16,0.22)'),
+      body: v('--font-body', 'system-ui, sans-serif'),
+    };
+
+    // Rotation is [lambda, phi]: the point at the center of the view is
+    // (-lambda, -phi). Starts over the Atlantic so a few markers are in
+    // sight while Asia and Australia wait around the far side.
+    let lambda = 60;
+    let phi = -25;
+    const SPIN_DEG_PER_SEC = 5; // slow, eastward, like the real thing
+    let spin = 0; // current spin speed, eased in and out
+    let prevTime = 0;
+    let vx = 0; // degrees per frame, for inertia after a drag
+    let vy = 0;
+    let dragging = false;
+    let moved = false;
+    let last = { x: 0, y: 0, t: 0 };
+    let hovered = -1;
+    let size = 0;
+    let dpr = 1;
+    let radius = 0;
+
+    const projection = geoOrthographic().clipAngle(90).precision(0.4);
+    const path = geoPath(projection, ctx);
+
+    function resize() {
+      const rect = canvas!.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+      size = Math.round(rect.width);
+      canvas!.width = Math.round(rect.width * dpr);
+      canvas!.height = Math.round(rect.width * dpr);
+      radius = size / 2 - 30; // leave room for the atmosphere glow
+      projection.translate([size / 2, size / 2]).scale(radius);
+      dirty = true;
+    }
+
+    let dirty = true;
+
+    // Puffy clouds pinned to the globe, drifting slowly east. Seeded so
+    // the sky looks the same on every visit.
+    function rng(seed: number) {
+      return () => {
+        seed |= 0;
+        seed = (seed + 0x6d2b79f5) | 0;
+        let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    const rand = rng(7);
+    const clouds = Array.from({ length: 26 }, () => {
+      const n = 3 + Math.floor(rand() * 3);
+      return {
+        lon: rand() * 360 - 180,
+        lat: (rand() - 0.5) * 130,
+        puffs: Array.from({ length: n }, (_, k) => ({
+          dx: (k - (n - 1) / 2) * 3.2 + (rand() - 0.5) * 1.5,
+          dy: (rand() - 0.5) * 1.6,
+          r: 2.6 + rand() * 2.2,
+        })),
+      };
+    });
+
+    function visibility(p: Place) {
+      // 1 at the center of the view, 0 at the horizon, <0 on the far side.
+      const d = geoDistance([p.lon, p.lat], [-lambda, -phi]);
+      return Math.cos(d);
+    }
+
+    function draw(time: number) {
+      const c = ctx!;
+      c.setTransform(dpr, 0, 0, dpr, 0, 0);
+      c.clearRect(0, 0, size, size);
+      projection.rotate([lambda, phi]);
+
+      const cx = size / 2;
+      const cy = size / 2;
+      const R = radius;
+      const TAU = Math.PI * 2;
+
+      // Atmosphere glow around the whole planet.
+      const glow = c.createRadialGradient(cx, cy, R * 0.96, cx, cy, R * 1.1);
+      glow.addColorStop(0, 'rgba(150,235,255,0.9)');
+      glow.addColorStop(1, 'rgba(150,235,255,0)');
+      c.fillStyle = glow;
+      c.beginPath();
+      c.arc(cx, cy, R * 1.1, 0, TAU);
+      c.fill();
+
+      // Everything on the surface is clipped to the sphere.
+      c.save();
+      c.beginPath();
+      path(sphere as any);
+      c.clip();
+
+      // Ocean: bright toy blue, lighter toward the upper left.
+      const ocean = c.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.1, cx, cy, R * 1.05);
+      ocean.addColorStop(0, '#54b8ff');
+      ocean.addColorStop(1, '#1d6be0');
+      c.fillStyle = ocean;
+      c.fillRect(0, 0, size, size);
+
+      // Shallow-water halo along every coast.
+      c.lineJoin = 'round';
+      c.beginPath();
+      path(land);
+      c.strokeStyle = 'rgba(140,230,255,0.22)';
+      c.lineWidth = 18;
+      c.stroke();
+      c.strokeStyle = 'rgba(140,230,255,0.5)';
+      c.lineWidth = 8;
+      c.stroke();
+
+      // Land: grass green with a darker outline, snow at the poles.
+      c.beginPath();
+      path(land);
+      c.fillStyle = '#62d13e';
+      c.fill();
+      c.strokeStyle = '#2b9139';
+      c.lineWidth = 2;
+      c.stroke();
+
+      c.save();
+      c.beginPath();
+      path(land);
+      c.clip();
+      const sun = c.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.05, cx - R * 0.35, cy - R * 0.4, R * 1.0);
+      sun.addColorStop(0, 'rgba(235,255,150,0.6)');
+      sun.addColorStop(1, 'rgba(235,255,150,0)');
+      c.fillStyle = sun;
+      c.fillRect(0, 0, size, size);
+      c.beginPath();
+      path(poleSouth as any);
+      path(poleNorth as any);
+      c.fillStyle = '#f4fbff';
+      c.fill();
+      c.restore();
+
+      // Clouds: a pale-blue underside, then bright white puffs.
+      const drift = reduceMotion ? 0 : time * 0.003;
+      const puffAt = (lon: number, lat: number, rDeg: number, dy: number, color: string) => {
+        const vis = Math.cos(geoDistance([lon, lat], [-lambda, -phi]));
+        if (vis < 0.03) return;
+        const pt = projection([lon, lat]);
+        if (!pt) return;
+        const r = rDeg * (Math.PI / 180) * R;
+        c.globalAlpha = Math.min(1, vis * 3) * 0.95;
+        c.beginPath();
+        c.ellipse(pt[0], pt[1] + dy * r, r * Math.max(0.2, vis), r, Math.atan2(pt[1] - cy, pt[0] - cx), 0, TAU);
+        c.fillStyle = color;
+        c.fill();
+      };
+      for (const cl of clouds) {
+        const lon = cl.lon + drift;
+        for (const q of cl.puffs) puffAt(lon + q.dx, cl.lat + q.dy, q.r, 0.28, '#b9dcff');
+        for (const q of cl.puffs) puffAt(lon + q.dx, cl.lat + q.dy, q.r, 0, '#ffffff');
+      }
+      c.globalAlpha = 1;
+
+      // Cel shading: a hard-edged shadow on the lower right, a cool rim
+      // of light, and a glossy highlight.
+      c.beginPath();
+      c.rect(0, 0, size, size);
+      c.arc(cx - R * 0.3, cy - R * 0.28, R * 1.1, 0, TAU, true);
+      c.fillStyle = 'rgba(18,40,150,0.32)';
+      c.fill('evenodd');
+
+      const rim = c.createRadialGradient(cx, cy, R * 0.82, cx, cy, R);
+      rim.addColorStop(0, 'rgba(150,235,255,0)');
+      rim.addColorStop(1, 'rgba(150,235,255,0.55)');
+      c.fillStyle = rim;
+      c.fillRect(0, 0, size, size);
+      c.restore();
+
+      c.save();
+      c.translate(cx - R * 0.4, cy - R * 0.5);
+      c.rotate(-0.65);
+      c.beginPath();
+      c.ellipse(0, 0, R * 0.17, R * 0.07, 0, 0, TAU);
+      c.fillStyle = 'rgba(255,255,255,0.6)';
+      c.fill();
+      c.restore();
+      c.beginPath();
+      c.arc(cx - R * 0.21, cy - R * 0.63, R * 0.028, 0, TAU);
+      c.fillStyle = 'rgba(255,255,255,0.55)';
+      c.fill();
+
+      // Bold outline, cartoon style.
+      c.beginPath();
+      path(sphere as any);
+      c.strokeStyle = '#123a9c';
+      c.lineWidth = 4;
+      c.stroke();
+
+      // Markers. With this many, names would pile up, so every marker is
+      // a small dot and only the active one (hovered, tapped) gets its
+      // pulse ring and name, drawn last so it sits on top.
+      const shown = places
+        .map((p, i) => ({ p, i, vis: visibility(p) }))
+        .filter((m) => m.vis > 0)
+        .sort((a, b) => Number(a.i === hovered) - Number(b.i === hovered));
+
+      c.font = `600 12px ${colors.body}`;
+      c.textBaseline = 'middle';
+
+      for (const m of shown) {
+        const pt = projection([m.p.lon, m.p.lat]);
+        if (!pt) continue;
+        const [x, y] = pt;
+        const fade = Math.min(1, m.vis * 4);
+        const active = m.i === hovered;
+
+        if (active) {
+          const phase = reduceMotion ? 0.3 : (time / 1600) % 1;
+          c.beginPath();
+          c.arc(x, y, 5 + phase * 16, 0, Math.PI * 2);
+          c.strokeStyle = '#e52521';
+          c.globalAlpha = (1 - phase) * 0.5 * fade;
+          c.lineWidth = 1.5;
+          c.stroke();
+        }
+
+        c.globalAlpha = fade;
+        c.beginPath();
+        c.arc(x, y, active ? 6.5 : 4, 0, Math.PI * 2);
+        c.fillStyle = '#e52521';
+        c.fill();
+        c.lineWidth = active ? 2.5 : 2;
+        c.strokeStyle = '#ffffff';
+        c.stroke();
+
+        if (active) {
+          const w = c.measureText(m.p.name).width + 20;
+          const h = 24;
+          let lx = x + 12;
+          if (lx + w > size - 4) lx = x - 12 - w; // flip left near the edge
+          c.globalAlpha = fade;
+          c.beginPath();
+          c.roundRect(lx, y - h / 2, w, h, 12);
+          c.fillStyle = '#ffffff';
+          c.fill();
+          c.lineWidth = 2;
+          c.strokeStyle = '#101010';
+          c.stroke();
+          c.fillStyle = '#101010';
+          c.fillText(m.p.name, lx + 10, y + 0.5);
+        }
+        c.globalAlpha = 1;
+      }
+    }
+
+    function frame(time: number) {
+      const dt = Math.min(0.05, prevTime ? (time - prevTime) / 1000 : 0);
+      prevTime = time;
+
+      // Slow constant spin. It eases to a stop while you drag, coast, or
+      // have a place's name open, and eases back in afterward.
+      const holding = dragging || hovered !== -1 || Math.abs(vx) > 0.05 || Math.abs(vy) > 0.05;
+      const target = reduceMotion || holding ? 0 : SPIN_DEG_PER_SEC;
+      spin += (target - spin) * Math.min(1, dt * 2.5);
+      if (spin > 0.001) {
+        lambda += spin * dt;
+        dirty = true;
+      }
+
+      // Coast after a drag is released, easing to a stop.
+      if (!dragging && (Math.abs(vx) > 0.01 || Math.abs(vy) > 0.01)) {
+        lambda += vx;
+        phi = Math.max(-90, Math.min(90, phi + vy));
+        vx *= 0.94;
+        vy *= 0.94;
+        dirty = true;
+      }
+      // Clouds drift, so redraw every frame unless motion is reduced.
+      if (dirty || !reduceMotion) {
+        draw(time);
+        dirty = false;
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // Nearest visible marker within reach of a screen point, or -1.
+    function pick(clientX: number, clientY: number) {
+      const rect = canvas!.getBoundingClientRect();
+      const mx = ((clientX - rect.left) / rect.width) * size;
+      const my = ((clientY - rect.top) / rect.height) * size;
+      let hit = -1;
+      let best = 14;
+      places.forEach((p, i) => {
+        if (visibility(p) <= 0) return;
+        const pt = projection([p.lon, p.lat]);
+        if (!pt) return;
+        const d = Math.hypot(pt[0] - mx, pt[1] - my);
+        if (d < best) {
+          best = d;
+          hit = i;
+        }
+      });
+      return hit;
+    }
+
+    // Pointer drag: the surface follows the finger/cursor.
+    const degPerPx = () => (180 / Math.PI) / radius;
+
+    canvas.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      moved = false;
+      vx = vy = 0;
+      last = { x: e.clientX, y: e.clientY, t: performance.now() };
+      canvas.setPointerCapture(e.pointerId);
+      canvas.classList.add('is-dragging');
+    });
+
+    canvas.addEventListener('pointermove', (e) => {
+      if (dragging) {
+        const dx = e.clientX - last.x;
+        const dy = e.clientY - last.y;
+        if (Math.abs(dx) + Math.abs(dy) > 2) moved = true;
+        const k = degPerPx();
+        lambda += dx * k;
+        phi = Math.max(-90, Math.min(90, phi - dy * k));
+        vx = dx * k;
+        vy = -dy * k;
+        last = { x: e.clientX, y: e.clientY, t: performance.now() };
+        dirty = true;
+      } else {
+        // Hover: highlight the marker under the cursor.
+        const hit = pick(e.clientX, e.clientY);
+        if (hit !== hovered) {
+          hovered = hit;
+          dirty = true;
+        }
+      }
+    });
+
+    const endDrag = (e: PointerEvent) => {
+      if (!dragging) return;
+      dragging = false;
+      canvas.classList.remove('is-dragging');
+      if (!moved) {
+        hovered = pick(e.clientX, e.clientY);
+        dirty = true;
+      }
+      // A pause before release means no fling.
+      if (performance.now() - last.t > 80 || reduceMotion) vx = vy = 0;
+      if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+    };
+    canvas.addEventListener('pointerup', endDrag);
+    canvas.addEventListener('pointercancel', endDrag);
+    canvas.addEventListener('pointerleave', () => {
+      if (!dragging && hovered !== -1) {
+        hovered = -1;
+        dirty = true;
+      }
+    });
+
+    // Keyboard: arrows rotate in steps.
+    canvas.addEventListener('keydown', (e) => {
+      const step = 8;
+      if (e.key === 'ArrowLeft') lambda -= step;
+      else if (e.key === 'ArrowRight') lambda += step;
+      else if (e.key === 'ArrowUp') phi = Math.min(90, phi + step);
+      else if (e.key === 'ArrowDown') phi = Math.max(-90, phi - step);
+      else return;
+      e.preventDefault();
+      dirty = true;
+    });
+
+    new ResizeObserver(resize).observe(canvas);
+    resize();
+    requestAnimationFrame(frame);
+  }
+</script>
+
+<script>
+  // Question blocks: hit one and it bumps, pays out a coin the first time,
+  // and opens a small typed-out note about the trip.
+  const scene = document.querySelector<HTMLElement>('.scene');
+  const popup = document.querySelector<HTMLElement>('[data-popup]');
+  const blocks = Array.from(document.querySelectorAll<HTMLButtonElement>('.block'));
+  const bubble = document.querySelector<HTMLElement>('[data-bubble]');
+  // The dino's hints have done their job once a block has been hit and the
+  // Earth has been touched.
+  const tried = { block: false, globe: false };
+  const checkHints = () => {
+    if (tried.block && tried.globe) bubble?.classList.add('is-gone');
+  };
+  blocks.forEach((b) =>
+    b.addEventListener('click', () => {
+      tried.block = true;
+      checkHints();
+    }, { once: true })
+  );
+  document.querySelector('[data-globe]')?.addEventListener('pointerdown', () => {
+    tried.globe = true;
+    checkHints();
+  }, { once: true });
+
+  if (scene && popup && blocks.length) {
+    const titleEl = popup.querySelector<HTMLElement>('.popup-title')!;
+    const textEl = popup.querySelector<HTMLElement>('.popup-text')!;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isNarrow = () => window.matchMedia('(max-width: 640px)').matches;
+    let active: HTMLButtonElement | null = null;
+    let typer = 0;
+    let fullText = '';
+
+    const stopTyping = () => {
+      window.clearInterval(typer);
+      typer = 0;
+      popup.classList.remove('is-typing');
+    };
+
+    const close = (returnFocus = false) => {
+      if (!active) return;
+      stopTyping();
+      popup.hidden = true;
+      active.setAttribute('aria-expanded', 'false');
+      if (returnFocus) active.focus();
+      active = null;
+    };
+
+    const place = (block: HTMLElement) => {
+      if (isNarrow()) {
+        popup.style.left = '';
+        popup.style.top = '';
+        return;
+      }
+      const sr = scene.getBoundingClientRect();
+      const br = block.getBoundingClientRect();
+      const pw = popup.offsetWidth;
+      const ph = popup.offsetHeight;
+      let left = br.left - sr.left + br.width / 2 - pw / 2;
+      left = Math.max(12, Math.min(left, sr.width - pw - 12));
+      let top = br.bottom - sr.top + 14;
+      if (top + ph > sr.height - 12) top = br.top - sr.top - ph - 14;
+      popup.style.left = `${left}px`;
+      popup.style.top = `${top}px`;
+    };
+
+    const open = (block: HTMLButtonElement) => {
+      if (active && active !== block) active.setAttribute('aria-expanded', 'false');
+      active = block;
+      block.setAttribute('aria-expanded', 'true');
+      titleEl.textContent = block.dataset.title ?? '';
+      fullText = block.dataset.text ?? '';
+      textEl.textContent = '';
+      popup.hidden = false;
+      // Restart the pop-in animation.
+      popup.style.animation = 'none';
+      void popup.offsetWidth;
+      popup.style.animation = '';
+      // Reserve the full height first so the box doesn't grow as it types.
+      textEl.textContent = fullText;
+      place(block);
+      textEl.textContent = '';
+
+      stopTyping();
+      if (reduceMotion) {
+        textEl.textContent = fullText;
+      } else {
+        popup.classList.add('is-typing');
+        let n = 0;
+        typer = window.setInterval(() => {
+          n++;
+          textEl.textContent = fullText.slice(0, n);
+          if (n >= fullText.length) stopTyping();
+        }, 28);
+      }
+      popup.querySelector<HTMLButtonElement>('.popup-close')?.focus({ preventScroll: true });
+    };
+
+    blocks.forEach((block) => {
+      block.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (active === block) {
+          close();
+          return;
+        }
+        if (!block.classList.contains('is-used')) {
+          block.classList.add('is-bumped');
+          window.setTimeout(() => block.classList.add('is-used'), 300);
+          window.setTimeout(() => block.classList.remove('is-bumped'), 1000);
+        }
+        open(block);
+      });
+    });
+
+    // Clicking the box finishes the text; the × or Escape closes it.
+    popup.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (typer) {
+        stopTyping();
+        textEl.textContent = fullText;
+      }
+    });
+    popup.querySelector('.popup-close')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      close(true);
+    });
+    document.addEventListener('click', () => close());
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close(true);
+    });
+    window.addEventListener('resize', () => active && place(active));
+  }
+</script>

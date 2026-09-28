@@ -24,11 +24,135 @@ const photos = [
   { n: '17', w: 2500, h: 3750, alt: 'Several weathered small boats resting on a sandy shore beside piles of conch shells' },
   { n: '18', w: 2500, h: 3750, alt: 'A minimalist seascape with a single white sailboat on the horizon above a pale tidal flat' },
 ];
+
+// Cartoon darkroom props, drawn inline as SVG (thick outlines, flat colors).
+const OUT = 'stroke="#000" stroke-width="3" stroke-linejoin="round"';
+
+const lampSvg = `<svg viewBox="0 0 140 230" width="110" style="display:block;overflow:visible" aria-hidden="true">
+  <path d="M54 4h32v18H54z" fill="#1c1c1c" ${OUT}/>
+  <path d="M22 150C26 105 52 84 70 84c18 0 44 21 48 66z" fill="#2f5d50" stroke="#000" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M36 128c6-16 18-26 28-30" stroke="#8fd3bd" stroke-width="5" stroke-linecap="round" fill="none" opacity=".55"/>
+  <ellipse cx="70" cy="150" rx="48" ry="9" fill="#ffe7a1" stroke="#000" stroke-width="4"/>
+  <circle cx="70" cy="155" r="11" fill="#fff6d0" ${OUT}/>
+  <path d="M70 22v62" stroke="#000" stroke-width="6"/>
+</svg>`;
+
+const safelightSvg = `<svg viewBox="0 0 80 112" width="72" style="display:block;overflow:visible" aria-hidden="true">
+  <rect x="33" y="0" width="14" height="22" fill="#4a4a4a" ${OUT}/>
+  <rect x="8" y="20" width="64" height="70" rx="9" fill="#262626" stroke="#000" stroke-width="4"/>
+  <rect x="17" y="30" width="46" height="50" rx="6" fill="#ff3b2f" ${OUT}/>
+  <path d="M22 40h36M22 50h36M22 60h36M22 70h36" stroke="#a11810" stroke-width="3" stroke-linecap="round"/>
+  <path d="M24 36c6-4 12-5 18-5" stroke="#ffd0c8" stroke-width="4" stroke-linecap="round" fill="none" opacity=".7"/>
+  <rect x="24" y="90" width="32" height="10" rx="3" fill="#4a4a4a" ${OUT}/>
+</svg>`;
+
+const canistersSvg = `<svg viewBox="0 0 130 100" width="120" style="display:block;overflow:visible" aria-hidden="true">
+  <g>
+    <rect x="8" y="28" width="38" height="66" rx="5" fill="#26221d" ${OUT}/>
+    <rect x="5" y="18" width="44" height="14" rx="4" fill="#8f949b" ${OUT}/>
+    <rect x="20" y="8" width="14" height="12" rx="3" fill="#8f949b" ${OUT}/>
+    <rect x="13" y="46" width="28" height="26" rx="2" fill="#e8d9b0" stroke="#000" stroke-width="2.5"/>
+    <path d="M17 54h20M17 60h14M17 66h18" stroke="#26221d" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(58 20) rotate(8 20 40)">
+    <rect x="8" y="32" width="38" height="52" rx="5" fill="#31291f" ${OUT}/>
+    <rect x="5" y="22" width="44" height="14" rx="4" fill="#a0a5ac" ${OUT}/>
+    <rect x="20" y="12" width="14" height="12" rx="3" fill="#a0a5ac" ${OUT}/>
+    <rect x="13" y="48" width="28" height="22" rx="2" fill="#dcc48e" stroke="#000" stroke-width="2.5"/>
+    <path d="M17 56h20M17 62h12" stroke="#31291f" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+</svg>`;
+
+const traySvg = `<svg viewBox="0 0 160 76" width="150" style="display:block;overflow:visible" aria-hidden="true">
+  <path d="M8 26h144l-14 44H22z" fill="#5a5f66" ${OUT}/>
+  <path d="M18 32h124l-9 28H27z" fill="#6f4a2a" opacity=".95"/>
+  <path d="M30 40c10-4 20 4 30 0s20 4 30 0 20 4 30 0" stroke="#a5703c" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <g transform="rotate(-14 96 30)"><rect x="80" y="4" width="36" height="40" rx="2" fill="#111" ${OUT}/><rect x="86" y="10" width="24" height="12" fill="#3b4a5c"/><rect x="86" y="26" width="24" height="12" fill="#5c4632"/></g>
+</svg>`;
+
+const cameraSvg = `<svg viewBox="0 0 132 104" width="132" style="display:block;overflow:visible" aria-hidden="true">
+  <path d="M46 28l8-18h28l8 18z" fill="#8f949b" ${OUT}/>
+  <rect x="98" y="16" width="18" height="14" rx="2" fill="#dccdaa" ${OUT}/>
+  <rect x="22" y="16" width="16" height="12" rx="3" fill="#c0392b" ${OUT}/>
+  <rect x="6" y="28" width="120" height="68" rx="11" fill="#2b2b2e" stroke="#000" stroke-width="4"/>
+  <path d="M6 44V39a11 11 0 0 1 11-11h98a11 11 0 0 1 11 11v5z" fill="#7d5a38" stroke="#000" stroke-width="4" stroke-linejoin="round"/>
+  <circle cx="66" cy="66" r="26" fill="#16181d" stroke="#000" stroke-width="4"/>
+  <circle cx="66" cy="66" r="17" fill="#27406a" ${OUT}/>
+  <circle cx="66" cy="66" r="7" fill="#0b0d12"/>
+  <circle cx="59" cy="58" r="4" fill="#fff" opacity=".75"/>
+</svg>`;
+
+// Film strip hanging from the ceiling.
+function stripSvg(tints: string[]) {
+  const holes = Array.from({ length: 24 }, (_, i) => `<rect x="3" y="${8 + i * 12}" width="5" height="7" rx="1.5" fill="#d9cbb0" fill-opacity=".55"/><rect x="48" y="${8 + i * 12}" width="5" height="7" rx="1.5" fill="#d9cbb0" fill-opacity=".55"/>`).join('');
+  const frames = tints.map((t, i) => `<rect x="11" y="${12 + i * 70}" width="34" height="58" rx="2" fill="${t}"/><rect x="11" y="${12 + i * 70}" width="34" height="58" rx="2" fill="url(#g)" opacity=".5"/>`).join('');
+  return `<svg viewBox="0 0 56 300" width="52" style="display:block;overflow:visible" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity=".4"/></linearGradient></defs><rect x="0" y="0" width="56" height="300" fill="#0a0806" ${OUT}/>${holes}${frames}</svg>`;
+}
+const stripA = stripSvg(['#38505a', '#5a4630', '#2f3f4a', '#5e4a3a']);
+const stripB = stripSvg(['#5a4a3a', '#33454f', '#5f3f33', '#2e3d46']);
+
+// Dust drifting up through the light.
+const motes = Array.from({ length: 18 }, (_, i) => ({
+  x: (i * 53 + 11) % 100,
+  size: 2 + (i % 3),
+  dur: 16 + ((i * 7) % 14),
+  delay: -((i * 5) % 20),
+}));
 ---
-<BaseLayout title="Photos — Julian Liao" description="A street and travel photography portfolio by Julian Liao.">
+<BaseLayout
+  title="Photos — Julian Liao"
+  description="A street and travel photography portfolio by Julian Liao."
+>
+  <!-- Film-look layers: all fixed, all pointer-transparent, all behind the
+       photos' own size and layout (nothing here changes how big a photo is). -->
+  <div class="film-vignette" aria-hidden="true"></div>
+  <div class="film-leak" aria-hidden="true"></div>
+  <div class="film-scratches" aria-hidden="true"></div>
+  <div class="film-grain" aria-hidden="true"></div>
+  <div class="film-safelight" aria-hidden="true"></div>
+  <div class="film-flash" aria-hidden="true"></div>
+
+  <!-- The black room: walls, floor, props and dust, fixed behind everything. -->
+  <div class="room" aria-hidden="true">
+    <div class="room-wall"></div>
+    <div class="room-floor"></div>
+    <div class="red-glow"></div>
+    <span class="prop safelight" set:html={safelightSvg} />
+    <span class="prop strip strip-l" set:html={stripA} />
+    <span class="prop strip strip-r" set:html={stripB} />
+    <span class="prop canisters" set:html={canistersSvg} />
+    <span class="prop tray" set:html={traySvg} />
+    <span class="prop camera" set:html={cameraSvg} />
+    {motes.map((m) => (
+      <i class="mote" style={`left:${m.x}%;width:${m.size}px;height:${m.size}px;animation-duration:${m.dur}s;animation-delay:${m.delay}s`}></i>
+    ))}
+  </div>
+
   <section class="wrap photos-head">
+    <!-- Clothesline of prints across the top, and a swinging work lamp. -->
+    <div class="hang" aria-hidden="true">
+      <svg class="line" viewBox="0 0 1000 70" preserveAspectRatio="none"><path d="M0 4Q500 60 1000 4" fill="none" stroke="#7a6a52" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>
+      <div class="print p1" style="left:10%;top:12px"><span class="pin"></span><span class="pic"></span></div>
+      <div class="print p2" style="left:27%;top:24px"><span class="pin"></span><span class="pic"></span></div>
+      <div class="print p3" style="left:44%;top:29px"><span class="pin"></span><span class="pic"></span></div>
+      <div class="print p4" style="left:61%;top:27px"><span class="pin"></span><span class="pic"></span></div>
+      <div class="lamp">
+        <span class="cord"></span>
+        <span set:html={lampSvg} />
+        <span class="cone"></span>
+      </div>
+    </div>
+
+    <p class="edge-print" aria-hidden="true"><span class="tri">&#9656;</span> FRAMES 01&ndash;{String(photos.length).padStart(2, '0')} <span class="tri">&#9656;</span></p>
     <p class="eyebrow">Photos</p>
-    <h1>Street &amp; travel photography</h1>
+    <div class="title-wrap">
+      <h1>Street &amp; travel photography</h1>
+      <div class="sign" aria-hidden="true">
+        <span class="nail"></span>
+        <svg class="chains" viewBox="0 0 100 28" preserveAspectRatio="none"><path d="M50 0 12 28M50 0 88 28" fill="none" stroke="#a89c86" stroke-width="2.5" stroke-dasharray="4 3" vector-effect="non-scaling-stroke"/></svg>
+        <div class="board"><span class="board-1">Darkroom</span><span class="board-2">in Use</span></div>
+      </div>
+    </div>
     <p class="hint">
       <span class="hint-key" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg>
@@ -49,22 +173,417 @@ const photos = [
           decoding="async"
           data-zoomable
         />
-        <figcaption aria-hidden="true">{p.n}</figcaption>
+        <figcaption aria-hidden="true"><span class="tri">&#9656;</span> {p.n}A</figcaption>
       </figure>
     ))}
   </section>
 </BaseLayout>
 
+<!-- Darkroom palette for this page only: every var the nav, footer and text
+     use is redefined, so they all follow along. -->
+<style is:global>
+  :root {
+    --bg: #0c0a08;
+    --bg-soft: #13100d;
+    --bg-elev: #1a1612;
+    --ink: #ece2cf;
+    --ink-soft: #cbbfa8;
+    --ink-faint: #93897a;
+    --accent: #e9853a;
+    --accent-light: #f2a35c;
+    --accent-ink: #0c0a08;
+    --accent-soft: rgba(233, 133, 58, 0.16);
+    --line: rgba(236, 226, 207, 0.12);
+    --line-strong: rgba(236, 226, 207, 0.28);
+  }
+  html { background: #0c0a08; color-scheme: dark; }
+  body { background: transparent; }
+</style>
+
 <style>
+  /* --- Film layers ------------------------------------------------- */
+  .film-vignette, .film-leak, .film-scratches, .film-grain, .film-safelight, .film-flash {
+    position: fixed;
+    pointer-events: none;
+  }
+
+  .film-vignette {
+    inset: 0;
+    z-index: 21;
+    background: radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(0, 0, 0, 0.55) 100%);
+  }
+
+  /* Warm light leaking in at the edges, drifting slowly. */
+  .film-leak {
+    inset: 0;
+    z-index: 22;
+    mix-blend-mode: screen;
+    opacity: 0.32;
+    background:
+      radial-gradient(ellipse 38% 55% at 0% 30%, rgba(255, 96, 40, 0.75), transparent 70%),
+      radial-gradient(ellipse 30% 40% at 100% 75%, rgba(255, 170, 60, 0.6), transparent 70%);
+    animation: leak 14s ease-in-out infinite alternate;
+  }
+  @keyframes leak {
+    from { transform: translate3d(-2%, 0, 0) scale(1); opacity: 0.22; }
+    to   { transform: translate3d(3%, -2%, 0) scale(1.08); opacity: 0.4; }
+  }
+
+  /* Dust and scratches: thin vertical lines that flick on and off. */
+  .film-scratches {
+    inset: 0;
+    z-index: 23;
+    opacity: 0;
+    background:
+      linear-gradient(90deg, transparent 12%, rgba(255, 240, 215, 0.55) 12.08%, transparent 12.2%),
+      linear-gradient(90deg, transparent 47%, rgba(255, 240, 215, 0.35) 47.06%, transparent 47.16%),
+      linear-gradient(90deg, transparent 81%, rgba(255, 240, 215, 0.5) 81.07%, transparent 81.18%);
+    animation: scratch 9s steps(1) infinite;
+  }
+  @keyframes scratch {
+    0%   { opacity: 0; background-position: 0 0; }
+    6%   { opacity: 0.55; background-position: 3vw 0; }
+    8%   { opacity: 0; }
+    31%  { opacity: 0.45; background-position: -5vw 0; }
+    32.5% { opacity: 0; }
+    58%  { opacity: 0.5; background-position: 9vw 0; }
+    59.5% { opacity: 0; }
+    83%  { opacity: 0.4; background-position: -2vw 0; }
+    84.5%, 100% { opacity: 0; }
+  }
+
+  /* Grain: noise tile, jittered in steps so it crawls like real film. */
+  .film-grain {
+    inset: -50%;
+    z-index: 24;
+    opacity: 0.16;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .96 0 0 0 0 .9 1.7 0 0 0 -.45'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    animation: grain 0.7s steps(1) infinite;
+    will-change: transform;
+  }
+  @keyframes grain {
+    0%   { transform: translate(0, 0); }
+    16%  { transform: translate(-6%, -9%); }
+    33%  { transform: translate(7%, 4%); }
+    50%  { transform: translate(-4%, 8%); }
+    66%  { transform: translate(5%, -6%); }
+    83%  { transform: translate(-8%, 2%); }
+  }
+
+  /* A warm safelight that follows the cursor. */
+  .film-safelight {
+    inset: 0;
+    z-index: 20;
+    mix-blend-mode: screen;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    background: radial-gradient(circle 300px at var(--mx, 50%) var(--my, 40%), rgba(255, 140, 60, 0.2), transparent 70%);
+  }
+  .film-safelight.is-on { opacity: 1; }
+
+  /* Camera flash when a frame is opened. */
+  .film-flash {
+    inset: 0;
+    z-index: 60;
+    background: #fff8ea;
+    opacity: 0;
+  }
+  .film-flash.go { animation: flash 0.45s ease-out; }
+  @keyframes flash {
+    0% { opacity: 0.85; }
+    100% { opacity: 0; }
+  }
+
+  /* --- The black room -------------------------------------------- */
+  .room {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* Back wall: black, with a pool of warm light from above. */
+  .room-wall {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 55% at 50% 0%, rgba(255, 200, 120, 0.13), transparent 70%),
+      radial-gradient(ellipse 90% 70% at 50% 40%, #16110d, #070605 80%);
+  }
+
+  /* Floor and baseboard. */
+  .room-floor {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 16vh;
+    border-top: 1px solid rgba(236, 226, 207, 0.08);
+    background:
+      repeating-linear-gradient(90deg, transparent 0 79px, rgba(236, 226, 207, 0.035) 79px 80px),
+      linear-gradient(to top, #030302, #0d0a07 75%);
+  }
+
+  /* Red safelight, glowing and breathing. */
+  .red-glow {
+    position: absolute;
+    right: calc(3vw + 36px - 260px);
+    top: calc(24vh + 55px - 260px);
+    width: 520px;
+    height: 520px;
+    background: radial-gradient(circle, rgba(255, 45, 30, 0.42), rgba(255, 45, 30, 0.12) 40%, transparent 68%);
+    mix-blend-mode: screen;
+    animation: red-pulse 3.4s ease-in-out infinite alternate;
+  }
+  @keyframes red-pulse {
+    from { opacity: 0.55; transform: scale(0.94); }
+    to   { opacity: 1; transform: scale(1.04); }
+  }
+
+  .prop { position: absolute; display: block; }
+  .safelight { right: 3vw; top: 24vh; }
+  .canisters { left: 1.4vw; bottom: 2.2vh; }
+  .tray { left: 9vw; bottom: 1vh; }
+  .camera { right: 1.6vw; bottom: 2.4vh; }
+  .strip { top: -6px; transform-origin: 50% 0; animation: sway 7s ease-in-out infinite alternate; }
+  .strip-l { left: 2.4vw; }
+  .strip-r { right: 8vw; animation-delay: -3s; animation-duration: 8.5s; }
+
+  /* Props live in the side margins, so they only appear when there is room. */
+  @media (max-width: 1299px) {
+    .canisters, .tray, .camera, .strip, .safelight, .red-glow { display: none; }
+  }
+  @media (max-width: 1599px) {
+    .tray { display: none; }
+  }
+
+  .mote {
+    position: absolute;
+    bottom: -10px;
+    border-radius: 50%;
+    background: rgba(255, 226, 170, 0.55);
+    animation: mote-rise linear infinite;
+  }
+  @keyframes mote-rise {
+    0%   { transform: translate(0, 0); opacity: 0; }
+    10%  { opacity: 0.8; }
+    50%  { transform: translate(18px, -55vh); }
+    90%  { opacity: 0.6; }
+    100% { transform: translate(-10px, -110vh); opacity: 0; }
+  }
+
+  @keyframes sway {
+    from { transform: rotate(-2.2deg); }
+    to   { transform: rotate(2.2deg); }
+  }
+
+  /* Clothesline and work lamp in the header. */
+  .hang {
+    position: absolute;
+    inset: 0 var(--gutter) auto;
+    height: 150px;
+    pointer-events: none;
+  }
+  .hang .line {
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%;
+    height: 70px;
+    overflow: visible;
+  }
+
+  .print {
+    position: absolute;
+    width: 58px;
+    padding: 6px 6px 16px;
+    background: #efe6d0;
+    border: 2px solid #000;
+    box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.5);
+    transform-origin: 50% 0;
+    animation: sway 3.6s ease-in-out infinite alternate;
+  }
+  .print.p2 { animation-delay: -1.2s; animation-duration: 4.2s; }
+  .print.p3 { animation-delay: -2.1s; animation-duration: 3.2s; }
+  .print.p4 { animation-delay: -0.6s; animation-duration: 4.8s; }
+
+  .pin {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    width: 9px;
+    height: 20px;
+    margin-left: -4.5px;
+    background: #c98a4b;
+    border: 2px solid #000;
+    border-radius: 2px;
+  }
+
+  /* Each print is a tiny cartoon scene. */
+  .pic {
+    position: relative;
+    display: block;
+    height: 46px;
+    overflow: hidden;
+    border: 2px solid #000;
+    background: linear-gradient(#2b3a55, #e58e4a 78%);
+  }
+  .pic::before {
+    content: '';
+    position: absolute;
+    left: -10%; right: -10%; bottom: 0;
+    height: 55%;
+    background: #1b1a18;
+    clip-path: polygon(0 100%, 22% 20%, 40% 62%, 62% 8%, 100% 100%);
+  }
+  .pic::after {
+    content: '';
+    position: absolute;
+    right: 8px; top: 6px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: #fff1b8;
+  }
+  .p2 .pic { background: linear-gradient(#3b5a5e, #d9b56a 80%); }
+  .p3 .pic { background: linear-gradient(#4a3550, #e6785a 78%); }
+  .p4 .pic { background: linear-gradient(#26414f, #9fd0c4 80%); }
+  .p2 .pic::before { clip-path: polygon(0 100%, 30% 35%, 55% 75%, 80% 25%, 100% 100%); }
+  .p3 .pic::before { clip-path: polygon(0 100%, 15% 55%, 45% 10%, 75% 60%, 100% 100%); }
+  .p4 .pic::before { clip-path: polygon(0 100%, 25% 45%, 50% 85%, 70% 30%, 100% 100%); }
+
+  .lamp {
+    position: absolute;
+    right: 3%;
+    top: 0;
+    width: 110px;
+    transform-origin: 50% 0;
+    animation: sway 5.5s ease-in-out infinite alternate;
+  }
+  .cord {
+    display: block;
+    width: 3px;
+    height: 46px;
+    margin: 0 auto;
+    background: #6b5d48;
+  }
+  .cone {
+    position: absolute;
+    left: 50%;
+    top: calc(46px + 118px);
+    width: 460px;
+    height: 460px;
+    margin-left: -230px;
+    background: linear-gradient(to bottom, rgba(255, 224, 150, 0.28), rgba(255, 224, 150, 0));
+    clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+    mix-blend-mode: screen;
+  }
+
+  /* --- Page ------------------------------------------------------- */
+  .edge-print {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--step-micro);
+    letter-spacing: 0.24em;
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(233, 133, 58, 0.55);
+    animation: edge-glow 3.2s ease-in-out infinite alternate;
+  }
+  .tri { display: inline-block; margin-inline: 0.15em; }
+  @keyframes edge-glow {
+    from { opacity: 0.65; }
+    to   { opacity: 1; }
+  }
+
   .photos-head {
-    padding-block: clamp(3.5rem, 9vw, 7rem) clamp(2rem, 4vw, 3rem);
+    position: relative;
+    z-index: 5;
+    padding-block: clamp(9rem, 13vw, 11rem) clamp(2rem, 4vw, 3rem);
+  }
+
+  .title-wrap {
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 0 var(--space-3);
   }
 
   .photos-head h1 {
     font-size: var(--step-display);
     line-height: 1;
     max-width: 14ch;
-    margin: 0 0 var(--space-3);
+    margin: 0;
+    text-shadow: 0 0 40px rgba(233, 133, 58, 0.18);
+  }
+
+  /* "Darkroom in Use" sign, hanging off the heading and swinging a little. */
+  .sign {
+    position: absolute;
+    top: 0.4rem;
+    left: calc(100% + 0.75rem);
+    width: 9.5rem;
+    transform-origin: 50% 0;
+    animation: sign-swing 4.8s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  .nail {
+    position: relative;
+    z-index: 2;
+    display: block;
+    width: 12px;
+    height: 12px;
+    margin: 0 auto -6px;
+    border-radius: 50%;
+    background: #9aa0a8;
+    border: 2px solid #000;
+  }
+
+  .chains {
+    display: block;
+    width: 72%;
+    height: 26px;
+    margin: 0 auto;
+    overflow: visible;
+  }
+
+  .board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.55rem 0.7rem 0.6rem;
+    text-align: center;
+    background: #130d0b;
+    border: 3px solid #e8dcc4;
+    border-radius: 6px;
+    outline: 2px solid #000;
+    box-shadow: 0 0 28px rgba(255, 59, 47, 0.32), 5px 8px 0 rgba(0, 0, 0, 0.55);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    color: #ff3b2f;
+    text-shadow: 0 0 8px rgba(255, 59, 47, 0.95), 0 0 22px rgba(255, 59, 47, 0.6);
+    animation: sign-flicker 6s steps(1) infinite;
+  }
+
+  .board-1 { font-size: 0.95rem; letter-spacing: 0.14em; line-height: 1.3; }
+  .board-2 { font-size: 0.68rem; letter-spacing: 0.34em; line-height: 1.5; }
+
+  @keyframes sign-swing {
+    from { transform: rotate(-4deg); }
+    to   { transform: rotate(4deg); }
+  }
+
+  @keyframes sign-flicker {
+    0%, 100% { opacity: 1; }
+    52% { opacity: 0.7; }
+    53% { opacity: 1; }
+    54% { opacity: 0.8; }
+    55% { opacity: 1; }
+  }
+
+  @media (max-width: 900px) {
+    /* No room beside the heading: hang it over the top right corner. */
+    .sign { left: auto; right: 0; top: -4.6rem; width: 7.5rem; }
+    .board-1 { font-size: 0.78rem; }
+    .board-2 { font-size: 0.56rem; }
   }
 
   .hint {
@@ -82,73 +601,86 @@ const photos = [
     width: 26px;
     height: 26px;
     border-radius: 999px;
-    border: 1px solid var(--line);
+    border: 1px solid var(--line-strong);
     color: var(--accent);
   }
 
+  /* Same columns, same gaps, same image sizes as the regular photos page. */
   .photo-grid {
+    position: relative;
+    z-index: 5;
     padding-block: 0 var(--space-6);
     column-count: 1;
     column-gap: clamp(0.75rem, 2vw, 1.5rem);
+    animation: projector 5.5s steps(1) infinite;
+  }
+
+  /* Faint projector flicker across the whole set. */
+  @keyframes projector {
+    0%, 100% { opacity: 1; }
+    41% { opacity: 0.97; }
+    42% { opacity: 1; }
+    77% { opacity: 0.975; }
+    78% { opacity: 1; }
   }
 
   .frame {
     position: relative;
     margin: 0 0 clamp(0.75rem, 2vw, 1.5rem);
     break-inside: avoid;
-    border-radius: var(--r);
+    border-radius: 2px;
     overflow: hidden;
-    background: var(--bg-elev);
+    background: #000;
+    box-shadow: 0 0 0 1px var(--line), 0 24px 44px -22px rgba(0, 0, 0, 0.95);
+    transition: box-shadow 0.5s var(--ease);
   }
 
   .frame img {
     width: 100%;
     height: auto;
-    transition: transform 1s var(--ease-out), opacity 0.6s var(--ease);
+    transition: transform 1.2s var(--ease-out), filter 1.8s ease-out, opacity 0.6s var(--ease);
+  }
+
+  /* "Developing": a frame starts dark, sepia and soft, and comes up to the
+     photo as it scrolls into view. At rest the photo is untouched. */
+  html.js .frame:not(.is-in) img {
+    filter: brightness(0.2) sepia(1) contrast(1.3) blur(3px);
   }
 
   .frame::after {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: inherit;
     box-shadow: inset 0 0 0 1px var(--line);
     pointer-events: none;
     transition: box-shadow 0.4s var(--ease);
   }
 
+  .frame:hover {
+    box-shadow: 0 0 0 1px rgba(233, 133, 58, 0.5), 0 0 34px -4px rgba(233, 133, 58, 0.35), 0 24px 44px -22px rgba(0, 0, 0, 0.95);
+  }
+
   .frame:hover img {
     transform: scale(1.035);
+    filter: brightness(1.07) contrast(1.05);
+    transition: transform 1.2s var(--ease-out), filter 0.5s ease-out;
   }
 
-  .frame:hover::after {
-    box-shadow: inset 0 0 0 1px var(--line-strong);
-  }
-
+  /* Frame number, printed like the edge markings on a roll. */
   .frame figcaption {
     position: absolute;
     left: 0.75rem;
-    bottom: 0.75rem;
-    font-family: var(--font-body);
-    font-weight: 600;
+    bottom: 0.65rem;
+    font-family: var(--font-mono);
     font-size: var(--step-micro);
-    letter-spacing: 0.18em;
-    /* Fixed light text on a fixed dark chip over the photo — stays
-       dark regardless of the page's own (now light) theme. */
-    color: #f5f3ef;
-    padding: 0.25rem 0.55rem;
-    border-radius: 999px;
-    background: rgba(8, 8, 10, 0.6);
-    backdrop-filter: blur(6px);
-    opacity: 0;
-    transform: translateY(6px);
-    transition: opacity 0.35s var(--ease), transform 0.35s var(--ease-out);
+    letter-spacing: 0.2em;
+    color: #ff9a45;
+    text-shadow: 0 0 8px rgba(255, 140, 50, 0.8);
+    opacity: 0.55;
+    transition: opacity 0.35s var(--ease);
   }
 
-  .frame:hover figcaption {
-    opacity: 1;
-    transform: none;
-  }
+  .frame:hover figcaption { opacity: 1; }
 
   @media (min-width: 640px) {
     .photo-grid { column-count: 2; }
@@ -157,4 +689,46 @@ const photos = [
   @media (min-width: 1040px) {
     .photo-grid { column-count: 3; }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .film-leak, .film-scratches, .film-grain, .edge-print, .photo-grid,
+    .red-glow, .strip, .print, .lamp, .mote, .sign, .board { animation: none; }
+    .mote { display: none; }
+    .film-scratches { display: none; }
+    html.js .frame:not(.is-in) img { filter: none; }
+  }
 </style>
+
+<script>
+  // Cursor safelight, scroll-driven sprocket holes, and a flash when a
+  // frame is opened. All cosmetic; the photos themselves are untouched.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const root = document.documentElement;
+  const light = document.querySelector<HTMLElement>('.film-safelight');
+  const flash = document.querySelector<HTMLElement>('.film-flash');
+
+  if (!reduce) {
+    let raf = 0;
+    let mx = 0;
+    let my = 0;
+    window.addEventListener('pointermove', (e) => {
+      mx = e.clientX;
+      my = e.clientY;
+      light?.classList.add('is-on');
+      if (!raf) {
+        raf = requestAnimationFrame(() => {
+          raf = 0;
+          root.style.setProperty('--mx', `${mx}px`);
+          root.style.setProperty('--my', `${my}px`);
+        });
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!(e.target as HTMLElement).closest?.('img[data-zoomable]') || !flash) return;
+      flash.classList.remove('go');
+      void flash.offsetWidth;
+      flash.classList.add('go');
+    });
+  }
+</script>
