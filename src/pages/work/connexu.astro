@@ -154,7 +154,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
           <div class="context-box">
             <p class="context-label">Context</p>
             <h2 class="context-heading">What is connexU?</h2>
-            <p>connexU is a Sydney-based B2B events company that runs marketplace-style conferences (Retail Tech Marketplace, Ecommerce Marketplace, Retail Property Marketplace, and others), connecting senior decision-makers with vendors through curated 1-to-1 meetings. I worked in-house at connexU over the summer of 2026, redesigning connexu.com.au end to end — the site today is a complete rebuild, not a refresh of the old one. I signed a confidentiality agreement covering the engagement, so this write-up sticks to research findings and outcomes rather than design-system or interface specifics.</p>
+            <p>connexU is a Sydney-based B2B events company that runs marketplace-style conferences (Retail Tech Marketplace, Ecommerce Marketplace, Retail Property Marketplace, and others), connecting senior decision-makers with vendors through curated 1-to-1 meetings. I worked in-house at connexU over the summer of 2026, redesigning connexu.com.au end to end — the site today is a complete rebuild, not a refresh of the old one. I signed a confidentiality agreement covering the engagement, so this write-up sticks to research findings and outcomes rather than design-system or interface specifics — the focus here is on what I learned from users and what changed.</p>
           </div>
         </div>
 
@@ -215,7 +215,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
           <span class="quirky">5 Participants, 10 Tasks</span>
           <h2>Usability Testing</h2>
         </div>
-        <p>Five participants completed ten tasks on the connexU event website. All were generally able to complete most tasks, but experienced repeated confusion — unclear navigation labels, difficulty predicting where information would be located (a mismatch with their mental models of the site), and uncertainty about whether they were following the correct path. Time on task ran substantially longer than expected on several tasks, driven by navigation uncertainty rather than task complexity.</p>
+        <p>Five participants completed ten tasks on the connexU event website. All were generally able to complete most tasks, but experienced repeated confusion — unclear navigation labels, difficulty predicting where information would be located (a mismatch with their mental models of the site), and uncertainty about whether they were following the correct path. Time on task ran substantially longer than expected on several tasks, driven by navigation uncertainty rather than task complexity. In other words, people knew what they wanted to do; the site just made it hard to find the way there, so the redesign set out to clear that path.</p>
         <div class="participants-row">
           <p><strong>P1</strong> — 20, somewhat involved with event registration.</p>
           <p><strong>P2</strong> — 21, approaching the site primarily as a first-time visitor.</p>
@@ -237,7 +237,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
     <section class="white-block">
       <div class="wrap">
         <h2>What Changed</h2>
-        <p>The redesign consolidates the navigation down to consistent, plain labels, and adds real secondary conversion paths: each event page now offers "Register your interest," "Download brochure," and a link out to the event’s own site, instead of a single generic CTA. The events index adds sector and year filtering. The contact page now commits to a same-day reply instead of leaving response time unstated. Event and company information is broken into short, scannable stat callouts instead of dense paragraphs, giving each page a clearer visual hierarchy.</p>
+        <p>The redesign consolidates the navigation down to consistent, plain labels, and adds real secondary conversion paths: each event page now offers "Register your interest," "Download brochure," and a link out to the event’s own site, instead of a single generic CTA. The events index adds sector and year filtering. The contact page now commits to a same-day reply instead of leaving response time unstated. Event and company information is broken into short, scannable stat callouts instead of dense paragraphs, giving each page a clearer visual hierarchy. Taken together, the changes make the site easier to scan and easier to move through.</p>
         <ul class="findings-list">
           {whatChanged.map((w) => <li>{w}</li>)}
         </ul>
@@ -246,7 +246,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
 
     <section class="white-block">
       <div class="wrap">
-        <p><strong>I signed a confidentiality agreement for this engagement, so I can't post a lot of information here, including the design system. Feel free to email me if you'd like to learn more.</strong></p>
+        <p><strong>I signed a confidentiality agreement for this engagement, so I can't post a lot of information here, including the design system. Feel free to email me if you'd like to learn more. I’m always happy to talk through the process and the research behind the redesign, within the limits of the agreement that we signed.</strong></p>
         <a class="btn-pill btn-pill-solid cta-site-link" href="https://connexu.com.au/" target="_blank" rel="noreferrer">View Full Site</a>
       </div>
     </section>
@@ -254,8 +254,8 @@ const carouselAngleStep = 360 / carouselPhotos.length;
     <section class="dark-block">
       <div class="wrap">
         <h2>Reflection &amp; Next Steps</h2>
-        <p class="reflect-subhead">What I’d Do Differently</p>
-        <p>I’d want to re-run the same set of usability tasks against the live redesign to close the loop with real user data instead of inferring from the shipped structure, and use that to prioritize the remaining agenda-detail gap.</p>
+        <p>Working in-house for the summer meant experiencing Sydney beyond the office too — 5 a.m. run clubs before the workday started, a Christmas in July celebration in the middle of the Australian winter, and a trip up to the Great Barrier Reef, one of the most precious settings on Earth.</p>
+        <p>I’d want to re-run the same set of usability tasks against the live redesign to close the loop with real user data instead of inferring from the shipped structure, and use that to prioritize the remaining agenda-detail gap. That would show which changes are working and where the next round of improvements belongs.</p>
       </div>
     </section>
 
@@ -867,7 +867,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       .dark-block h2 { color: var(--bg); }
 
       .white-block p,
-      .dark-block .wrap > p:not(.reflect-subhead) {
+      .dark-block .wrap > p {
         max-width: none;
         font-size: 1rem;
         line-height: 1.6;
@@ -877,17 +877,8 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       }
 
       .white-block p { color: var(--ink-soft); }
-      .dark-block .wrap > p:not(.reflect-subhead) { color: rgba(253, 251, 249, 0.7); }
+      .dark-block .wrap > p { color: rgba(253, 251, 249, 0.7); }
 
-      .reflect-subhead {
-        margin: 1.5rem 0 0.75rem;
-        font-family: var(--font-body);
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        font-size: 0.8rem;
-        color: rgba(253, 251, 249, 0.5);
-      }
 
       .findings-list {
         margin: 1rem 0 0;
