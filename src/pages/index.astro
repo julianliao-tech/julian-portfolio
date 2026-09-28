@@ -151,6 +151,14 @@ const hoverVideo = (slug: string) => {
 // hover.
 const showsFirstFrame = (slug: string) => slug === 'guide';
 
+// A still of that opening frame (tile-<slug>-first-frame.webp) doubles as the
+// video's poster, so browsers that won't paint a video's first frame on their
+// own (iPhone Safari) show the same picture desktop does, not the other still.
+const firstFramePoster = (slug: string) => {
+  const file = `tile-${slug}-first-frame.webp`;
+  return existsSync(path.join(homeImagesDir, file)) ? withVersion(`${base}images/home/${file}`) : null;
+};
+
 // Michigan ChatGPT's poster is its own last frame, so the tile should
 // idle there rather than snapping back to frame one after a hover —
 // only the hover-triggered playback should ever show the start.
@@ -164,6 +172,7 @@ const cards = projects.map((p) => ({
   alt: p.data.tileAlt,
   video: hoverVideo(p.id),
   showsFirstFrame: showsFirstFrame(p.id),
+  poster: showsFirstFrame(p.id) ? firstFramePoster(p.id) ?? withVersion(p.data.tileImage) : withVersion(p.data.tileImage),
   idlesAtEnd: idlesAtEnd(p.id),
 }));
 
@@ -263,7 +272,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
                   data-hover-video
                   data-show-first-frame={card.showsFirstFrame || undefined}
                   src={card.video}
-                  poster={card.image}
+                  poster={card.poster}
                   muted
                   loop
                   playsinline
