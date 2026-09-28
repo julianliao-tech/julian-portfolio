@@ -13,7 +13,6 @@ const links = [
 <header class="nav" data-nav>
   <div class="nav-inner wrap">
     <a class="wordmark" href={base}>
-      <span class="mark" aria-hidden="true"></span>
       <span class="wordmark-text">Julian Liao</span>
     </a>
 
@@ -88,20 +87,6 @@ const links = [
     text-decoration: none;
     color: var(--ink);
     white-space: nowrap;
-  }
-
-  .mark {
-    width: 9px;
-    height: 9px;
-    border-radius: 999px;
-    background: var(--accent);
-    box-shadow: 0 0 0 0 var(--accent-soft);
-    transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease);
-  }
-
-  .wordmark:hover .mark {
-    transform: scale(1.35);
-    box-shadow: 0 0 0 6px var(--accent-soft);
   }
 
   .links {
