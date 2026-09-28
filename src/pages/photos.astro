@@ -537,7 +537,7 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
   .sign {
     position: absolute;
     top: 0.4rem;
-    left: calc(100% + 5rem);
+    left: calc(100% + clamp(6rem, 14vw, 14rem));
     width: 9.5rem;
     transform-origin: 50% 0;
     animation: sign-swing 4.8s ease-in-out infinite alternate;
