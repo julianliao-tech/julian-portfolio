@@ -298,13 +298,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
   </section>
 
   <section id="consulting" class="consulting wrap">
-    <div class="section-head" data-reveal>
+    <div class="section-head section-head--center" data-reveal>
       <h2>Consulting Work</h2>
       <span class="section-count" data-count-to={consultingItems.length}>{pad(consultingItems.length)}</span>
     </div>
-    <p class="lead consulting-intro" data-reveal>
-      A couple of client deliverables from outside the case-study projects above — each links out to the full PDF.
-    </p>
 
     <div class="consulting-grid">
       {consultingItems.map((item, i) => (
@@ -1015,16 +1012,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
     padding-block: clamp(1.5rem, 3vw, 2.5rem) var(--space-6);
   }
 
-  .consulting-intro {
-    margin-top: calc(-1 * var(--space-2));
-    margin-bottom: 0;
-  }
-
   .consulting-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
     gap: clamp(1.5rem, 4vw, 3rem);
-    margin-top: clamp(2rem, 5vw, 3rem);
+    /* The section head already leaves the space above the grid. */
+    margin-top: 0;
   }
 
   .consulting-item {
