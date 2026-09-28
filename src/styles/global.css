@@ -35,7 +35,7 @@
      rule below that sets --font-display leaves font-weight at 400. */
   --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body: 'Source Sans 3', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   /* Quirky accent — hand-marker feel, used sparingly for a single
      highlighted word or annotation, never body copy. */
