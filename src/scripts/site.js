@@ -374,11 +374,24 @@ function initMagnetic() {
    instead of running out behind the overlay. Under reduced motion,
    skip the overlay outright rather than forcing a motionless
    multi-second wait — intro-done still gets set so nothing gated on
-   it is left waiting forever. */
+   it is left waiting forever. It only plays once per tab: returning
+   to Home from another page skips it (see the sessionStorage flag). */
 
 function initIntroLoader() {
   const loader = document.querySelector('[data-intro-loader]');
   if (!loader) return;
+
+  // The opening animation plays once per tab. index.astro's inline script
+  // sets html.intro-skip when it has already been seen (and this isn't a
+  // refresh); skip straight to the finished page.
+  if (document.documentElement.classList.contains('intro-skip')) {
+    document.documentElement.classList.add('intro-done');
+    loader.remove();
+    return;
+  }
+  try {
+    sessionStorage.setItem('intro-seen', '1');
+  } catch (e) {}
 
   if (prefersReduced()) {
     document.documentElement.classList.add('intro-done');

@@ -170,6 +170,18 @@ const cards = projects.map((p) => ({
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 <BaseLayout title="Julian Liao — UX Designer">
+  {/* Play the opening animation once per browser tab. Runs before the loader
+      is painted: coming back to Home from another page (not a refresh)
+      flags <html> so the loader is skipped. site.js sets the flag. */}
+  <script is:inline>
+    try {
+      var nav = performance.getEntriesByType('navigation')[0];
+      if (sessionStorage.getItem('intro-seen') && !(nav && nav.type === 'reload')) {
+        document.documentElement.classList.add('intro-skip');
+      }
+    } catch (e) {}
+  </script>
+
   <div class="intro-loader" data-intro-loader aria-hidden="true">
     {introColumns.map((col) => (
       <div class="intro-col">
@@ -331,6 +343,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
      locks page scroll for the duration and tears the markup down
      afterward (initIntroLoader). Full-bleed, no .wrap gutter, so the
      imagery runs edge to edge like the reference clip. */
+  html.intro-skip .intro-loader { display: none; }
+
   .intro-loader {
     position: fixed;
     inset: 0;
