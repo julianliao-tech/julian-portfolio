@@ -472,6 +472,9 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
     /* The lamp's light cone reaches past the screen edge on phones; clip it
        so it can't widen the page. */
     overflow-x: clip;
+    /* Lets the sign measure the header's width (cqw) to sit midway between the
+       heading and the lamp. */
+    container-type: inline-size;
   }
 
   .title-wrap {
@@ -496,7 +499,11 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
   .sign {
     position: absolute;
     top: 0.4rem;
-    left: calc(100% + clamp(6rem, 14vw, 14rem));
+    left: calc(100% + clamp(6rem, 20vw, 20rem));
+    /* Centered halfway between the heading's right end (50% of the heading's
+       width past its left edge, plus half the gap) and the lamp's left edge
+       (97% of the header width minus the lamp's 110px). */
+    left: calc(50% + (97cqw - 110px) / 2 - 4.75rem);
     width: 9.5rem;
     transform-origin: 50% 0;
     animation: sign-swing 4.8s ease-in-out infinite alternate;
