@@ -323,9 +323,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
               decoding="async"
             />
             <span class="consulting-badge">PDF</span>
+            <span class="consulting-caption">
+              <span class="consulting-heading">{item.title}</span>
+            </span>
           </span>
           <span class="consulting-foot">
-            <span class="consulting-title">{item.title}</span>
             <span class="consulting-arrow" data-magnetic aria-hidden="true">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg>
             </span>
@@ -1032,6 +1034,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
     border-radius: clamp(14px, 1.8vw, 22px);
     border: 1px solid var(--line);
     background: var(--bg-elev);
+    /* Both thumbnails the same size, matching the MCBC deliverable's
+       own proportions — Q-Bakehouse (a taller, more square source
+       image) is cropped to fit via object-fit below, the same way
+       the Projects tiles crop to their square box. */
+    aspect-ratio: 1540 / 1072;
   }
 
   /* [data-tilt] (see site.js) keeps --tilt-x/y live while the cursor
@@ -1043,7 +1050,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   .consulting-media img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.02);
     transition: transform 0.6s var(--ease-out);
   }
@@ -1070,25 +1078,42 @@ const pad = (n: number) => String(n).padStart(2, '0');
     backdrop-filter: blur(6px);
   }
 
+  /* Title overlaps the bottom of the thumbnail, same treatment as the
+     Projects tiles above: a scrim keeps white text readable over any
+     image, and it's there at rest, fading out on hover so the image
+     can speak for itself. */
+  .consulting-caption {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: clamp(1.5rem, 4vw, 2.5rem) clamp(0.9rem, 2vw, 1.25rem) clamp(0.85rem, 2vw, 1.1rem);
+    background: linear-gradient(to top, rgba(10, 8, 4, 0.75), rgba(10, 8, 4, 0) 100%);
+    opacity: 1;
+    transition: opacity 0.35s var(--ease);
+    pointer-events: none;
+  }
+
+  .consulting-item:hover .consulting-caption,
+  .consulting-item:focus-visible .consulting-caption {
+    opacity: 0;
+  }
+
+  .consulting-heading {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2.3vw, 1.85rem);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  }
+
   .consulting-foot {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: var(--space-2);
+    display: flex;
+    justify-content: flex-end;
     padding-top: var(--space-3);
   }
-
-  .consulting-title {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: clamp(1.1rem, 2vw, 1.5rem);
-    letter-spacing: -0.01em;
-    line-height: 1.25;
-    color: var(--ink);
-    transition: color 0.3s var(--ease);
-  }
-
-  .consulting-item:hover .consulting-title { color: var(--accent); }
 
   .consulting-arrow {
     --magnet-x: 0px;
