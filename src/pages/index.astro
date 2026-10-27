@@ -87,23 +87,53 @@ const introColumns = [
 // animation takes and when the next line's delay starts, so the
 // whole block reads left-to-right, top-to-bottom like a real terminal
 // boot rather than every line typing in lockstep.
-const heroCodeSource = [
+//
+// Two source arrays, not one: the internships line is the longest in
+// the block (55 chars) and on a narrow phone forces the whole box
+// wide enough that it was pushing past the viewport. The mobile
+// version wraps just that array onto its own continuation line (its
+// new longest line is studiedAbroad, at 40 chars) so the box never
+// has to accommodate more than that on small screens. Desktop keeps
+// the original single-line array. Both render (see .hero-code-box
+// below), toggled by a max-width: 640px media query rather than JS,
+// so there's no layout jump on load.
+const heroCodeSourceDesktop = [
   { text: '// about julian', isComment: true },
   { text: 'const julian = {' },
   { text: '  school: "University of Michigan",' },
   { text: '  internships: ["Sydney, Australia", "Silicon Valley"],' },
   { text: '  studiedAbroad: "UX + PM, Barcelona" };' },
 ];
+const heroCodeSourceMobile = [
+  { text: '// about julian', isComment: true },
+  { text: 'const julian = {' },
+  { text: '  school: "University of Michigan",' },
+  { text: '  internships: ["Sydney, Australia",' },
+  { text: '    "Silicon Valley"],' },
+  { text: '  studiedAbroad: "UX + PM, Barcelona" };' },
+];
 const CODE_START_MS = 700;
 const CODE_MS_PER_CHAR = 26;
-let codeCursorMs = CODE_START_MS;
-const heroCodeLines = heroCodeSource.map((line) => {
-  const durationMs = Math.max(1, line.text.length) * CODE_MS_PER_CHAR;
-  const delayMs = codeCursorMs;
-  codeCursorMs += durationMs;
-  return { ...line, chars: line.text.length, delayMs, durationMs };
-});
-const heroCodeTotalMs = codeCursorMs;
+const buildHeroCodeLines = (source: typeof heroCodeSourceDesktop) => {
+  let codeCursorMs = CODE_START_MS;
+  const lines = source.map((line) => {
+    const durationMs = Math.max(1, line.text.length) * CODE_MS_PER_CHAR;
+    const delayMs = codeCursorMs;
+    codeCursorMs += durationMs;
+    return { ...line, chars: line.text.length, delayMs, durationMs };
+  });
+  return {
+    lines,
+    totalMs: codeCursorMs,
+    // The box's width is derived from this (fixed, known up front)
+    // rather than from the lines' own animated widths, so it never
+    // resizes while the typing animation runs — see .hero-code-box
+    // below.
+    maxChars: Math.max(...lines.map((line) => line.chars)),
+  };
+};
+const heroCodeDesktop = buildHeroCodeLines(heroCodeSourceDesktop);
+const heroCodeMobile = buildHeroCodeLines(heroCodeSourceMobile);
 // Plain order, no featured/standalone item — every tile in the grid
 // below is the same square, so there's no visual reason left to pull
 // one project out of sequence.
@@ -235,14 +265,31 @@ const pad = (n: number) => String(n).padStart(2, '0');
           </p>
         </div>
 
-        <div class="hero-code-box rise" style="--d: 380ms">
-          {heroCodeLines.map((line, idx) => (
+        <div
+          class="hero-code-box hero-code-box--desktop rise"
+          style={`--d: 380ms; --code-max-chars: ${heroCodeDesktop.maxChars};`}
+        >
+          {heroCodeDesktop.lines.map((line, idx) => (
             <div
               class:list={[
                 'hero-code-line',
-                { 'is-comment': line.isComment, 'is-last': idx === heroCodeLines.length - 1 },
+                { 'is-comment': line.isComment, 'is-last': idx === heroCodeDesktop.lines.length - 1 },
               ]}
-              style={`--code-chars: ${line.chars}; --code-delay: ${line.delayMs}ms; --code-duration: ${line.durationMs}ms; --code-total: ${heroCodeTotalMs}ms`}
+              style={`--code-chars: ${line.chars}; --code-delay: ${line.delayMs}ms; --code-duration: ${line.durationMs}ms; --code-total: ${heroCodeDesktop.totalMs}ms`}
+            >{line.text}</div>
+          ))}
+        </div>
+        <div
+          class="hero-code-box hero-code-box--mobile rise"
+          style={`--d: 380ms; --code-max-chars: ${heroCodeMobile.maxChars};`}
+        >
+          {heroCodeMobile.lines.map((line, idx) => (
+            <div
+              class:list={[
+                'hero-code-line',
+                { 'is-comment': line.isComment, 'is-last': idx === heroCodeMobile.lines.length - 1 },
+              ]}
+              style={`--code-chars: ${line.chars}; --code-delay: ${line.delayMs}ms; --code-duration: ${line.durationMs}ms; --code-total: ${heroCodeMobile.totalMs}ms`}
             >{line.text}</div>
           ))}
         </div>
@@ -568,14 +615,48 @@ const pad = (n: number) => String(n).padStart(2, '0');
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: max-content;
+    /* Width comes from the known max line length (--code-max-chars,
+       set server-side above), not from the lines' own animated
+       widths — so the box is sized once, up front, and never resizes
+       as the typing animation plays. The vw-driven font-size below is
+       calibrated so this stays under the viewport width on phones as
+       narrow as ~360px without needing max-width's 100% fallback to
+       kick in (it's still there as a defensive cap, not the primary
+       fit mechanism). */
+    width: calc(var(--code-max-chars, 0) * 1ch + 2.25rem);
     max-width: 100%;
     margin: 0 auto;
     padding: 0.75rem 1rem;
     border: 1px solid var(--line);
     border-radius: var(--r-lg);
     background: var(--bg-elev);
-    overflow: auto;
+    /* No internal scrolling by design — font-size shrinks to fit
+       instead (see above). Kept as a hard fallback only. */
+    overflow: hidden;
+    /* Declared here, not on .hero-code-line, so the box's own `1ch`
+       (used in the width calc above) and each line's `1ch` (used for
+       its typing width) resolve against the same font-size — if they
+       diverged, the box and its content would drift apart as the
+       viewport changes size. */
+    font-size: clamp(0.4rem, 1.9vw, 0.9rem);
+  }
+
+  /* Two copies of the box exist (see the frontmatter above) so the
+     internships line can wrap onto its own row below 640px without
+     ever widening past the viewport — toggled here, not in JS, so
+     there's no flash of the wrong version on load. */
+  .hero-code-box--mobile {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .hero-code-box--desktop {
+      display: none;
+    }
+
+    .hero-code-box--mobile {
+      display: flex;
+    }
   }
 
   .hero-code-line {
@@ -585,7 +666,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
     overflow: hidden;
     white-space: pre;
     font-family: var(--font-mono);
-    font-size: clamp(0.7rem, 1.3vw, 0.9rem);
     line-height: 1.65;
     color: var(--code-green);
     animation: hero-typing var(--code-duration) steps(var(--code-chars, 1), end) var(--code-delay) both;
