@@ -6,7 +6,7 @@ import ProjectLayout from '../../layouts/ProjectLayout.astro';
 // excluded here to avoid a route collision — their content-collection
 // entries still feed the Home grid tiles and the prev/next pager order.
 export async function getStaticPaths() {
-  const bespokePages = ['michigan-chatgpt', 'surecall', 'guide', 'connexu', 'elink'];
+  const bespokePages = ['michigan-chatgpt', 'surecall', 'guide', 'connexu', 'elink', 'disability-design-lab'];
   const projects = await getCollection('projects');
   return projects
     .filter((entry) => !bespokePages.includes(entry.id) && !entry.data.draft)

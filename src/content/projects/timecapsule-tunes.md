@@ -69,7 +69,7 @@ Upon our efforts thus far, we concluded what we wanted some of our key features 
 
 Given the results from our conducted interviews, I sketched out low fidelity concepts to help explore user flow, potential screens, and features to better address the concerns and specific needs of fellow passionate music enthusiasts.
 
-![Low- and mid-fidelity wireframes for the Timecapsule Tunes app](/images/timecapsule-tunes/04.webp)
+![Low- and mid fidelity wireframes for the Timecapsule Tunes app](/images/timecapsule-tunes/04.webp)
 
 ## Iterations
 
@@ -114,13 +114,13 @@ In this iteration, users are given the opportunity to:
 
 ### Solved Challenges
 
-Throughout the design process, we addressed several key user challenges. First, we defined what users truly wanted—smaller, more focused groups dedicated to collaboration and shared music interests. To support this, we introduced a "Discover Groups" page, where users can browse or search for communities, filter by name or member count, and engage in endless scrolling to explore options. Additionally, the "My Groups" page was created to house all the groups a user has joined for easy access.
+Throughout the design process, we addressed several key user challenges. First, we defined what users truly wanted: smaller, more focused groups dedicated to collaboration and shared music interests. To support this, we introduced a "Discover Groups" page, where users can browse or search for communities, filter by name or member count, and engage in endless scrolling to explore options. Additionally, the "My Groups" page was created to house all the groups a user has joined for easy access.
 
 Second, to foster engagement and recognize user activity, we implemented a badge system that awards users for various achievements, such as total listening hours, most listened to artists, tracks, genres, and playlists. Lastly, to prevent information overload, we intentionally spread content across multiple pages, ensuring a cleaner and more digestible user experience.
 
 ### Final Prototype
 
-![Final high-fidelity prototype screens for the Timecapsule Tunes app](/images/timecapsule-tunes/11.webp)
+![Final high fidelity prototype screens for the Timecapsule Tunes app](/images/timecapsule-tunes/11.webp)
 
 ## Development
 

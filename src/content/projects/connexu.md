@@ -3,17 +3,17 @@ title: "connexU Event Website"
 order: 6
 role: ["UX Designer", "UX Researcher"]
 timeline: "Summer 2026"
-team: "In-house at connexU"
+team: "In house at connexU"
 tools: ["Google Docs", "Google Sheets"]
 skills: ["Heuristic Evaluation", "Usability Testing", "Information Architecture", "Client Work"]
 tileImage: "/images/home/tile-connexu.png"
 tileAlt: "connexU homepage on a laptop, reading 'Where Business Leaders Grow', on a purple background with the connexU wordmark"
-summary: "An end-to-end rebuild of a B2B events marketplace site in Sydney"
+summary: "Five out of five people could not find how to register. So I rebuilt it."
 ---
 
 ## Context
 
-connexU is a Sydney-based B2B events company that runs marketplace-style conferences (Retail Tech Marketplace, Ecommerce Marketplace, Retail Property Marketplace, and others), connecting senior decision-makers with vendors through curated 1-to-1 meetings. I worked in-house at connexU over the summer of 2026, redesigning [connexu.com.au](https://connexu.com.au/) end to end — the site today is a complete rebuild, not a refresh of the old one. I signed an NDA covering the engagement, so this write-up sticks to research findings and outcomes rather than design-system or interface specifics.
+connexU is a Sydney-based B2B events company that runs marketplace style conferences (Retail Tech Marketplace, Ecommerce Marketplace, Retail Property Marketplace, and others), connecting senior decision-makers with vendors through curated 1-to-1 meetings. I worked inside connexU over the summer of 2026, redesigning [connexu.com.au](https://connexu.com.au/) end to end — the site today is a complete rebuild, not a refresh of the old one. I signed an NDA covering the engagement, so this write-up sticks to research findings and outcomes rather than design-system or interface specifics.
 
 ![connexU brand card: the connexU logo on a dark purple gradient, with the tagline "B2B Events for Senior Decision-Makers"](/images/connexu/01-brand-card.png)
 
@@ -27,11 +27,11 @@ Before touching any screens, I ran a Nielsen heuristic evaluation and a moderate
 
 ## What Changed
 
-The redesign consolidates the navigation down to consistent, plain labels, and adds real secondary conversion paths: each event page now offers "Register your interest," "Download brochure," and a link out to the event's own site, instead of a single generic CTA. The events index adds sector and year filtering. The contact page now commits to a same-day reply instead of leaving response time unstated. Event and company information is broken into short, scannable stat callouts instead of dense paragraphs.
+The redesign consolidates the navigation down to consistent, plain labels, and adds real secondary conversion paths: each event page now offers "Register your interest," "Download brochure," and a link out to the event's own site, instead of a single generic CTA. The events index adds sector and year filtering. The contact page now commits to a same day reply instead of leaving response time unstated. Event and company information is broken into short, scannable stat callouts instead of dense paragraphs.
 
 ## Result
 
-I don't have post-launch analytics to point to, so I won't claim a lift I can't back up. What I can say from comparing the two directly: the specific navigation-label and jargon problems flagged in the original evaluation aren't present on the site today, and the clearest usability-test failure points — finding registration, finding the brochure — now have direct, labeled paths on every event page. One gap the redesign hasn't closed yet: event pages still don't surface session or speaker detail, which was one of the things test participants were trying to find.
+I don't have post launch analytics to point to, so I won't claim a lift I can't back up. What I can say from comparing the two directly: the specific navigation-label and jargon problems flagged in the original evaluation aren't present on the site today, and the clearest usability-test failure points — finding registration, finding the brochure — now have direct, labeled paths on every event page. One gap the redesign hasn't closed yet: event pages still don't surface session or speaker detail, which was one of the things test participants were trying to find.
 
 ## What I'd Do Differently
 

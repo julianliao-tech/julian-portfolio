@@ -8,7 +8,7 @@ tools: ["Figma", "FigJam"]
 skills: ["Wireframing", "Prototyping", "Design Systems", "Interaction Design", "User Research"]
 tileImage: "/images/home/tile-michigan-chatgpt.webp"
 tileAlt: "Michigan ChatGPT redesigned homepage with tool cards"
-summary: "Redesigning U-M's AI workspace into one clear, trusted homepage"
+summary: "Four campus AI tools nobody could tell apart, rebuilt into one front door"
 ---
 
 ## Context
@@ -30,7 +30,7 @@ By enhancing clarity, reducing friction, and introducing smarter interaction pat
 1. Communicating the purpose of multiple AI tools without overwhelming users.
 2. Simplifying scattered navigation patterns into one cohesive experience.
 3. Balancing Michigan branding with modern usability standards.
-4. Designing for both first-time visitors discovering tools and returning users who already know where they're going.
+4. Designing for both first time visitors discovering tools and returning users who already know where they're going.
 
 ## Problem
 
@@ -89,7 +89,7 @@ Initial wireframes explored hero layouts, card structures, and sidebar navigatio
 
 <div class="split">
   <div class="split-text">
-    <p>The filled landing page presents all core MichiganGPT tools in a clear, structured layout that reduces cognitive load and eliminates guesswork for first-time users. By emphasizing a strong hero section and four primary action cards, users can immediately understand what the platform offers and where to begin. This approach establishes clarity, trust, and a consistent visual hierarchy across the experience.</p>
+    <p>The filled landing page presents all core MichiganGPT tools in a clear, structured layout that reduces cognitive load and eliminates guesswork for first time users. By emphasizing a strong hero section and four primary action cards, users can immediately understand what the platform offers and where to begin. This approach establishes clarity, trust, and a consistent visual hierarchy across the experience.</p>
   </div>
   <div class="split-media">
     <img src="/images/michigan-chatgpt/03.webp" alt="Michigan ChatGPT filled landing page with hero section and tool cards" />
@@ -156,7 +156,7 @@ The redesigned system helps students and faculty feel confident using Michigan's
 
 ### Reflection
 
-Working on this redesign broadened my understanding of how clarity, psychology, and visual design shape user trust. Taking the entire project from research to high-fidelity prototypes helped me refine my process and uncover opportunities to improve Michigan's digital ecosystem.
+Working on this redesign broadened my understanding of how clarity, psychology, and visual design shape user trust. Taking the entire project from research to high fidelity prototypes helped me refine my process and uncover opportunities to improve Michigan's digital ecosystem.
 
 Looking ahead, I'd love to expand the redesign to include:
 

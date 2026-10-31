@@ -44,7 +44,7 @@ import mentorshipCode from '../../data/elink-code/MentorshipProgram.tsx.txt?raw'
 import dinnersCode from '../../data/elink-code/RecruiterDinners.tsx.txt?raw';
 
 const base = import.meta.env.BASE_URL;
-const pageTitle = 'E-LINK — Julian Liao';
+const pageTitle = 'E-LINK · Julian Liao';
 const pageDescription = 'A business case and PM plan to close Esade\'s internship gap';
 const ogImage = new URL(`${base}images/home/profile-illustration.webp`, Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -75,50 +75,50 @@ const meta = [
 // existing facts regrouped by which problem each one answers.
 const challenges = [
   {
-    label: 'Information Gap',
-    problem: 'Information gap — students had no structured way to learn what alumni actually did after graduating, or what a given employer’s interview process looked like.',
+    label: 'Nobody knew what alumni actually did after graduating',
+    problem: 'Information gap. Students had no structured way to learn what alumni actually did after graduating, or what a given employer’s interview process looked like.',
     pillars: [
-      { name: 'Centralized Resources', text: 'A student-governed repository of interview transcripts, technical test prep, and company-specific "culture codes."' },
+      { name: 'Centralized Resources', text: 'A student governed repository of interview transcripts, technical test prep, and company specific "culture codes."' },
       { name: 'Matching Buddies', text: 'Pairing students preparing for the same interviews to study together.' },
     ],
     demos: [
       {
         video: 'alumni-network.mp4',
         alt: 'Alumni database page, filterable by career field and location, with student cards showing a Connect button',
-        caption: 'The alumni database — filterable by career field and location — is the matching-buddies pillar and the information-gap problem solved in one screen: a student can find someone a few years ahead in the exact role they’re prepping for, instead of cold-emailing whoever answers first and waiting for a response soon.',
+        caption: 'The alumni database, filterable by career field and location, is the matching buddies pillar and the information gap problem solved in one screen: a student can find someone a few years ahead in the exact role they’re prepping for, instead of cold emailing whoever answers first and waiting for a response soon.',
       },
     ],
   },
   {
-    label: 'International Underdevelopment',
-    problem: 'International underdevelopment — Esade’s alumni network is large but scattered; there was no single place pulling it together for the specific job of interview prep.',
+    label: 'A large alumni network, scattered and unusable',
+    problem: 'International underdevelopment. Esade’s alumni network is large but scattered; there was no single place pulling it together for the specific job of interview prep.',
     pillars: [
-      { name: 'Mentorships', text: 'Structured "coffee chat" and mock-interview scheduling, so networking has a format instead of being cold outreach.' },
+      { name: 'Mentorships', text: 'Structured "coffee chat" and mock interview scheduling, so networking has a format instead of being cold outreach.' },
     ],
     demos: [
       {
         video: 'mentorship-program.mp4',
-        alt: 'Mentorship program page listing available mentors with their specialty and interview-prep documents, plus upcoming one-on-one workshops',
-        caption: 'Mentorship is the structured version of a coffee chat: a mentor’s specialty and prep documents are visible before a student reaches out, and one-on-one workshop slots are booked directly instead of over email back-and-forth — so the first conversation can start with real preparation and a clear purpose on both sides.',
+        alt: 'Mentorship program page listing available mentors with their specialty and interview-prep documents, plus upcoming one on one workshops',
+        caption: 'Mentorship is the structured version of a coffee chat: a mentor’s specialty and prep documents are visible before a student reaches out, and one on one workshop slots are booked directly instead of over email back and forth, so the first conversation can start with real preparation and a clear purpose on both sides.',
       },
       {
         video: 'pro-network.mp4',
-        alt: 'Group chats page organized by industry — Finance and Banking, Tech and Innovation, Consulting, Marketing, Entrepreneurship, and Luxury and Retail — each with a member count and Join Chat button',
-        caption: 'Group chats sort by industry rather than class year, so a third-year deciding between consulting and tech can sit in both conversations instead of picking one identity to network under — pulling the scattered alumni network into one organized place, so students spend less time searching and more time preparing.',
+        alt: 'Group chats page organized by industry: Finance and Banking, Tech and Innovation, Consulting, Marketing, Entrepreneurship, and Luxury and Retail, each with a member count and Join Chat button',
+        caption: 'Group chats sort by industry rather than class year, so a third year deciding between consulting and tech can sit in both conversations instead of picking one identity to network under. It pulls the scattered alumni network into one organized place, so students spend less time searching and more time preparing.',
       },
     ],
   },
   {
-    label: 'Reputational Risk',
-    problem: 'Reputational risk — a landing rate that keeps losing ground to direct competitors affects the school’s pitch to prospective students and recruiters alike.',
+    label: 'A slipping landing rate is a recruiting problem too',
+    problem: 'Reputational risk. A landing rate that keeps losing ground to direct competitors affects the school’s pitch to prospective students and recruiters alike.',
     pillars: [
-      { name: 'Fast Track', text: 'A referral system letting alumni in leadership positions flag high-potential candidates directly.' },
+      { name: 'Fast Track', text: 'A referral system letting alumni in leadership positions flag high potential candidates directly.' },
     ],
     demos: [
       {
         video: 'dinners.mp4',
         alt: 'Recruiter dinners page showing McKinsey and Goldman Sachs dinner listings with a Reserve My Spot button and a remaining-spots counter',
-        caption: 'Recruiter dinners make the incentive from the stakeholder analysis real — a firm-hosted dinner with a capped headcount and a visible "spots remaining" counter, giving recruiters a direct reason to stay engaged with the school instead of drifting to competitors — a simple, visible reason to keep showing up each time.',
+        caption: 'Recruiter dinners make the incentive from the stakeholder analysis real: a firm hosted dinner with a capped headcount and a visible "spots remaining" counter, giving recruiters a direct reason to stay engaged with the school instead of drifting to competitors. A simple, visible reason to keep showing up each time.',
       },
     ],
   },
@@ -178,7 +178,7 @@ const chartGridValues = [30, 35, 40, 45, 50, 55];
 // Real stakeholder groups, transcribed verbatim from 04.webp.
 const stakeholderGroups = [
   { name: 'Students', sub: 'Primary Beneficiaries of E-Link', points: ['Would gain access to alumni network & employers, structured and precise interview formation.', 'Main gain: higher internship success rate.'] },
-  { name: 'Alumni Mentors & Esade Alumni Network', points: ['Would gain access to pre-selected candidates and recognition within Esade.', 'Increased alumni engagement strengthening bonds and recognition of the network.'] },
+  { name: 'Alumni Mentors & Esade Alumni Network', points: ['Would gain access to preselected candidates and recognition within Esade.', 'Increased alumni engagement strengthening bonds and recognition of the network.'] },
   { name: 'Employers (external)', points: ['Access to well prepared candidates while reducing companies’ screening costs.', 'Opportunity of strengthening their company’s attractivity to qualified candidates.'] },
   { name: 'Career Services & Esade', points: ['Stronger employer relationships, precise data insight on students aspiration.', 'Improved school reputation through higher internship landing rate for students.'] },
 ];
@@ -187,9 +187,9 @@ const successFactors = ['Clear alignment with Career Services', 'Clear model of 
 // Real timeline data, transcribed verbatim from 05.webp.
 const timelinePhaseNames = ['Discovery & Problem', 'Outreach & Network', 'Design & Prototyping', 'Testing & Q&A', 'Launch & Execution', 'Expansion & Closure'];
 const timelineMilestones = [
-  { date: 'March 30, 2026', label: 'Inform students & gather sign-ups' },
+  { date: 'March 30, 2026', label: 'Inform students & gather signups' },
   { date: 'April 27, 2026', label: 'Execute 48h pilot test cycle' },
-  { date: 'May 1, 2026', label: 'Go-Live: Launch core platform' },
+  { date: 'May 1, 2026', label: 'Go Live: Launch core platform' },
   { date: 'May 9, 2026', label: 'Compare results vs baseline' },
   { date: 'May 11, 2026', label: 'Formalize project completion' },
 ];
@@ -206,7 +206,7 @@ const wbsPhases = [
   { phase: 'Phase 2', branches: ['Interface & Experience', 'Resource Architecture', 'Networking Features'] },
   { phase: 'Phase 3', branches: ['Pilot Readiness', 'Testing & Refinement', 'Validation'] },
   { phase: 'Phase 4', branches: ['Core System Deployment', 'Engagement Initiatives', 'Strategic Partnerships'] },
-  { phase: 'Phase 5', branches: ['Scale-Up Operations', 'Performance Auditing', 'Project Closing'] },
+  { phase: 'Phase 5', branches: ['Scale Up Operations', 'Performance Auditing', 'Project Closing'] },
 ];
 
 // Real phase date ranges, read off 07.webp's Gantt chart against its own
@@ -237,11 +237,11 @@ const ganttStatusColor: Record<string, string> = {
 // Real risk register, transcribed verbatim from 08.webp.
 const risks = [
   { code: 'EXT-1', name: 'Low Student Engagement', detail: 'Students are "lazy" or disinterested in attending sessions.', probability: 'High', impact: 'High', grade: 'A', mitigation: ['Incentivize attendance with social events (dinners/drinks).', 'Showcase success statistics early to prove value.'] },
-  { code: 'EXT-2', name: 'Recruiter Non-Participation', detail: 'Employers do not see the value in the platform.', probability: 'Medium', impact: 'High', grade: 'A', mitigation: ['Highlight reduced screening costs and access to "well-prepared" candidates.', 'Create a sense of competition/urgency among firms.'] },
+  { code: 'EXT-2', name: 'Recruiters Not Participating', detail: 'Employers do not see the value in the platform.', probability: 'Medium', impact: 'High', grade: 'A', mitigation: ['Highlight reduced screening costs and access to "well prepared" candidates.', 'Create a sense of competition/urgency among firms.'] },
   { code: 'EXT-3', name: 'Alumni Fatigue', detail: 'Mentors feel overwhelmed by student requests or lack of structure.', probability: 'Medium', impact: 'Medium', grade: 'B', mitigation: ['Implement structured "Coffee Chat" modules and clear templates to reduce workload.', 'Guarantee recognition or stipends for their help.'] },
   { code: 'INT-1', name: 'Technical Platform Failure', detail: 'The "Study Buddy" or matching algorithm fails.', probability: 'Low', impact: 'High', grade: 'A', mitigation: ['Conduct a rigorous 48-hour pilot testing phase before core launch.', 'Perform rapid technical iterations based on error reports.'] },
-  { code: 'INT-2', name: 'Data Privacy Breach', detail: 'Leak of private alumni contact info (personally identifiable information) or student interview transcripts.', probability: 'Low', impact: 'Critical', grade: 'A', mitigation: ['Restrict access to "Esade-private" network only.', 'Implement strict quality control and student-governed repository rules.'] },
-  { code: 'INT-3', name: 'Misalignment with Career Services', detail: 'Project duplicates work or creates extra burden for school staff.', probability: 'Medium', impact: 'High', grade: 'A', mitigation: ['Offer logistical support and co-organization for all joint events.', 'Ensure complete transparency on data, objectives, and results.'] },
+  { code: 'INT-2', name: 'Data Privacy Breach', detail: 'Leak of private alumni contact info (personally identifiable information) or student interview transcripts.', probability: 'Low', impact: 'Critical', grade: 'A', mitigation: ['Restrict access to the Esade network only.', 'Implement strict quality control and student governed repository rules.'] },
+  { code: 'INT-3', name: 'Misalignment with Career Services', detail: 'Project duplicates work or creates extra burden for school staff.', probability: 'Medium', impact: 'High', grade: 'A', mitigation: ['Offer logistical support and run all joint events together.', 'Ensure complete transparency on data, objectives, and results.'] },
   { code: 'INT-4', name: 'Poor Quality of Prep Material', detail: 'Students share inaccurate "culture codes" or transcripts.', probability: 'Medium', impact: 'Medium', grade: 'B', mitigation: ['Establish a quality control protocol for all uploaded resources.', 'Assign leadership roles to Student Club reps for moderation.'] },
 ];
 
@@ -255,7 +255,7 @@ const marqueeWords = Array(6).fill(['E-LINK', 'ESADE BUSINESS SCHOOL']).flat();
 
 const nextProject = {
   title: 'Consulting Work',
-  subtitle: 'A couple of client deliverables from outside the case-study projects above.',
+  subtitle: 'A couple of client deliverables from outside the case study projects above.',
   image: `${base}images/consulting-work/01-q-bakehouse.webp`,
   href: `${base}work/consulting-work/`,
 };
@@ -320,9 +320,9 @@ const nextProject = {
         <div class="head-top">
           <h1 class="title">E-LINK</h1>
           <div class="context-box">
-            <p class="context-label">Context</p>
-            <h2 class="context-heading">What is E-LINK?</h2>
-            <p>E-LINK is a business case and project-management plan I built at Esade Business School in Barcelona with a team of classmates — Ira von Below, Héloïse Vieillescazes, Emily Acosta, and, on the earlier business-case draft, Noah Chang. It started as a business-case assignment and grew into a full project-management deliverable: a stakeholder analysis, a work-breakdown structure, a Gantt-scheduled rollout, and a risk register, on top of the original pitch. My focus was the project-management side — scoping the work, building the schedule, and stress-testing the plan against the people who’d actually have to run it — the part that turns a good idea into a plan a school could use.</p>
+            <p class="context-label">Where this started</p>
+            <h2 class="context-heading">Esade was losing interviews to its rivals, and nobody had a plan</h2>
+            <p>E-LINK is a business case and project management plan I built at Esade Business School in Barcelona with a team of classmates. It started as a business case assignment and grew into a full project management deliverable: a stakeholder analysis, a work breakdown structure, a rollout scheduled on a Gantt chart, and a risk register, on top of the original pitch. My focus was the project management side: scoping the work, building the schedule, and stress testing the plan against the people who’d actually have to run it. That is the part that turns a good idea into a plan a school could use.</p>
           </div>
         </div>
 
@@ -335,11 +335,11 @@ const nextProject = {
           ))}
         </dl>
 
-        <p class="intro">The idea: an online platform connecting Esade students, alumni, and recruiters to close the gap between Esade’s internship landing rate and its peer schools’. We proposed E-LINK: a tiered mentorship and knowledge-exchange network with one target — <strong>raise the interview landing rate by 20%</strong> — built on four pillars.</p>
+        <p class="intro">I was the project manager on this one, which meant my job was not having the idea. It was working out whether the idea survived contact with the people who would have to run it. The pitch is an online platform linking students, alumni and recruiters, with one target: <strong>raise the interview landing rate by 20%</strong>. The part I care about is underneath that. A school cannot buy its way out of this with software, because every piece of it depends on busy people volunteering time. <em>So I spent most of the semester asking what each group gets back.</em></p>
 
         <p class="pull-quote" data-typewriter>
-          <span aria-hidden="true"><span class="tw-seg" data-full="Esade’s third-year students were landing interviews into summer internships at a "></span><span class="tw-seg pull-quote-highlight" data-full="35% rate, while direct competitors climbed to 45–53%"></span><span class="tw-seg" data-full=" over the same seven years."></span></span>
-          <span class="sr-only">Esade’s third-year students were landing interviews into summer internships at a 35% rate, while direct competitors climbed to 45–53% over the same seven years.</span>
+          <span aria-hidden="true"><span class="tw-seg" data-full="Esade’s third year students were landing interviews into summer internships at a "></span><span class="tw-seg pull-quote-highlight" data-full="35% rate, while direct competitors climbed to 45–53%"></span><span class="tw-seg" data-full=" over the same seven years."></span></span>
+          <span class="sr-only">Esade’s third year students were landing interviews into summer internships at a 35% rate, while direct competitors climbed to 45–53% over the same seven years.</span>
         </p>
       </div>
     </section>
@@ -374,7 +374,7 @@ const nextProject = {
             <span class="compare-divider" aria-hidden="true"><span class="compare-handle">&harr;</span></span>
             <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Drag to compare the original and redesigned homepage" />
           </div>
-          <figcaption class="compare-caption">Esade’s myesade intranet homepage — the original is on the left. Drag to reveal the redesign, with E-Link added as its own shortcut.</figcaption>
+          <figcaption class="compare-caption">Esade’s myesade intranet homepage. The original is on the left. Drag to reveal the redesign, with E-Link added as its own shortcut.</figcaption>
         </figure>
       </div>
     </section>
@@ -383,9 +383,9 @@ const nextProject = {
       <div class="wrap">
         <div class="challenge-head">
           <span class="quirky">35% vs. 45–53%</span>
-          <h2>The Problem</h2>
+          <h2>Esade held at 35% while its rivals climbed to 53%</h2>
         </div>
-        <p>We proposed E-LINK: a tiered mentorship and knowledge-exchange network built on four pillars, in response to three specific problems.</p>
+        <p>We proposed E-LINK: a tiered mentorship and knowledge exchange network built on four pillars, in response to three specific problems.</p>
         <ol class="challenge-grid challenge-grid-4">
           {challenges.map((c, i) => (
             <li class="challenge-card" data-tilt tabindex="0">
@@ -509,8 +509,17 @@ const nextProject = {
 
     <section class="dark-block">
       <div class="wrap">
-        <h2>Stakeholder Analysis</h2>
-        <p>The riskiest assumption in the plan wasn’t the platform — it was whether the people who’d need to actually use it would. We mapped students, alumni, recruiters, and Career Services (whose workload we’d be adding to) against what each group stood to gain and what we’d be asking of them in return.</p>
+        <h2>The riskiest assumption was never the platform</h2>
+        <p class="take">
+          <span class="take-label">What I think about this stage</span>
+          Being the project manager instead of the designer was the most useful thing that happened to
+          me this year. A designer gets to ask whether the thing is good. A project manager has to ask
+          who is doing the work, when, and what happens when they do not.
+          <strong>Most proposals I have seen fail on the second question while scoring full marks on the
+          first.</strong> I think about staffing and incentives now before I think about screens, which
+          is not a glamorous instinct but it is the one that survives contact with a real organization.
+        </p>
+        <p>Software is the easy part. The assumption worth testing was whether the people involved would show up at all. So we mapped students, alumni, recruiters and Career Services, whose workload we were quietly proposing to increase, against what each one gets and what we are asking for in exchange. <strong>Any group where that trade looks bad is where the plan dies.</strong></p>
         <div class="stakeholder-grid">
           {stakeholderGroups.map((g) => (
             <div class="stakeholder-card">
@@ -528,16 +537,16 @@ const nextProject = {
             {successFactors.map((f) => <li>{f}</li>)}
           </ol>
         </div>
-        <p>The two hardest groups to win over were students — likely to skip sessions without a reason to show up — and Career Services, who’d carry most of the added event workload. For students, that meant pairing every session with a real incentive (dinners, drinks) and leading with proof the program worked. For Career Services, it meant offering logistical support and ready-to-use templates so E-LINK reduced their workload rather than adding to it — a fair trade for their time.</p>
+        <p>The two hardest groups to win over were students, likely to skip sessions without a reason to show up, and Career Services, who’d carry most of the added event workload. For students, that meant pairing every session with a real incentive (dinners, drinks) and leading with proof the program worked. For Career Services, it meant offering logistical support and ready to use templates so E-LINK reduced their workload rather than adding to it. A fair trade for their time.</p>
       </div>
     </section>
 
     <section class="white-block">
       <div class="wrap">
-        <h2>Project Plan</h2>
-        <p>We broke the work into a five-phase work-breakdown structure — from problem definition through pilot testing to expansion and closure — then scheduled it against a 12-week window from late February to mid-May, with milestones for informing students, running a 48-hour pilot test, going live, and comparing results against baseline. Each phase closes with a clear checkpoint, so progress stays visible from the first week to the last, and everyone can see what comes next.</p>
+        <h2>Twelve weeks, five phases, a checkpoint on every one</h2>
+        <p>We broke the work into a five phase work breakdown structure, running from problem definition through pilot testing to expansion and closure, then scheduled it against a 12-week window from late February to mid May, with milestones for informing students, running a 48-hour pilot test, going live, and comparing results against baseline. Each phase closes with a clear checkpoint, so progress stays visible from the first week to the last, and everyone can see what comes next.</p>
 
-        <p class="plan-sublabel">Timeline — Feb 23, 2026 – May 11, 2026</p>
+        <p class="plan-sublabel">Timeline · Feb 23, 2026 to May 11, 2026</p>
         <ol class="timeline-list">
           {timelineMilestones.map((m) => (
             <li>
@@ -551,7 +560,7 @@ const nextProject = {
           {timelinePhaseNames.map((p) => <li>{p}</li>)}
         </ul>
 
-        <p class="plan-sublabel">Work-Breakdown Structure</p>
+        <p class="plan-sublabel">Work Breakdown Structure</p>
         <div class="wbs-grid">
           {wbsPhases.map((p) => (
             <div class="wbs-phase">
@@ -563,7 +572,7 @@ const nextProject = {
           ))}
         </div>
 
-        <p class="plan-sublabel">Gantt — Phase Schedule</p>
+        <p class="plan-sublabel">Gantt · Phase Schedule</p>
         <div class="gantt">
           {ganttPhases.map((p) => (
             <div class="gantt-row">
@@ -588,8 +597,16 @@ const nextProject = {
 
     <section class="dark-block">
       <div class="wrap">
-        <h2>Risk Management</h2>
-        <p>Before pitching the plan, we ran it through a risk register — three external risks (student engagement, recruiter buy-in, alumni fatigue) and four internal ones (platform failures, data privacy, misalignment with Career Services, and low-quality prep material), each graded on probability and impact with a specific mitigation. Doing this before pitching meant the plan’s weakest points were named and answered up front, not after, so the pitch could speak to them head on.</p>
+        <h2>We named the weak points before anyone else could</h2>
+        <p class="take">
+          <span class="take-label">What I think about this stage</span>
+          Writing a risk register before the pitch felt like volunteering reasons to say no. It is the
+          opposite. Every weakness we listed was one somebody in that room was going to find anyway, and
+          naming it first turns an objection into a line item you have already answered.
+          <strong>I would rather be the person who says this probably fails here than the person who
+          gets told.</strong>
+        </p>
+        <p>Before pitching the plan, we ran it through a risk register: three external risks (student engagement, recruiters coming on board, alumni fatigue) and four internal ones (platform failures, data privacy, misalignment with Career Services, and low quality prep material), each graded on probability and impact with a specific mitigation. Doing this before pitching meant the plan’s weakest points were named and answered up front, not after, so the pitch could speak to them head on.</p>
         <div class="risk-table-wrap">
           <table class="risk-table">
             <thead>
@@ -623,19 +640,27 @@ const nextProject = {
             </tbody>
           </table>
         </div>
-        <p>The two "A"-grade risks that shaped the plan most: <strong>low student engagement</strong> (high probability, high impact) is why every milestone pairs a session with a social incentive, and <strong>data privacy</strong> (low probability, critical impact) is why the repository was scoped as Esade-private with student-governed access controls rather than open to anyone with a link. Both choices came straight out of the risk register, and both are visible in the final plan, so the reasoning is easy to trace.</p>
+        <p>The two "A"-grade risks that shaped the plan most: <strong>low student engagement</strong> (high probability, high impact) is why every milestone pairs a session with a social incentive, and <strong>data privacy</strong> (low probability, critical impact) is why the repository was scoped as private to Esade with student governed access controls rather than open to anyone with a link. Both choices came straight out of the risk register, and both are visible in the final plan, so the reasoning is easy to trace.</p>
       </div>
     </section>
 
     <section class="white-block metrics-section">
       <div class="wrap" data-metrics>
-        <h2>Success Metrics &amp; Goals</h2>
+        <h2>How we would know whether it worked</h2>
+        <p class="take">
+          <span class="take-label">What I think about this stage</span>
+          The landing rate is the number the school cares about and the worst number to manage by,
+          because it answers two years late. So we tracked the things that move weekly instead:
+          who turned up, who messaged an alumnus, who came back.
+          <strong>A metric you cannot read until the project is over is a scoreboard, not a
+          steering wheel.</strong>
+        </p>
 
         <div class="metrics-hero">
           <p class="metrics-hero-num" aria-label="Plus 20 percent">+<span data-count="20">20</span>%</p>
           <div class="metrics-hero-text">
             <p class="metrics-hero-title">Interview landing rate</p>
-            <p>The core KPI — a two-year outcome, measured by comparing post-launch results against the pre-E-LINK baseline of about 35%.</p>
+            <p>The core KPI, a two year outcome, measured by comparing post launch results against the baseline of about 35% from before E-LINK.</p>
           </div>
         </div>
 
@@ -705,9 +730,9 @@ const nextProject = {
 
     <section class="dark-block">
       <div class="wrap">
-        <h2>Reflection</h2>
-        <p>This was a proposal, not a shipped product — the value was in building a plan disciplined enough that Esade’s Career Services could pick it up and run with it. Working through the stakeholder analysis was the most useful part: it’s easy to design a platform that’s good for students and forget it also has to be good for the Career Services staff running events and the alumni giving up their time, and the mitigation strategies changed real scope decisions (like putting the resource repository under student governance instead of open access) — a reminder that the analysis was worth doing early and doing thoroughly, not as an afterthought.</p>
-        <p>The next step would be validating the riskiest assumption directly — a small pilot with actual Career Services buy-in — rather than only stress-testing it on paper through the stakeholder and risk analysis, and learning directly from what real students and staff say and do, so the next version of the plan rests on evidence.</p>
+        <h2>Where it landed, and what I would change</h2>
+        <p>This was a proposal, not a product, and I want to be clear about that. What it had to be was disciplined enough that Career Services could pick it up and run it without us. The stakeholder analysis was the part that taught me the most: it is easy to design something excellent for students and forget it also has to be worth it for the staff running the events and the alumni giving up an evening. <strong>That analysis changed real decisions.</strong> Putting the resource repository under student governance instead of open access came straight out of it, not out of a design meeting.</p>
+        <p>What I would do next is stop stress testing it on paper. <em>Run a small pilot that Career Services has actually signed up for and find out what actually happens</em> when you ask busy people to show up. Every number in this plan is a projection until somebody does that.</p>
       </div>
     </section>
 
@@ -2698,6 +2723,29 @@ const nextProject = {
         .codex-body { grid-template-columns: 1fr; }
         .codex-code { min-height: 0; height: 340px; }
       }
-    </style>
+    
+      /* Opinion asides — my read on each stage, kept apart from the
+         account of what the team actually did. */
+      .take {
+        max-width: 60ch;
+        margin: 1.75rem 0 0;
+        padding-left: 1.1rem;
+        border-left: 3px solid #00579d;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.7;
+        color: var(--ink-soft);
+      }
+
+      .take strong { color: var(--ink); font-weight: 700; }
+
+      .take-label {
+        display: block;
+        margin-bottom: 0.35rem;
+        font-family: var(--font-quirky);
+        font-size: 1.05rem;
+        color: #00579d;
+      }
+</style>
   </body>
 </html>

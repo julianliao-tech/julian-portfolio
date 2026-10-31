@@ -1,0 +1,2510 @@
+---
+// ---------------------------------------------------------------------
+// Case study page — Disability Design Lab (SI 407 midterm).
+//
+// Deliberately short: a recruiter gets the hero, who it's for, three
+// decisions, the screens, and the system. Same page language as
+// surecall.astro / guide.astro (full-bleed hero banner, marquee, head block with
+// meta strip and typewriter pull quote, white/dark blocks, Up Next),
+// with the project's own cobalt indigo + amber standing in for the
+// per-case-study accent the way SureCall's green does.
+//
+// The one section with no precedent elsewhere on the site is "The
+// design system", which renders the Figma file's real variable
+// collections as live HTML rather than screenshots: the primitive
+// ramps, the Light/Dark token aliases, the four Semantics modes, the
+// three Typography modes and the Responsive Variables. Every value in
+// the data below was read out of the Figma file
+// (IUEIN9dDNOWmv6U227Qvb1) with the Figma MCP server, including the
+// alias targets, which are resolved to hex here by the same primitive
+// map Figma resolves them against.
+//
+// Mode switchers are progressive: each container ships with a default
+// `data-mode` in the markup and CSS hides the other modes' values, so
+// with JS off the page still shows one complete, correct mode.
+//
+// Screens are shown as uniform top-anchored crops so the grid scans at
+// a glance; the lightbox (data-zoom-group) opens the full-length frame.
+//
+// Nothing about the audience is stated as research — the project had
+// none, and the wording keeps that distinction.
+// ---------------------------------------------------------------------
+import '../../styles/global.css';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import Lightbox from '../../components/Lightbox.astro';
+
+const base = import.meta.env.BASE_URL;
+const pageTitle = 'Disability Design Lab · Julian Liao';
+const pageDescription =
+  'A concept store for adaptive tools, organized by the daily challenge they solve. 16 screens on a five-collection design system.';
+const ogImage = new URL(`${base}images/home/profile-illustration.webp`, Astro.site);
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const img = (n: string) => `${base}images/disability-design-lab/${n}`;
+
+const meta = [
+  { label: 'Timeline', value: 'Fall 2026' },
+  { label: 'Role', value: ['UX/UI Designer', 'Design Systems'] },
+  { label: 'Type of Work', value: ['Class Project', 'Ecommerce'] },
+  { label: 'Tools', value: ['Figma', 'Figma Slides', 'Figma Make'] },
+  {
+    label: 'Skills',
+    value: ['Design Systems', 'Design Tokens', 'Responsive Design', 'Accessibility'],
+  },
+];
+
+const marqueeWords = Array(5).fill('DISABILITY DESIGN LAB');
+
+const decisions = [
+  {
+    num: '01',
+    title: 'Browse by daily challenge, not product category',
+    body:
+      'Four challenges lead the homepage and the nav: Opening Containers, Getting Dressed, Writing & Drawing, Navigating Your Workspace. My assumption is that people arrive naming the task that stopped working, not a product type. Shop all is still there, as the second way in.',
+  },
+  {
+    num: '02',
+    title: 'Two typefaces, two jobs',
+    body:
+      'Atkinson Hyperlegible sets everything a shopper has to read. The Braille Institute drew it to separate the characters low vision readers confuse. Space Grotesk is limited to headings and short labels, so the aesthetic never touches the sentence someone reads to decide whether a tool fits their hand.',
+  },
+  {
+    num: '03',
+    title: 'Raw on the chrome, clean on the content',
+    body:
+      'Every hand drawn mark sits on the chrome (card outlines, chips, dividers, the rule under a heading), and each stroke is genuinely wobbled geometry drawn in two offset passes. NN/g warns that neobrutalism can strip the affordances that signal what is a control, so the controls and the copy stay conventional.',
+  },
+];
+
+// Eight pages, each at both breakpoints. The desktop crop is what the
+// grid shows; the mobile frame sits beside it in the second row.
+const screens = [
+  { name: 'Homepage', note: 'Leads with the four challenges', file: 'homepage' },
+  { name: 'Catalogue', note: 'Filter sidebar, grid three wide', file: 'catalogue' },
+  { name: 'Product detail', note: 'Variant chips, stepper, disclosures', file: 'product-detail' },
+  { name: 'Quick view', note: 'A modal on a dimmed page', file: 'quickview' },
+  { name: 'Shopping cart', note: 'Line items beside a running total', file: 'cart' },
+  { name: 'Checkout', note: 'No account required', file: 'checkout' },
+  { name: 'Order confirmed', note: 'Same arithmetic as the cart', file: 'confirmed' },
+  { name: '404', note: 'The hand drawn mascot, between the fours', file: 'error404' },
+];
+
+// ---------------------------------------------------------------------
+// Design system data — read from the Figma file's own variable
+// collections, text styles and component sets.
+// ---------------------------------------------------------------------
+
+const stats = [
+  { n: '141', label: 'variables, five collections' },
+  { n: '1,928', label: 'bound color uses' },
+  { n: '0', label: 'pasted hex values' },
+  { n: '44px', label: 'minimum target, every button' },
+];
+
+type Ramp = { family: string; note: string; steps: [string, string][] };
+
+const ramps: Ramp[] = [
+  {
+    family: 'Cobalt Indigo',
+    note: 'Primary. Every action, link and selected state.',
+    steps: [
+      ['50', '#e8eaf9'],
+      ['100', '#d3d6f3'],
+      ['200', '#a3aae6'],
+      ['300', '#7683da'],
+      ['400', '#455dcb'],
+      ['500', '#2c3d8a'],
+      ['600', '#243274'],
+      ['700', '#1a255b'],
+      ['800', '#111a43'],
+      ['900', '#0a1131'],
+      ['950', '#050921'],
+    ],
+  },
+  {
+    family: 'Amber',
+    note: 'Secondary. Attention only: badges, tape, the rule under a heading.',
+    steps: [
+      ['50', '#fdf5ef'],
+      ['100', '#fcefe4'],
+      ['200', '#f9dac0'],
+      ['300', '#f5c99f'],
+      ['400', '#f2b46b'],
+      ['500', '#e9a443'],
+      ['600', '#b67f32'],
+      ['700', '#895f24'],
+      ['800', '#5b3e15'],
+      ['900', '#342208'],
+      ['950', '#201203'],
+    ],
+  },
+  {
+    family: 'Greyscale',
+    note: 'Everything else. Surfaces, borders and all four text roles alias into this.',
+    steps: [
+      ['0', '#ffffff'],
+      ['50', '#efeff2'],
+      ['100', '#e0e1e6'],
+      ['200', '#bfc0ca'],
+      ['300', '#9fa2b1'],
+      ['400', '#7c8094'],
+      ['500', '#525564'],
+      ['600', '#444754'],
+      ['700', '#353740'],
+      ['800', '#26272e'],
+      ['900', '#1b1c20'],
+      ['950', '#191a1f'],
+    ],
+  },
+  {
+    family: 'Green',
+    note: 'Reached only through Semantics, in its Success mode.',
+    steps: [
+      ['50', '#e9faf4'],
+      ['100', '#d9f5e6'],
+      ['200', '#b0e9d0'],
+      ['300', '#8fdfbd'],
+      ['400', '#6ad4a3'],
+      ['500', '#6ad099'],
+      ['600', '#469d71'],
+      ['700', '#367b58'],
+      ['800', '#205038'],
+      ['900', '#10291d'],
+      ['950', '#07120c'],
+    ],
+  },
+  {
+    family: 'Red',
+    note: 'Reached only through Semantics, in its Error mode.',
+    steps: [
+      ['50', '#fcecf0'],
+      ['100', '#f8dae0'],
+      ['200', '#f0acbb'],
+      ['300', '#ed8b9d'],
+      ['400', '#eb6c80'],
+      ['500', '#e24d6c'],
+      ['600', '#dc3341'],
+      ['700', '#a12330'],
+      ['800', '#67161c'],
+      ['900', '#3a0a10'],
+      ['950', '#170206'],
+    ],
+  },
+];
+
+// One flat map of every primitive, used to resolve the aliases below
+// exactly the way Figma resolves them.
+const primitives: Record<string, string> = {};
+for (const r of ramps) {
+  for (const [step, hex] of r.steps) primitives[`${r.family}/${step}`] = hex;
+}
+const collage: [string, string][] = [
+  ['Collage/Cream', '#e8e0c9'],
+  ['Collage/Peach', '#efd6cd'],
+  ['Collage/Blue-grey', '#d2dee6'],
+];
+for (const [name, hex] of collage) primitives[name] = hex;
+
+const resolve = (alias: string) => primitives[alias] ?? '#000000';
+
+// Tokens — modes Light / Dark. Values are alias targets, not hex.
+const tokenGroups: { group: string; rows: [string, string, string][] }[] = [
+  {
+    group: 'Surface',
+    rows: [
+      ['default', 'Greyscale/0', 'Greyscale/950'],
+      ['subtle', 'Greyscale/50', 'Greyscale/900'],
+      ['elevated', 'Greyscale/200', 'Greyscale/800'],
+      ['disabled', 'Greyscale/300', 'Greyscale/700'],
+      ['inverted', 'Greyscale/950', 'Greyscale/0'],
+    ],
+  },
+  {
+    group: 'Border',
+    rows: [
+      ['default', 'Greyscale/200', 'Greyscale/700'],
+      ['disabled', 'Greyscale/300', 'Greyscale/600'],
+      ['darker', 'Greyscale/400', 'Greyscale/500'],
+    ],
+  },
+  {
+    group: 'Text',
+    rows: [
+      ['title', 'Greyscale/950', 'Greyscale/0'],
+      ['subtitle', 'Greyscale/700', 'Greyscale/200'],
+      ['body', 'Greyscale/500', 'Greyscale/100'],
+      ['caption', 'Greyscale/600', 'Greyscale/300'],
+      ['negative', 'Greyscale/0', 'Amber/950'],
+      ['disabled', 'Greyscale/100', 'Amber/900'],
+    ],
+  },
+];
+
+const radii: [string, string, number][] = [
+  ['Radius/sharp', 'Value/null', 0],
+  ['Radius/xs', 'Value/4', 4],
+  ['Radius/sm', 'Value/8', 8],
+  ['Radius/md', 'Value/12', 12],
+  ['Radius/lg', 'Value/16', 16],
+  ['Radius/xl', 'Value/24', 24],
+  ['Radius/xxl', 'Value/32', 32],
+  ['Radius/rounded', 'Value/full', 9999],
+];
+
+// Semantics — modes Primary / Secondary / Success / Error.
+const semanticModes = ['Primary', 'Secondary', 'Success', 'Error'] as const;
+const semantics: { name: string; aliases: [string, string, string, string] }[] = [
+  { name: 'Surface/subtle', aliases: ['Cobalt Indigo/100', 'Amber/100', 'Green/100', 'Red/100'] },
+  { name: 'Surface/light', aliases: ['Cobalt Indigo/400', 'Amber/400', 'Green/400', 'Red/400'] },
+  { name: 'Surface/default', aliases: ['Cobalt Indigo/500', 'Amber/500', 'Green/500', 'Red/500'] },
+  { name: 'Surface/darker', aliases: ['Cobalt Indigo/600', 'Amber/600', 'Green/600', 'Red/600'] },
+  { name: 'Border/subtle', aliases: ['Cobalt Indigo/100', 'Amber/100', 'Green/100', 'Red/100'] },
+  { name: 'Border/light', aliases: ['Amber/400', 'Cobalt Indigo/400', 'Green/400', 'Red/400'] },
+  { name: 'Border/default', aliases: ['Cobalt Indigo/500', 'Amber/500', 'Green/500', 'Red/500'] },
+  { name: 'Border/darker', aliases: ['Cobalt Indigo/600', 'Amber/600', 'Green/600', 'Red/600'] },
+  { name: 'Text/label', aliases: ['Cobalt Indigo/500', 'Amber/500', 'Green/500', 'Red/500'] },
+  { name: 'Text/white', aliases: ['Greyscale/0', 'Greyscale/0', 'Greyscale/0', 'Greyscale/0'] },
+];
+
+// Typography — modes Mobile / Tablet / Desktop. [size, line-height] per
+// mode, in px, as the Figma variables store them.
+type TypeRow = {
+  style: string;
+  face: 'heading' | 'body' | 'annotation';
+  weight: number;
+  sample: string;
+  use: string;
+  // Six of the fifteen size steps are published but no midterm frame
+  // reaches for them. They are shown anyway — a scale with holes in it
+  // is not a scale.
+  used: boolean;
+  modes: [number, number][];
+};
+
+const typeRows: TypeRow[] = [
+  {
+    style: 'Heading/H1',
+    face: 'heading',
+    weight: 700,
+    sample: 'Find it by the task',
+    use: 'Page headline',
+    used: true,
+    modes: [[48.83, 63.48], [58.59, 76.17], [70.31, 91.4]],
+  },
+  {
+    style: 'Heading/H2',
+    face: 'heading',
+    weight: 700,
+    sample: 'Browse by challenge',
+    use: 'One step under H1',
+    used: false,
+    modes: [[39.06, 50.78], [46.88, 60.94], [56.25, 73.13]],
+  },
+  {
+    style: 'Heading/H3',
+    face: 'heading',
+    weight: 700,
+    sample: 'Opening Containers',
+    use: 'Section headline',
+    used: true,
+    modes: [[31.25, 40.63], [37.5, 48.75], [45, 58.5]],
+  },
+  {
+    style: 'Heading/H4',
+    face: 'heading',
+    weight: 500,
+    sample: '$22.00',
+    use: 'Price',
+    used: true,
+    modes: [[25, 32.5], [30, 39], [36, 46.8]],
+  },
+  {
+    style: 'Heading/H5',
+    face: 'heading',
+    weight: 500,
+    sample: 'What comes in the box',
+    use: 'One step over H6',
+    used: false,
+    modes: [[20, 26], [24, 31.2], [28.8, 37.44]],
+  },
+  {
+    style: 'Heading/H6',
+    face: 'heading',
+    weight: 500,
+    sample: 'Weighted Grip Pen',
+    use: 'Product title, disclosure rows',
+    used: true,
+    modes: [[16, 20.8], [19.2, 24.96], [23.04, 29.95]],
+  },
+  {
+    style: 'Paragraph/P1',
+    face: 'body',
+    weight: 400,
+    sample: 'A store you enter through the task, not the taxonomy.',
+    use: 'One step over P2',
+    used: false,
+    modes: [[25, 37.5], [30, 45], [36, 54]],
+  },
+  {
+    style: 'Paragraph/P2',
+    face: 'body',
+    weight: 400,
+    sample: 'A wider barrel and a weighted base steady the line.',
+    use: 'Standfirst, long descriptions',
+    used: true,
+    modes: [[20, 30], [24, 36], [28.8, 43.2]],
+  },
+  {
+    style: 'Paragraph/P3',
+    face: 'body',
+    weight: 400,
+    sample: 'Works with either hand. Dishwasher safe.',
+    use: 'Body copy, the default reading size',
+    used: true,
+    modes: [[16, 24], [19.2, 28.8], [23.04, 34.56]],
+  },
+  {
+    style: 'Label/L1',
+    face: 'body',
+    weight: 400,
+    sample: 'GRIP SIDE',
+    use: 'Eyebrows, chips, stepper text',
+    used: true,
+    modes: [[12.5, 18.75], [15, 22.5], [18, 27]],
+  },
+  {
+    style: 'Label/L2',
+    face: 'body',
+    weight: 400,
+    sample: 'ONE-HANDED',
+    use: 'Badges, option-group captions',
+    used: true,
+    modes: [[10, 15], [12, 18], [14.4, 21.6]],
+  },
+  {
+    style: 'Label/L3',
+    face: 'body',
+    weight: 400,
+    sample: 'DISHWASHER SAFE',
+    use: 'The smallest label step',
+    used: false,
+    modes: [[8, 12], [9.6, 14.4], [11.52, 17.28]],
+  },
+  {
+    style: 'Button/B1',
+    face: 'body',
+    weight: 700,
+    sample: 'Add to cart',
+    use: 'The largest button step',
+    used: false,
+    modes: [[21.88, 32.82], [26.25, 39.38], [31.5, 47.25]],
+  },
+  {
+    style: 'Button/B2',
+    face: 'body',
+    weight: 700,
+    sample: 'Add to cart',
+    use: 'The middle button step',
+    used: false,
+    modes: [[17.5, 26.25], [21, 31.5], [25.2, 37.8]],
+  },
+  {
+    style: 'Button/B3',
+    face: 'body',
+    weight: 700,
+    sample: 'Add to cart',
+    use: 'The size every real button uses',
+    used: true,
+    modes: [[14, 21], [16.8, 25.2], [20.16, 30.24]],
+  },
+  {
+    style: 'Annotation/A1',
+    face: 'annotation',
+    weight: 400,
+    sample: 'tested by the people who need it',
+    use: 'Eyebrows and counts only, never a sentence',
+    used: true,
+    modes: [[20, 24], [24, 24], [28.8, 24]],
+  },
+];
+
+const typeModes = ['Mobile', 'Tablet', 'Desktop'] as const;
+
+const responsiveRows: [string, string, string, string][] = [
+  ['max-width', '1512', '768', '393'],
+  ['section-max-width', '1384', '682.66', '361'],
+  ['horizontal-margin', '64', '32', '16'],
+  ['vertical-margin', '120', '64', '40'],
+  ['section-gap', '48', '32', '16'],
+  ['footer-min-width', '148', '78.93', '38.54'],
+  ['Nav/Logo', 'full', 'full', 'logomark'],
+  ['Nav/has-links', 'true', 'false', 'false'],
+  ['Nav/has-nav-buttons', 'true', 'false', 'false'],
+  ['Nav/has-menu-icon', 'false', 'true', 'true'],
+];
+
+// The kit. `w`/`h` are the export's own pixel size: the media box caps
+// each specimen at 1.6x that, so a 117px stepper is never blown up to
+// card width while a 1512px variant sheet still fills its box.
+type Comp = {
+  name: string;
+  variants: string;
+  image: string;
+  alt: string;
+  w: number;
+  h: number;
+  set: boolean;
+};
+
+const components: Comp[] = [
+  {
+    name: 'Button',
+    variants: '60 variants · Type × State × Style',
+    image: 'comp-button-set.webp',
+    alt: 'The Button component set, showing filled, outlined and text buttons across default, hover, pressed, focused and disabled states',
+    w: 1512,
+    h: 523,
+    set: true,
+  },
+  {
+    name: 'Product Card',
+    variants: 'State = Default / Hover / Sold Out / On Sale',
+    image: 'comp-product-card.webp',
+    alt: 'The Product Card component set in its default, hover, sold out and on-sale states',
+    w: 1512,
+    h: 289,
+    set: true,
+  },
+  {
+    name: 'Nav Bar',
+    variants: 'Menu = Open / Closed',
+    image: 'comp-nav-bar.webp',
+    alt: 'The nav bar component set in its menu-closed and menu-open variants',
+    w: 1480,
+    h: 630,
+    set: true,
+  },
+  {
+    name: 'Footer',
+    variants: 'Component level Tokens: Dark',
+    image: 'comp-footer.webp',
+    alt: 'The dark Footer component with four link columns',
+    w: 1512,
+    h: 482,
+    set: true,
+  },
+  {
+    name: 'Option Chip',
+    variants: 'State = Default / Selected',
+    image: 'comp-option-chip.webp',
+    alt: 'The Option Chip component in its default and selected states, each with a hand drawn outline',
+    w: 308,
+    h: 94,
+    set: false,
+  },
+  {
+    name: 'Challenge Card',
+    variants: 'Single component',
+    image: 'comp-challenge-card.webp',
+    alt: 'The Challenge Card component, a hand drawn framed tile for one daily challenge',
+    w: 325,
+    h: 193,
+    set: false,
+  },
+  {
+    name: 'Section Head',
+    variants: 'Single component',
+    image: 'comp-section-head.webp',
+    alt: 'The Section Head component: a handwritten eyebrow above a title with a hand drawn amber underline',
+    w: 560,
+    h: 87,
+    set: false,
+  },
+  {
+    name: 'Form Field',
+    variants: 'Single component',
+    image: 'comp-form-field.webp',
+    alt: 'The Form Field component: a label above a hand drawn input outline',
+    w: 360,
+    h: 75,
+    set: false,
+  },
+  {
+    name: 'Quantity Stepper',
+    variants: 'Single component',
+    image: 'comp-qty-stepper.webp',
+    alt: 'The Quantity Stepper component with minus and plus controls either side of a count',
+    w: 117,
+    h: 48,
+    set: false,
+  },
+  {
+    name: 'Rough Divider',
+    variants: 'Single component',
+    image: 'comp-rough-divider.webp',
+    alt: 'The Rough Divider component: a single hand drawn horizontal rule',
+    w: 600,
+    h: 12,
+    set: false,
+  },
+  {
+    name: 'Logo',
+    variants: 'Type = Full / Mark',
+    image: 'comp-logo.webp',
+    alt: 'The logo component set: the full lockup and the icon mark on its own',
+    w: 360,
+    h: 180,
+    set: false,
+  },
+  {
+    name: 'Stick Figure',
+    variants: 'Stick Figure = Straight / Left / Right / Up',
+    image: 'comp-stick-figure.webp',
+    alt: 'The Stick Figure component set: a hand drawn figure facing straight, left, right and up',
+    w: 136,
+    h: 767,
+    set: false,
+  },
+];
+
+const componentSets = components.filter((c) => c.set);
+const componentSingles = components.filter((c) => !c.set);
+const cap = (c: Comp) => `--mw:${Math.round(c.w * 1.6)}px;--mh:${Math.round(c.h * 1.6)}px`;
+
+// The Figma Make build of the store, published from Make to its own
+// public address. Figma's Embed Kit has no /make/ type and the editor
+// URL (figma.com/make/...) refuses to be framed, so the only route to a
+// genuinely clickable embed is Make's own Publish action, which hands
+// back a `<three-random-words>.figma.site` URL that needs no Figma
+// login. Checked 2026-10-31: the published host sends no
+// `X-Frame-Options` and no `frame-ancestors`, so it frames here
+// cleanly. Set this to null to switch the whole section back off.
+const prototypeUrl: string | null = 'https://start-vest-98438776.figma.site';
+
+const nextProject = {
+  title: 'Guide Mobile Application',
+  subtitle: 'Knowing a route works before you are already out in it',
+  image: `${base}images/home/tile-guide.webp`,
+  href: `${base}work/guide/`,
+};
+---
+
+{/* prettier-ignore */}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fdfbf9" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="canonical" href={canonical.href} />
+    <meta name="description" content={pageDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImage.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{pageTitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    {/* The site's own faces, plus the project's own three — the type
+        specimen below is set in the real typefaces, not screenshotted. */}
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&family=Permanent+Marker&family=Space+Grotesk:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&family=Caveat:wght@400;600&display=swap"
+    />
+  </head>
+  <body>
+    <Nav />
+
+    <div data-zoom-group data-zoom-scan>
+      <section class="hero-banner">
+        <img
+          data-tilt
+          src={img('00-cover-banner.webp')}
+          alt="The Disability Design Lab storefront shown on a laptop and a phone, beside the lab's hand drawn mark, on an amber background"
+        />
+      </section>
+
+      <section class="marquee-section" aria-hidden="true">
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-left">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-right">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-left">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-right">
+            {[...marqueeWords, ...marqueeWords].map((w) => <span>{w}</span>)}
+          </div>
+        </div>
+        <div class="marquee-phone">
+          <div class="phone-frame">
+            <img src={img('homepage-mobile.webp')} alt="" />
+          </div>
+        </div>
+      </section>
+
+      <section class="head-block">
+        <div class="wrap">
+          <div class="head-top">
+            <h1 class="title">Disability<br />Design Lab</h1>
+            <div class="context-box">
+              <p class="context-label">Where this started</p>
+              <h2 class="context-heading">A store you enter through the task, not the taxonomy</h2>
+              <p>
+                A concept store for adaptive tools (grips, openers, fasteners, writing aids),
+                <strong> organized by the daily challenge they solve rather than by product
+                category</strong>. My midterm for SI 407 at the University of Michigan School of
+                Information, designed against an assigned visual direction of "Experimental &amp; Raw."
+                The catalog and prices are invented for the project; the design system behind them is not.
+              </p>
+            </div>
+          </div>
+
+          <dl class="meta">
+            {meta.map((m) => (
+              <div>
+                <dt>{m.label}</dt>
+                <dd>{Array.isArray(m.value) ? m.value.map((v) => <span>{v}</span>) : m.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <p class="intro">
+            Adaptive tools are usually sold the way hardware is sold: by category, by material, by
+            brand. But nobody wakes up needing a silicone grip. They wake up unable to open a jar.
+            I am designing for adults whose grip, reach or dexterity has changed, from arthritis, tremor,
+            stroke or using one hand, and for the people buying on their behalf: family caregivers and
+            occupational therapists. <em>I had no user research for this project</em>, so I assumed that
+            group skews older and that a lot of them have some vision loss too, and
+            <strong> designed for low vision reading from the start</strong> rather than treating it as a
+            pass at the end. Those are assumptions, and I have labelled them that way everywhere on this
+            page rather than dressing them up as findings.
+          </p>
+
+          <p class="pull-quote" data-typewriter>
+            <span aria-hidden="true"
+              ><span class="tw-seg" data-full="How might I design a store where someone whose grip has changed can find a tool by "
+              ></span><span class="tw-seg pull-quote-highlight" data-full="naming the task that got hard"
+              ></span><span class="tw-seg" data-full="?"></span></span
+            >
+            <span class="sr-only"
+              >How might I design a store where someone whose grip has changed can find a tool by naming
+              the task that got hard?</span
+            >
+          </p>
+        </div>
+      </section>
+
+      <section class="white-block">
+        <div class="wrap">
+          <p class="take">
+            <span class="take-label">What I think about this stage</span>
+            The brief said "Experimental and Raw", and my first instinct was to make everything rough,
+            including the buttons. That is the trap. Rough chrome reads as personality; a rough control
+            reads as broken, and for an audience with low vision it reads as nothing at all.
+            <strong>So the aesthetic lives entirely on the parts you do not have to operate.</strong>
+            I think most of the visual work I am proud of came out of that one line being drawn early.
+          </p>
+
+          <p class="eyebrow-label">The three decisions that shaped everything else</p>
+          <ol class="dec-grid">
+            {decisions.map((d) => (
+              <li class="dec-card">
+                <span class="dec-num">{d.num}</span>
+                <h3>{d.title}</h3>
+                <p>{d.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="white-block">
+        <div class="wrap">
+          <p class="eyebrow-label">Final design</p>
+          <h2>Eight pages, two breakpoints, one set of rules</h2>
+          <p class="section-lede">
+            Every frame is real Auto Layout and sets all three variable modes, so the 393px column is the
+            desktop page reflowing rather than a second drawing of it. Click any screen for the full
+            length.
+          </p>
+
+          <p class="take">
+            <span class="take-label">What I think about this stage</span>
+            Drawing the mobile screen separately is the shortcut everybody takes, and it is how the two
+            versions start disagreeing about what the product is. Making the 393px frame the same frame,
+            reflowing, costs more up front and is the reason these eight pages stayed consistent while I
+            changed my mind about the catalogue three times.
+            <strong>If the phone layout is a second drawing, it is a second product.</strong>
+          </p>
+
+          <ul class="screen-grid">
+            {screens.map((s) => (
+              <li class="screen-card">
+                <div class="screen-window">
+                  <img
+                    data-tilt
+                    src={img(`${s.file}-desktop.webp`)}
+                    alt={`${s.name} at 1512px, ${s.note.toLowerCase()}`}
+                  />
+                </div>
+                <div class="screen-label">
+                  <h3>{s.name}</h3>
+                  <p>{s.note}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <p class="row-label">The same eight at 393px</p>
+          <ul class="mobile-row">
+            {screens.map((s) => (
+              <li>
+                <div class="mobile-window">
+                  <img
+                    src={img(`${s.file}-mobile.webp`)}
+                    alt={`${s.name} at 393px, reflowed to a single column`}
+                  />
+                </div>
+                <span>{s.name}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {prototypeUrl && (
+        <section class="white-block">
+          <div class="wrap">
+            <h2>Click through it</h2>
+            <p class="section-lede">
+              The same screens rebuilt in Figma Make as a working site: real navigation, a cart that
+              adds up, a checkout that submits. <strong>It loads on click</strong>, so nothing from
+              Figma runs until you ask for it.
+            </p>
+
+            <div class="proto-stage">
+              <div class="proto-screen">
+                <button type="button" class="proto-launch" data-proto-launch data-proto-src={prototypeUrl}>
+                  <img src={img('homepage-desktop.webp')} alt="" aria-hidden="true" />
+                  <span class="proto-cta">Launch the prototype</span>
+                </button>
+              </div>
+              <div class="proto-base"></div>
+            </div>
+
+            <p class="proto-note">
+              Hosted by Figma, so it can be slow to wake up.{' '}
+              <a href={prototypeUrl} target="_blank" rel="noopener noreferrer">
+                Open it in its own tab instead
+              </a>{' '}
+              if it does not appear.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {/* ------------------------------------------------------------- */}
+      {/* The design system, rendered live rather than screenshotted.   */}
+      {/* ------------------------------------------------------------- */}
+      <section class="ds-intro">
+        <div class="wrap">
+          <p class="eyebrow-label eyebrow-on-dark">The design system</p>
+          <h2>Five collections, nothing hardcoded</h2>
+          <p class="ds-lede">
+            Primitives hold the raw values, and nothing in a screen points at them if a token exists.
+            Tokens alias the greyscale into surfaces, borders, text and radii, with a Light and a Dark
+            mode. Semantics resolve the same ten names into a different family per mode. Typography and
+            Responsive Variables carry the breakpoints. Everything below is the file's real contents,
+            <strong> switch the modes and the values change the way they do in Figma.</strong>
+          </p>
+          <ul class="stat-row">
+            {stats.map((s) => (
+              <li>
+                <span class="stat-n">{s.n}</span>
+                <span class="stat-label">{s.label}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section class="white-block ds-block">
+        <div class="wrap">
+          <p class="ds-kicker">Collection 01 · 67 variables · 1 mode</p>
+          <h2>Primitives</h2>
+          <p class="section-lede">
+            Five families, each a full 50–950 scale, plus a small set of raw numbers for spacing and
+            radius. <strong>Nothing in a screen is allowed to point here</strong> once a token or a
+            semantic exists for the job.
+          </p>
+
+          <p class="take">
+            <span class="take-label">What I think about this stage</span>
+            A design system is only worth the trouble if you are strict about the layer rule, and being
+            strict is annoying every single time. Pointing a card at a raw hex takes two seconds and
+            pointing it at a token takes a minute of naming. I kept doing the slow one, and the payoff
+            was that switching the whole file to Dark mode was one setting rather than a day of work.
+            <strong>Discipline early is just speed later, spent in advance.</strong>
+          </p>
+
+          {ramps.map((r) => (
+            <div class="ramp">
+              <div class="ramp-head">
+                <h3>{r.family}</h3>
+                <p>{r.note}</p>
+              </div>
+              <ol class="ramp-row">
+                {r.steps.map(([step, hex]) => (
+                  <li>
+                    <span class="chip" style={`background:${hex}`}></span>
+                    <span class="chip-step">{step}</span>
+                    <span class="chip-hex">{hex}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))}
+
+          <div class="ramp">
+            <div class="ramp-head">
+              <h3>Collage &amp; raw values</h3>
+              <p>
+                Three loose paper colors for the torn collage wordmark, plus the numbers the radius
+                tokens alias into. <code>Value/full</code> is 10,000, which is a pill at any size.
+              </p>
+            </div>
+            <ol class="ramp-row ramp-row-sparse">
+              {collage.map(([name, hex]) => (
+                <li>
+                  <span class="chip" style={`background:${hex}`}></span>
+                  <span class="chip-step">{name.split('/')[1]}</span>
+                  <span class="chip-hex">{hex}</span>
+                </li>
+              ))}
+            </ol>
+            <ol class="value-row">
+              {['null · 0', '4', '8', '12', '16', '24', '32', 'full · 10000'].map((v) => (
+                <li><code>Value/{v}</code></li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="white-block ds-block">
+        <div class="wrap">
+          <p class="ds-kicker">Collection 02 · 22 variables · Light / Dark</p>
+          <h2>Tokens</h2>
+          <p class="section-lede">
+            The greyscale, aliased into the four jobs a neutral actually does, with a second mode that
+            flips the whole ramp. The footer is the one place Dark is used in anger. It carries
+            <code> Tokens: Dark</code> at the component level, which is what makes it dark wherever it is
+            placed.
+          </p>
+
+          <div class="mode-strip" data-mode="Light" data-mode-group="tokens">
+            <div class="mode-switch" role="group" aria-label="Token mode">
+              <button type="button" data-mode-set="Light" aria-pressed="true">Light</button>
+              <button type="button" data-mode-set="Dark" aria-pressed="false">Dark</button>
+            </div>
+
+            <div class="token-preview">
+              <div class="token-card m-Light">
+                <span class="token-card-label">Surface/default · Text/title</span>
+                <p>Weighted Grip Pen</p>
+                <span class="token-card-sub">Text/body, a wider barrel steadies the line.</span>
+              </div>
+              <div class="token-card m-Dark">
+                <span class="token-card-label">Surface/default · Text/title</span>
+                <p>Weighted Grip Pen</p>
+                <span class="token-card-sub">Text/body, a wider barrel steadies the line.</span>
+              </div>
+            </div>
+
+            <div class="token-tables">
+              {tokenGroups.map((g) => (
+                <table class="ds-table">
+                  <caption>Greyscale/{g.group}</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Token</th>
+                      <th scope="col">Aliases to</th>
+                      <th scope="col">Resolves to</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {g.rows.map(([name, light, dark]) => (
+                      <tr>
+                        <th scope="row"><code>{name}</code></th>
+                        <td>
+                          <code class="m-Light">{light}</code>
+                          <code class="m-Dark">{dark}</code>
+                        </td>
+                        <td class="cell-hex">
+                          <span class="m-Light">
+                            <span class="dot" style={`background:${resolve(light)}`}></span>{resolve(light)}
+                          </span>
+                          <span class="m-Dark">
+                            <span class="dot" style={`background:${resolve(dark)}`}></span>{resolve(dark)}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ))}
+
+              <table class="ds-table">
+                <caption>Radius, identical in both modes</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Token</th>
+                    <th scope="col">Aliases to</th>
+                    <th scope="col">Shape</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {radii.map(([name, alias, px]) => (
+                    <tr>
+                      <th scope="row"><code>{name.split('/')[1]}</code></th>
+                      <td><code>{alias}</code></td>
+                      <td><span class="radius-demo" style={`border-radius:${px}px`}></span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="white-block ds-block">
+        <div class="wrap">
+          <p class="ds-kicker">Collection 03 · 10 variables · 4 modes</p>
+          <h2>Semantics</h2>
+          <p class="section-lede">
+            Ten names that mean different colors depending on the mode a node is in. An indigo button and
+            an amber badge are the same <code>Surface/default</code>. The difference is one mode set on
+            the node, which is why a brand color change is a mode switch rather than a sweep.
+          </p>
+
+          <div class="mode-strip" data-mode="Primary" data-mode-group="semantics">
+            <div class="mode-switch" role="group" aria-label="Semantic mode">
+              {semanticModes.map((m, i) => (
+                <button type="button" data-mode-set={m} aria-pressed={i === 0 ? 'true' : 'false'}>{m}</button>
+              ))}
+            </div>
+
+            <div class="sem-preview">
+              {semanticModes.map((m, i) => (
+                <div class={`sem-card m-${m}`}>
+                  <span
+                    class="sem-btn"
+                    style={`background:${resolve(semantics[2].aliases[i])};color:${resolve(semantics[9].aliases[i])};border-color:${resolve(semantics[3].aliases[i])}`}
+                    >Add to cart</span
+                  >
+                  <span
+                    class="sem-badge"
+                    style={`background:${resolve(semantics[0].aliases[i])};color:${resolve(semantics[8].aliases[i])};border-color:${resolve(semantics[4].aliases[i])}`}
+                    >ONE-HANDED</span
+                  >
+                  <span class="sem-note" style={`color:${resolve(semantics[8].aliases[i])}`}>Text/label in {m}</span>
+                </div>
+              ))}
+            </div>
+
+            <div class="table-scroll">
+              <table class="ds-table ds-table-sem">
+                <thead>
+                  <tr>
+                    <th scope="col">Variable</th>
+                    {semanticModes.map((m) => <th scope="col">{m}</th>)}
+                  </tr>
+                </thead>
+                <tbody>
+                  {semantics.map((s) => (
+                    <tr>
+                      <th scope="row"><code>{s.name}</code></th>
+                      {s.aliases.map((a, i) => (
+                        <td class="cell-sem" data-mode-cell={semanticModes[i]}>
+                          <span class="dot" style={`background:${resolve(a)}`}></span>
+                          <span class="cell-alias">{a}</span>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="white-block ds-block">
+        <div class="wrap">
+          <p class="ds-kicker">Collection 04 · 32 variables · Mobile / Tablet / Desktop</p>
+          <h2>Typography</h2>
+          <p class="section-lede">
+            Sixteen published text styles, each bound to a font-family, font-size and line-height variable
+            rather than carrying its own numbers, so switching the mode changes the variables underneath,
+            not the styles. All sixteen are below, set in the real faces, <strong>including the six steps
+            no frame ended up needing</strong>. A scale with holes in it is not a scale.
+          </p>
+
+          <div class="type-strip" data-mode="Desktop" data-mode-group="type">
+            <div class="mode-switch" role="group" aria-label="Typography mode">
+              {typeModes.map((m) => (
+                <button type="button" data-mode-set={m} aria-pressed={m === 'Desktop' ? 'true' : 'false'}>{m}</button>
+              ))}
+            </div>
+
+            <ul class="spec-list">
+              {typeRows.map((t) => (
+                <li
+                  class="spec-row"
+                  style={`--s-Mobile:${t.modes[0][0]}px;--l-Mobile:${t.modes[0][1]}px;--s-Tablet:${t.modes[1][0]}px;--l-Tablet:${t.modes[1][1]}px;--s-Desktop:${t.modes[2][0]}px;--l-Desktop:${t.modes[2][1]}px`}
+                >
+                  <div class="spec-meta">
+                    <code class="spec-name">{t.style}</code>
+                    <span class="spec-use">{t.use}</span>
+                    {!t.used && <span class="spec-unused">no frame uses it</span>}
+                    <span class="spec-nums">
+                      {typeModes.map((m, i) => (
+                        <span class={`m-${m}`}>{t.modes[i][0]} / {t.modes[i][1]} px</span>
+                      ))}
+                    </span>
+                  </div>
+                  <p class={`spec-sample spec-face-${t.face}`} style={`font-weight:${t.weight}`}>{t.sample}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="face-grid">
+            <article class="face-card">
+              <p class="face-sample spec-face-body" style="font-weight:400">Il1 0O</p>
+              <h3>Atkinson Hyperlegible</h3>
+              <p>
+                Everything a shopper has to read. The Braille Institute drew it to separate the characters
+                low vision readers confuse. The reading face is doing real work here, not setting a mood.
+              </p>
+            </article>
+            <article class="face-card">
+              <p class="face-sample spec-face-heading" style="font-weight:700">Aa Gg</p>
+              <h3>Space Grotesk</h3>
+              <p>
+                Headings and short labels only, where words are set large and read in a glance and the
+                quirks cost nothing.
+              </p>
+            </article>
+            <article class="face-card">
+              <p class="face-sample spec-face-annotation" style="font-weight:400">4 left · $22</p>
+              <h3>Caveat</h3>
+              <p>
+                The annotation voice: eyebrows, counts, a price on a card. One style, bound to the P2 size
+                variable, and barred from body and heading copy.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="white-block ds-block">
+        <div class="wrap">
+          <p class="ds-kicker">Collection 05 · 10 variables · Desktop / Tablet / Mobile</p>
+          <h2>Responsive Variables</h2>
+          <p class="section-lede">
+            The whole collection, breakpoints as data. The three <code>Nav/</code> booleans are what
+            collapse the nav, so the mobile nav is the same component in a different mode rather than a
+            second component.
+          </p>
+          <div class="table-scroll">
+            <table class="ds-table ds-table-resp">
+              <thead>
+                <tr>
+                  <th scope="col">Variable</th>
+                  <th scope="col">Desktop</th>
+                  <th scope="col">Tablet</th>
+                  <th scope="col">Mobile</th>
+                </tr>
+              </thead>
+              <tbody>
+                {responsiveRows.map(([name, d, t, m]) => (
+                  <tr>
+                    <th scope="row"><code>{name}</code></th>
+                    <td>{d}</td>
+                    <td>{t}</td>
+                    <td>{m}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="white-block ds-block ds-block-last">
+        <div class="wrap">
+          <p class="ds-kicker">The kit · 12 components</p>
+          <h2>Components</h2>
+          <p class="section-lede">
+            Five of these (the chip, stepper, form field, section head and divider) exist to make the
+            hand drawn treatment instanceable instead of decorative. The accessibility rules live here too:
+            <strong> every Button variant carries a 44px minimum height, and rebinding one label color took
+            the amber button from 2.13:1 to 8.15:1 across all sixteen frames at once.</strong>
+          </p>
+          <p class="comp-tier">Four variant sets</p>
+          <ul class="comp-grid comp-grid-sets">
+            {componentSets.map((c) => (
+              <li class="comp-card">
+                <div class="comp-media comp-media-set">
+                  <img data-tilt src={img(c.image)} alt={c.alt} style={cap(c)} />
+                </div>
+                <div class="comp-body">
+                  <h3>{c.name}</h3>
+                  <p>{c.variants}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <p class="comp-tier">Eight singles</p>
+          <ul class="comp-grid comp-grid-singles">
+            {componentSingles.map((c) => (
+              <li class="comp-card">
+                <div class="comp-media comp-media-single">
+                  <img data-tilt src={img(c.image)} alt={c.alt} style={cap(c)} />
+                </div>
+                <div class="comp-body">
+                  <h3>{c.name}</h3>
+                  <p>{c.variants}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section class="white-block">
+        <div class="wrap">
+          <h2>Where it landed, and what I would change</h2>
+          <p class="section-lede">
+            The thing I would take into any project after this one is that
+            <strong> accessibility is cheaper when it is a constraint than when it is a correction</strong>.
+            Picking Atkinson Hyperlegible and a 44px minimum target on day one cost me nothing; retrofitting
+            either would have meant redrawing every screen. What I am missing is the part I could not do in a
+            semester. <em>None of this has been in front of a person whose grip has actually changed</em>,
+            and until it has, the whole organizing idea is a well argued guess. That is the first thing I
+            would fix if this were real.
+          </p>
+        </div>
+      </section>
+
+      <section class="up-next">
+        <div class="wrap">
+          <span class="quirky">Up Next</span>
+          <a class="up-next-row" href={nextProject.href} data-tilt>
+            <img src={nextProject.image} alt="" />
+            <div>
+              <h2>{nextProject.title}</h2>
+              <p>{nextProject.subtitle}</p>
+            </div>
+            <span class="btn-outline">View Project</span>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <Footer />
+
+    <Lightbox />
+
+    <script>
+      import '../../scripts/site.js';
+      import '../../scripts/lightbox.js';
+
+      // The prototype loads on click, not on page load: a third-party
+      // iframe on every visit costs the page its own load time, and most
+      // readers never reach for it. The poster is the real homepage
+      // frame, so the stage is not empty before the swap.
+      document.querySelectorAll<HTMLButtonElement>('[data-proto-launch]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const src = btn.dataset.protoSrc;
+          const stage = btn.parentElement;
+          if (!src || !stage) return;
+          const frame = document.createElement('iframe');
+          frame.src = src;
+          frame.title = 'Disability Design Lab, working prototype';
+          frame.loading = 'lazy';
+          frame.allow = 'clipboard-write';
+          frame.setAttribute('allowfullscreen', '');
+          // Sized here rather than in the <style> block on purpose.
+          // Astro scopes that block by stamping a data-astro-cid-*
+          // attribute on every element it compiles, and an element
+          // built by createElement never gets one — so a `.proto-screen
+          // iframe` rule silently fails to match and the frame falls
+          // back to the HTML default 300x150. Keep these inline.
+          frame.style.display = 'block';
+          frame.style.width = '100%';
+          frame.style.height = '100%';
+          frame.style.border = '0';
+          stage.replaceChildren(frame);
+        });
+      });
+
+      // Mode switchers for the three variable-collection blocks. The
+      // markup ships with a default data-mode and the CSS hides every
+      // other mode's values, so with JS off one complete mode still
+      // renders — this only moves which one is showing.
+      document.querySelectorAll<HTMLElement>('[data-mode-group]').forEach((strip) => {
+        const buttons = Array.from(strip.querySelectorAll<HTMLButtonElement>('[data-mode-set]'));
+        buttons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const mode = btn.dataset.modeSet;
+            if (!mode) return;
+            strip.dataset.mode = mode;
+            buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+          });
+        });
+      });
+
+      const btn = document.querySelector('[data-copy-email]');
+      btn?.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('julianliaowork@gmail.com');
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = original; }, 1500);
+        } catch {
+          window.location.href = 'mailto:julianliaowork@gmail.com';
+        }
+      });
+
+      // Typewriter effect on the pull-quote — same behavior as the other
+      // case studies: types each segment in order once the quote scrolls
+      // into view, and falls back to the full text under reduced-motion
+      // or without IntersectionObserver.
+      const quoteEl = document.querySelector<HTMLElement>('[data-typewriter]');
+      if (quoteEl) {
+        const segments = Array.from(quoteEl.querySelectorAll<HTMLElement>('.tw-seg'));
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const typeSegments = () => {
+          let segIndex = 0;
+          let charIndex = 0;
+          const step = () => {
+            if (segIndex >= segments.length) return;
+            const seg = segments[segIndex];
+            const full = seg.dataset.full ?? '';
+            if (charIndex <= full.length) {
+              seg.textContent = full.slice(0, charIndex);
+              charIndex++;
+              setTimeout(step, 22);
+            } else {
+              segIndex++;
+              charIndex = 0;
+              setTimeout(step, 22);
+            }
+          };
+          step();
+        };
+
+        if (reduced || !('IntersectionObserver' in window)) {
+          segments.forEach((seg) => { seg.textContent = seg.dataset.full ?? ''; });
+        } else {
+          const io = new IntersectionObserver((entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                typeSegments();
+                obs.disconnect();
+              }
+            });
+          }, { threshold: 0.4 });
+          io.observe(quoteEl);
+        }
+      }
+    </script>
+
+    <style>
+      /* This project's own palette stands in for the per-case-study
+         accent, the way SureCall's green does on its page. */
+      :global(body) {
+        background: #ffffff;
+        --indigo: #2c3d8a;
+        --indigo-600: #243274;
+        --indigo-100: #d3d6f3;
+        --amber: #e9a443;
+        --paper: #f7f5f1;
+      }
+
+      .wrap {
+        max-width: 74rem;
+        margin-inline: auto;
+        padding-inline: clamp(1.25rem, 5vw, 3.5rem);
+      }
+
+      /* Hero banner ----------------------------------------------------- */
+      .hero-banner {
+        aspect-ratio: 2544 / 954;
+        overflow: hidden;
+      }
+
+      .hero-banner img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      /* Marquee --------------------------------------------------------- */
+      .marquee-section {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        min-height: clamp(340px, 42vw, 560px);
+        padding-block: clamp(2.5rem, 6vw, 4rem);
+        overflow: hidden;
+        background: #ffffff;
+      }
+
+      .marquee-row {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .marquee-track {
+        display: inline-flex;
+        width: max-content;
+      }
+
+      .marquee-track span {
+        padding-inline: 1.5rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(2.25rem, 6vw, 4.5rem);
+        line-height: 1.1;
+        color: var(--indigo);
+        opacity: 0.16;
+      }
+
+      .marquee-track-left { animation: marquee-left 28s linear infinite; }
+      .marquee-track-right { animation: marquee-right 28s linear infinite; }
+
+      @keyframes marquee-left { to { transform: translateX(-50%); } }
+      @keyframes marquee-right { from { transform: translateX(-50%); } }
+
+      .marquee-phone {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-2deg);
+        z-index: 5;
+      }
+
+      .phone-frame {
+        width: clamp(140px, 15vw, 200px);
+        aspect-ratio: 393 / 780;
+        border: 3px solid var(--ink);
+        border-radius: 1.5rem;
+        padding: 0.5rem;
+        background: var(--bg);
+        overflow: hidden;
+      }
+
+      .phone-frame img {
+        display: block;
+        width: 100%;
+        border-radius: 1rem;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .marquee-track-left,
+        .marquee-track-right { animation: none; }
+      }
+
+      /* Head block ------------------------------------------------------ */
+      .head-block {
+        padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3rem);
+      }
+
+      .head-top {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        align-items: start;
+        margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .title {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(3rem, 8.5vw, 6rem);
+        letter-spacing: -0.01em;
+        line-height: 0.95;
+        color: var(--ink);
+        margin: 0;
+      }
+
+      .context-box {
+        border-left: 3px solid var(--amber);
+        padding-left: 1.25rem;
+      }
+
+      .context-label {
+        margin: 0 0 0.35rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-faint);
+      }
+
+      .context-heading {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: 1.3rem;
+        color: var(--ink);
+      }
+
+      .context-box p:not(.context-label) {
+        margin: 0;
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+      }
+
+      @media (min-width: 800px) {
+        .head-top { grid-template-columns: auto 1fr; gap: 2.5rem; }
+      }
+
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+        gap: 1.5rem;
+        padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+        border-bottom: 1px solid var(--line);
+        margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
+      }
+
+      .meta dt {
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        color: var(--ink-faint);
+        margin-bottom: 0.35rem;
+      }
+
+      .meta dd {
+        margin: 0;
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        color: var(--ink);
+      }
+
+      .meta dd span { display: block; }
+
+      .intro {
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.65;
+        color: var(--ink-soft);
+      }
+
+      .intro strong,
+      .white-block strong,
+      .context-box strong {
+        color: var(--ink);
+        font-weight: 700;
+      }
+
+      .intro em,
+      .white-block em,
+      .context-box em {
+        font-style: italic;
+        color: var(--ink);
+      }
+
+      .pull-quote {
+        position: relative;
+        max-width: none;
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-size: clamp(1.4rem, 3vw, 2.2rem);
+        line-height: 1.4;
+        color: var(--ink-faint);
+        margin-top: clamp(1.5rem, 4vw, 2.5rem);
+        text-align: center;
+      }
+
+      .pull-quote-highlight {
+        color: var(--indigo-600);
+        font-weight: 700;
+        box-shadow: inset 0 -0.35em 0 rgba(233, 164, 67, 0.4);
+      }
+
+      .pull-quote[data-typewriter]::after {
+        content: '';
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        margin-left: 2px;
+        background: currentColor;
+        vertical-align: text-bottom;
+        animation: pull-quote-blink 0.9s steps(1) infinite;
+      }
+
+      @keyframes pull-quote-blink { 50% { opacity: 0; } }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .pull-quote[data-typewriter]::after { animation: none; }
+      }
+
+      /* Shared block shell --------------------------------------------- */
+      .white-block { padding-block: clamp(2.5rem, 6vw, 4rem); }
+
+      .white-block h2 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.9rem, 4vw, 2.8rem);
+        letter-spacing: -0.01em;
+        margin: 0 0 0.6rem;
+        color: var(--ink);
+      }
+
+      .white-block p {
+        max-width: none;
+        font-size: 1rem;
+        line-height: 1.65;
+        color: var(--ink-soft);
+      }
+
+      .section-lede { max-width: 62ch; }
+
+      .eyebrow-label {
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--indigo);
+        margin: 0 0 0.75rem;
+        font-size: 0.8rem;
+      }
+
+      .eyebrow-on-dark { color: var(--amber); }
+
+      .quirky {
+        font-family: var(--font-quirky);
+        font-size: 1.15rem;
+        transform: rotate(-3deg);
+        display: inline-block;
+        color: var(--indigo);
+      }
+
+      code {
+        font-family: var(--font-mono);
+        font-size: 0.82em;
+        letter-spacing: -0.01em;
+      }
+
+      /* Three decisions ------------------------------------------------- */
+      .dec-grid {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .dec-card {
+        border-top: 2px solid var(--indigo);
+        padding-top: 1rem;
+      }
+
+      .dec-num {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--indigo);
+      }
+
+      .dec-card h3 {
+        font-family: var(--font-serif);
+        font-style: italic;
+        font-weight: 400;
+        font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+        line-height: 1.2;
+        color: var(--ink);
+        margin: 0.4rem 0 0.6rem;
+      }
+
+      .dec-card p {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.65;
+      }
+
+      @media (min-width: 820px) {
+        .dec-grid { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+      }
+
+      /* Final screens ---------------------------------------------------
+         Uniform top-anchored windows so eight pages of very different
+         lengths still scan as one grid; the lightbox opens each full
+         frame, so the crop costs nothing. */
+      .screen-grid {
+        list-style: none;
+        margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .screen-window {
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: #ffffff;
+      }
+
+      .screen-window img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        transition: transform 0.6s var(--ease-out);
+      }
+
+      .screen-card:hover .screen-window img { transform: scale(1.02); }
+
+      .screen-label {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.25rem 0.75rem;
+        margin-top: 0.6rem;
+      }
+
+      .screen-label h3 {
+        font-family: 'Space Grotesk', var(--font-body);
+        font-weight: 700;
+        font-size: 1rem;
+        margin: 0;
+        color: var(--ink);
+      }
+
+      .screen-label p {
+        margin: 0;
+        font-size: 0.82rem;
+        color: var(--ink-faint);
+      }
+
+      @media (min-width: 620px) {
+        .screen-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+
+      @media (min-width: 1000px) {
+        .screen-grid { grid-template-columns: repeat(4, 1fr); }
+      }
+
+      .row-label {
+        margin: clamp(2.5rem, 6vw, 3.5rem) 0 1rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-faint);
+      }
+
+      /* The mobile frames are only 393px wide at source, so they are
+         shown small and whole-ish rather than cropped to a window. */
+      .mobile-row {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+      }
+
+      .mobile-row li {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+      }
+
+      .mobile-window {
+        aspect-ratio: 393 / 620;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 0.5rem;
+        background: #ffffff;
+      }
+
+      .mobile-window img {
+        display: block;
+        width: 100%;
+      }
+
+      .mobile-row span {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        color: var(--ink-faint);
+      }
+
+      @media (min-width: 900px) {
+        .mobile-row { grid-template-columns: repeat(8, 1fr); }
+      }
+
+      /* Design-system intro -------------------------------------------- */
+      .ds-intro {
+        background: var(--ink);
+        color: var(--bg);
+        padding-block: clamp(3rem, 7vw, 4.5rem);
+      }
+
+      .ds-intro h2 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(2.1rem, 5vw, 3.4rem);
+        letter-spacing: -0.01em;
+        margin: 0 0 1rem;
+      }
+
+      .ds-lede {
+        max-width: 64ch;
+        font-size: 1rem;
+        line-height: 1.7;
+        color: rgba(253, 251, 249, 0.72);
+      }
+
+      .ds-lede strong { color: var(--bg); font-weight: 700; }
+
+      .stat-row {
+        list-style: none;
+        margin: clamp(1.75rem, 4vw, 2.5rem) 0 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+
+      .stat-row li {
+        border-top: 2px solid var(--amber);
+        padding-top: 0.8rem;
+      }
+
+      .stat-n {
+        display: block;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(2rem, 5vw, 3rem);
+        line-height: 1;
+        color: var(--bg);
+      }
+
+      .stat-label {
+        display: block;
+        margin-top: 0.4rem;
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        line-height: 1.5;
+        color: rgba(253, 251, 249, 0.65);
+      }
+
+      @media (min-width: 860px) {
+        .stat-row { grid-template-columns: repeat(4, 1fr); }
+      }
+
+      /* Design-system blocks ------------------------------------------- */
+      .ds-block { border-bottom: 1px solid var(--line); }
+      .ds-block-last { border-bottom: 0; }
+
+      .ds-kicker {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin: 0 0 0.5rem;
+      }
+
+      /* Ramps ----------------------------------------------------------- */
+      .ramp { margin-top: clamp(1.5rem, 3.5vw, 2rem); }
+
+      .ramp-head h3 {
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin: 0 0 0.2rem;
+        color: var(--ink);
+      }
+
+      .ramp-head p {
+        margin: 0 0 0.8rem;
+        font-size: 0.88rem;
+        color: var(--ink-faint);
+      }
+
+      .ramp-row,
+      .value-row {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(4.25rem, 1fr));
+        gap: 0.5rem;
+      }
+
+      .ramp-row-sparse {
+        grid-template-columns: repeat(auto-fit, minmax(7rem, 7rem));
+        margin-bottom: 0.75rem;
+      }
+
+      .ramp-row li {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .chip {
+        display: block;
+        height: 3rem;
+        border: 1px solid var(--line);
+      }
+
+      .chip-step {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--ink);
+      }
+
+      .chip-hex {
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        color: var(--ink-faint);
+        text-transform: uppercase;
+      }
+
+      .value-row {
+        grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+      }
+
+      .value-row li {
+        border: 1px solid var(--line);
+        background: var(--paper);
+        padding: 0.5rem 0.7rem;
+        color: var(--ink-soft);
+      }
+
+      /* Mode switch ----------------------------------------------------- */
+      .mode-switch {
+        display: inline-flex;
+        flex-wrap: wrap;
+        margin: clamp(1.25rem, 3vw, 1.75rem) 0 1.25rem;
+        border: 1px solid var(--line-strong);
+      }
+
+      .mode-switch button {
+        appearance: none;
+        background: transparent;
+        border: 0;
+        border-right: 1px solid var(--line-strong);
+        padding: 0.6em 1.1em;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        cursor: pointer;
+        transition: background 0.25s var(--ease), color 0.25s var(--ease);
+      }
+
+      .mode-switch button:last-child { border-right: 0; }
+      .mode-switch button:hover { color: var(--ink); }
+
+      .mode-switch button[aria-pressed='true'] {
+        background: var(--indigo);
+        color: #ffffff;
+      }
+
+      /* Only the active mode's values are shown. The markup carries a
+         default data-mode, so this works with JS off too. */
+      [data-mode] .m-Light,
+      [data-mode] .m-Dark,
+      [data-mode] .m-Primary,
+      [data-mode] .m-Secondary,
+      [data-mode] .m-Success,
+      [data-mode] .m-Error,
+      [data-mode] .m-Mobile,
+      [data-mode] .m-Tablet,
+      [data-mode] .m-Desktop { display: none; }
+
+      [data-mode='Light'] .m-Light,
+      [data-mode='Dark'] .m-Dark,
+      [data-mode='Primary'] .m-Primary,
+      [data-mode='Secondary'] .m-Secondary,
+      [data-mode='Success'] .m-Success,
+      [data-mode='Error'] .m-Error,
+      [data-mode='Mobile'] .m-Mobile,
+      [data-mode='Tablet'] .m-Tablet,
+      [data-mode='Desktop'] .m-Desktop { display: revert; }
+
+      /* Token preview --------------------------------------------------- */
+      .token-preview { margin-bottom: 1.5rem; }
+
+      .token-card {
+        border: 1px solid;
+        padding: 1.5rem;
+        max-width: 28rem;
+      }
+
+      .token-card.m-Light { background: #ffffff; border-color: #bfc0ca; }
+      .token-card.m-Dark { background: #191a1f; border-color: #353740; }
+
+      .token-card-label {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.6rem;
+      }
+
+      .token-card.m-Light .token-card-label { color: #525564; }
+      .token-card.m-Dark .token-card-label { color: #e0e1e6; }
+
+      .token-card p {
+        margin: 0 0 0.4rem;
+        font-family: 'Space Grotesk', var(--font-body);
+        font-weight: 500;
+        font-size: 1.35rem;
+        line-height: 1.2;
+      }
+
+      .token-card.m-Light p { color: #191a1f; }
+      .token-card.m-Dark p { color: #ffffff; }
+
+      .token-card-sub {
+        font-family: 'Atkinson Hyperlegible', var(--font-body);
+        font-size: 0.95rem;
+      }
+
+      .token-card.m-Light .token-card-sub { color: #525564; }
+      .token-card.m-Dark .token-card-sub { color: #e0e1e6; }
+
+      /* Tables ---------------------------------------------------------- */
+      .table-scroll { overflow-x: auto; }
+
+      .token-tables {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0 2.5rem;
+      }
+
+      @media (min-width: 860px) {
+        .token-tables { grid-template-columns: 1fr 1fr; }
+      }
+
+      .ds-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0 0 1.5rem;
+        font-size: 0.82rem;
+      }
+
+      .ds-table caption {
+        text-align: left;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.88rem;
+        color: var(--ink);
+        padding-bottom: 0.5rem;
+      }
+
+      .ds-table th,
+      .ds-table td {
+        text-align: left;
+        padding: 0.5rem 0.7rem;
+        border-bottom: 1px solid var(--line);
+        vertical-align: middle;
+      }
+
+      .ds-table thead th {
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        border-bottom: 1px solid var(--line-strong);
+      }
+
+      .ds-table tbody th { font-weight: 400; color: var(--ink); }
+      .ds-table td { color: var(--ink-soft); }
+      .ds-table tbody tr:hover { background: var(--paper); }
+
+      .cell-hex { font-family: var(--font-mono); text-transform: uppercase; }
+
+      .dot {
+        display: inline-block;
+        width: 0.8rem;
+        height: 0.8rem;
+        margin-right: 0.4rem;
+        border: 1px solid var(--line-strong);
+        vertical-align: -0.1em;
+      }
+
+      .radius-demo {
+        display: inline-block;
+        width: 3rem;
+        height: 1.4rem;
+        background: var(--indigo-100);
+        border: 1px solid var(--indigo);
+      }
+
+      /* The semantics table shows all four modes side by side; the active
+         mode is emphasized rather than hidden, since the comparison is
+         the whole point. */
+      .ds-table-sem .cell-sem { opacity: 0.4; }
+
+      [data-mode='Primary'] .cell-sem[data-mode-cell='Primary'],
+      [data-mode='Secondary'] .cell-sem[data-mode-cell='Secondary'],
+      [data-mode='Success'] .cell-sem[data-mode-cell='Success'],
+      [data-mode='Error'] .cell-sem[data-mode-cell='Error'] {
+        opacity: 1;
+        background: var(--paper);
+      }
+
+      .cell-alias { font-family: var(--font-mono); font-size: 0.7rem; }
+
+      .ds-table-resp td { font-family: var(--font-mono); }
+
+      /* Semantics preview ---------------------------------------------- */
+      .sem-preview { margin-bottom: 1.5rem; }
+
+      .sem-card {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        border: 1px solid var(--line);
+        background: var(--paper);
+      }
+
+      .sem-btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 1.4em;
+        border: 1px solid;
+        font-family: 'Atkinson Hyperlegible', var(--font-body);
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+
+      .sem-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.35em 0.7em;
+        border: 1px solid;
+        font-family: 'Atkinson Hyperlegible', var(--font-body);
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+      }
+
+      .sem-note { font-family: var(--font-mono); font-size: 0.75rem; }
+
+      /* Type specimen --------------------------------------------------- */
+      .spec-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .spec-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5rem 1.5rem;
+        align-items: baseline;
+        padding-block: 1rem;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .spec-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.3rem 0.9rem;
+      }
+
+      .spec-name { color: var(--indigo); font-weight: 500; }
+
+      .spec-use {
+        font-family: var(--font-body);
+        font-size: 0.76rem;
+        color: var(--ink-faint);
+      }
+
+      .spec-nums {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--ink);
+      }
+
+      /* The published-but-unreached steps. Muted, not hidden: the point
+         of showing them is that the scale is complete. */
+      .spec-unused {
+        align-self: center;
+        font-family: var(--font-mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.1rem 0.45rem;
+        white-space: nowrap;
+      }
+
+      .spec-row:has(.spec-unused) .spec-sample { color: var(--ink-faint); }
+
+      /* The sample is set at the size and leading the active mode's
+         variables carry — the specimen changes, not just the numbers. */
+      .spec-sample {
+        margin: 0;
+        max-width: none;
+        color: var(--ink);
+        overflow-wrap: anywhere;
+      }
+
+      [data-mode='Mobile'] .spec-sample { font-size: var(--s-Mobile); line-height: var(--l-Mobile); }
+      [data-mode='Tablet'] .spec-sample { font-size: var(--s-Tablet); line-height: var(--l-Tablet); }
+      [data-mode='Desktop'] .spec-sample { font-size: var(--s-Desktop); line-height: var(--l-Desktop); }
+
+      .spec-face-heading { font-family: 'Space Grotesk', var(--font-body); }
+      .spec-face-body { font-family: 'Atkinson Hyperlegible', var(--font-body); }
+      .spec-face-annotation { font-family: 'Caveat', cursive; }
+
+      @media (min-width: 900px) {
+        .spec-row { grid-template-columns: 16rem 1fr; }
+        .spec-meta { flex-direction: column; gap: 0.15rem; }
+      }
+
+      /* Faces ----------------------------------------------------------- */
+      .face-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        margin-top: clamp(1.75rem, 4vw, 2.5rem);
+      }
+
+      .face-card {
+        border: 1px solid var(--line);
+        padding: 1.4rem;
+      }
+
+      .face-sample {
+        margin: 0 0 0.9rem;
+        max-width: none;
+        font-size: clamp(2rem, 4.5vw, 2.75rem);
+        line-height: 1.1;
+        color: var(--indigo);
+      }
+
+      .face-card h3 {
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.98rem;
+        margin: 0 0 0.45rem;
+        color: var(--ink);
+      }
+
+      .face-card p:not(.face-sample) {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--ink-soft);
+      }
+
+      @media (min-width: 820px) {
+        .face-grid { grid-template-columns: repeat(3, 1fr); }
+      }
+
+      /* Prototype -------------------------------------------------------
+         A laptop-ish stage borrowed from elink.astro's .laptop-frame, so
+         the embed reads as a device rather than a bare rectangle. The
+         poster and the iframe share the stage, which keeps its own
+         aspect ratio either way and stops the swap shifting the page. */
+      .proto-stage {
+        margin-top: clamp(1.5rem, 4vw, 2.25rem);
+        max-width: 62rem;
+        margin-inline: auto;
+      }
+
+      .proto-screen {
+        position: relative;
+        aspect-ratio: 16 / 10;
+        border: 3px solid var(--ink);
+        border-radius: 0.75rem 0.75rem 0 0;
+        overflow: hidden;
+        background: var(--paper);
+      }
+
+      /* No `.proto-screen iframe` rule here: the iframe is created at
+         click time, so Astro's scoping attribute never lands on it and
+         a rule written here would not match. It is sized inline in the
+         script above instead. */
+
+      .proto-launch {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        border: 0;
+        background: none;
+        cursor: pointer;
+      }
+
+      .proto-launch img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        filter: saturate(0.9) brightness(0.96);
+        transition: filter 0.25s ease, transform 0.4s ease;
+      }
+
+      .proto-launch:hover img,
+      .proto-launch:focus-visible img {
+        filter: none;
+        transform: scale(1.015);
+      }
+
+      .proto-cta {
+        position: absolute;
+        inset-inline: 0;
+        bottom: clamp(1.25rem, 4vw, 2.25rem);
+        margin-inline: auto;
+        width: fit-content;
+        padding: 0.7rem 1.4rem;
+        background: var(--ink);
+        color: var(--paper);
+        font-family: 'Space Grotesk', var(--font-body);
+        font-weight: 700;
+        font-size: 0.9rem;
+        border-radius: 999px;
+      }
+
+      .proto-base {
+        height: 0.85rem;
+        border-radius: 0 0 0.6rem 0.6rem;
+        background: var(--ink);
+      }
+
+      .proto-note {
+        margin: 0.9rem auto 0;
+        max-width: 62rem;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--ink-faint);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .proto-launch img { transition: none; }
+        .proto-launch:hover img,
+        .proto-launch:focus-visible img { transform: none; }
+      }
+
+      /* Components ------------------------------------------------------
+         The exports run from a 600x12 rule to a 136x767 figure, so a
+         plain `width: 100%` grid tears itself apart. Instead every media
+         box is a fixed ratio and the specimen is centered inside it,
+         never scaled past 1.6x its own export. Rows stay level and
+         nothing is upscaled into mush. */
+      .comp-tier {
+        margin: clamp(1.75rem, 4vw, 2.5rem) 0 0.9rem;
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--indigo);
+      }
+
+      .comp-grid {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+
+      .comp-card {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--line);
+        background: #ffffff;
+      }
+
+      .comp-media {
+        display: grid;
+        place-items: center;
+        padding: 1.1rem;
+        background: var(--paper);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .comp-media-set { aspect-ratio: 3 / 1; }
+      .comp-media-single { aspect-ratio: 4 / 3; }
+
+      .comp-media img {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: min(100%, var(--mw));
+        max-height: min(100%, var(--mh));
+        object-fit: contain;
+      }
+
+      .comp-body {
+        flex: 1;
+        padding: 0.9rem 1.1rem 1.1rem;
+      }
+
+      .comp-body h3 {
+        font-family: 'Space Grotesk', var(--font-body);
+        font-weight: 700;
+        font-size: 1rem;
+        margin: 0 0 0.25rem;
+        color: var(--ink);
+      }
+
+      .comp-body p {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        line-height: 1.5;
+        color: var(--indigo);
+      }
+
+      @media (min-width: 720px) {
+        .comp-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+
+      @media (min-width: 1040px) {
+        .comp-grid-singles { grid-template-columns: repeat(4, 1fr); }
+      }
+
+      /* Up next --------------------------------------------------------- */
+      .up-next { padding-block: clamp(3rem, 7vw, 4.5rem); }
+
+      .up-next-row {
+        --tilt-x: 0deg;
+        --tilt-y: 0deg;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        text-decoration: none;
+      }
+
+      .up-next-row img {
+        width: 100px;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border: 1px solid var(--line);
+        transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+        transition: transform 0.3s var(--ease-out);
+      }
+
+      .up-next-row h2 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.6rem, 4vw, 2.2rem);
+        color: var(--ink);
+      }
+
+      .up-next-row p {
+        margin: 0.25rem 0 0;
+        color: var(--ink-faint);
+        font-size: 0.9rem;
+      }
+
+      .btn-outline {
+        margin-left: auto;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        padding: 0.5em 1.2em;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--ink);
+      }
+    
+      /* Opinion asides — my read on a stage, separate from the account
+         of what the file actually contains. */
+      .take {
+        max-width: 62ch;
+        margin: 2rem 0 0;
+        padding-left: 1.1rem;
+        border-left: 3px solid var(--amber);
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.7;
+        color: var(--ink-soft);
+      }
+
+      .take strong { color: var(--ink); font-weight: 700; }
+
+      .take-label {
+        display: block;
+        margin-bottom: 0.35rem;
+        font-family: var(--font-display);
+        font-size: 1.05rem;
+        color: var(--indigo);
+      }
+</style>
+  </body>
+</html>

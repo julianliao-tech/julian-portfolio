@@ -39,6 +39,15 @@ const links = [
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
       </a>
+      <button class="icon sfx-toggle" type="button" data-sfx-toggle aria-pressed="false" aria-label="Turn interface sound on">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M11 5 6 9H3v6h3l5 4z" />
+          <path class="sfx-wave sfx-wave-1" d="M15.5 8.5a5 5 0 0 1 0 7" />
+          <path class="sfx-wave sfx-wave-2" d="M18.5 5.5a9 9 0 0 1 0 13" />
+          <path class="sfx-slash" d="M3 3 21 21" />
+        </svg>
+      </button>
+
       <a class="icon" data-magnetic href="mailto:julianliaowork@gmail.com" aria-label="Email Julian">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
       </a>
@@ -48,6 +57,24 @@ const links = [
 </header>
 
 <style>
+  /* Sound toggle — off by default, so the icon ships with the slash
+     showing and the waves hidden. [data-on] is set by sfx.js once it
+     has read the stored preference. */
+  .sfx-toggle {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+  }
+
+  .sfx-toggle .sfx-wave { opacity: 0; transition: opacity 0.25s var(--ease, ease); }
+  .sfx-toggle .sfx-slash { opacity: 1; transition: opacity 0.25s var(--ease, ease); }
+  .sfx-toggle[data-on='true'] .sfx-wave { opacity: 1; }
+  .sfx-toggle[data-on='true'] .sfx-wave-2 { transition-delay: 0.06s; }
+  .sfx-toggle[data-on='true'] .sfx-slash { opacity: 0; }
+
   .nav {
     position: sticky;
     top: 0;

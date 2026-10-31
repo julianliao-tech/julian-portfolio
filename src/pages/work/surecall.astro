@@ -29,7 +29,7 @@ import Footer from '../../components/Footer.astro';
 import Lightbox from '../../components/Lightbox.astro';
 
 const base = import.meta.env.BASE_URL;
-const pageTitle = 'SureCall and Verizon Mobile Application — Julian Liao';
+const pageTitle = 'SureCall and Verizon Mobile Application · Julian Liao';
 const pageDescription = 'A field tool for installing and testing Verizon 5G boosters';
 const ogImage = new URL(`${base}images/home/profile-illustration.webp`, Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -47,19 +47,19 @@ const meta = [
 ];
 
 const challenges = [
-  'Translating live signal data into a visual, user-friendly format.',
-  'Educating users on 5G UW technology without overwhelming them.',
-  'Designing for low friction — hands full, on a ladder, in the field.',
+  'Turn a live signal number into something a person can read at a glance.',
+  'Explain what 5G UW is without handing anybody a manual.',
+  'Work for someone on a ladder, in a basement, with one hand free.',
 ];
 
 const takeaways = [
   {
-    title: 'Designing for the Field',
-    body: 'Non-ideal conditions meant every screen had to hold its own weight, with no room for a second guess.',
+    title: 'Design for the worst conditions, not the demo',
+    body: 'Bad light, one free hand, a garage that had no signal to begin with. Every screen had to hold its own weight, because out there nobody gets a second guess.',
   },
   {
-    title: 'Working Cross-Functionally',
-    body: "SureCall's back-end engineers flagged what was easy or hard to build — that fed straight back into the design.",
+    title: 'Engineers will tell you what is cheap to build',
+    body: "SureCall's backend engineers flagged what was easy and what was painful, and it changed what I drew. Now I ask before I draw instead of after.",
   },
 ];
 
@@ -67,7 +67,7 @@ const marqueeWords = Array(6).fill('5G BOOSTER APP');
 
 const nextProject = {
   title: 'connexU',
-  subtitle: 'An end-to-end rebuild of a B2B events marketplace site in Sydney',
+  subtitle: 'Five out of five people could not find how to register. So I rebuilt it.',
   image: `${base}images/home/tile-connexu.png`,
   href: `${base}work/connexu/`,
 };
@@ -138,9 +138,9 @@ const nextProject = {
           <div class="head-top">
             <h1 class="title">SureCall</h1>
             <div class="context-box">
-              <p class="context-label">Context</p>
-              <h2 class="context-heading">What is the EZ-5G Signal Test App?</h2>
-              <p>SureCall partnered with Verizon to design a mobile tool that helps users identify the optimal location for installing a 5G booster. The app guides users through three core features: signal testing at a physical location, confirming successful booster installation with live strength updates, and educating users with intuitive tips about 5G UW technology and booster setup. Designed with field use in mind, this tool needed to be <strong>fast, friendly, and built for utility over complexity — each screen kept simple and easy</strong>.</p>
+              <p class="context-label">Where this started</p>
+              <h2 class="context-heading">A booster in the wrong spot is a paperweight</h2>
+              <p>SureCall builds cell signal boosters, and teamed up with Verizon on a phone app that helps you work out where to put one. It does three things: test the signal where you are standing, confirm the booster is working once it is mounted, and explain enough about 5G UW that the numbers start to mean something. All of that happens in a garage or a crawlspace, so it had to be <strong>fast, readable, and hard to get wrong</strong>.</p>
             </div>
           </div>
 
@@ -153,11 +153,11 @@ const nextProject = {
             ))}
           </dl>
 
-          <p class="intro">Setups for 5G boosters are often done in tough environments such as garages, basements, or rural areas with weak signal visibility. Technicians and homeowners needed an app that <em>simplified the decision-making process around placement</em> and gave immediate feedback about booster performance. Verizon's goal was to reduce support calls by <strong>empowering users with clear instructions and feedback tools</strong> within a focused, step-by-step app, one clear step at a time, every time.</p>
+          <p class="intro">Boosters go into garages, basements and rural houses where the signal was already bad, which is the whole reason somebody buys one. The people installing them split into two groups that want opposite things: technicians who do this all day and want the raw number, and homeowners who will do it exactly once and want to be told whether they are finished. <em>I had to serve the second group without slowing down the first.</em> Verizon wanted fewer support calls, and <strong>a support call is usually just somebody who could not tell whether the thing was working</strong>.</p>
 
           <p class="pull-quote" data-typewriter>
-            <span aria-hidden="true"><span class="tw-seg" data-full="How do we help someone "></span><span class="tw-seg pull-quote-highlight" data-full="confidently choose where and how to install"></span><span class="tw-seg" data-full=" a signal booster?"></span></span>
-            <span class="sr-only">How do we help someone confidently choose where and how to install a signal booster?</span>
+            <span aria-hidden="true"><span class="tw-seg" data-full="How do you tell somebody "></span><span class="tw-seg pull-quote-highlight" data-full="the install actually worked"></span><span class="tw-seg" data-full=", without teaching them what dBm means?"></span></span>
+            <span class="sr-only">How do you tell somebody the install actually worked, without teaching them what dBm means?</span>
           </p>
         </div>
       </section>
@@ -172,8 +172,8 @@ const nextProject = {
       <section class="dark-block">
         <div class="wrap">
           <div class="challenge-head">
-            <span class="quirky quirky-blue">Signal Data</span>
-            <h2>The Challenge</h2>
+            <span class="quirky quirky-blue">Signal data</span>
+            <h2>Nobody knows what minus 80 dBm means, including me at first</h2>
           </div>
           <ol class="challenge-grid">
             {challenges.map((c, i) => (
@@ -188,8 +188,16 @@ const nextProject = {
 
       <section class="white-block">
         <div class="wrap">
-          <h2>What We Heard</h2>
-          <p>I didn't collect direct user research, but I was given a clear brief from the SureCall and Verizon project managers: most clients have no mental model for what a good or bad dBm value means, <span class="callout-phrase">people want to "see it work" in real time to build trust</span>, and technical instructions need to be <strong>skimmable with optional depth</strong>. From that brief, we built two personas to keep users' goals and pain points in view and guided the screens that followed from start to finish.</p>
+          <h2>I never met a user, and I am not going to pretend otherwise</h2>
+          <p>I did not run my own research on this one. What I had was a brief from the SureCall and Verizon project managers, and it was specific: most customers have no mental model for what a good or bad dBm value is, <span class="callout-phrase">people want to "see it work" in real time before they believe it</span>, and any instructions have to be <strong>skimmable, with the detail tucked underneath</strong>. We built two personas off that brief so the screens had somebody to answer to. Here is what I learned doing it: a persona built from a client brief is a weaker instrument than one built from interviews. It tells you what the business believes about its customers. <em>It still beat designing for myself</em>, which is what happens when you skip the step entirely.</p>
+          <p class="take">
+            <span class="take-label">What I think about this stage</span>
+            Having no research is not the same as having no user, and I think student work usually gets
+            this backwards. It either invents findings it never collected, or it shrugs and designs for
+            nobody in particular. <strong>The honest third option is to name the assumption out loud and
+            let somebody argue with it.</strong> Everything on this page traces back to a line in that
+            brief, which at least makes me wrong in a way you can check.
+          </p>
           <div class="image-row image-row-personas">
             <img data-tilt src={img('03.webp')} alt="User persona: Sarah Scott, 38, a remote marketing worker in Wisconsin installing her first signal booster, with her goals, pain points, and needs from the app" />
             <img data-tilt src={img('04.webp')} alt="User persona: Jamal Ortiz, 29, a field technician in Texas who installs boosters professionally, with his goals, pain points, and needs from the app" />
@@ -199,8 +207,14 @@ const nextProject = {
 
       <section class="white-block">
         <div class="wrap">
-          <p class="eyebrow-label">Signal Page Iteration</p>
-          <p>For the signal page, we had to determine <strong>what information earned a place in the visual hierarchy versus what could be cut</strong>. This page is meant to test the signal of the booster once the user has installed it already. That made the page's main job simple: show, quickly, whether the install worked, and nothing more.</p>
+          <p class="eyebrow-label">Deciding what earns a place on the screen</p>
+          <p>This page has one job: tell you whether the install worked. So the question for every element on it was whether it helped answer that, or whether it just made the page look informed. <strong>Most of it did not survive.</strong> What is left is the handful of things I could not argue away.</p>
+          <p class="take">
+            <span class="take-label">What I think about this stage</span>
+            Deciding what to remove is the actual job. Adding is easy and it feels productive, because
+            every addition can be justified on its own. <strong>I have never regretted taking something
+            off a screen. I have regretted keeping things on nearly every project I have worked on.</strong>
+          </p>
           <div class="image-row-single image-row-single-wide">
             <img data-tilt src={img('09.webp')} alt="Two iteration options for the signal-test page: Option 1 with Test Again and Learn More buttons, and Option 2 showing an automatic rescan with a Close button" />
           </div>
@@ -209,19 +223,19 @@ const nextProject = {
 
       <section class="feature-band">
         <div class="feature-media">
-          <img data-tilt src={img('13.webp')} alt="Two SureCall screens showing the signal search state and the color-coded Great signal-strength result" />
+          <img data-tilt src={img('13.webp')} alt="Two SureCall screens showing the signal search state and the color coded Great signal-strength result" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">Signal Strength, Translated</h2>
-          <p>A color-coded meter with clear labels like "Good" and "Great" turns a technical value like -80 dBm into <em>something intuitive at a glance</em>. Large tap targets and step-by-step screens keep the whole thing usable one-handed, in the field. Rather than relying on a "Test Again" button, the app <strong>automatically rescans the signal after installation</strong>, cutting out a manual step. A "Close" button guides users straight back to the home screen instead of dead-ending on a results page, and the RSRP value stays visible alongside the plain-language label for anyone who wants the technical reading too. Every choice keeps the screen clear.</p>
+          <h2 class="feature-heading">Turning minus 80 dBm into the word Good</h2>
+          <p>A color coded meter with plain labels ("Good", "Great") does the translating, so nobody has to learn what dBm means to find out whether they are done. Big tap targets and one step per screen keep it usable with a thumb. The app <strong>rescans on its own once the booster is installed</strong> rather than waiting for you to press "Test Again", because the second you finish mounting it is exactly when you want that number. "Close" sends you back to the home screen instead of leaving you stuck on a results page. And <em>the raw RSRP value stays on screen for the technician who does want the real reading</em>. Plain language for one person, the data for the other, same screen, no mode switch.</p>
         </div>
       </section>
 
       <section class="dark-block">
         <div class="wrap">
           <div class="challenge-head">
-            <span class="quirky quirky-sage">Plain-Language Education</span>
-            <h2>The Challenge</h2>
+            <span class="quirky quirky-sage">Plain language</span>
+            <h2>Teaching 5G without handing anyone a manual</h2>
           </div>
           <ol class="challenge-grid">
             {challenges.map((c, i) => (
@@ -237,7 +251,7 @@ const nextProject = {
       <section class="white-block">
         <div class="wrap">
           <div class="image-row-single image-row-single-wide">
-            <img data-tilt src={img('08.webp')} alt="Three iteration options for explaining 5G C-Band and UW technology: plain information with no aesthetic, relevant information in a gradient bubble, and relevant information with color-coded signal specifics" />
+            <img data-tilt src={img('08.webp')} alt="Three iteration options for explaining 5G C-Band and UW technology: plain information with no aesthetic, relevant information in a gradient bubble, and relevant information with color coded signal specifics" />
           </div>
         </div>
       </section>
@@ -247,16 +261,16 @@ const nextProject = {
           <img data-tilt src={img('14.webp')} alt="Three SureCall screens guiding a user to move near a window, checking 5G UW strength, and offering booster tips" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">Confidence During Setup</h2>
-          <p>Instant testing tools close the feedback loop within seconds, so users feel reassured instead of second-guessing whether the install actually worked — no advanced understanding required. Boosters are often installed in tough spots — garages, basements, rural areas with weak signal to begin with, a standing edge case for the interface — so <strong>a clear pass-or-fail moment mattered more than a polished readout</strong>. Mid-fidelity iterations leaned on the <em>aesthetic-usability effect</em>: a balanced, uncluttered layout that felt trustworthy before a user read a single word on the screen. That first impression mattered most out in the field.</p>
+          <h2 class="feature-heading">You should know it worked before you climb down</h2>
+          <p>The test closes the loop in a few seconds, so you are not standing on a ladder wondering whether to take the whole thing back down. These installs happen in the worst rooms in the house, so <strong>a clear pass or fail mattered more than a beautiful readout</strong>. The mid fidelity rounds leaned on the <em>aesthetic usability effect</em>: a calm, uncluttered screen reads as trustworthy before anyone has read a word on it. In a dark garage, that first impression is most of what you get.</p>
         </div>
       </section>
 
       <section class="dark-block">
         <div class="wrap">
           <div class="challenge-head">
-            <span class="quirky quirky-coral">Low-Friction Field Use</span>
-            <h2>The Challenge</h2>
+            <span class="quirky quirky-coral">Field use</span>
+            <h2>Built for a basement, one hand, and bad light</h2>
           </div>
           <ol class="challenge-grid">
             {challenges.map((c, i) => (
@@ -271,8 +285,16 @@ const nextProject = {
 
       <section class="white-block">
         <div class="wrap">
-          <h2>Low-Fidelity Prototypes</h2>
-          <p>Given the feedback from my project manager and Verizon, I sketched low-fidelity concepts to <strong>explore user flow, potential screens, and features</strong> that addressed the specific needs of users. These sketches were quick to make and easy to compare, which let me test several directions first before moving to polished screens.</p>
+          <h2>Sketches first, because they are cheap to be wrong in</h2>
+          <p>With the brief from my project manager and Verizon in hand, I sketched rough concepts to work out <strong>the flow, the screens, and which features earned their place</strong>. They were fast to draw and easy to lay side by side, which is the whole point. I would much rather throw out six sketches than one prototype.</p>
+          <p class="take">
+            <span class="take-label">What I think about this stage</span>
+            Client work changed how I sketch. When somebody is paying you, there is real pressure to
+            turn up with something polished, and polished too early is how you end up defending a
+            direction instead of testing one. I started bringing three rough options rather than one good
+            one, and the conversations got better immediately.
+            <strong>Nobody argues with a drawing that is obviously a draft.</strong>
+          </p>
           <div class="image-row-single image-row-single-wide">
             <img data-tilt src={img('07.webp')} alt="Low-fidelity wireframes for the SureCall app" />
           </div>
@@ -281,7 +303,7 @@ const nextProject = {
 
       <section class="white-block">
         <div class="wrap">
-          <p class="eyebrow-label">Final Prototype</p>
+          <p class="eyebrow-label">How it ended up</p>
           <div class="image-row-single image-row-single-phone">
             <video class="prototype-video" src={`${base}images/surecall/prototype.mp4`} autoplay muted loop playsinline aria-label="Walkthrough of the final SureCall prototype, from the signal-strength check through booster setup"></video>
           </div>
@@ -290,7 +312,7 @@ const nextProject = {
 
       <section class="white-block">
         <div class="wrap">
-          <p class="eyebrow-label">Design Kit</p>
+          <p class="eyebrow-label">The kit it is built from</p>
           <div class="image-row-single image-row-single-wide">
             <img data-tilt src={img('12.webp')} alt="SureCall design kit: typography scale, color palette, and logo and icon assets" />
           </div>
@@ -305,15 +327,15 @@ const nextProject = {
 
       <section class="dark-block">
         <div class="wrap">
-          <h2>Reflection</h2>
-          <p>Working on this project deepened my understanding of how UX can bridge digital interfaces and physical environments. Designing for non ideal conditions from bad lighting to a user on the move <em>challenged me to make every screen hold meaning</em>.</p>
-          <p>Working in a start up environment for a small to medium sized company was a great experience. I really got to be hands on with every step of this process along the way. I not only enhanced my design skills but learned something about cellular boosters as well. Additionally, I got to work with back end engineers to see how the engineering actually took place. They recommended things for me to change or add based on <strong>how easy/hard it was to code an element</strong>. This was definitely a challenge for me but worth all of the hard work, and I learned a lot along the way about both design and boosters. Thank you SureCall for having me!</p>
+          <h2>Where it landed, and what I would change</h2>
+          <p>This is the project where I learned that the screen is not the whole interface. The garage is part of the interface too. Bad light, a ladder, a phone in one hand: <em>designing for that made me cut things I was fond of</em>, and the app is better for it.</p>
+          <p>Working at a small company meant I got to be hands on with every step, which is not something I would have gotten somewhere larger. I came out of it with better design instincts and, unexpectedly, a working knowledge of cellular boosters. The part I valued most was sitting with the backend engineers and watching what actually gets built. They would tell me to change or add things based on <strong>how easy or hard an element was to code</strong>, which was humbling at first and then just useful. Thank you SureCall for having me.</p>
         </div>
       </section>
 
       <section class="dark-block">
         <div class="wrap">
-          <h2 class="takeaways-heading">Key Takeaways</h2>
+          <h2 class="takeaways-heading">What I took with me</h2>
           <div class="takeaways-grid">
             {takeaways.map((t) => (
               <div class="takeaway-card">
@@ -1168,6 +1190,29 @@ const nextProject = {
         font-weight: 600;
         text-decoration: none;
       }
-    </style>
+    
+      /* Opinion asides — my running commentary on each stage, set apart
+         from the account of what happened. */
+      .take {
+        max-width: 60ch;
+        margin: 2rem 0 0;
+        padding-left: 1.1rem;
+        border-left: 3px solid #00b385;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.7;
+        color: var(--ink-soft);
+      }
+
+      .take strong { color: var(--ink); font-weight: 700; }
+
+      .take-label {
+        display: block;
+        margin-bottom: 0.35rem;
+        font-family: var(--font-quirky);
+        font-size: 1.05rem;
+        color: #00b385;
+      }
+</style>
   </body>
 </html>

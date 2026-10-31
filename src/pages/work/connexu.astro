@@ -31,7 +31,7 @@ import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 
 const base = import.meta.env.BASE_URL;
-const pageTitle = 'connexU Event Website — Julian Liao';
+const pageTitle = 'connexU Event Website · Julian Liao';
 const pageDescription = 'An end-to-end rebuild of a B2B events marketplace site in Sydney';
 const ogImage = new URL(`${base}images/home/profile-illustration.webp`, Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -40,16 +40,16 @@ const img = (n: string) => `${base}images/connexu/${n}`;
 const meta = [
   { label: 'Timeline', value: 'Summer 2026' },
   { label: 'Role', value: ['UX Designer', 'UX Researcher'] },
-  { label: 'Team', value: 'In-house at connexU' },
+  { label: 'Team', value: 'On staff at connexU' },
   { label: 'Tools', value: ['Figma', 'FigJam', 'Microsoft Teams', 'GitHub'] },
   { label: 'Skills', value: ['Heuristic Evaluation', 'Usability Testing', 'Information Architecture', 'Client Work'] },
 ];
 
 const whatChanged = [
   'Consolidated the navigation down to consistent, plain labels',
-  'Real secondary conversion paths on every event page — Register your interest, Download brochure, and a link to the event’s own site — replacing a single generic CTA',
+  'Three real ways forward on every event page (Register your interest, Download brochure, and a link to the event’s own site) in place of one generic CTA',
   'Sector and year filtering added to the events index',
-  'The contact page now commits to a same-day reply instead of leaving response time unstated',
+  'The contact page now commits to a same day reply instead of leaving response time unstated',
   'Event and company information broken into short, scannable stat callouts instead of dense paragraphs',
 ];
 
@@ -60,7 +60,7 @@ const heuristicFindings = [
   { heuristic: 'Match Between System & Real World', issue: 'Use of unexplained jargon (DBE, NPS, F2F)', severity: 'High' },
   { heuristic: 'Aesthetic & Minimalist Design', issue: 'Large, repetitive text blocks', severity: 'Medium' },
   { heuristic: 'User Control & Freedom', issue: 'Limited conversion pathways', severity: 'Medium' },
-  { heuristic: 'Help & Documentation', issue: 'Lack of service-process explanation', severity: 'Medium' },
+  { heuristic: 'Help & Documentation', issue: 'Lack of service process explanation', severity: 'Medium' },
 ];
 
 // From the moderated usability test Julian ran (connexU Usability Test
@@ -79,7 +79,7 @@ const marqueeWords = Array(6).fill(['CONNEXU', 'EVENT MANAGEMENT']).flat();
 
 const nextProject = {
   title: 'E-LINK',
-  subtitle: 'A business case and PM plan to close Esade’s internship gap',
+  subtitle: 'Why Esade held at 35% while its rivals climbed to 53%',
   image: `${base}images/home/tile-elink.png`,
   href: `${base}work/elink/`,
 };
@@ -152,9 +152,9 @@ const carouselAngleStep = 360 / carouselPhotos.length;
         <div class="head-top">
           <h1 class="title">connexU<br />Event Website</h1>
           <div class="context-box">
-            <p class="context-label">Context</p>
-            <h2 class="context-heading">What is connexU?</h2>
-            <p>connexU is a Sydney-based B2B events company that runs marketplace-style conferences (Retail Tech Marketplace, Ecommerce Marketplace, Retail Property Marketplace, and others), connecting senior decision-makers with vendors through curated 1-to-1 meetings. I worked in-house at connexU over the summer of 2026, redesigning connexu.com.au end to end — the site today is a complete rebuild, not a refresh of the old one. I signed a confidentiality agreement covering the engagement, so this write-up sticks to research findings and outcomes rather than design-system or interface specifics — the focus here is on what I learned from users and what changed.</p>
+            <p class="context-label">Where this started</p>
+            <h2 class="context-heading">A site that hid the one thing everybody came for</h2>
+            <p>connexU runs marketplace style conferences out of Sydney: Retail Tech, Ecommerce, Retail Property. They put senior buyers in curated one to one meetings with vendors. I spent the summer of 2026 on staff there rebuilding connexu.com.au from scratch, not refreshing it. I signed a confidentiality agreement, so what follows is the research and the outcomes rather than the interface itself. <strong>That turns out to be the half worth reading anyway.</strong></p>
           </div>
         </div>
 
@@ -167,9 +167,11 @@ const carouselAngleStep = 360 / carouselPhotos.length;
           ))}
         </dl>
 
+        <p class="intro">This was my first time designing for a business where I was not the customer and never would be. The people using this site book five figure sponsorships and fly in for two days of meetings, so nothing about my instincts as a student applied. So I stopped guessing and tested it: five people, ten tasks, a stopwatch. <strong>What I learned is that the site was organized around how the company describes itself, and visitors were looking for something else entirely.</strong> Everybody inside the company could navigate it perfectly. That is usually the warning sign, not the reassurance.</p>
+
         <p class="pull-quote" data-typewriter>
-          <span aria-hidden="true"><span class="tw-seg" data-full="The information architecture "></span><span class="tw-seg pull-quote-highlight" data-full="didn’t match how visitors actually thought"></span><span class="tw-seg" data-full=" about the site."></span></span>
-          <span class="sr-only">The information architecture didn’t match how visitors actually thought about the site.</span>
+          <span aria-hidden="true"><span class="tw-seg" data-full="The site was organized "></span><span class="tw-seg pull-quote-highlight" data-full="the way the company thinks"></span><span class="tw-seg" data-full=", not the way a visitor does."></span></span>
+          <span class="sr-only">The site was organized the way the company thinks, not the way a visitor does.</span>
         </p>
       </div>
     </section>
@@ -195,8 +197,16 @@ const carouselAngleStep = 360 / carouselPhotos.length;
 
     <section class="white-block">
       <div class="wrap">
-        <h2>Heuristic Evaluation</h2>
-        <p>Before touching any screens, I scored the existing site against Nielsen’s ten usability heuristics. Two issues came back <strong>High</strong> severity, three came back <strong>Medium</strong>.</p>
+        <h2>I scored the old site before I drew a single screen</h2>
+        <p class="take">
+          <span class="take-label">What I think about this stage</span>
+          A heuristic evaluation is the cheapest hour in this whole process and the one people skip.
+          It is just you, the site, and ten rules somebody else already argued about. What it buys you
+          is a list with severities attached, which is a completely different conversation from walking
+          into a client meeting with opinions about their homepage.
+          <strong>Opinions get debated. A High severity finding gets scheduled.</strong>
+        </p>
+        <p>Before touching anything I scored the existing site against Nielsen’s ten usability heuristics. Two problems came back <strong>High</strong> severity, three came back <strong>Medium</strong>. Doing this first meant I walked into the redesign with a list I could defend, rather than a set of opinions about how the site looked.</p>
         <ul class="heuristic-list">
           {heuristicFindings.map((h) => (
             <li class="heuristic-row">
@@ -213,15 +223,15 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       <div class="wrap">
         <div class="challenge-head">
           <span class="quirky">5 Participants, 10 Tasks</span>
-          <h2>Usability Testing</h2>
+          <h2>Five out of five could not find how to register</h2>
         </div>
-        <p>Five participants completed ten tasks on the connexU event website. All were generally able to complete most tasks, but experienced repeated confusion — unclear navigation labels, difficulty predicting where information would be located (a mismatch with their mental models of the site), and uncertainty about whether they were following the correct path. Time on task ran substantially longer than expected on several tasks, driven by navigation uncertainty rather than task complexity. In other words, people knew what they wanted to do; the site just made it hard to find the way there, so the redesign set out to clear that path.</p>
+        <p>Five people, ten tasks on the live site. Nearly everyone finished nearly everything, which is the result that fools you if you only count completions. What I was watching was the hesitation: labels nobody could predict, people guessing where a thing would live and guessing wrong, and the constant checking of whether they were still on the right path. <strong>Several tasks ran far longer than they should have, and none of that time was the task being hard</strong>. It was the site being unpredictable. People knew exactly what they wanted. They could not work out where it was kept.</p>
         <div class="participants-row">
-          <p><strong>P1</strong> — 20, somewhat involved with event registration.</p>
-          <p><strong>P2</strong> — 21, approaching the site primarily as a first-time visitor.</p>
-          <p><strong>P3</strong> — 34, a vendor representative evaluating sponsorship options.</p>
-          <p><strong>P4</strong> — 45, a returning attendee looking for session details.</p>
-          <p><strong>P5</strong> — 29, exploring event listings on behalf of their team.</p>
+          <p><strong>P1</strong>, 20, somewhat involved with event registration.</p>
+          <p><strong>P2</strong>, 21, approaching the site as a first time visitor.</p>
+          <p><strong>P3</strong>, 34, a vendor representative weighing up sponsorship options.</p>
+          <p><strong>P4</strong>, 45, a returning attendee looking for session details.</p>
+          <p><strong>P5</strong>, 29, browsing event listings on behalf of their team.</p>
         </div>
         <ol class="challenge-grid challenge-grid-5">
           {usabilityIssues.map((u) => (
@@ -236,8 +246,18 @@ const carouselAngleStep = 360 / carouselPhotos.length;
 
     <section class="white-block">
       <div class="wrap">
-        <h2>What Changed</h2>
-        <p>The redesign consolidates the navigation down to consistent, plain labels, and adds real secondary conversion paths: each event page now offers "Register your interest," "Download brochure," and a link out to the event’s own site, instead of a single generic CTA. The events index adds sector and year filtering. The contact page now commits to a same-day reply instead of leaving response time unstated. Event and company information is broken into short, scannable stat callouts instead of dense paragraphs, giving each page a clearer visual hierarchy. Taken together, the changes make the site easier to scan and easier to move through.</p>
+        <p class="take">
+          <span class="take-label">What I think about this stage</span>
+          Watching the tests was uncomfortable, and I think that is the point of running them. I had
+          already formed a view about what was wrong with the site, and about half of it turned out to
+          be me projecting. Everybody inside the company could navigate that site perfectly, which I now
+          read as the warning rather than the reassurance.
+          <strong>You cannot unsee a building once you work inside it</strong>, so somebody from outside
+          has to tell you what it looks like from the street.
+        </p>
+
+        <h2>What changed, and what I am allowed to show you</h2>
+        <p>The navigation came down to plain labels that say what is behind them. Every event page now gives you three real ways forward ("Register your interest", "Download brochure", and a link to the event’s own site) instead of one generic button that assumed everybody wanted the same thing. The events index got filtering by sector and year. The contact page now promises a same day reply, because an unstated response time reads as no reply at all. And the dense paragraphs got broken into short stat callouts you can actually skim. <strong>Almost none of this was a visual decision. It was deciding what each page is for and then saying so.</strong></p>
         <ul class="findings-list">
           {whatChanged.map((w) => <li>{w}</li>)}
         </ul>
@@ -246,16 +266,26 @@ const carouselAngleStep = 360 / carouselPhotos.length;
 
     <section class="white-block">
       <div class="wrap">
-        <p><strong>I signed a confidentiality agreement for this engagement, so I can't post a lot of information here, including the design system. Feel free to email me if you'd like to learn more. I’m always happy to talk through the process and the research behind the redesign, within the limits of the agreement that we signed.</strong></p>
+        <p><strong>The confidentiality agreement means I cannot post much here, including the design system. Email me if you want to hear more. I am always happy to walk through the process and the research behind the redesign, as far as the agreement lets me.</strong></p>
         <a class="btn-pill btn-pill-solid cta-site-link" href="https://connexu.com.au/" target="_blank" rel="noreferrer">View Full Site</a>
       </div>
     </section>
 
     <section class="dark-block">
       <div class="wrap">
-        <h2>Reflection &amp; Next Steps</h2>
-        <p>Working in-house for the summer meant experiencing Sydney beyond the office too — 5 a.m. run clubs before the workday started, a Christmas in July celebration in the middle of the Australian winter, and a trip up to the Great Barrier Reef, one of the most precious settings on Earth.</p>
-        <p>I’d want to re-run the same set of usability tasks against the live redesign to close the loop with real user data instead of inferring from the shipped structure, and use that to prioritize the remaining agenda-detail gap. That would show which changes are working and where the next round of improvements belongs.</p>
+        <p class="take">
+          <span class="take-label">What I think about this stage</span>
+          Almost nothing I changed on this site was a visual decision, and I think that is the part
+          people miss about redesigns. The nav got shorter because we decided what each page was for.
+          The contact page improved because somebody committed to answering in a day.
+          <strong>Most of what reads as a better looking site is actually a company being clearer about
+          what it does.</strong> I came in expecting to make things prettier and spent the summer
+          making them say what they meant.
+        </p>
+
+        <h2>Where it landed, and what I would change</h2>
+        <p>Working on staff for a summer also meant Sydney outside the office: 5 a.m. run clubs before the workday, Christmas in July in the middle of an Australian winter, and a trip up to the Great Barrier Reef. Living somewhere while you work there is a different thing from visiting, and I would do it again tomorrow.</p>
+        <p>The honest gap is that I never reran the tests. I know the structure shipped; I do not know from data that it worked, and I am inferring from the shape of the fix rather than measuring it. <strong>If I went back, the first thing I would do is run the same ten tasks against the live site</strong> and find out whether I was right, then use that to decide what to do about the agenda detail, which is still the weakest page.</p>
       </div>
     </section>
 
@@ -1153,6 +1183,29 @@ const carouselAngleStep = 360 / carouselPhotos.length;
         font-weight: 600;
         text-decoration: none;
       }
-    </style>
+    
+      /* Opinion asides — my read on each stage, separated from the
+         account of what actually happened. */
+      .take {
+        max-width: 60ch;
+        margin: 1.75rem 0 0;
+        padding-left: 1.1rem;
+        border-left: 3px solid #1d0065;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.7;
+        color: var(--ink-soft);
+      }
+
+      .take strong { color: var(--ink); font-weight: 700; }
+
+      .take-label {
+        display: block;
+        margin-bottom: 0.35rem;
+        font-family: var(--font-quirky);
+        font-size: 1.05rem;
+        color: #1d0065;
+      }
+</style>
   </body>
 </html>

@@ -26,7 +26,7 @@ import Footer from '../../components/Footer.astro';
 import Lightbox from '../../components/Lightbox.astro';
 
 const base = import.meta.env.BASE_URL;
-const pageTitle = 'Guide Mobile Application — Julian Liao';
+const pageTitle = 'Guide Mobile Application · Julian Liao';
 const pageDescription = 'A wheelchair-accessible navigation app for safer, independent travel';
 const ogImage = new URL(`${base}images/home/profile-illustration.webp`, Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -44,9 +44,9 @@ const meta = [
 ];
 
 const challenges = [
-  'Determining what obstructions were most important to cover during travel.',
-  'How to exactly show/notify users of an elevator location or other important landmark in their path.',
-  'Designing for users who may be traveling quickly or unable to analyze all the content on their phone.',
+  'Work out which obstacles actually change a trip, and leave the rest off the map.',
+  'Tell somebody an elevator is coming up without making them stop to read.',
+  'Design for a person already moving, who cannot study their phone.',
 ];
 
 const painPoints = ['Elevators', 'Ramps', 'Crowds', 'Bathrooms', 'Report'];
@@ -88,7 +88,7 @@ const marqueeWords = Array(6).fill('TRAVELIN’ SAFE');
 
 const nextProject = {
   title: 'Michigan ChatGPT',
-  subtitle: 'Redesigning the University of Michigan’s AI workspace',
+  subtitle: 'Four campus AI tools nobody could tell apart, rebuilt into one front door',
   image: `${base}images/home/tile-michigan-chatgpt.webp`,
   href: `${base}work/michigan-chatgpt/`,
 };
@@ -159,9 +159,9 @@ const nextProject = {
           <div class="head-top">
             <h1 class="title">Guide</h1>
             <div class="context-box">
-              <p class="context-label">Context</p>
-              <h2 class="context-heading">What is the Guide App?</h2>
-              <p>Guide is a mobile navigation app designed specifically for wheelchair users to promote safer, more accessible travel. The app helps users identify key accessibility features in real time, including elevators, ramps, handicapped restrooms, and areas with high foot traffic. Guide focuses on three core functions: mapping out ADA compliant routes, alerting users to potential obstacles or crowd density, and highlighting nearby accessibility features to support on-the-go decision making — all in one place, so users always know what to expect along their route and can plan each trip.</p>
+              <p class="context-label">Where this started</p>
+              <h2 class="context-heading">Planning the route should not cost more than the trip</h2>
+              <p>Guide is a navigation app for wheelchair users. It does three things: route you along paths that actually comply with the ADA, warn you about obstacles and crowds before you reach them, and show what is nearby (elevators, ramps, accessible restrooms) while you are still deciding. The point is that you know what is coming, so a trip stops being a gamble you take and starts being a trip you take.</p>
             </div>
           </div>
 
@@ -179,10 +179,10 @@ const nextProject = {
       <section class="white-block personal-section">
         <div class="wrap personal-grid">
           <div class="personal-text">
-            <p class="eyebrow-label">Why This Project</p>
-            <h2>Personal to Me</h2>
-            <p>Growing up, two of my brothers, Nate and Jake, both used wheelchairs. They lived with epidermolysis bullosa, a condition that leaves the skin extremely fragile and prone to blistering which made even short trips outside the house genuinely difficult to plan for and navigate, so every outing took extra planning ahead of time.</p>
-            <p>As their brother, I realized how often people with disabilities are left out of everyday experiences and how rarely that gap gets addressed. Guide is my attempt at equity-focused design: building for a group that products have historically overlooked. When I became a designer, Guide had been an idea I had been thinking about for many years. It's the most personal project in this portfolio, and there's genuine intent behind it: making independent travel a little less uncertain for people who don't have the luxury of assuming a route will simply work for them.</p>
+            <p class="eyebrow-label">Why this one</p>
+            <h2>My brothers used wheelchairs, and every trip out took planning</h2>
+            <p>Two of my brothers, Nate and Jake, used wheelchairs. They lived with epidermolysis bullosa, which leaves the skin fragile and prone to blistering, so a short trip out of the house was never a short trip. Somebody had to know in advance where the ramps were, which door worked, whether there would be a crowd.</p>
+            <p>Watching that taught me how often people with disabilities get quietly left out of ordinary days, and how rarely anybody builds for it. I had been thinking about this app for years before I had the skills to draw it. It is the most personal project in this portfolio, and the intent behind it is simple: <strong>most people get to assume a route will work. I wanted to build the thing that removes the assuming for everyone else.</strong></p>
           </div>
           <div class="personal-photos">
             <img data-tilt src={img('personal-01.webp')} alt="Julian as a child with his brothers, one recovering from a bandaged arm, in a family photo" />
@@ -194,8 +194,8 @@ const nextProject = {
       <section class="head-block head-block-tail">
         <div class="wrap">
           <p class="pull-quote" data-typewriter>
-            <span aria-hidden="true"><span class="tw-seg" data-full="How can I help users in wheelchairs "></span><span class="tw-seg pull-quote-highlight" data-full="feel confident while traveling, especially alone"></span><span class="tw-seg" data-full="?"></span></span>
-            <span class="sr-only">How can I help users in wheelchairs feel confident while traveling, especially alone?</span>
+            <span aria-hidden="true"><span class="tw-seg" data-full="How do you make a route feel certain "></span><span class="tw-seg pull-quote-highlight" data-full="before somebody is already out in it"></span><span class="tw-seg" data-full=", travelling alone?"></span></span>
+            <span class="sr-only">How do you make a route feel certain before somebody is already out in it, travelling alone?</span>
           </p>
         </div>
       </section>
@@ -203,8 +203,8 @@ const nextProject = {
       <section class="dark-block">
         <div class="wrap">
           <div class="challenge-head">
-            <span class="quirky">Real-Time Obstacles</span>
-            <h2>The Challenge</h2>
+            <span class="quirky">Obstacles</span>
+            <h2>An obstacle you discover on arrival is not information</h2>
           </div>
           <ol class="challenge-grid">
             {challenges.map((c, i) => (
@@ -219,8 +219,15 @@ const nextProject = {
 
       <section class="white-block tight">
         <div class="wrap">
-          <h2>User Research</h2>
-          <p>I paired a survey (20+ responses) with interviews of people who either have a disability or frequently travel with someone who does, combining quantitative reach with qualitative depth. Their feedback highlighted common frustrations around inaccessible pathways and the lack of reliable information when planning routes. Those conversations shaped every decision that followed, from the features I chose to how each one is presented on screen and how they fit together.</p>
+          <h2>Four out of five people had never seen accessibility info in a map</h2>
+          <p>I ran a survey with over 20 responses and sat down with people who either have a disability or travel regularly with someone who does. The survey gave me the spread; the interviews told me why. The same two complaints came back every time: the path itself was not usable, and there was no way to find that out before setting off. <strong>That second one is the real product.</strong> Everything I drew after this points at it.</p>
+          <p class="take">
+            <span class="take-label">What I think about this stage</span>
+            The survey told me the problem was common. The interviews told me what it costs somebody.
+            I have come to think <strong>numbers are mostly for convincing other people, and
+            conversations are for knowing what to build</strong>. If I could only run one, I would run
+            the interviews every time and lose the chart.
+          </p>
         </div>
         <div class="image-row-single image-row-single-wide">
           <img data-tilt src={img('02-quotes-cropped.webp')} alt="Three quotes from survey respondents about inconsistent doors and elevators, missing ADA-accessible entrances, and difficulty maneuvering a wheelchair through crowds" />
@@ -229,7 +236,7 @@ const nextProject = {
 
       <section class="white-block tight">
         <div class="wrap">
-          <p class="eyebrow-label">Key Insights</p>
+          <p class="eyebrow-label">What kept coming up</p>
         </div>
         <div class="image-row-single image-row-single-wide">
           <img data-tilt src={img('04.webp')} alt="Four key insights: most common travel issues, low confidence providing accessibility info, high demand for real-time data, and frequent visitors noticing accessibility issues firsthand" />
@@ -244,7 +251,7 @@ const nextProject = {
 
       <section class="white-block tight">
         <div class="wrap">
-          <p class="eyebrow-label">Survey Results</p>
+          <p class="eyebrow-label">The numbers behind it</p>
           <div class="chart-grid">
             {surveyCharts.map((chart) => (
               <div class="chart-card">
@@ -272,8 +279,8 @@ const nextProject = {
       <section class="dark-block tight">
         <div class="wrap">
           <div class="challenge-head">
-            <span class="quirky">Wayfinding Clarity</span>
-            <h2>The Challenge</h2>
+            <span class="quirky">Wayfinding</span>
+            <h2>Nobody can read a screen while they are moving</h2>
           </div>
           <ol class="challenge-grid">
             {challenges.map((c, i) => (
@@ -288,8 +295,8 @@ const nextProject = {
 
       <section class="white-block tight">
         <div class="wrap">
-          <h2>User Personas</h2>
-          <p>Upon analyzing my research, I developed user personas expressing their goals, frustrations, and pain points — helping me understand the diverse needs of both wheelchair users and those who support them, which kept real people's needs in front of me during the whole design process and kept the work grounded.</p>
+          <h2>What building personas actually taught me</h2>
+          <p>I built personas out of the research for wheelchair users and for the people who travel with them. The useful part was not the finished documents. It was that writing them forced me to name the frustration behind each goal, and <em>two personas who want the same thing for different reasons need two different screens</em>. The mistake I made first was writing personas that agreed with the app I already wanted to build. The ones I kept are the ones that argued with it.</p>
           <div class="image-row image-row-detail image-row-personas">
             <img data-tilt src={img('05.webp')} alt="User persona: Joseph, 33, an Occupational Therapist with moderate tech comfort, with his goals, pain points, and needs" />
             <img data-tilt src={img('16.webp')} alt="User persona: Sarah, 28, a freelance graphic designer and wheelchair user in an urban area, with her goals, pain points, and needs" />
@@ -308,8 +315,8 @@ const nextProject = {
 
       <section class="white-block tight">
         <div class="wrap">
-          <h2>Low-Fidelity Prototypes</h2>
-          <p>Based on user feedback and ideation, I sketched low-fidelity wireframes to explore flows, layouts, and features — validating what accessibility information users needed most and how they preferred it presented. These early sketches were quick to make and easy to change before any visual polish was added.</p>
+          <h2>Sketching the route before drawing the app</h2>
+          <p>I sketched rough wireframes to work out the flow and the layout, and to check which pieces of accessibility information people actually wanted and in what order. Quick to make, quick to throw away. <strong>Nobody argues with a sketch the way they argue with a finished screen</strong>, which is exactly why I stayed there as long as I could.</p>
           <div class="image-row-single">
             <img data-tilt src={img('09.webp')} alt="Low-fidelity wireframes exploring the Guide app's core screens" />
           </div>
@@ -319,8 +326,8 @@ const nextProject = {
       <section class="dark-block tight">
         <div class="wrap">
           <div class="challenge-head">
-            <span class="quirky">Designing On the Move</span>
-            <h2>The Challenge</h2>
+            <span class="quirky">On the move</span>
+            <h2>The screen has to work at a glance, held at an angle</h2>
           </div>
           <ol class="challenge-grid">
             {challenges.map((c, i) => (
@@ -335,8 +342,17 @@ const nextProject = {
 
       <section class="white-block tight">
         <div class="wrap">
-          <h2>Navigation Page Iteration</h2>
-          <p>The first version showed the path and obstructions but lacked an end button and didn't explain the iconography. I chose Option 3 for its <strong>combination of functional completeness and improved clarity — the version that best matched what users needed on the route in the moment, without adding extra steps</strong>.</p>
+          <h2>Three versions of the route screen, and why the third won</h2>
+          <p>The first version drew the path and the obstacles but gave you no way to end the trip and no key for the icons, which is a map you have to learn before you can use it. Option 3 was the one that <strong>said what the symbols meant and let you stop, without adding a step to get there</strong>. It is not the prettiest of the three. It is the one you can use with a hand on a wheel.</p>
+          <p class="take">
+            <span class="take-label">What I think about this stage</span>
+            Something I had to catch myself doing: when I put three options side by side I pick the
+            best looking one, every single time, and then find reasons afterwards. So now I write down
+            what the screen has to let somebody do before I lay the options out, and I judge each one
+            against that list instead of against the other two.
+            <strong>Comparing designs to each other is how a whole set of bad options starts looking
+            fine.</strong>
+          </p>
         </div>
         <div class="image-row-single image-row-single-wide">
           <img data-tilt src={img('10.webp')} alt="Three iterations of the navigation page, from a version without an end button to the final option with labeled icons" />
@@ -345,8 +361,8 @@ const nextProject = {
 
       <section class="white-block tight">
         <div class="wrap">
-          <h2>Location Page Iteration</h2>
-          <p>Option 1 lacked key information like address or hours. I selected Option 3 for its <em>clear hierarchy, layered composition, and action-oriented layout</em> — testing showed the dedicated "Call" button, a clear call-to-action, improved task completion, which made the next step obvious the moment someone reached the page.</p>
+          <h2>The version with a Call button beat the better looking one</h2>
+          <p>Option 1 looked clean because it was missing the address and the hours. Easy to look clean when you leave out what people came for. I picked Option 3: <em>a clear hierarchy, and one obvious thing to do next</em>. In testing, the dedicated "Call" button was what got people through the task, because the real question on that screen is not what is here, it is whether anyone can confirm the place will work when I arrive.</p>
         </div>
         <div class="image-row-single image-row-single-wide">
           <img data-tilt src={img('11.webp')} alt="Three iterations of the location detail page, ending in a version with a dedicated Call button and segmented data" />
@@ -358,8 +374,8 @@ const nextProject = {
           <img data-tilt src={img('12.webp')} alt="Two Guide app screens showing an elevator-location callout and an important-alert callout over the map" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">Solved Pain Points</h2>
-          <p>During the design process, I identified <em>the most effective way to clearly communicate the accessible features of a route</em>. I incorporated five main pinpoints along a route: elevators, ramps, large crowds, handicapped bathrooms, and an additional feature to report something. Together these pinpoints let users read a route at a glance before they set off.</p>
+          <h2 class="feature-heading">Five things people wanted to know before setting off</h2>
+          <p>Everything people told me collapsed into five markers worth putting on a route: elevators, ramps, crowds, accessible restrooms, and a way to report something that is wrong. <em>Five is the number you can read at a glance</em>; I had a longer list and cutting it was most of the work. The report marker is the one I would defend hardest. It is the only one that keeps the map honest after I stop maintaining it.</p>
           <ul class="pinpoint-row">
             {painPoints.map((p) => <li>{p}</li>)}
           </ul>
@@ -371,8 +387,16 @@ const nextProject = {
           <img data-tilt src={img('13.webp')} alt="Two Guide app screens: turn-by-turn directions to Warm Springs Plaza with an accessibility icon bar, and the surrounding map view" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">Built on Trust</h2>
-          <p>To build trust and confidence for the user, the app only surfaces the most accessible route with the least detours or interruptions, prioritizing paths that are well-maintained, clearly marked, and <strong>verified by recent user feedback</strong>. Users can view detailed information about each route, including elevator status, ramp conditions, and any reported obstacles. This ensures they can travel with greater independence, certainty, and reduced stress in unfamiliar environments. Every detail is meant to make each route feel reliable and clear.</p>
+          <h2 class="feature-heading">A route is only trustworthy if somebody checked it recently</h2>
+          <p>The app surfaces one route, the most accessible one with the fewest detours, and it favors paths that are maintained, marked, and <strong>confirmed by somebody recently</strong>. You can open any route to see elevator status, ramp condition and whatever has been reported. An accessibility map that nobody updates is worse than no map, because it gets believed. Recency is the feature.</p>
+          <p class="take">
+            <span class="take-label">What I think about this stage</span>
+            This is the one piece I would push back on if a client asked me to build it. An accessibility
+            map is a promise, and people plan their day around it. <strong>Shipping one and then not
+            maintaining it is worse than never shipping it at all</strong>, because the failure lands on
+            somebody standing outside a door that does not open. I would rather launch a smaller map that
+            stays true than a complete one that rots.
+          </p>
           <ul class="pinpoint-row">
             {trustPoints.map((p) => <li>{p}</li>)}
           </ul>
@@ -381,7 +405,7 @@ const nextProject = {
 
       <section class="white-block tight">
         <div class="wrap">
-          <h2>Final Prototype</h2>
+          <h2>How it ended up</h2>
         </div>
         <div class="prototype-phone">
           <video src={img('prototype.mp4')} autoplay muted loop playsinline aria-label="Screen recording of the Guide prototype: navigating from Home and Nearby through location detail, directions, and alerts"></video>
@@ -390,7 +414,7 @@ const nextProject = {
 
       <section class="white-block tight">
         <div class="wrap">
-          <p class="eyebrow-label">Design Kit</p>
+          <p class="eyebrow-label">The kit it is built from</p>
         </div>
         <div class="image-row-single image-row-single-wide">
           <img data-tilt src={img('15.webp')} alt="Guide app design kit: Work Sans typography scale, a blue/gray/coral color palette with hex codes, and the app's icon and button assets" />
@@ -405,9 +429,9 @@ const nextProject = {
 
       <section class="dark-block tight">
         <div class="wrap">
-          <h2>Reflection</h2>
-          <p>Working on this project deepened my understanding of how digital products can bridge gaps in accessibility in the real world. Designing for users in motion challenged me to <em>simplify everything down to the essentials</em>, focusing on core needs. That mindset shaped every screen I designed and every decision behind it.</p>
-          <p>Taking on this solo UX project gave me the chance to lead every stage, from research to prototyping. I not only strengthened my design process, but developed a deeper awareness of the daily navigation challenges people in wheelchairs face. This project holds meaning to me — <strong>something very personal</strong> — and I'm glad it worked out well and that I got to see it through from start to finish, from the first survey response to the final prototype and everything in between.</p>
+          <h2>Where it landed, and what I would change</h2>
+          <p>Designing for somebody already in motion forced me to <em>cut everything down to what is essential</em>, and it turns out that is a much shorter list than I wanted it to be. That habit followed me into every project since.</p>
+          <p>I ran every stage of this one myself, from the first survey response to the final prototype. If I picked it up again I would go back to the people I interviewed and test the finished flow on them, because I never closed that loop and it is the part I think about. <strong>This is the project I would still be working on if I could only keep one</strong>, and it is the reason I care about this field rather than just being good at it.</p>
         </div>
       </section>
 
@@ -1296,6 +1320,29 @@ const nextProject = {
         font-weight: 600;
         text-decoration: none;
       }
-    </style>
+    
+      /* Opinion asides — what I make of each stage, kept visually
+         separate from the account of what happened. */
+      .take {
+        max-width: 60ch;
+        margin: 2rem 0 0;
+        padding-left: 1.1rem;
+        border-left: 3px solid #1a50e0;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.7;
+        color: var(--ink-soft);
+      }
+
+      .take strong { color: var(--ink); font-weight: 700; }
+
+      .take-label {
+        display: block;
+        margin-bottom: 0.35rem;
+        font-family: var(--font-quirky);
+        font-size: 1.05rem;
+        color: #1a50e0;
+      }
+</style>
   </body>
 </html>

@@ -8,7 +8,7 @@ tools: ["Figma", "FigJam"]
 skills: ["Wireframing", "Prototyping", "Design Systems", "Interaction Design", "User Research"]
 tileImage: "/images/home/tile-guide.webp"
 tileAlt: "Guide app screens showing an accessible navigation route"
-summary: "A wheelchair-accessible navigation app for safer, independent travel"
+summary: "Knowing a route works before you are already out in it"
 ---
 
 ## Context
@@ -73,7 +73,7 @@ Through our initial efforts, I identified key features for the platform and mapp
 
 ### Low Fidelity Prototypes
 
-Based on user feedback and ideation, I sketched low-fidelity wireframes to explore flows, layouts, and features. These prototypes helped validate what accessibility information users needed most and how they preferred it to be presented.
+Based on user feedback and ideation, I sketched low fidelity wireframes to explore flows, layouts, and features. These prototypes helped validate what accessibility information users needed most and how they preferred it to be presented.
 
 ![Low-fidelity wireframes exploring the Guide app's core screens](/images/guide/09.webp)
 

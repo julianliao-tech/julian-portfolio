@@ -177,6 +177,7 @@ function init() {
     group = groupFor(source);
     index = Math.max(0, group.indexOf(source));
     isOpen = true;
+    window.dispatchEvent(new CustomEvent('lightbox:open'));
 
     // Measure before anything can move the page.
     const from = metrics(source);
@@ -192,6 +193,7 @@ function init() {
   const close = () => {
     if (!isOpen || closing) return;
     closing = true;
+    window.dispatchEvent(new CustomEvent('lightbox:close'));
     const source = group[index];
 
     const finish = () => {

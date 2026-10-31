@@ -8,7 +8,7 @@ tools: ["Figma", "Slack", "FigJam"]
 skills: ["Wireframing", "Prototyping", "Design Systems", "Interaction Design", "Information Architecture"]
 tileImage: "/images/home/tile-surecall.png"
 tileAlt: "Two SureCall EZ-5G Signal Test app screens on a green background, showing a signal-strength gauge and a 5G UW strength check"
-summary: "A field tool for installing and testing Verizon 5G boosters"
+summary: "Telling someone on a ladder whether the install worked"
 ---
 
 ## Context
@@ -121,13 +121,13 @@ In the end, I chose Option 2 for its streamlined functionality. Rather than rely
     <p>To make <strong>signal strength easier to understand</strong>, I used a visual meter with color coded tiers and clear labels like "Good" and "Great," translating technical values like -80 dBm into something intuitive. For better <strong>accessibility in the field</strong>, we prioritized large tap targets, clean layouts, and step-by-step screens, making the app easy to use.</p>
   </div>
   <div class="split-media">
-    <img src="/images/surecall/11.webp" alt="Final SureCall screen showing the color-coded signal strength meter" />
+    <img src="/images/surecall/11.webp" alt="Final SureCall screen showing the color coded signal strength meter" />
   </div>
 </div>
 
 ### Final Prototype
 
-![Final high-fidelity prototype screens for the SureCall app](/images/surecall/12.webp)
+![Final high fidelity prototype screens for the SureCall app](/images/surecall/12.webp)
 
 ## Reflection & Next Steps
 

@@ -4,6 +4,10 @@
    Every motion path is skipped when the user asks for reduced motion.
    ------------------------------------------------------------------ */
 
+// Interface sound lives in its own module and boots itself. Imported
+// here so every page that loads site.js gets the toggle wired up.
+import './sfx.js';
+
 const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 const prefersReduced = () => motionQuery.matches;
 

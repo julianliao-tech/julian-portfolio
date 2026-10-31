@@ -21,8 +21,8 @@ import Footer from '../../components/Footer.astro';
 import Lightbox from '../../components/Lightbox.astro';
 
 const base = import.meta.env.BASE_URL;
-const pageTitle = 'Michigan ChatGPT — Julian Liao';
-const pageDescription = 'Redesigning U-M\'s AI workspace into one clear, trusted homepage';
+const pageTitle = 'Michigan ChatGPT · Julian Liao';
+const pageDescription = 'Four campus AI tools nobody could tell apart, rebuilt into one homepage';
 const ogImage = new URL(`${base}images/home/profile-illustration.webp`, Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const img = (n: string) => `${base}images/michigan-chatgpt/${n}`;
@@ -39,55 +39,55 @@ const meta = [
 ];
 
 const challenges = [
-  'Communicating the purpose of multiple AI tools without overwhelming users.',
-  'Simplifying scattered navigation patterns into one cohesive experience.',
-  'Designing for both first-time visitors discovering tools and returning users who already know where they\'re going.',
+  'Say what each tool actually does, without turning the homepage into a wall of text.',
+  'Pull four different navigation patterns into one that behaves the same way everywhere.',
+  'Serve the person who has never been here and the person who comes every day, on one screen.',
 ];
 
 const researchFindings = [
-  "Difficulty understanding what each AI tool does",
-  "Low confidence navigating between services",
-  "Reliance on external AI tools due to confusion on Michigan's offerings",
-  'Lack of visual hierarchy or familiarity in the interface',
+  'they could not say what any one of the tools was for',
+  'they were not sure how to get from one tool to another',
+  'they opened ChatGPT instead, because guessing there was easier',
+  'nothing about the interface looked like the sites they already use',
 ];
 
 const keyInsights = [
-  'Users felt overwhelmed by unclear terminology and too many competing tools.',
-  'Familiarity and simplicity dramatically increase trust in digital systems.',
-  'Navigation must be clean, predictable, and consistent across the experience.',
+  'The words were the barrier, not the technology. People who use AI every day still could not tell these four tools apart.',
+  'Familiar beats clever. When a page behaves like the pages someone already trusts, they stop bracing and start using it.',
+  'When navigation changes between tools, people assume they have left the site and quit exploring.',
 ];
 
 const firstTimeNeeds = [
-  'Immediately understand that MichiganGPT is a suite of U-M AI tools',
-  'Learn what each tool does and which one fits my need',
-  'Navigate comfortably through a clean, familiar, Michigan-branded workspace',
+  'Work out in one screen that these are the AI tools Michigan built',
+  'See what each one is for, and which one fits what I came to do',
+  'Move around without feeling like I am one click from breaking something',
 ];
 
 const returningNeeds = [
-  'Jump straight into the tool I use most',
-  'See updates, announcements, or new features',
-  'Access documentation, support, or login in one click',
+  'Get straight into the tool I use, without reading anything first',
+  'See what has changed since last time',
+  'Reach login, documentation, or an actual human in one click',
 ];
 
 const whatShipped = [
-  'Clear hierarchy and predictable patterns',
-  'Cards for each AI tool, evenly spaced and highly scannable',
-  'Strengthened Michigan branding without overwhelming the UI',
-  'Accessibility upgrades for legibility, navigation, and recognition',
-  'Trust-building elements such as curated responses and user-centered features',
+  'A homepage where all four tools are named in plain language and sit in one row',
+  'Cards you can scan in a few seconds, instead of a paragraph you have to read',
+  'Michigan branding that is unmistakable without taking over the screen',
+  'Bigger targets, clearer labels, and type you can read on a phone outside',
+  'Answers tuned for campus questions, so a first time user does not need a good prompt',
 ];
 
 const lookingAhead = [
-  'A full documentation experience',
-  "A personalized dashboard based on user history",
-  'Better integration with academic tools across campus',
+  'A real documentation section, instead of links that go nowhere',
+  'A homepage that remembers the tool you actually use',
+  'A way in from Canvas and the rest of the software students already have open',
 ];
 
 const marqueeWords = Array(6).fill('U-M AI WORKSPACE');
 
 const nextProject = {
   title: 'SureCall',
-  subtitle: 'A field tool for installing and testing Verizon 5G boosters',
+  subtitle: 'Telling someone on a ladder whether the install worked',
   image: `${base}images/home/tile-surecall.png`,
   href: `${base}work/surecall/`,
 };
@@ -159,9 +159,9 @@ const nextProject = {
           <div class="head-top">
             <h1 class="title">Michigan<br />ChatGPT</h1>
             <div class="context-box">
-              <p class="context-label">Context</p>
-              <h2 class="context-heading">What is the Michigan Chat-GPT?</h2>
-              <p>Michigan ChatGPT is the University of Michigan's AI workspace: a collection of tools like U-M GPT, Maizey, Go Blue, and GPT Toolkit designed to help students, faculty, and staff find information, generate content, and access campus support. It is the first university to implement LLM tools curated just to their community. However, despite the power of the underlying models, the platform's interface had fallen behind — outdated, visually cluttered, and inconsistent with modern design patterns, hence this work.</p>
+              <p class="context-label">Where this started</p>
+              <h2 class="context-heading">Michigan built the AI. Nobody could tell the four tools apart.</h2>
+              <p>Michigan ChatGPT is the university's own AI workspace: U-M GPT, Maizey, Go Blue and the GPT Toolkit, all running on models curated for people here. Michigan was the first university to pull that off, and I still think that is a big deal. The problem was never the models. It was that the homepage asked you to pick one of four tools before it told you what any of them were.</p>
             </div>
           </div>
 
@@ -174,11 +174,11 @@ const nextProject = {
             ))}
           </dl>
 
-          <p class="intro">This redesign centers on creating an intuitive, accessible, and highly personalized experience tailored specifically for the University of Michigan community. The goal is to <strong>provide students, athletes, and faculty with a seamless way to ask questions, explore resources, and receive meaningful support</strong> — all within a workspace that feels cohesive and efficient. By enhancing clarity, reducing friction, and introducing smarter interaction patterns, the new design supports users in getting the right information at the right moment. Every decision in the redesign points back to that goal, from the first screen to the last interaction.</p>
+          <p class="intro">I am a Michigan student, so I was a user of this thing long before I was a designer of it. That is the honest reason I picked it. What surprised me once I started asking people about it is that nobody was intimidated by the AI. They were stuck on the names. Maizey, Go Blue, GPT Toolkit: none of those tell you what is behind them. <strong>People were not failing to use the platform. They were failing to pick a starting point</strong>. When picking takes too long, they open ChatGPT in another tab and campus has lost them for the semester. So I stopped treating this as a visual refresh and started treating it as a naming problem that happens to have a homepage attached.</p>
 
           <p class="pull-quote" data-typewriter>
-            <span aria-hidden="true"><span class="tw-seg" data-full="How can I reduce "></span><span class="tw-seg pull-quote-highlight" data-full="unnecessary friction for both new and returning users"></span><span class="tw-seg" data-full="?"></span></span>
-            <span class="sr-only">How can I reduce unnecessary friction for both new and returning users?</span>
+            <span aria-hidden="true"><span class="tw-seg" data-full="How do I get someone to the right tool "></span><span class="tw-seg pull-quote-highlight" data-full="before they give up and open another tab"></span><span class="tw-seg" data-full="?"></span></span>
+            <span class="sr-only">How do I get someone to the right tool before they give up and open another tab?</span>
           </p>
         </div>
       </section>
@@ -193,8 +193,8 @@ const nextProject = {
       <section class="dark-block">
         <div class="wrap">
           <div class="challenge-head">
-            <span class="quirky">Scattered Tools</span>
-            <h2>The Challenge</h2>
+            <span class="quirky">Four names, no map</span>
+            <h2>Nothing on the page told you which door to open</h2>
           </div>
           <ol class="challenge-grid challenge-grid-4">
             {challenges.map((c, i) => (
@@ -209,26 +209,35 @@ const nextProject = {
 
       <section class="white-block">
         <div class="wrap">
-          <h2>What Students + Faculty Told Us</h2>
-          <p>I conducted surveys and interviews with Michigan students who use campus technology regularly. Their feedback surfaced major pain points: <strong>{researchFindings.join('; ')}</strong>. Users expressed the need for transparency, clarity, and a trusted Michigan-branded experience.</p>
+          <h2>I asked around campus, and none of it was about the AI</h2>
+          <p>I ran surveys and sat down with students who use campus technology every week. Their answers kept landing in the same four places: <strong>{researchFindings.join('; ')}</strong>. Every one of those is about getting to the tool, not about the tool itself, which told me the fix was in the words and the first screen, not the models.</p>
           <ul class="findings-list">
             {keyInsights.map((k) => <li>{k}</li>)}
           </ul>
+          <p class="take">
+            <span class="take-label">What I think about this stage</span>
+            I used to think research meant finding out what people want. It does not. Every person I
+            spoke to wanted "something simpler", which is not a design instruction. The useful part was
+            watching where they hesitated, and hesitation does not show up in a survey.
+            <strong>People are reliable about what they did and unreliable about what they would do</strong>,
+            so I weight the first and discount the second.
+          </p>
+
           <div class="visitor-needs">
             <div>
-              <h3 class="visitor-heading">As a First-Time Visitor, I Should Be Able To:</h3>
+              <h3 class="visitor-heading">If this is my first time here, I need to:</h3>
               <ul class="findings-list">
                 {firstTimeNeeds.map((n) => <li>{n}</li>)}
               </ul>
             </div>
             <div>
-              <h3 class="visitor-heading">As a Returning Visitor, I Should Be Able To:</h3>
+              <h3 class="visitor-heading">If I am here every week, I need to:</h3>
               <ul class="findings-list">
                 {returningNeeds.map((n) => <li>{n}</li>)}
               </ul>
             </div>
           </div>
-          <span class="quirky quirky-tight">Components</span>
+          <span class="quirky quirky-tight">The pieces</span>
           <div class="image-row-single image-row-single-flush">
             <img data-tilt src={img('components-spec.webp')} alt="Michigan ChatGPT component library: navbar, search bar, mode-selection buttons, sidebar, and sample sent/reply message bubbles" />
           </div>
@@ -238,8 +247,8 @@ const nextProject = {
       <section class="dark-block">
         <div class="wrap">
           <div class="challenge-head">
-            <span class="quirky">Fewer Decisions</span>
-            <h2>The Challenge</h2>
+            <span class="quirky">Fewer doors</span>
+            <h2>Every extra choice on the first screen costs you somebody</h2>
           </div>
           <ol class="challenge-grid challenge-grid-4">
             {challenges.map((c, i) => (
@@ -254,8 +263,17 @@ const nextProject = {
 
       <section class="white-block">
         <div class="wrap">
-          <h2>Design Principles</h2>
-          <p>I began with an audit of the existing Michigan ChatGPT experience to identify areas of friction. Early sketches explored how to present tool categories more clearly, simplify the homepage, and introduce stronger visual hierarchy. Mapping the original user flow helped me <em>reorganize the information architecture into a cleaner structure with fewer decision points</em>. Three UX principles shaped the redesign — Jakob's Law, Hick's Law, and the Aesthetic-Usability Effect. A responsive layout grid, four columns on mobile and twelve on desktop, keeps components consistent across screens. Together, these choices give it a steady base across screens.</p>
+          <h2>I designed for the person who had never heard of Maizey</h2>
+          <p>I went through the old site and wrote down every place I had to stop and think. Most of them were decisions the page was asking me to make before it had told me anything. Three ideas did the heavy lifting and none of them are complicated. Jakob's Law: people expect a new site to work like the sites they already use, so I did not invent a single new pattern. Hick's Law: every extra option makes the choice slower, so the homepage offers four things and not fourteen. The aesthetic usability effect: people judge a clean interface as easier to use even when it is not. Uncomfortable, but worth designing for. <em>Then I rewrote the order of the page so the first thing you meet is what the tools are, not a menu of them.</em> Four columns on mobile and twelve on desktop keep everything landing in the same places as the screen changes size.</p>
+          <p class="take">
+            <span class="take-label">What I think about this stage</span>
+            Naming the laws is the easy half. The honest version is that I had already decided the
+            homepage should carry four tools, and Hick's Law is how I defended it afterwards.
+            <strong>I think that is fine as long as you know you are doing it, and a problem the moment
+            you forget</strong>. Principles are good at stopping bad arguments. They are not where the
+            idea comes from.
+          </p>
+
           <div class="image-row-single image-row-single-wide">
             <img data-tilt src={img('02.webp')} alt="Three design-principle cards: Jakob's Law (familiarity), Hick's Law (decision simplification), and the Aesthetic-Usability Effect, each with how it was applied to the redesign" />
           </div>
@@ -264,10 +282,18 @@ const nextProject = {
 
       <section class="white-block">
         <div class="wrap">
-          <p class="eyebrow-label">Low-Fidelity Prototypes</p>
-          <p>Initial wireframes explored hero layouts, card structures, and sidebar navigation. These early concepts helped test how much information should appear above the fold and how users interpreted the purpose of each AI tool. Through iterations, I refined the layout to <strong>balance simplicity with clarity with each pass</strong>.</p>
+          <p class="eyebrow-label">Eight ideas, drawn fast, most of them cut</p>
+          <p>I sketched eight directions before committing to one: finishing your sentence for you, shifting the background with the conversation, a video analyzer, translation, exporting a chat as a PDF, pulling text out of an image. Drawing them badly and quickly is the point, because it is much easier to throw away a sketch than a prototype. <strong>Most of them did not survive, and the ones that did were the boring ones</strong>: how much goes above the fold, and whether you can tell what a tool does from its card alone.</p>
+          <p class="take">
+            <span class="take-label">What I think about this stage</span>
+            Low fidelity is not really a stage, it is a permission slip. The uglier the sketch, the more
+            freely somebody tells you it is wrong, and I would much rather hear that in week one than in
+            week six. <strong>The minute a screen looks finished, feedback turns polite and stops being
+            useful.</strong> Staying ugly longer is the cheapest skill I have picked up.
+          </p>
+
           <div class="image-row-single image-row-single-wide">
-            <img data-tilt src={img('lowfi-wireframes.webp')} alt="Eight low-fidelity wireframes for U-M GPT: finishing sentences, changing background color based on conversation, a video analyzer, translation mode, linking to other software, setting tone, exporting past chats as a PDF, and reading text from images and videos" />
+            <img data-tilt src={img('lowfi-wireframes.webp')} alt="Eight low fidelity wireframes for U-M GPT: finishing sentences, changing background color based on conversation, a video analyzer, translation mode, linking to other software, setting tone, exporting past chats as a PDF, and reading text from images and videos" />
           </div>
         </div>
       </section>
@@ -275,8 +301,8 @@ const nextProject = {
       <section class="dark-block">
         <div class="wrap">
           <div class="challenge-head">
-            <span class="quirky">Old vs. New</span>
-            <h2>The Challenge</h2>
+            <span class="quirky">Two kinds of visitor</span>
+            <h2>New users and regulars want opposite things</h2>
           </div>
           <ol class="challenge-grid challenge-grid-4">
             {challenges.map((c, i) => (
@@ -295,8 +321,8 @@ const nextProject = {
           <video src={img('landing-desktop.mp4')} autoplay muted loop playsinline aria-label="Filled landing page walkthrough on a laptop"></video>
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">Filled Landing Page</h2>
-          <p>The filled landing page presents all core MichiganGPT tools in a clear, structured layout that reduces cognitive load and eliminates guesswork for first-time users. By emphasizing a strong hero section and four primary action cards, users can immediately understand what the platform offers and where to begin — establishing clarity, trust, and a consistent visual hierarchy across the experience, so every visit starts from the same clear place each time.</p>
+          <h2 class="feature-heading">Every tool on one screen, so nobody has to guess</h2>
+          <p>The homepage leads with a line that says what this actually is, then four cards, one per tool, each described in words a first year would use. You can read the whole thing in about as long as you were willing to spend deciding whether to bother. That is the entire goal: no guessing about what the platform is, and no guessing about where to start. Every visit now begins in the same place.</p>
         </div>
       </section>
 
@@ -306,8 +332,8 @@ const nextProject = {
           <img data-tilt class="feature-media-mobile" src={img('sidebar-mobile-yellow.webp')} alt="Michigan ChatGPT sidebar navigation, on a phone" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">Accessible Sidebar</h2>
-          <p>The redesigned sidebar organizes tools, resources, and support into intuitive categories, making navigation predictable and easy to scan. <strong>Larger tap targets, readable labels, and consistent iconography</strong> improve accessibility for users browsing quickly or on smaller screens — a simpler, more reliable method for returning users to get to what they need without friction — helping the whole platform feel calmer, clearer, and easier to use.</p>
+          <h2 class="feature-heading">One way back, from anywhere in the system</h2>
+          <p>The sidebar groups tools, resources and support into categories that stay put no matter which tool you are inside. <strong>Bigger tap targets, labels you can read, and the same icon meaning the same thing every time.</strong> People who come back every week do not read the screen. They aim at where the thing was last time. The sidebar is built for aiming.</p>
         </div>
       </section>
 
@@ -317,8 +343,8 @@ const nextProject = {
           <img data-tilt src={img('customize-desktop.webp')} alt="Michigan ChatGPT Choose Mode chatbot customization screen, on a laptop" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">Curated Responses</h2>
-          <p>Curated responses offer high-quality, context-aware guidance built specifically for academic, research, and campus-related tasks. This feature <em>increases trust by helping users get more accurate and relevant answers</em> without needing to refine prompts repeatedly — it also supports new AI users who may be unsure how to phrase questions effectively.</p>
+          <h2 class="feature-heading">Answers that already know you are on campus</h2>
+          <p>Responses are tuned for academic, research and campus questions, so what comes back is shaped for the place you are asking from. <em>It also covers for people who have never written a prompt in their life</em>. You should not have to be good at talking to AI to get something useful out of it, and most people are not, including plenty who use it daily.</p>
         </div>
       </section>
 
@@ -328,8 +354,8 @@ const nextProject = {
           <img data-tilt src={img('translation-desktop-yellow.webp')} alt="Michigan ChatGPT Translation Mode screen with input and output language selectors, on a laptop" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">Translation Mode</h2>
-          <p>Translation Mode introduces multilingual support, ensuring that international students and multilingual community members can access MichiganGPT in the language they understand best. This <strong>reduces barriers to information and enhances equity across the platform</strong>, and helps users communicate more confidently in academic or administrative tasks — a small change that makes the platform feel welcoming to more of the community.</p>
+          <h2 class="feature-heading">Reading it in the language you actually think in</h2>
+          <p>Translation mode lets multilingual students work in whichever language they are fastest in, and switch back when they need the campus wording. <strong>A lot of people here think in another language first</strong>, and making them do financial aid or housing paperwork in their second one is a tax nobody chose to pay. This was the cheapest feature on the list and probably the one I would defend hardest.</p>
         </div>
       </section>
 
@@ -339,15 +365,27 @@ const nextProject = {
           <img data-tilt src={img('audio-desktop.webp')} alt="Michigan ChatGPT audio feedback conversation with Keep Listening and Audio Respond controls, on a laptop" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">Audio Feedback</h2>
-          <p>Audio Feedback enhances accessibility by allowing users to hear responses, interface confirmations, and key actions without relying entirely on visual cues — particularly helpful for users with visual impairments or those multitasking while using the platform. It makes the system <em>more inclusive and flexible for diverse user needs and easier for many to use</em>.</p>
+          <h2 class="feature-heading">For the times you cannot look at the screen</h2>
+          <p>Audio feedback reads responses and confirmations out loud. It matters most to people with vision loss, and it quietly helps everyone else: walking to class, cooking, or just done with reading for the day. <em>Accessibility work keeps turning out to be convenience work for somebody else</em>, which is the argument I use when someone calls it a nice to have.</p>
+        </div>
+      </section>
+
+      <section class="white-block">
+        <div class="wrap">
+          <p class="take">
+            <span class="take-label">What I think about this stage</span>
+            Building the component library before the screens felt like procrastinating, and it saved me
+            more time than anything else on this project. Once a card exists as one thing, a change to it
+            is a change everywhere, and arguments about spacing stop being arguments.
+            <strong>A design system is not a deliverable, it is a way of only solving a problem once.</strong>
+          </p>
         </div>
       </section>
 
       <section class="brand-section">
         <div class="wrap brand-intro">
-          <p class="eyebrow-label">The Brand</p>
-          <h2 class="brand-heading">Digital<br />Presence.</h2>
+          <p class="eyebrow-label">The look</p>
+          <h2 class="brand-heading">Looks like<br />Michigan.</h2>
         </div>
         <div class="wrap brand-showcase-row">
           <div class="brand-phone-frame">
@@ -418,22 +456,22 @@ const nextProject = {
 
       <section class="white-block white-block-flush-bottom white-block-flush-top">
         <div class="image-row-single image-row-single-zero">
-          <img data-tilt src={img('13-figjam-board.webp')} alt="FigJam board of the Michigan ChatGPT redesign: component library, low-fidelity wireframes, page flows, and desktop and mobile screen variations" />
+          <img data-tilt src={img('13-figjam-board.webp')} alt="FigJam board of the Michigan ChatGPT redesign: component library, low fidelity wireframes, page flows, and desktop and mobile screen variations" />
         </div>
       </section>
 
       <section class="dark-block">
         <div class="wrap">
-          <h2>Reflection</h2>
+          <h2>Where it landed, and what I would change</h2>
           <ul class="findings-list findings-list-dark">
             {whatShipped.map((w) => <li>{w}</li>)}
           </ul>
-          <p>The redesigned system helps students and faculty feel confident using Michigan's AI ecosystem — whether they're writing, researching, asking questions, or seeking campus help. The goal throughout was a platform people can trust at a glance and return to without thinking twice, whether it is a first visit or a return.</p>
-          <p>Working on this redesign broadened my understanding of how clarity, psychology, and visual design shape user trust. Taking the entire project from research to high-fidelity prototypes helped me <em>refine my process and uncover opportunities to improve Michigan's digital ecosystem for the people who rely on it every day</em>.</p>
+          <p>What I was after is a platform you can trust at a glance, where the first visit and the fiftieth both start somewhere obvious.</p>
+          <p>The thing I did not expect to learn is how much of trust is just familiarity. Clarity and polish are not decoration here. They are what makes somebody willing to type a real question into a box owned by their school. Taking this from surveys through to finished screens is also the first time I owned a whole process end to end, and it changed how I start work now: <em>I spend far longer arguing about what to call things than I used to</em>.</p>
           <ul class="findings-list findings-list-dark">
             {lookingAhead.map((l) => <li>{l}</li>)}
           </ul>
-          <p>This project holds personal meaning — Michigan is my community. Creating a cleaner, more supportive AI workspace helped me <strong>contribute to something students use every day — and to make it easier for my whole community to find what they need, when they need it, in a space that feels clear and welcoming</strong>.</p>
+          <p>This one is personal. Michigan is my community, and these are tools my friends open between classes without thinking about it. <strong>Making them easier to find is a small change that a lot of people get to feel</strong>, which is most of why I want to do this work at all.</p>
         </div>
       </section>
 
@@ -1457,6 +1495,31 @@ const nextProject = {
         font-weight: 600;
         text-decoration: none;
       }
-    </style>
+    
+      /* Opinion asides — the running commentary on each stage of the
+         process, set apart from the narrative so the page reads as
+         "here is what happened, and here is what I make of it". */
+      .take {
+        max-width: 60ch;
+        margin: 2rem 0 0;
+        padding-left: 1.1rem;
+        border-left: 3px solid #00274c;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.7;
+        color: var(--ink-soft);
+      }
+
+      .take strong { color: var(--ink); font-weight: 700; }
+
+      .take-label {
+        display: block;
+        margin-bottom: 0.35rem;
+        font-family: var(--font-quirky);
+        font-size: 1.05rem;
+        letter-spacing: 0.01em;
+        color: #00274c;
+      }
+</style>
   </body>
 </html>

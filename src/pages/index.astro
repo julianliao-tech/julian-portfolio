@@ -210,7 +210,7 @@ const profileHeadshot = withVersion(`${base}images/home/profile-headshot.jpg`);
 
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
-<BaseLayout title="Julian Liao — UX Designer">
+<BaseLayout title="Julian Liao · UX Designer">
   {/* Play the opening animation once per browser tab. Runs before the loader
       is painted: coming back to Home from another page (not a refresh)
       flags <html> so the loader is skipped. site.js sets the flag. */}
@@ -262,6 +262,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
           </h1>
           <p class="hero-sub rise" style="--d: 300ms">
             A product designer shaped by my two brothers, both disabled, and the technology that too often wasn't built for them.
+          </p>
+          <p class="hero-avail rise" style="--d: 340ms">
+            <span class="hero-avail-dot" aria-hidden="true"></span>
+            Senior at the University of Michigan School of Information, open to
+            <strong>product design internships and full time roles</strong>.{' '}
+            <a href="mailto:julianliaowork@gmail.com">Email me</a>.
           </p>
         </div>
 
@@ -592,6 +598,41 @@ const pad = (n: number) => String(n).padStart(2, '0');
     font-size: 1.1em;
   }
 
+  /* Availability line — the one thing on this page a hiring manager is
+     scanning for, so it sits directly under the intro rather than at the
+     bottom of the About page where it was effectively invisible. */
+  .hero-avail {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto var(--space-2);
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg-elev);
+    font-size: clamp(0.78rem, 1.05vw, 0.9rem);
+    line-height: 1.5;
+    color: var(--ink-soft, var(--ink));
+  }
+
+  .hero-avail strong { color: var(--ink); font-weight: 600; }
+
+  .hero-avail a {
+    color: inherit;
+    text-underline-offset: 3px;
+  }
+
+  .hero-avail-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: #1a5c3a;
+    align-self: center;
+    flex: none;
+  }
+
   /* Underline bar (base styling in global.css) sweeps in after the
      rest of the hero has settled. */
   .hero-sub em::after {
@@ -623,7 +664,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
        narrow as ~360px without needing max-width's 100% fallback to
        kick in (it's still there as a defensive cap, not the primary
        fit mechanism). */
-    width: calc(var(--code-max-chars, 0) * 1ch + 2.25rem);
+    /* = longest line + the 2rem of horizontal padding, plus a few px
+       of slack so per-glyph rounding across a 55-character line can
+       never push the tail into the overflow. */
+    width: calc(var(--code-max-chars, 0) * 1ch + 2.5rem);
     max-width: 100%;
     margin: 0 auto;
     padding: 0.75rem 1rem;
@@ -635,9 +679,14 @@ const pad = (n: number) => String(n).padStart(2, '0');
     overflow: hidden;
     /* Declared here, not on .hero-code-line, so the box's own `1ch`
        (used in the width calc above) and each line's `1ch` (used for
-       its typing width) resolve against the same font-size — if they
+       its typing width) resolve against the same font — if they
        diverged, the box and its content would drift apart as the
-       viewport changes size. */
+       viewport changes size. That goes for the family as much as the
+       size: `ch` is the width of the font's own "0", so when the box
+       inherited the body sans while the lines set the mono face, the
+       box came out ~20% narrower than the text it holds and the tail
+       of the longest line was clipped by the overflow rule above. */
+    font-family: var(--font-mono);
     font-size: clamp(0.4rem, 1.9vw, 0.9rem);
   }
 
@@ -665,7 +714,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     max-width: var(--code-ch-width);
     overflow: hidden;
     white-space: pre;
-    font-family: var(--font-mono);
+    /* Family comes from .hero-code-box, so both `ch` calcs agree. */
     line-height: 1.65;
     color: var(--code-green);
     animation: hero-typing var(--code-duration) steps(var(--code-chars, 1), end) var(--code-delay) both;
@@ -808,6 +857,44 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .card:focus-visible .card-media video {
     transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.14);
     transition: transform 0.15s var(--ease-out);
+  }
+
+  /* Film grain over the thumbnail on hover. It's an inline SVG
+     feTurbulence rather than an image file, so it costs nothing to
+     download and scales to any tile size. Sits under the caption
+     (z-index 2) and never takes the pointer. */
+  .card-media::after {
+    content: '';
+    position: absolute;
+    inset: -25%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    mix-blend-mode: overlay;
+    transition: opacity 0.35s var(--ease);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .card:hover .card-media::after,
+  .card:focus-visible .card-media::after {
+    opacity: 0.38;
+    animation: grain-shift 0.6s steps(4, end) infinite;
+  }
+
+  @keyframes grain-shift {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-6%, 3%); }
+    50% { transform: translate(4%, -5%); }
+    75% { transform: translate(-3%, -2%); }
+    100% { transform: translate(0, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover .card-media::after,
+    .card:focus-visible .card-media::after {
+      animation: none;
+      opacity: 0.28;
+    }
   }
 
   /* Michigan ChatGPT's tile: a plain, already-decoded image sitting on
