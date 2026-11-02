@@ -1189,7 +1189,7 @@ const nextProject = {
           <ul class="comp-grid comp-grid-singles">
             {componentSingles.map((c) => (
               <li class="comp-card">
-                <div class="comp-media comp-media-single">
+                <div class={`comp-media comp-media-single${c.h > c.w ? ' comp-media-tall' : ''}`}>
                   <img data-tilt src={img(c.image)} alt={c.alt} style={cap(c)} />
                 </div>
                 <div class="comp-body">
@@ -2411,20 +2411,36 @@ const nextProject = {
       .comp-media {
         display: grid;
         place-items: center;
-        padding: 1.1rem;
+        padding: clamp(0.4rem, 1.6vw, 0.8rem);
         background: var(--paper);
         border-bottom: 1px solid var(--line);
       }
 
-      .comp-media-set { aspect-ratio: 3 / 1; }
+      /* 2.6/1, not 3/1: the four set sheets are 2.35, 2.89, 3.14 and 5.23
+         to 1, and a 3/1 box left the Button letterboxed top and bottom on
+         every screen. A slightly taller box lets three of the four fill
+         their width. */
+      .comp-media-set { aspect-ratio: 2.6 / 1; }
       .comp-media-single { aspect-ratio: 4 / 3; }
 
+      /* The Stick Figure sheet is 136x767 -- a vertical strip of four
+         poses. In the 4/3 box it came out about 40px wide on a phone,
+         which is why it read as missing. A portrait box gives it the
+         dimension it actually needs. */
+      .comp-media-tall { aspect-ratio: 3 / 4; }
+
+      /* width/height auto means an <img> renders at its intrinsic pixel
+         size and max-* can only ever shrink it, so a small export sat
+         marooned in the middle of its box and a 1512px sheet was scaled
+         down to whatever was left after the padding. 100% + contain fills
+         the box in both directions, still never cropping, and --mw/--mh
+         keep the cap at 1.6x the export so nothing turns to mush. */
       .comp-media img {
         display: block;
-        width: auto;
-        height: auto;
-        max-width: min(100%, var(--mw));
-        max-height: min(100%, var(--mh));
+        width: 100%;
+        height: 100%;
+        max-width: var(--mw);
+        max-height: var(--mh);
         object-fit: contain;
       }
 
