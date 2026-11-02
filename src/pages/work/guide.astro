@@ -349,7 +349,7 @@ const nextProject = {
             Something I had to catch myself doing: when I put three options side by side I pick the
             best looking one, every single time, and then find reasons afterwards. So now I write down
             what the screen has to let somebody do before I lay the options out, and I judge each one
-            against that list instead of against the other two.
+            against that list instead of against the other two.{' '}
             <strong>Comparing designs to each other is how a whole set of bad options starts looking
             fine.</strong>
           </p>
@@ -712,8 +712,8 @@ const nextProject = {
       .title {
         font-family: var(--font-display);
         font-weight: 400;
-        font-size: clamp(3.5rem, 10vw, 7rem);
-        letter-spacing: -0.01em;
+        font-size: clamp(3rem, 9vw, 6rem);
+        letter-spacing: var(--track-tight);
         line-height: 0.98;
         color: var(--ink);
         margin: 0;
@@ -726,17 +726,17 @@ const nextProject = {
       }
 
       .context-label {
-        margin: 0 0 0.35rem;
+        margin: 0 0 var(--gap-label);
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.75rem;
+        font-weight: 600;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: var(--track-label);
         color: var(--ink-faint);
       }
 
       .context-heading {
-        margin: 0 0 0.5rem;
+        margin: 0 0 var(--gap-subheading);
         font-family: var(--font-display);
         font-weight: 400;
         font-size: 1.3rem;
@@ -746,8 +746,8 @@ const nextProject = {
       .context-box p:not(.context-label) {
         margin: 0;
         max-width: none;
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
       }
 
@@ -766,7 +766,7 @@ const nextProject = {
 
       .meta dt {
         font-family: var(--font-body);
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         color: var(--ink-faint);
         margin-bottom: 0.35rem;
       }
@@ -774,9 +774,10 @@ const nextProject = {
       .meta dd {
         margin: 0;
         font-family: var(--font-body);
-        font-weight: 700;
+        font-weight: 600;
         text-transform: uppercase;
-        font-size: 0.9rem;
+        letter-spacing: var(--track-label);
+        font-size: var(--step-caption);
         color: var(--ink);
       }
 
@@ -785,8 +786,8 @@ const nextProject = {
       }
 
       .intro {
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
         max-width: none;
         text-align: justify;
@@ -796,7 +797,7 @@ const nextProject = {
 
       .intro strong {
         color: var(--ink);
-        font-weight: 700;
+        font-weight: 600;
       }
 
       .pull-quote {
@@ -813,7 +814,7 @@ const nextProject = {
 
       .pull-quote-highlight {
         color: #1d2b3f;
-        font-weight: 700;
+        font-weight: 600;
         box-shadow: inset 0 -0.35em 0 rgba(151, 173, 209, 0.35);
       }
 
@@ -886,8 +887,8 @@ const nextProject = {
         font-family: var(--font-display);
         font-weight: 400;
         font-size: clamp(1.9rem, 4vw, 2.8rem);
-        letter-spacing: -0.01em;
-        margin: 0 0 0.6rem;
+        letter-spacing: var(--track-tight);
+        margin: 0 0 var(--gap-heading);
       }
 
       .white-block h2 { color: var(--ink); }
@@ -896,8 +897,8 @@ const nextProject = {
       .white-block p,
       .dark-block .wrap > p {
         max-width: none;
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         text-align: justify;
         text-align-last: left;
         hyphens: auto;
@@ -906,20 +907,20 @@ const nextProject = {
       .white-block p { color: var(--ink-soft); }
       .dark-block .wrap > p { color: rgba(253, 251, 249, 0.7); }
 
-      .white-block strong { color: var(--ink); font-weight: 700; }
+      .white-block strong { color: var(--ink); font-weight: 600; }
       .white-block em { color: var(--ink); font-style: italic; }
-      .dark-block strong { color: var(--bg); font-weight: 700; }
+      .dark-block strong { color: var(--bg); font-weight: 600; }
       .dark-block em { color: var(--bg); font-style: italic; }
 
 
       .eyebrow-label {
         font-family: var(--font-body);
-        font-weight: 700;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: var(--track-label);
         color: #97add1;
-        margin: 0 0 0.75rem;
-        font-size: 0.85rem;
+        margin: 0 0 var(--gap-eyebrow);
+        font-size: var(--step-small);
       }
 
       .eyebrow-label .accent { color: #e28a8a; }
@@ -1043,7 +1044,7 @@ const nextProject = {
         align-items: center;
         gap: 0.6rem;
         font-family: var(--font-body);
-        font-size: 0.95rem;
+        font-size: var(--step-caption);
         color: var(--ink);
       }
 
@@ -1059,8 +1060,8 @@ const nextProject = {
         max-width: none;
         font-family: var(--font-serif);
         font-style: italic;
-        font-size: 1rem;
-        line-height: 1.5;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
       }
 
@@ -1076,8 +1077,8 @@ const nextProject = {
         background: #ffffff;
         color: var(--ink-faint);
         font-family: var(--font-body);
-        font-weight: 700;
-        letter-spacing: 0.1em;
+        font-weight: 600;
+        letter-spacing: var(--track-label);
         text-transform: uppercase;
       }
 
@@ -1121,17 +1122,16 @@ const nextProject = {
       .feature-heading {
         font-family: var(--font-serif);
         font-weight: 400;
-        font-style: italic;
         font-size: clamp(1.6rem, 3vw, 2.1rem);
         color: #1d2b3f;
-        margin: 0 0 0.6rem;
+        margin: 0 0 var(--gap-heading);
       }
 
       .feature-text p {
         margin: 0;
         max-width: none;
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: rgba(29, 43, 63, 0.75);
       }
 
@@ -1146,8 +1146,8 @@ const nextProject = {
 
       .pinpoint-row li {
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.8rem;
+        font-weight: 600;
+        font-size: var(--step-small);
         color: #1d2b3f;
         background: rgba(253, 251, 249, 0.55);
         border: 1px solid rgba(29, 43, 63, 0.2);
@@ -1213,8 +1213,8 @@ const nextProject = {
         margin: 0.75rem 0 0;
         max-width: none;
         color: rgba(253, 251, 249, 0.45);
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
       }
 
       .challenge-num {
@@ -1277,7 +1277,7 @@ const nextProject = {
       .up-next-row p {
         margin: 0.25rem 0 0;
         color: var(--ink-faint);
-        font-size: 0.9rem;
+        font-size: var(--step-caption);
       }
 
       .btn-outline {
@@ -1287,9 +1287,9 @@ const nextProject = {
         padding: 0.5em 1.2em;
         font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: var(--track-label);
         color: var(--ink);
       }
 
@@ -1329,16 +1329,17 @@ const nextProject = {
         padding-left: 1.1rem;
         border-left: 3px solid #1a50e0;
         font-family: var(--font-body);
-        font-size: 1rem;
-        line-height: 1.7;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
       }
 
-      .take strong { color: var(--ink); font-weight: 700; }
+      .take strong { color: var(--ink); font-weight: 600; }
 
       .take-label {
         display: block;
-        margin-bottom: 0.35rem;
+        line-height: 1.2;
+        margin-bottom: var(--gap-label);
         font-family: var(--font-quirky);
         font-size: 1.05rem;
         color: #1a50e0;

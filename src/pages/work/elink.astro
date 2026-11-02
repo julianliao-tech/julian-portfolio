@@ -514,7 +514,7 @@ const nextProject = {
           <span class="take-label">What I think about this stage</span>
           Being the project manager instead of the designer was the most useful thing that happened to
           me this year. A designer gets to ask whether the thing is good. A project manager has to ask
-          who is doing the work, when, and what happens when they do not.
+          who is doing the work, when, and what happens when they do not.{' '}
           <strong>Most proposals I have seen fail on the second question while scoring full marks on the
           first.</strong> I think about staffing and incentives now before I think about screens, which
           is not a glamorous instinct but it is the one that survives contact with a real organization.
@@ -602,7 +602,7 @@ const nextProject = {
           <span class="take-label">What I think about this stage</span>
           Writing a risk register before the pitch felt like volunteering reasons to say no. It is the
           opposite. Every weakness we listed was one somebody in that room was going to find anyway, and
-          naming it first turns an objection into a line item you have already answered.
+          naming it first turns an objection into a line item you have already answered.{' '}
           <strong>I would rather be the person who says this probably fails here than the person who
           gets told.</strong>
         </p>
@@ -651,7 +651,7 @@ const nextProject = {
           <span class="take-label">What I think about this stage</span>
           The landing rate is the number the school cares about and the worst number to manage by,
           because it answers two years late. So we tracked the things that move weekly instead:
-          who turned up, who messaged an alumnus, who came back.
+          who turned up, who messaged an alumnus, who came back.{' '}
           <strong>A metric you cannot read until the project is over is a scoreboard, not a
           steering wheel.</strong>
         </p>
@@ -1152,7 +1152,7 @@ const nextProject = {
         font-family: var(--font-display);
         font-weight: 400;
         font-size: clamp(3rem, 9vw, 6rem);
-        letter-spacing: -0.01em;
+        letter-spacing: var(--track-tight);
         line-height: 0.98;
         color: var(--ink);
         margin: 0;
@@ -1165,17 +1165,17 @@ const nextProject = {
       }
 
       .context-label {
-        margin: 0 0 0.35rem;
+        margin: 0 0 var(--gap-label);
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.75rem;
+        font-weight: 600;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: var(--track-label);
         color: var(--ink-faint);
       }
 
       .context-heading {
-        margin: 0 0 0.5rem;
+        margin: 0 0 var(--gap-subheading);
         font-family: var(--font-display);
         font-weight: 400;
         font-size: 1.3rem;
@@ -1185,8 +1185,8 @@ const nextProject = {
       .context-box p:not(.context-label) {
         margin: 0;
         max-width: none;
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
       }
 
@@ -1205,7 +1205,7 @@ const nextProject = {
 
       .meta dt {
         font-family: var(--font-body);
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         color: var(--ink-faint);
         margin-bottom: 0.35rem;
       }
@@ -1213,9 +1213,10 @@ const nextProject = {
       .meta dd {
         margin: 0;
         font-family: var(--font-body);
-        font-weight: 700;
+        font-weight: 600;
         text-transform: uppercase;
-        font-size: 0.9rem;
+        letter-spacing: var(--track-label);
+        font-size: var(--step-caption);
         color: var(--ink);
       }
 
@@ -1224,8 +1225,8 @@ const nextProject = {
       }
 
       .intro {
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
         max-width: none;
         text-align: justify;
@@ -1235,7 +1236,7 @@ const nextProject = {
 
       .intro strong {
         color: var(--ink);
-        font-weight: 700;
+        font-weight: 600;
       }
 
       .pull-quote {
@@ -1252,7 +1253,7 @@ const nextProject = {
 
       .pull-quote-highlight {
         color: #00579d;
-        font-weight: 700;
+        font-weight: 600;
         box-shadow: inset 0 -0.35em 0 rgba(0, 87, 157, 0.14);
       }
 
@@ -1302,12 +1303,12 @@ const nextProject = {
       }
 
       .location-label {
-        margin: 0 0 0.5rem;
+        margin: 0 0 var(--gap-label);
         font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: var(--track-label);
         color: #fdfbf9;
       }
 
@@ -1333,9 +1334,9 @@ const nextProject = {
         margin: 0;
         font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.12em;
+        letter-spacing: var(--track-label);
         color: rgba(253, 251, 249, 0.6);
       }
 
@@ -1421,8 +1422,8 @@ const nextProject = {
         font-family: var(--font-display);
         font-weight: 400;
         font-size: clamp(1.9rem, 4vw, 2.8rem);
-        letter-spacing: -0.01em;
-        margin: 0 0 0.6rem;
+        letter-spacing: var(--track-tight);
+        margin: 0 0 var(--gap-heading);
       }
 
       .white-block h2 { color: var(--ink); }
@@ -1431,8 +1432,8 @@ const nextProject = {
       .white-block p,
       .dark-block .wrap > p {
         max-width: none;
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         text-align: justify;
         text-align-last: left;
         hyphens: auto;
@@ -1441,8 +1442,8 @@ const nextProject = {
       .white-block p { color: var(--ink-soft); }
       .dark-block .wrap > p { color: rgba(253, 251, 249, 0.7); }
 
-      .white-block strong { color: var(--ink); font-weight: 700; }
-      .dark-block strong { color: var(--bg); font-weight: 700; }
+      .white-block strong { color: var(--ink); font-weight: 600; }
+      .dark-block strong { color: var(--bg); font-weight: 600; }
 
 
       .findings-list {
@@ -1452,20 +1453,20 @@ const nextProject = {
       }
 
       .findings-list li {
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
         margin-bottom: 0.4rem;
       }
 
       .eyebrow-label {
         font-family: var(--font-body);
-        font-weight: 700;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: var(--track-label);
         color: #00579d;
-        margin: 0 0 0.75rem;
-        font-size: 0.85rem;
+        margin: 0 0 var(--gap-eyebrow);
+        font-size: var(--step-small);
       }
 
       /* Images ------------------------------------------------------------ */
@@ -1507,10 +1508,10 @@ const nextProject = {
       .solved-label {
         margin: clamp(1.75rem, 4vw, 2.5rem) 0 0;
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.8rem;
+        font-weight: 600;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.06em;
+        letter-spacing: var(--track-label);
         color: var(--ink-faint);
       }
 
@@ -1535,16 +1536,16 @@ const nextProject = {
       .pillar-name {
         margin: 0 0 0.4rem;
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.95rem;
+        font-weight: 600;
+        font-size: var(--step-card-title);
         color: var(--ink);
       }
 
       .pillar-text {
         margin: 0;
         max-width: none;
-        font-size: 0.95rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
       }
 
@@ -1618,8 +1619,8 @@ const nextProject = {
         margin: 0.75rem 0 0;
         max-width: none;
         color: rgba(253, 251, 249, 0.45);
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
       }
 
       .challenge-num {
@@ -1683,7 +1684,7 @@ const nextProject = {
       .up-next-row p {
         margin: 0.25rem 0 0;
         color: var(--ink-faint);
-        font-size: 0.9rem;
+        font-size: var(--step-caption);
       }
 
       .btn-outline {
@@ -1693,9 +1694,9 @@ const nextProject = {
         padding: 0.5em 1.2em;
         font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: var(--track-label);
         color: var(--ink);
       }
 
@@ -1712,7 +1713,7 @@ const nextProject = {
       .chart-title {
         margin: 0 0 1rem;
         font-family: var(--font-body);
-        font-size: 0.9rem;
+        font-size: var(--step-card-title);
         color: rgba(253, 251, 249, 0.6);
         text-align: center;
       }
@@ -1749,7 +1750,7 @@ const nextProject = {
         align-items: center;
         gap: 0.5rem;
         font-family: var(--font-body);
-        font-size: 0.85rem;
+        font-size: var(--step-small);
         color: rgba(253, 251, 249, 0.7);
       }
 
@@ -1795,9 +1796,9 @@ const nextProject = {
         top: 1rem;
         z-index: 3;
         font-family: var(--font-body);
-        font-weight: 800;
-        font-size: 0.75rem;
-        letter-spacing: 0.1em;
+        font-weight: 600;
+        font-size: var(--step-small);
+        letter-spacing: var(--track-label);
         text-transform: uppercase;
         color: #fdfbf9;
         padding: 0.65em 1.2em;
@@ -1833,7 +1834,7 @@ const nextProject = {
         background: #ffffff;
         border: 2px solid #00579d;
         color: #101010;
-        font-size: 1.1rem;
+        font-size: var(--step-card-title);
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
       }
 
@@ -1856,7 +1857,7 @@ const nextProject = {
       .compare-caption {
         margin: 0.9rem 0 0;
         font-family: var(--font-body);
-        font-size: 0.9rem;
+        font-size: var(--step-caption);
         color: var(--ink-faint);
       }
 
@@ -1880,17 +1881,17 @@ const nextProject = {
       .stakeholder-name {
         margin: 0;
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.95rem;
+        font-weight: 600;
+        font-size: var(--step-card-title);
         color: var(--bg);
       }
 
       .stakeholder-sub {
         margin: 0.15rem 0 0;
         max-width: none;
-        font-size: 0.75rem;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: var(--track-label);
         color: rgba(253, 251, 249, 0.45);
       }
 
@@ -1901,8 +1902,8 @@ const nextProject = {
       }
 
       .stakeholder-points li {
-        font-size: 0.9rem;
-        line-height: 1.5;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: rgba(253, 251, 249, 0.65);
         margin-bottom: 0.3rem;
       }
@@ -1914,13 +1915,13 @@ const nextProject = {
       }
 
       .success-factors-label {
-        margin: 0 0 0.6rem;
+        margin: 0 0 var(--gap-eyebrow);
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.85rem;
+        font-weight: 600;
+        font-size: var(--step-small);
         color: #4d9fdb;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: var(--track-label);
       }
 
       .success-factors-list {
@@ -1930,8 +1931,8 @@ const nextProject = {
       }
 
       .success-factors-list li {
-        font-size: 0.9rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: rgba(253, 251, 249, 0.7);
       }
 
@@ -1943,10 +1944,10 @@ const nextProject = {
       .plan-sublabel {
         margin: clamp(2rem, 5vw, 3rem) 0 0.5rem;
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.8rem;
+        font-weight: 600;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.06em;
+        letter-spacing: var(--track-label);
         color: #00579d;
       }
 
@@ -1978,14 +1979,14 @@ const nextProject = {
 
       .timeline-label {
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.9rem;
+        font-weight: 600;
+        font-size: var(--step-caption);
         color: var(--ink);
       }
 
       .timeline-date {
         font-family: var(--font-body);
-        font-size: 0.85rem;
+        font-size: var(--step-small);
         color: var(--ink-faint);
       }
 
@@ -2000,7 +2001,7 @@ const nextProject = {
 
       .phase-tags li {
         font-family: var(--font-body);
-        font-size: 0.75rem;
+        font-size: var(--step-small);
         font-weight: 600;
         color: var(--ink-soft);
         border: 1px solid var(--line);
@@ -2023,8 +2024,8 @@ const nextProject = {
       .wbs-phase-name {
         margin: 0 0 0.5rem;
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.85rem;
+        font-weight: 600;
+        font-size: var(--step-small);
         color: #00579d;
       }
 
@@ -2035,7 +2036,7 @@ const nextProject = {
       }
 
       .wbs-branches li {
-        font-size: 0.85rem;
+        font-size: var(--step-small);
         line-height: 1.5;
         color: var(--ink-soft);
       }
@@ -2061,7 +2062,7 @@ const nextProject = {
       .gantt-row-name {
         font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         color: var(--ink);
       }
 
@@ -2082,7 +2083,7 @@ const nextProject = {
       .gantt-row-dates {
         grid-column: 2;
         font-family: var(--font-body);
-        font-size: 0.7rem;
+        font-size: var(--step-micro);
         color: var(--ink-faint);
       }
 
@@ -2098,7 +2099,7 @@ const nextProject = {
         align-items: center;
         gap: 0.5rem;
         font-family: var(--font-body);
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         color: var(--ink-soft);
       }
 
@@ -2124,14 +2125,14 @@ const nextProject = {
         width: 100%;
         border-collapse: collapse;
         font-family: var(--font-body);
-        font-size: 0.85rem;
+        font-size: var(--step-small);
       }
 
       .risk-table th {
         text-align: left;
-        font-size: 0.7rem;
+        font-size: var(--step-micro);
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: var(--track-label);
         color: rgba(253, 251, 249, 0.45);
         padding: 0.5rem 0.75rem;
         border-bottom: 1px solid rgba(253, 251, 249, 0.2);
@@ -2146,14 +2147,14 @@ const nextProject = {
       }
 
       .risk-code {
-        font-weight: 700;
+        font-weight: 600;
         color: var(--bg);
         white-space: nowrap;
       }
 
       .risk-name {
         margin: 0 0 0.25rem;
-        font-weight: 700;
+        font-weight: 600;
         color: var(--bg);
         max-width: none;
       }
@@ -2161,7 +2162,7 @@ const nextProject = {
       .risk-detail {
         margin: 0;
         max-width: none;
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         color: rgba(253, 251, 249, 0.55);
       }
 
@@ -2172,7 +2173,7 @@ const nextProject = {
         width: 1.6rem;
         height: 1.6rem;
         border-radius: 4px;
-        font-weight: 700;
+        font-weight: 600;
       }
 
       .risk-grade-a { background: #e76f33; color: #1a0d05; }
@@ -2185,7 +2186,7 @@ const nextProject = {
       }
 
       .risk-mitigation li {
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         line-height: 1.5;
         color: rgba(253, 251, 249, 0.65);
       }
@@ -2222,9 +2223,9 @@ const nextProject = {
         .risk-table td:nth-child(6)::before {
           display: block;
           margin-bottom: 0.2rem;
-          font-size: 0.65rem;
+          font-size: var(--step-micro);
           text-transform: uppercase;
-          letter-spacing: 0.06em;
+          letter-spacing: var(--track-label);
           color: rgba(253, 251, 249, 0.45);
         }
 
@@ -2258,9 +2259,9 @@ const nextProject = {
       }
 
       .metrics-section .metrics-hero-title {
-        margin: 0 0 0.5rem;
+        margin: 0 0 var(--gap-subheading);
         font-family: var(--font-body);
-        font-weight: 800;
+        font-weight: 600;
         font-size: 1.25rem;
         color: #fdfbf9;
       }
@@ -2268,8 +2269,8 @@ const nextProject = {
       .metrics-section .metrics-hero-text p:not(.metrics-hero-title) {
         margin: 0;
         max-width: none;
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: rgba(253, 251, 249, 0.85);
         text-align: left;
       }
@@ -2279,12 +2280,12 @@ const nextProject = {
       }
 
       .metrics-section .metrics-sublabel {
-        margin: clamp(2rem, 5vw, 3rem) 0 0.75rem;
+        margin: clamp(2rem, 5vw, 3rem) 0 var(--gap-eyebrow);
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.8rem;
+        font-weight: 600;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.06em;
+        letter-spacing: var(--track-label);
         color: #00579d;
       }
 
@@ -2321,17 +2322,17 @@ const nextProject = {
 
       .roadmap-when {
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.75rem;
+        font-weight: 600;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: var(--track-label);
         color: var(--ink-faint);
       }
 
       .roadmap-label {
         font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.95rem;
+        font-size: var(--step-caption);
         color: var(--ink-soft);
         transition: color 0.25s ease;
       }
@@ -2376,8 +2377,8 @@ const nextProject = {
       .metrics-section .metric-name {
         margin: 0 0 1rem;
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.95rem;
+        font-weight: 600;
+        font-size: var(--step-card-title);
         color: var(--ink);
       }
 
@@ -2395,7 +2396,7 @@ const nextProject = {
 
       .metric-when {
         font-family: var(--font-body);
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         color: var(--ink-faint);
       }
 
@@ -2472,7 +2473,7 @@ const nextProject = {
       .metrics-section .metric-note {
         margin: 0.75rem 0 0;
         max-width: none;
-        font-size: 0.85rem;
+        font-size: var(--step-small);
         color: var(--ink-faint);
         text-align: left;
       }
@@ -2496,7 +2497,7 @@ const nextProject = {
         background: rgba(0, 87, 157, 0.08);
         font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.9rem;
+        font-size: var(--step-caption);
         color: var(--ink);
       }
 
@@ -2525,7 +2526,7 @@ const nextProject = {
       .metrics-section .indicator-note {
         margin: 0.9rem 0 0;
         max-width: none;
-        font-size: 0.9rem;
+        font-size: var(--step-caption);
         color: var(--ink-faint);
         text-align: left;
       }
@@ -2571,7 +2572,7 @@ const nextProject = {
       .codex-tab {
         appearance: none;
         font: inherit;
-        font-size: 0.95rem;
+        font-size: var(--step-caption);
         cursor: pointer;
         padding: 0.6rem 1.1rem;
         border-radius: 999px;
@@ -2628,7 +2629,7 @@ const nextProject = {
         text-align: center;
         margin-right: 40px;
         font-family: var(--font-body);
-        font-size: 0.75rem;
+        font-size: var(--step-small);
         color: #8a94a6;
       }
 
@@ -2661,13 +2662,13 @@ const nextProject = {
         border-bottom: 1px solid #202730;
       }
 
-      .codex-file { font-family: var(--font-mono); font-size: 0.78rem; color: #cbd5e1; }
-      .codex-meta { font-family: var(--font-body); font-size: 0.72rem; color: #64748b; }
+      .codex-file { font-family: var(--font-mono); font-size: var(--step-small); color: #cbd5e1; }
+      .codex-meta { font-family: var(--font-body); font-size: var(--step-micro); color: #64748b; }
 
       .codex-copy {
         margin-left: auto;
         font-family: var(--font-body);
-        font-size: 0.75rem;
+        font-size: var(--step-small);
         color: #e2e8f0;
         background: #232b36;
         border: 1px solid #334155;
@@ -2732,20 +2733,35 @@ const nextProject = {
         padding-left: 1.1rem;
         border-left: 3px solid #00579d;
         font-family: var(--font-body);
-        font-size: 1rem;
-        line-height: 1.7;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
       }
 
-      .take strong { color: var(--ink); font-weight: 700; }
+      .take strong { color: var(--ink); font-weight: 600; }
 
       .take-label {
         display: block;
-        margin-bottom: 0.35rem;
+        line-height: 1.2;
+        margin-bottom: var(--gap-label);
         font-family: var(--font-quirky);
         font-size: 1.05rem;
         color: #00579d;
       }
+
+      /* The same aside also appears inside a .dark-block, where the
+         brand purple/blue and the var(--ink) bold are invisible against
+         near-black. These three overrides are what make it readable
+         there; .dark-block .take strong is needed because .take strong
+         has equal specificity and wins on source order. */
+      .dark-block .take {
+        border-left-color: #4d9fdb;
+        color: rgba(253, 251, 249, 0.7);
+      }
+
+      .dark-block .take-label { color: #4d9fdb; }
+
+      .dark-block .take strong { color: var(--bg); }
 </style>
   </body>
 </html>

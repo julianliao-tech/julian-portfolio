@@ -218,7 +218,7 @@ const nextProject = {
             <span class="take-label">What I think about this stage</span>
             I used to think research meant finding out what people want. It does not. Every person I
             spoke to wanted "something simpler", which is not a design instruction. The useful part was
-            watching where they hesitated, and hesitation does not show up in a survey.
+            watching where they hesitated, and hesitation does not show up in a survey.{' '}
             <strong>People are reliable about what they did and unreliable about what they would do</strong>,
             so I weight the first and discount the second.
           </p>
@@ -268,7 +268,7 @@ const nextProject = {
           <p class="take">
             <span class="take-label">What I think about this stage</span>
             Naming the laws is the easy half. The honest version is that I had already decided the
-            homepage should carry four tools, and Hick's Law is how I defended it afterwards.
+            homepage should carry four tools, and Hick's Law is how I defended it afterwards.{' '}
             <strong>I think that is fine as long as you know you are doing it, and a problem the moment
             you forget</strong>. Principles are good at stopping bad arguments. They are not where the
             idea comes from.
@@ -376,7 +376,7 @@ const nextProject = {
             <span class="take-label">What I think about this stage</span>
             Building the component library before the screens felt like procrastinating, and it saved me
             more time than anything else on this project. Once a card exists as one thing, a change to it
-            is a change everywhere, and arguments about spacing stop being arguments.
+            is a change everywhere, and arguments about spacing stop being arguments.{' '}
             <strong>A design system is not a deliverable, it is a way of only solving a problem once.</strong>
           </p>
         </div>
@@ -745,7 +745,7 @@ const nextProject = {
         font-family: var(--font-display);
         font-weight: 400;
         font-size: clamp(3rem, 9vw, 6rem);
-        letter-spacing: -0.01em;
+        letter-spacing: var(--track-tight);
         line-height: 0.98;
         color: var(--ink);
         margin: 0;
@@ -758,17 +758,17 @@ const nextProject = {
       }
 
       .context-label {
-        margin: 0 0 0.35rem;
+        margin: 0 0 var(--gap-label);
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.75rem;
+        font-weight: 600;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: var(--track-label);
         color: var(--ink-faint);
       }
 
       .context-heading {
-        margin: 0 0 0.5rem;
+        margin: 0 0 var(--gap-subheading);
         font-family: var(--font-display);
         font-weight: 400;
         font-size: 1.3rem;
@@ -778,14 +778,14 @@ const nextProject = {
       .context-box p:not(.context-label) {
         margin: 0;
         max-width: none;
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
       }
 
       .context-box strong {
         color: var(--ink);
-        font-weight: 700;
+        font-weight: 600;
       }
 
       @media (min-width: 800px) {
@@ -803,7 +803,7 @@ const nextProject = {
 
       .meta dt {
         font-family: var(--font-body);
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         color: var(--ink-faint);
         margin-bottom: 0.35rem;
       }
@@ -811,9 +811,10 @@ const nextProject = {
       .meta dd {
         margin: 0;
         font-family: var(--font-body);
-        font-weight: 700;
+        font-weight: 600;
         text-transform: uppercase;
-        font-size: 0.9rem;
+        letter-spacing: var(--track-label);
+        font-size: var(--step-caption);
         color: var(--ink);
       }
 
@@ -822,8 +823,8 @@ const nextProject = {
       }
 
       .intro {
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
         max-width: none;
         text-align: justify;
@@ -833,7 +834,7 @@ const nextProject = {
 
       .intro strong {
         color: var(--ink);
-        font-weight: 700;
+        font-weight: 600;
       }
 
       .pull-quote {
@@ -850,7 +851,7 @@ const nextProject = {
 
       .pull-quote-highlight {
         color: #00274c;
-        font-weight: 700;
+        font-weight: 600;
         box-shadow: inset 0 -0.35em 0 rgba(255, 203, 5, 0.35);
       }
 
@@ -900,12 +901,12 @@ const nextProject = {
       }
 
       .location-label {
-        margin: 0 0 0.5rem;
+        margin: 0 0 var(--gap-label);
         font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: var(--track-label);
         color: #fdfbf9;
       }
 
@@ -942,8 +943,8 @@ const nextProject = {
         font-family: var(--font-display);
         font-weight: 400;
         font-size: clamp(1.9rem, 4vw, 2.8rem);
-        letter-spacing: -0.01em;
-        margin: 0 0 0.6rem;
+        letter-spacing: var(--track-tight);
+        margin: 0 0 var(--gap-heading);
       }
 
       .white-block h2 { color: var(--ink); }
@@ -952,8 +953,8 @@ const nextProject = {
       .white-block p,
       .dark-block .wrap > p {
         max-width: none;
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         text-align: justify;
         text-align-last: left;
         hyphens: auto;
@@ -962,9 +963,9 @@ const nextProject = {
       .white-block p { color: var(--ink-soft); }
       .dark-block .wrap > p { color: rgba(253, 251, 249, 0.7); }
 
-      .white-block strong { color: var(--ink); font-weight: 700; }
+      .white-block strong { color: var(--ink); font-weight: 600; }
       .white-block em { color: var(--ink); font-style: italic; }
-      .dark-block strong { color: var(--bg); font-weight: 700; }
+      .dark-block strong { color: var(--bg); font-weight: 600; }
       .dark-block em { color: var(--bg); font-style: italic; }
 
       .findings-list {
@@ -974,8 +975,8 @@ const nextProject = {
       }
 
       .findings-list li {
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
         margin-bottom: 0.4rem;
       }
@@ -996,8 +997,8 @@ const nextProject = {
       .visitor-heading {
         margin: 0;
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 1rem;
+        font-weight: 600;
+        font-size: var(--step-card-title);
         color: #00274c;
       }
 
@@ -1007,12 +1008,12 @@ const nextProject = {
 
       .eyebrow-label {
         font-family: var(--font-body);
-        font-weight: 700;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: var(--track-label);
         color: #00274c;
-        margin: 0 0 0.75rem;
-        font-size: 0.85rem;
+        margin: 0 0 var(--gap-eyebrow);
+        font-size: var(--step-small);
       }
 
       /* Images ------------------------------------------------------------ */
@@ -1062,8 +1063,8 @@ const nextProject = {
         background: #ffffff;
         color: var(--ink-faint);
         font-family: var(--font-body);
-        font-weight: 700;
-        letter-spacing: 0.1em;
+        font-weight: 600;
+        letter-spacing: var(--track-label);
         text-transform: uppercase;
       }
 
@@ -1121,8 +1122,8 @@ const nextProject = {
         margin: 0.75rem 0 0;
         max-width: none;
         color: rgba(253, 251, 249, 0.45);
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
       }
 
       .challenge-num {
@@ -1232,9 +1233,8 @@ const nextProject = {
       .feature-heading {
         font-family: var(--font-serif);
         font-weight: 400;
-        font-style: italic;
         font-size: clamp(1.6rem, 3vw, 2.1rem);
-        margin: 0 0 0.6rem;
+        margin: 0 0 var(--gap-heading);
       }
 
       .feature-band-maize .feature-heading { color: #00274c; }
@@ -1243,8 +1243,8 @@ const nextProject = {
       .feature-text p {
         margin: 0;
         max-width: none;
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
       }
 
       .feature-band-maize .feature-text p { color: rgba(0, 39, 76, 0.75); }
@@ -1295,7 +1295,7 @@ const nextProject = {
       .up-next-row p {
         margin: 0.25rem 0 0;
         color: var(--ink-faint);
-        font-size: 0.9rem;
+        font-size: var(--step-caption);
       }
 
       .btn-outline {
@@ -1305,9 +1305,9 @@ const nextProject = {
         padding: 0.5em 1.2em;
         font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: var(--track-label);
         color: var(--ink);
       }
 
@@ -1331,7 +1331,7 @@ const nextProject = {
         margin: 0.5rem 0 0;
         font-family: var(--font-body);
         font-weight: 800;
-        letter-spacing: -0.02em;
+        letter-spacing: var(--track-display);
         line-height: 0.95;
         font-size: clamp(3rem, 9vw, 6.5rem);
         color: #000000;
@@ -1440,7 +1440,7 @@ const nextProject = {
       .spec-label {
         margin: 0 0 0.5rem;
         font-family: var(--font-body);
-        font-size: 1rem;
+        font-size: var(--step-caption);
         color: rgba(253, 251, 249, 0.5);
       }
 
@@ -1450,7 +1450,7 @@ const nextProject = {
         align-items: center;
         gap: 0.5rem;
         font-family: var(--font-body);
-        font-weight: 700;
+        font-weight: 600;
         font-size: 1.4rem;
         color: #fdfbf9;
       }
@@ -1505,19 +1505,19 @@ const nextProject = {
         padding-left: 1.1rem;
         border-left: 3px solid #00274c;
         font-family: var(--font-body);
-        font-size: 1rem;
-        line-height: 1.7;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
       }
 
-      .take strong { color: var(--ink); font-weight: 700; }
+      .take strong { color: var(--ink); font-weight: 600; }
 
       .take-label {
         display: block;
-        margin-bottom: 0.35rem;
+        line-height: 1.2;
+        margin-bottom: var(--gap-label);
         font-family: var(--font-quirky);
         font-size: 1.05rem;
-        letter-spacing: 0.01em;
         color: #00274c;
       }
 </style>

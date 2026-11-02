@@ -454,7 +454,7 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
     margin: 0 0 var(--space-2);
     font-family: var(--font-mono);
     font-size: var(--step-micro);
-    letter-spacing: 0.24em;
+    letter-spacing: var(--track-eyebrow);
     color: #ffffff;
     text-shadow: 0 0 10px rgba(233, 133, 58, 0.7);
     animation: edge-glow 3.2s ease-in-out infinite alternate;
@@ -488,7 +488,7 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
     /* Small, on purpose: about 20px on phones up to 28px on desktop. */
     font-size: clamp(1.25rem, 0.9rem + 1.1vw, 1.75rem);
     line-height: 1.15;
-    letter-spacing: 0;
+    letter-spacing: var(--track-tight);
     white-space: nowrap;
     margin: 0;
     color: #ffffff;
@@ -548,6 +548,11 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
     animation: sign-flicker 6s steps(1) infinite;
   }
 
+  /* The one tracking exception on the site, and deliberate: these two
+     lines are display lettering on a motel sign, not labels. The
+     values differ (0.14em / 0.34em) so that the shorter second line
+     tracks out to the same optical width as the first. Putting both on
+     a --track-* tier would break that alignment. */
   .board-1 { font-size: 0.95rem; letter-spacing: 0.14em; line-height: 1.3; }
   .board-2 { font-size: 0.68rem; letter-spacing: 0.34em; line-height: 1.5; }
 
@@ -671,7 +676,7 @@ const motes = Array.from({ length: 10 }, (_, i) => ({
     bottom: 0.65rem;
     font-family: var(--font-mono);
     font-size: var(--step-micro);
-    letter-spacing: 0.2em;
+    letter-spacing: var(--track-eyebrow);
     color: #ffffff;
     text-shadow: 0 0 8px rgba(255, 140, 50, 0.9);
     z-index: 3;

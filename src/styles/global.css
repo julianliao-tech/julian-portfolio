@@ -50,6 +50,16 @@
   --step-small: 0.8125rem;
   --step-micro: 0.6875rem;
 
+  /* Added 2026-11-02. Body copy is --step-body everywhere, with no
+     exceptions: a paragraph is the same size in a card as it is in a
+     section. These three fill the gaps the case studies had been
+     improvising around; everything smaller reuses --step-small and
+     --step-micro rather than inventing another near-duplicate. */
+  --step-sub: clamp(1.15rem, 2vw, 1.5rem);  /* pull quotes, pager + item titles */
+  --step-card-title: 1rem;   /* card and figure headings */
+  --step-caption: 0.9rem;    /* captions, table cells, legends, dates, notes */
+  --leading-body: 1.65;      /* one leading for body copy, to match the one size */
+
   /* Space ---------------------------------------------------------- */
   --space-1: 0.5rem;
   --space-2: 1rem;
@@ -71,6 +81,26 @@
 
   --max-width: 78rem;
   --measure: 66ch;
+
+  /* Tracking ------------------------------------------------------- */
+  /* Four tiers, by role. Nothing outside this set: a one-off tracking
+     value is what made the labels drift apart in the first place. */
+  --track-display: -0.02em;  /* display type above ~3rem */
+  --track-tight: -0.01em;    /* headings + body-font UI text */
+  --track-label: 0.08em;     /* uppercase component labels, 0.58-0.85rem */
+  --track-eyebrow: 0.2em;    /* uppercase micro labels at --step-micro */
+
+  /* Label -> heading -> body rhythm ---------------------------------
+     Two tiers. Section: the eyebrow and heading that open a section.
+     Card: the same pattern inside a box or card, where the type is
+     smaller and the pair needs to sit tighter. Every section on every
+     case study uses the section pair, so the gaps read identically
+     down the page. */
+  --gap-eyebrow: 0.75rem;    /* section eyebrow -> section heading */
+  --gap-heading: 0.6rem;     /* section heading -> body copy */
+  --gap-label: 0.35rem;      /* card label -> its heading or value */
+  --gap-subheading: 0.5rem;  /* card heading -> body copy */
+  --gap-caption: 0.25rem;    /* tight caption pair (name + its one-line note) */
 }
 
 * {
@@ -141,7 +171,7 @@ h4 {
   font-weight: 400;
   line-height: 1.02;
   margin: 0 0 var(--space-2);
-  letter-spacing: -0.01em;
+  letter-spacing: var(--track-tight);
   text-wrap: balance;
 }
 
@@ -155,6 +185,12 @@ p {
 strong {
   color: var(--ink);
   font-weight: 600;
+}
+
+/* Italics are for emphasis and quoted phrases only, never headings. */
+em {
+  font-style: italic;
+  color: var(--ink);
 }
 
 :focus-visible {
@@ -212,10 +248,10 @@ strong {
   font-family: var(--font-body);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: var(--track-eyebrow);
   font-size: var(--step-micro);
   color: var(--accent);
-  margin: 0 0 var(--space-3);
+  margin: 0 0 var(--gap-eyebrow);
 }
 
 .eyebrow::before {
@@ -231,7 +267,7 @@ strong {
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--track-tight);
 }
 
 /* Underline sweep: a bar that draws in left-to-right. The trigger
@@ -275,7 +311,7 @@ strong {
   font-family: var(--font-body);
   font-weight: 600;
   font-size: var(--step-small);
-  letter-spacing: -0.01em;
+  letter-spacing: var(--track-tight);
   text-decoration: none;
   padding: 0.95em 1.6em;
   border-radius: var(--r-full);
@@ -356,7 +392,7 @@ strong {
   font-family: var(--font-body);
   font-weight: 600;
   font-size: var(--step-micro);
-  letter-spacing: 0.2em;
+  letter-spacing: var(--track-eyebrow);
   text-transform: uppercase;
   color: var(--ink-faint);
 }

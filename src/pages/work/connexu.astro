@@ -203,7 +203,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
           A heuristic evaluation is the cheapest hour in this whole process and the one people skip.
           It is just you, the site, and ten rules somebody else already argued about. What it buys you
           is a list with severities attached, which is a completely different conversation from walking
-          into a client meeting with opinions about their homepage.
+          into a client meeting with opinions about their homepage.{' '}
           <strong>Opinions get debated. A High severity finding gets scheduled.</strong>
         </p>
         <p>Before touching anything I scored the existing site against Nielsen’s ten usability heuristics. Two problems came back <strong>High</strong> severity, three came back <strong>Medium</strong>. Doing this first meant I walked into the redesign with a list I could defend, rather than a set of opinions about how the site looked.</p>
@@ -251,7 +251,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
           Watching the tests was uncomfortable, and I think that is the point of running them. I had
           already formed a view about what was wrong with the site, and about half of it turned out to
           be me projecting. Everybody inside the company could navigate that site perfectly, which I now
-          read as the warning rather than the reassurance.
+          read as the warning rather than the reassurance.{' '}
           <strong>You cannot unsee a building once you work inside it</strong>, so somebody from outside
           has to tell you what it looks like from the street.
         </p>
@@ -277,7 +277,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
           <span class="take-label">What I think about this stage</span>
           Almost nothing I changed on this site was a visual decision, and I think that is the part
           people miss about redesigns. The nav got shorter because we decided what each page was for.
-          The contact page improved because somebody committed to answering in a day.
+          The contact page improved because somebody committed to answering in a day.{' '}
           <strong>Most of what reads as a better looking site is actually a company being clearer about
           what it does.</strong> I came in expecting to make things prettier and spent the summer
           making them say what they meant.
@@ -497,9 +497,9 @@ const carouselAngleStep = 360 / carouselPhotos.length;
         margin: 0;
         font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.12em;
+        letter-spacing: var(--track-label);
         color: rgba(253, 251, 249, 0.4);
       }
 
@@ -710,7 +710,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
         font-family: var(--font-display);
         font-weight: 400;
         font-size: clamp(3rem, 9vw, 6rem);
-        letter-spacing: -0.01em;
+        letter-spacing: var(--track-tight);
         line-height: 0.98;
         color: var(--ink);
         margin: 0;
@@ -723,17 +723,17 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       }
 
       .context-label {
-        margin: 0 0 0.35rem;
+        margin: 0 0 var(--gap-label);
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.75rem;
+        font-weight: 600;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: var(--track-label);
         color: var(--ink-faint);
       }
 
       .context-heading {
-        margin: 0 0 0.5rem;
+        margin: 0 0 var(--gap-subheading);
         font-family: var(--font-display);
         font-weight: 400;
         font-size: 1.3rem;
@@ -743,8 +743,8 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       .context-box p:not(.context-label) {
         margin: 0;
         max-width: none;
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
       }
 
@@ -763,7 +763,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
 
       .meta dt {
         font-family: var(--font-body);
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         color: var(--ink-faint);
         margin-bottom: 0.35rem;
       }
@@ -771,9 +771,10 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       .meta dd {
         margin: 0;
         font-family: var(--font-body);
-        font-weight: 700;
+        font-weight: 600;
         text-transform: uppercase;
-        font-size: 0.9rem;
+        letter-spacing: var(--track-label);
+        font-size: var(--step-caption);
         color: var(--ink);
       }
 
@@ -782,8 +783,8 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       }
 
       .intro {
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
         max-width: none;
         text-align: justify;
@@ -805,7 +806,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
 
       .pull-quote-highlight {
         color: #1d0065;
-        font-weight: 700;
+        font-weight: 600;
         box-shadow: inset 0 -0.35em 0 rgba(29, 0, 101, 0.14);
       }
 
@@ -855,12 +856,12 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       }
 
       .location-label {
-        margin: 0 0 0.5rem;
+        margin: 0 0 var(--gap-label);
         font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: var(--track-label);
         color: #fdfbf9;
       }
 
@@ -889,8 +890,8 @@ const carouselAngleStep = 360 / carouselPhotos.length;
         font-family: var(--font-display);
         font-weight: 400;
         font-size: clamp(1.9rem, 4vw, 2.8rem);
-        letter-spacing: -0.01em;
-        margin: 0 0 0.6rem;
+        letter-spacing: var(--track-tight);
+        margin: 0 0 var(--gap-heading);
       }
 
       .white-block h2 { color: var(--ink); }
@@ -899,8 +900,8 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       .white-block p,
       .dark-block .wrap > p {
         max-width: none;
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         text-align: justify;
         text-align-last: left;
         hyphens: auto;
@@ -917,20 +918,20 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       }
 
       .findings-list li {
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
         margin-bottom: 0.4rem;
       }
 
       .eyebrow-label {
         font-family: var(--font-body);
-        font-weight: 700;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: var(--track-label);
         color: #1d0065;
-        margin: 0 0 0.75rem;
-        font-size: 0.85rem;
+        margin: 0 0 var(--gap-eyebrow);
+        font-size: var(--step-small);
       }
 
       /* Heuristic evaluation ------------------------------------------ */
@@ -951,24 +952,24 @@ const carouselAngleStep = 360 / carouselPhotos.length;
 
       .heuristic-name {
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.95rem;
+        font-weight: 600;
+        font-size: var(--step-card-title);
         color: var(--ink);
       }
 
       .heuristic-issue {
         font-family: var(--font-body);
-        font-size: 0.95rem;
+        font-size: var(--step-body);
         color: var(--ink-soft);
       }
 
       .severity-pill {
         justify-self: start;
         font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 0.7rem;
+        font-weight: 600;
+        font-size: var(--step-micro);
         text-transform: uppercase;
-        letter-spacing: 0.06em;
+        letter-spacing: var(--track-label);
         padding: 0.25em 0.75em;
         border-radius: 999px;
       }
@@ -1004,13 +1005,13 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       .participants-row p {
         margin: 0;
         max-width: none;
-        font-size: 0.95rem;
+        font-size: var(--step-body);
         color: rgba(253, 251, 249, 0.7);
       }
 
       .participants-row strong {
         color: var(--bg);
-        font-weight: 700;
+        font-weight: 600;
       }
 
       @media (min-width: 700px) {
@@ -1026,8 +1027,8 @@ const carouselAngleStep = 360 / carouselPhotos.length;
         background: #ffffff;
         color: var(--ink-faint);
         font-family: var(--font-body);
-        font-weight: 700;
-        letter-spacing: 0.1em;
+        font-weight: 600;
+        letter-spacing: var(--track-label);
         text-transform: uppercase;
       }
 
@@ -1080,8 +1081,8 @@ const carouselAngleStep = 360 / carouselPhotos.length;
         margin: 0.75rem 0 0;
         max-width: none;
         color: rgba(253, 251, 249, 0.45);
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
       }
 
       .challenge-num {
@@ -1103,7 +1104,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       @media (min-width: 1000px) {
         .challenge-grid-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.75rem; }
         .challenge-grid-5 .challenge-card { padding: 1.15rem 1rem; }
-        .challenge-grid-5 .challenge-card p { font-size: 0.9rem; line-height: 1.5; overflow-wrap: anywhere; }
+        .challenge-grid-5 .challenge-card p { font-size: var(--step-body); line-height: var(--leading-body); overflow-wrap: anywhere; }
       }
 
       /* Up next / footer --------------------------------------------------- */
@@ -1140,7 +1141,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       .up-next-row p {
         margin: 0.25rem 0 0;
         color: var(--ink-faint);
-        font-size: 0.9rem;
+        font-size: var(--step-caption);
       }
 
       .btn-outline {
@@ -1150,9 +1151,9 @@ const carouselAngleStep = 360 / carouselPhotos.length;
         padding: 0.5em 1.2em;
         font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.8rem;
+        font-size: var(--step-small);
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: var(--track-label);
         color: var(--ink);
       }
 
@@ -1192,20 +1193,35 @@ const carouselAngleStep = 360 / carouselPhotos.length;
         padding-left: 1.1rem;
         border-left: 3px solid #1d0065;
         font-family: var(--font-body);
-        font-size: 1rem;
-        line-height: 1.7;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
         color: var(--ink-soft);
       }
 
-      .take strong { color: var(--ink); font-weight: 700; }
+      .take strong { color: var(--ink); font-weight: 600; }
 
       .take-label {
         display: block;
-        margin-bottom: 0.35rem;
+        line-height: 1.2;
+        margin-bottom: var(--gap-label);
         font-family: var(--font-quirky);
         font-size: 1.05rem;
         color: #1d0065;
       }
+
+      /* The same aside also appears inside a .dark-block, where the
+         brand purple/blue and the var(--ink) bold are invisible against
+         near-black. These three overrides are what make it readable
+         there; .dark-block .take strong is needed because .take strong
+         has equal specificity and wins on source order. */
+      .dark-block .take {
+        border-left-color: #a566ff;
+        color: rgba(253, 251, 249, 0.7);
+      }
+
+      .dark-block .take-label { color: #a566ff; }
+
+      .dark-block .take strong { color: var(--bg); }
 </style>
   </body>
 </html>
