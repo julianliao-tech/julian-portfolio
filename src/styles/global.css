@@ -120,6 +120,11 @@
 }
 
 html {
+  /* clip, not hidden: it stops the page scrolling sideways when something
+     overflows on a narrow screen, without creating a scroll container,
+     which is what would break the sticky nav. body's overflow-x: hidden
+     alone is unreliable on iOS Safari. */
+  overflow-x: clip;
   scroll-behavior: smooth;
   /* Keep anchored sections clear of the sticky header. */
   scroll-padding-top: 6rem;

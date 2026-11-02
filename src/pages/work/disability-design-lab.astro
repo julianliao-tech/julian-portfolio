@@ -936,6 +936,7 @@ const nextProject = {
 
             <div class="token-tables">
               {tokenGroups.map((g) => (
+                <div class="table-scroll">
                 <table class="ds-table">
                   <caption>Greyscale/{g.group}</caption>
                   <thead>
@@ -965,8 +966,10 @@ const nextProject = {
                     ))}
                   </tbody>
                 </table>
+                </div>
               ))}
 
+              <div class="table-scroll">
               <table class="ds-table">
                 <caption>Radius, identical in both modes</caption>
                 <thead>
@@ -986,6 +989,7 @@ const nextProject = {
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
           </div>
         </div>
@@ -1444,7 +1448,7 @@ const nextProject = {
 
       .head-top {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 1.5rem;
         align-items: start;
         margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
@@ -1492,7 +1496,7 @@ const nextProject = {
       }
 
       @media (min-width: 800px) {
-        .head-top { grid-template-columns: auto 1fr; gap: 2.5rem; }
+        .head-top { grid-template-columns: auto minmax(0, 1fr); gap: 2.5rem; }
       }
 
       .meta {
@@ -1644,7 +1648,7 @@ const nextProject = {
         margin: 0;
         padding: 0;
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 1.5rem;
       }
 
@@ -1675,7 +1679,7 @@ const nextProject = {
       }
 
       @media (min-width: 820px) {
-        .dec-grid { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .dec-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
       }
 
       /* Final screens ---------------------------------------------------
@@ -1687,7 +1691,7 @@ const nextProject = {
         margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
         padding: 0;
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 1.5rem;
       }
 
@@ -1732,11 +1736,11 @@ const nextProject = {
       }
 
       @media (min-width: 620px) {
-        .screen-grid { grid-template-columns: repeat(2, 1fr); }
+        .screen-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       }
 
       @media (min-width: 1000px) {
-        .screen-grid { grid-template-columns: repeat(4, 1fr); }
+        .screen-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
       }
 
       .row-label {
@@ -1756,7 +1760,7 @@ const nextProject = {
         margin: 0;
         padding: 0;
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 1rem;
       }
 
@@ -1786,7 +1790,7 @@ const nextProject = {
       }
 
       @media (min-width: 900px) {
-        .mobile-row { grid-template-columns: repeat(8, 1fr); }
+        .mobile-row { grid-template-columns: repeat(8, minmax(0, 1fr)); }
       }
 
       /* Design-system intro -------------------------------------------- */
@@ -1818,7 +1822,7 @@ const nextProject = {
         margin: clamp(1.75rem, 4vw, 2.5rem) 0 0;
         padding: 0;
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1.5rem;
       }
 
@@ -1846,7 +1850,7 @@ const nextProject = {
       }
 
       @media (min-width: 860px) {
-        .stat-row { grid-template-columns: repeat(4, 1fr); }
+        .stat-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
       }
 
       /* Design-system blocks ------------------------------------------- */
@@ -2029,16 +2033,35 @@ const nextProject = {
       .token-card.m-Dark .token-card-sub { color: #e0e1e6; }
 
       /* Tables ---------------------------------------------------------- */
-      .table-scroll { overflow-x: auto; }
+      /* A grid or flex child defaults to min-width: auto, so anything with
+         a wide min-content -- a table, a long unbreakable token name --
+         pushes its track wider than the screen and the whole page scrolls
+         sideways on a phone. These let the tracks actually shrink, and the
+         tables scroll inside their own box instead of taking the page with
+         them. All four tables are wrapped; two of them were not. */
+      .table-scroll {
+        overflow-x: auto;
+        min-width: 0;
+        max-width: 100%;
+      }
+
+      /* Long slash-separated token names break rather than push. */
+      .ds-table th,
+      .ds-table td,
+      .cell-alias,
+      .spec-name,
+      .sem-note {
+        overflow-wrap: anywhere;
+      }
 
       .token-tables {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 0 2.5rem;
       }
 
       @media (min-width: 860px) {
-        .token-tables { grid-template-columns: 1fr 1fr; }
+        .token-tables { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
       }
 
       .ds-table {
@@ -2161,7 +2184,7 @@ const nextProject = {
 
       .spec-row {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 0.5rem 1.5rem;
         align-items: baseline;
         padding-block: 1rem;
@@ -2224,14 +2247,14 @@ const nextProject = {
       .spec-face-annotation { font-family: 'Caveat', cursive; }
 
       @media (min-width: 900px) {
-        .spec-row { grid-template-columns: 16rem 1fr; }
+        .spec-row { grid-template-columns: 16rem minmax(0, 1fr); }
         .spec-meta { flex-direction: column; gap: 0.15rem; }
       }
 
       /* Faces ----------------------------------------------------------- */
       .face-grid {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 1.25rem;
         margin-top: clamp(1.75rem, 4vw, 2.5rem);
       }
@@ -2265,7 +2288,7 @@ const nextProject = {
       }
 
       @media (min-width: 820px) {
-        .face-grid { grid-template-columns: repeat(3, 1fr); }
+        .face-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       }
 
       /* Prototype -------------------------------------------------------
@@ -2374,7 +2397,7 @@ const nextProject = {
         margin: 0;
         padding: 0;
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 1.25rem;
       }
 
@@ -2427,11 +2450,11 @@ const nextProject = {
       }
 
       @media (min-width: 720px) {
-        .comp-grid { grid-template-columns: repeat(2, 1fr); }
+        .comp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       }
 
       @media (min-width: 1040px) {
-        .comp-grid-singles { grid-template-columns: repeat(4, 1fr); }
+        .comp-grid-singles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
       }
 
       /* Up next --------------------------------------------------------- */
