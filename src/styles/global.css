@@ -106,6 +106,15 @@
   --gap-caption: 0.25rem;    /* tight caption pair (name + its one-line note) */
 }
 
+/* Phones: one step down for body copy, applied to the token so every
+   paragraph on the site moves together and none drift apart again.
+   This is the single number to change if it still reads too large. */
+@media (max-width: 640px) {
+  :root {
+    --step-body: 1rem;
+  }
+}
+
 * {
   box-sizing: border-box;
 }

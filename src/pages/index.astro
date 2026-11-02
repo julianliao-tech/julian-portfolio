@@ -265,7 +265,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           </p>
           <p class="hero-avail rise" style="--d: 340ms">
             <span class="hero-avail-dot" aria-hidden="true"></span>
-            Senior at the University of Michigan School of Information, open to
+            Senior at the University of Michigan School of Information, open to{' '}
             <strong>full time product design roles</strong>.{' '}
             <a href="mailto:julianliaowork@gmail.com">Email me</a>.
           </p>
@@ -586,34 +586,32 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
 
   .hero-sub {
-    font-size: clamp(0.9rem, 1.3vw, 1.1rem);
-    line-height: 1.35;
+    font-size: var(--step-body);
+    line-height: var(--leading-body);
     color: var(--ink);
     max-width: 34rem;
     margin: 0 auto var(--space-2);
   }
 
-  .hero-sub em {
-    color: #e9853a;
-    font-size: 1.1em;
-  }
-
   /* Availability line — the one thing on this page a hiring manager is
      scanning for, so it sits directly under the intro rather than at the
      bottom of the About page where it was effectively invisible. */
+  /* Normal text flow, not a flex row. As an inline-flex row with a
+     0.5rem gap, every segment boundary in this sentence got a fixed 8px
+     gap in place of a word space -- including before the full stops --
+     and because the font-size shrank with the viewport while the gap did
+     not, the spacing looked roughly 2.5x too wide on a phone. Real
+     spaces do the spacing now. The pill still hugs its text and stays
+     centred because .hero-copy is a centred column flex parent. */
   .hero-avail {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
     margin: 0 auto var(--space-2);
     padding: 0.4rem 0.9rem;
     border: 1px solid var(--line);
     border-radius: 999px;
     background: var(--bg-elev);
-    font-size: clamp(0.78rem, 1.05vw, 0.9rem);
-    line-height: 1.5;
+    font-size: var(--step-body);
+    line-height: var(--leading-body);
+    text-align: center;
     color: var(--ink-soft, var(--ink));
   }
 
@@ -625,12 +623,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
 
   .hero-avail-dot {
+    display: inline-block;
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 50%;
     background: #1a5c3a;
-    align-self: center;
-    flex: none;
+    vertical-align: 0.08em;
+    margin-right: 0.4em;
   }
 
   /* Underline bar (base styling in global.css) sweeps in after the

@@ -135,7 +135,7 @@ const objects: Record<string, string> = {
     color: #1a1a1a;
   }
   .board .card h1 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.05; margin: 0 0 0.8rem; color: #1a1a1a; }
-  .board .card p { margin: 0 0 0.8rem; font-size: 0.98rem; line-height: 1.75; color: #2a2a2a; max-width: none; text-wrap: wrap; }
+  .board .card p { margin: 0 0 0.8rem; font-size: var(--step-body); line-height: var(--leading-body); color: #2a2a2a; max-width: none; text-wrap: wrap; }
 
   .pin .obj { position: absolute; z-index: 2; width: clamp(3rem, 6vw, 5rem); animation: bob 4s ease-in-out infinite; }
   .o-camera { left: -1.2rem; bottom: -1.2rem; --r: -8deg; transform: rotate(-8deg); }
