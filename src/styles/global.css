@@ -83,12 +83,15 @@
   --measure: 66ch;
 
   /* Tracking ------------------------------------------------------- */
-  /* Four tiers, by role. Nothing outside this set: a one-off tracking
-     value is what made the labels drift apart in the first place. */
-  --track-display: -0.02em;  /* display type above ~3rem */
-  --track-tight: -0.01em;    /* headings + body-font UI text */
-  --track-label: 0.08em;     /* uppercase component labels, 0.58-0.85rem */
-  --track-eyebrow: 0.2em;    /* uppercase micro labels at --step-micro */
+  /* Normal everywhere, on every breakpoint: no tracking is applied to
+     any text on the site. The four tiers stay as named roles so this is
+     one decision in one place rather than ~100 declarations, and so the
+     old values can come back by editing these four lines. Previously:
+     display -0.02em, tight -0.01em, label 0.08em, eyebrow 0.2em. */
+  --track-display: normal;   /* display type above ~3rem */
+  --track-tight: normal;     /* headings + body-font UI text */
+  --track-label: normal;     /* uppercase component labels, 0.58-0.85rem */
+  --track-eyebrow: normal;   /* uppercase micro labels at --step-micro */
 
   /* Label -> heading -> body rhythm ---------------------------------
      Two tiers. Section: the eyebrow and heading that open a section.
