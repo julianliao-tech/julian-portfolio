@@ -60,19 +60,19 @@ const decisions = [
     num: '01',
     title: 'Browse by daily challenge, not product category',
     body:
-      'Four challenges lead the homepage and the nav: Opening Containers, Getting Dressed, Writing & Drawing, Navigating Your Workspace. My assumption is that people arrive naming the task that stopped working, not a product type. Shop all is still there, as the second way in.',
+      'Four tasks lead the homepage and the navigation: Opening Containers, Getting Dressed, Writing & Drawing, Navigating Your Workspace. I assumed people arrive knowing which task they can no longer do, not which product type they need. Shop all is still there for people who want to browse everything.',
   },
   {
     num: '02',
     title: 'Two typefaces, two jobs',
     body:
-      'Atkinson Hyperlegible sets everything a shopper has to read. The Braille Institute drew it to separate the characters low vision readers confuse. Space Grotesk is limited to headings and short labels, so the aesthetic never touches the sentence someone reads to decide whether a tool fits their hand.',
+      'Atkinson Hyperlegible sets everything a shopper has to read. The Braille Institute designed it to separate the characters that low vision readers mix up. Space Grotesk is limited to headings and short labels, so the rough style never touches the sentence someone reads to decide whether a tool will work for them.',
   },
   {
     num: '03',
-    title: 'Raw on the chrome, clean on the content',
+    title: 'Rough on the decoration, clean on the controls',
     body:
-      'Every hand drawn mark sits on the chrome (card outlines, chips, dividers, the rule under a heading), and each stroke is genuinely wobbled geometry drawn in two offset passes. NN/g warns that neobrutalism can strip the affordances that signal what is a control, so the controls and the copy stay conventional.',
+      'Every hand drawn mark is on decoration: card outlines, chips, dividers, and the line under a heading. Each stroke is real wobbled geometry drawn in two offset passes. NN/g warns that a rough style can remove the visual cues that tell people what is a button, so buttons, form fields and body text stay conventional.',
   },
 ];
 
@@ -340,7 +340,7 @@ const typeRows: TypeRow[] = [
     style: 'Paragraph/P1',
     face: 'body',
     weight: 400,
-    sample: 'A store you enter through the task, not the taxonomy.',
+    sample: 'A store you shop by task instead of by product category.',
     use: 'One step over P2',
     used: false,
     modes: [[25, 37.5], [30, 45], [36, 54]],
@@ -350,7 +350,7 @@ const typeRows: TypeRow[] = [
     face: 'body',
     weight: 400,
     sample: 'A wider barrel and a weighted base steady the line.',
-    use: 'Standfirst, long descriptions',
+    use: 'Intro paragraphs, long descriptions',
     used: true,
     modes: [[20, 30], [24, 36], [28.8, 43.2]],
   },
@@ -583,7 +583,7 @@ const prototypeUrl: string | null = 'https://start-vest-98438776.figma.site';
 
 const nextProject = {
   title: 'Guide Mobile Application',
-  subtitle: 'Knowing a route works before you are already out in it',
+  subtitle: 'Knowing a route works before you leave the house',
   image: `${base}images/home/tile-guide.webp`,
   href: `${base}work/guide/`,
 };
@@ -661,14 +661,8 @@ const nextProject = {
             <h1 class="title">Disability<br />Design Lab</h1>
             <div class="context-box">
               <p class="context-label">Where this started</p>
-              <h2 class="context-heading">A store you enter through the task, not the taxonomy</h2>
-              <p>
-                A concept store for adaptive tools (grips, openers, fasteners, writing aids),
-                <strong> organized by the daily challenge they solve rather than by product
-                category</strong>. My midterm for SI 407 at the University of Michigan School of
-                Information, designed against an assigned visual direction of "Experimental &amp; Raw."
-                The catalog and prices are invented for the project; the design system behind them is not.
-              </p>
+              <h2 class="context-heading">A store you shop by task instead of by product category</h2>
+              <p>Disability Design Lab is a concept store for adaptive tools like grips, openers, fasteners and writing aids. <strong>It organizes them by the daily task they help with rather than by product category.</strong> I built it as my midterm for SI 407 at Michigan, against an assigned visual direction of "Experimental &amp; Raw." The catalog and prices are invented. The design system behind them is real.</p>
             </div>
           </div>
 
@@ -681,17 +675,7 @@ const nextProject = {
             ))}
           </dl>
 
-          <p class="intro">
-            Adaptive tools are usually sold the way hardware is sold: by category, by material, by
-            brand. But nobody wakes up needing a silicone grip. They wake up unable to open a jar.
-            I am designing for adults whose grip, reach or dexterity has changed, from arthritis, tremor,
-            stroke or using one hand, and for the people buying on their behalf: family caregivers and
-            occupational therapists. <em>I had no user research for this project</em>, so I assumed that
-            group skews older and that a lot of them have some vision loss too, and
-            <strong> designed for low vision reading from the start</strong> rather than treating it as a
-            pass at the end. Those are assumptions, and I have labelled them that way everywhere on this
-            page rather than dressing them up as findings.
-          </p>
+          <p class="intro">Adaptive tools are usually sold the way hardware is sold, by category, material and brand. But nobody wakes up needing a silicone grip. They wake up unable to open a jar. I designed this for adults whose grip, reach or dexterity has changed, and for the family members and occupational therapists buying on their behalf. <em>I had no user research for this project.</em> I assumed that group skews older and that many of them have some vision loss, so I <strong>designed for low vision reading before I drew anything</strong>. Those are assumptions, and I have labeled them as assumptions everywhere on this page.</p>
 
           <p class="pull-quote" data-typewriter>
             <span aria-hidden="true"
@@ -709,15 +693,6 @@ const nextProject = {
 
       <section class="white-block">
         <div class="wrap">
-          <p class="take">
-            <span class="take-label">What I think about this stage</span>
-            The brief said "Experimental and Raw", and my first instinct was to make everything rough,
-            including the buttons. That is the trap. Rough chrome reads as personality; a rough control
-            reads as broken, and for an audience with low vision it reads as nothing at all.{' '}
-            <strong>So the aesthetic lives entirely on the parts you do not have to operate.</strong>{' '}
-            I think most of the visual work I am proud of came out of that one line being drawn early.
-          </p>
-
           <p class="eyebrow-label">The three decisions that shaped everything else</p>
           <ol class="dec-grid">
             {decisions.map((d) => (
@@ -734,21 +709,10 @@ const nextProject = {
       <section class="white-block">
         <div class="wrap">
           <p class="eyebrow-label">Final design</p>
-          <h2>Eight pages, two breakpoints, one set of rules</h2>
-          <p class="section-lede">
-            Every frame is real Auto Layout and sets all three variable modes, so the 393px column is the
-            desktop page reflowing rather than a second drawing of it. Click any screen for the full
-            length.
-          </p>
+          <h2>Eight pages, two screen sizes, one set of rules</h2>
+          <p class="section-lede">Every frame uses real Auto Layout and sets all three variable modes, so the 393px phone layout is the desktop page rearranging itself rather than a separate drawing. Click any screen to see it at full length.</p>
 
-          <p class="take">
-            <span class="take-label">What I think about this stage</span>
-            Drawing the mobile screen separately is the shortcut everybody takes, and it is how the two
-            versions start disagreeing about what the product is. Making the 393px frame the same frame,
-            reflowing, costs more up front and is the reason these eight pages stayed consistent while I
-            changed my mind about the catalogue three times.{' '}
-            <strong>If the phone layout is a second drawing, it is a second product.</strong>
-          </p>
+          <p class="take">The brief said "Experimental and Raw", and my first instinct was to make everything rough, including the buttons. That was a mistake. A rough background looks deliberate, but a rough button looks broken, and someone with low vision may not be able to see it at all. <strong>So I kept the rough treatment on the parts you only look at, and left the parts you tap or click clean.</strong></p>
 
           <ul class="screen-grid">
             {screens.map((s) => (
@@ -822,14 +786,8 @@ const nextProject = {
       <section class="ds-intro">
         <div class="wrap">
           <p class="eyebrow-label eyebrow-on-dark">The design system</p>
-          <h2>Five collections, nothing hardcoded</h2>
-          <p class="ds-lede">
-            Primitives hold the raw values, and nothing in a screen points at them if a token exists.
-            Tokens alias the greyscale into surfaces, borders, text and radii, with a Light and a Dark
-            mode. Semantics resolve the same ten names into a different family per mode. Typography and
-            Responsive Variables carry the breakpoints. Everything below is the file's real contents,
-            <strong> switch the modes and the values change the way they do in Figma.</strong>
-          </p>
+          <h2>Five variable collections, no hardcoded values</h2>
+          <p class="ds-lede">Primitives hold the raw values. Tokens point the greyscale at the four things a neutral color is used for: surfaces, borders, text and corner radii, in a Light and a Dark mode. Semantics turn the same ten names into a different color family depending on the mode. <strong>Everything below is the real contents of the Figma file. Switch the modes and the values change exactly as they do in Figma.</strong></p>
           <ul class="stat-row">
             {stats.map((s) => (
               <li>
@@ -847,18 +805,11 @@ const nextProject = {
           <h2>Primitives</h2>
           <p class="section-lede">
             Five families, each a full 50–950 scale, plus a small set of raw numbers for spacing and
-            radius. <strong>Nothing in a screen is allowed to point here</strong> once a token or a
-            semantic exists for the job.
+            radius. <strong>No screen is allowed to point at these values directly</strong> once a token or a
+            semantic exists for the same job.
           </p>
 
-          <p class="take">
-            <span class="take-label">What I think about this stage</span>
-            A design system is only worth the trouble if you are strict about the layer rule, and being
-            strict is annoying every single time. Pointing a card at a raw hex takes two seconds and
-            pointing it at a token takes a minute of naming. I kept doing the slow one, and the payoff
-            was that switching the whole file to Dark mode was one setting rather than a day of work.{' '}
-            <strong>Discipline early is just speed later, spent in advance.</strong>
-          </p>
+          <p class="take">Sticking to that order, primitive to token to semantic, is annoying every single time. Pointing a card at a raw hex code takes two seconds, and pointing it at a token takes a minute of naming. I kept doing the slow version, and because of that <strong>switching the whole file to Dark mode took one setting instead of a day of work.</strong></p>
 
           {ramps.map((r) => (
             <div class="ramp">
@@ -883,7 +834,7 @@ const nextProject = {
               <h3>Collage &amp; raw values</h3>
               <p>
                 Three loose paper colors for the torn collage wordmark, plus the numbers the radius
-                tokens alias into. <code>Value/full</code> is 10,000, which is a pill at any size.
+                tokens alias into. <code>Value/full</code> is 10,000, which rounds a box into a pill shape whatever its size.
               </p>
             </div>
             <ol class="ramp-row ramp-row-sparse">
@@ -909,8 +860,8 @@ const nextProject = {
           <p class="ds-kicker">Collection 02 · 22 variables · Light / Dark</p>
           <h2>Tokens</h2>
           <p class="section-lede">
-            The greyscale, aliased into the four jobs a neutral actually does, with a second mode that
-            flips the whole ramp. The footer is the one place Dark is used in anger. It carries
+            The greyscale, assigned to the four things a neutral color is used for, with a second mode that
+            reverses the whole scale. The footer carries
             <code> Tokens: Dark</code> at the component level, which is what makes it dark wherever it is
             placed.
           </p>
@@ -1000,9 +951,9 @@ const nextProject = {
           <p class="ds-kicker">Collection 03 · 10 variables · 4 modes</p>
           <h2>Semantics</h2>
           <p class="section-lede">
-            Ten names that mean different colors depending on the mode a node is in. An indigo button and
-            an amber badge are the same <code>Surface/default</code>. The difference is one mode set on
-            the node, which is why a brand color change is a mode switch rather than a sweep.
+            Ten names that produce different colors depending on the mode a layer is set to. An indigo button and
+            an amber badge are both <code>Surface/default</code>. The only difference is the mode set on
+            the layer, which means changing the brand color is one mode change rather than an edit to every screen.
           </p>
 
           <div class="mode-strip" data-mode="Primary" data-mode-group="semantics">
@@ -1062,10 +1013,10 @@ const nextProject = {
           <p class="ds-kicker">Collection 04 · 32 variables · Mobile / Tablet / Desktop</p>
           <h2>Typography</h2>
           <p class="section-lede">
-            Sixteen published text styles, each bound to a font-family, font-size and line-height variable
-            rather than carrying its own numbers, so switching the mode changes the variables underneath,
-            not the styles. All sixteen are below, set in the real faces, <strong>including the six steps
-            no frame ended up needing</strong>. A scale with holes in it is not a scale.
+            Sixteen published text styles. Each one points at a font-family, font-size and line-height variable
+            instead of holding its own numbers. All sixteen are shown below in the real typefaces,
+            <strong>including the six sizes no page ended up using</strong>. A type scale with sizes
+            missing from the middle is not a scale, so I kept them.
           </p>
 
           <div class="type-strip" data-mode="Desktop" data-mode-group="type">
@@ -1102,24 +1053,24 @@ const nextProject = {
               <p class="face-sample spec-face-body" style="font-weight:400">Il1 0O</p>
               <h3>Atkinson Hyperlegible</h3>
               <p>
-                Everything a shopper has to read. The Braille Institute drew it to separate the characters
-                low vision readers confuse. The reading face is doing real work here, not setting a mood.
+                Everything a shopper has to read. The Braille Institute designed it to separate the characters
+                low vision readers mix up. This typeface was chosen so people can read the product descriptions, not for how it looks.
               </p>
             </article>
             <article class="face-card">
               <p class="face-sample spec-face-heading" style="font-weight:700">Aa Gg</p>
               <h3>Space Grotesk</h3>
               <p>
-                Headings and short labels only, where words are set large and read in a glance and the
-                quirks cost nothing.
+                Headings and short labels only, where the words are large and read quickly, so its unusual
+                letterforms do not slow anyone down.
               </p>
             </article>
             <article class="face-card">
               <p class="face-sample spec-face-annotation" style="font-weight:400">4 left · $22</p>
               <h3>Caveat</h3>
               <p>
-                The annotation voice: eyebrows, counts, a price on a card. One style, bound to the P2 size
-                variable, and barred from body and heading copy.
+                Small labels only: eyebrows, counts, and the price on a card. One style, bound to the P2 size
+                variable, and never used for body text or headings.
               </p>
             </article>
           </div>
@@ -1131,10 +1082,12 @@ const nextProject = {
           <p class="ds-kicker">Collection 05 · 10 variables · Desktop / Tablet / Mobile</p>
           <h2>Responsive Variables</h2>
           <p class="section-lede">
-            The whole collection, breakpoints as data. The three <code>Nav/</code> booleans are what
-            collapse the nav, so the mobile nav is the same component in a different mode rather than a
-            second component.
+            The whole collection, with the screen size breakpoints stored as variables. The three <code>Nav/</code>
+            true or false values are what collapse the navigation bar, so the phone navigation is the same
+            component in a different mode rather than a second component.
           </p>
+
+          <p class="take">Drawing the phone screen as a separate file is the shortcut most people take, and it is why the phone version and the desktop version end up different from each other. Making the 393px layout the same frame rearranging itself takes more time at the beginning. <strong>It is why these eight pages stayed consistent while I changed my mind about the catalog three times.</strong></p>
           <div class="table-scroll">
             <table class="ds-table ds-table-resp">
               <thead>
@@ -1165,8 +1118,8 @@ const nextProject = {
           <p class="ds-kicker">The kit · 12 components</p>
           <h2>Components</h2>
           <p class="section-lede">
-            Five of these (the chip, stepper, form field, section head and divider) exist to make the
-            hand drawn treatment instanceable instead of decorative. The accessibility rules live here too:
+            Five of these exist so the hand drawn treatment can be reused as a component instead of redrawn each time. The
+            accessibility rules are set here too:
             <strong> every Button variant carries a 44px minimum height, and rebinding one label color took
             the amber button from 2.13:1 to 8.15:1 across all sixteen frames at once.</strong>
           </p>
@@ -1204,16 +1157,13 @@ const nextProject = {
 
       <section class="white-block">
         <div class="wrap">
-          <h2>Where it landed, and what I would change</h2>
-          <p class="section-lede">
-            The thing I would take into any project after this one is that
-            <strong> accessibility is cheaper when it is a constraint than when it is a correction</strong>.
-            Picking Atkinson Hyperlegible and a 44px minimum target on day one cost me nothing; retrofitting
-            either would have meant redrawing every screen. What I am missing is the part I could not do in a
-            semester. <em>None of this has been in front of a person whose grip has actually changed</em>,
-            and until it has, the whole organizing idea is a well argued guess. That is the first thing I
-            would fix if this were real.
-          </p>
+          <h2>How it turned out, and what I would change</h2>
+          <p class="section-lede"><strong>Picking the accessible typeface and the 44px minimum tap target when I first started took no extra time.</strong> Doing it in the last week would have meant redrawing all eight pages, because a bigger typeface rewraps every line and a bigger button changes every row it sits in. <em>Nobody whose grip has actually changed has seen this yet</em>, so organizing the store by task is still only my guess that it would help. Testing it with those people is the first thing I would do if this were a real store.</p>
+          <p class="section-lede">What I took away is how much a design system changes what you are willing to try. Once the tokens existed I could change the look of all eight pages in about a minute, so I experimented far more than I would have if every change meant editing every screen by hand.</p>
+          <p class="section-lede">I enjoyed this one more than anything else in this portfolio, and I am also the least sure about it. The variables and the components all work. Who the store is for, and the idea that people shop by task, are things I decided on my own. <strong>Spending ten weeks on something this detailed for people I never spoke to felt strange the whole way through</strong>, and that is why every assumption I made is written on this page instead of left out.</p>
+          <h2 class="ai-heading">How I would change this today with AI</h2>
+          <p class="section-lede">The whole store is built on a guess: that people shop by the task they can no longer do rather than by product type. Today I would test that wording before building anything. A model can generate fifty ways to phrase the four task categories out of real product descriptions, and I could put those in front of people to find out which words they recognize. I would use one to draft the product descriptions in plain language too, then check every one against the reading rules I set for the page.</p>
+          <p class="section-lede"><strong>I would not use a model as a substitute for the research I did not do.</strong> It can produce a convincing person whose grip has changed, and that person would be fiction. The gap on this project is that nobody with a real hand injury has used it, and generating an opinion about them does not close that gap.</p>
         </div>
       </section>
 
@@ -2538,14 +2488,7 @@ const nextProject = {
 
       .take strong { color: var(--ink); font-weight: 600; }
 
-      .take-label {
-        display: block;
-        line-height: 1.2;
-        margin-bottom: var(--gap-label);
-        font-family: var(--font-display);
-        font-size: 1.05rem;
-        color: var(--indigo);
-      }
+      .ai-heading { margin-top: clamp(2.25rem, 5vw, 3.25rem); }
 </style>
   </body>
 </html>

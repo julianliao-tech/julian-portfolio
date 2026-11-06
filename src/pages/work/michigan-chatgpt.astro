@@ -160,8 +160,8 @@ const nextProject = {
             <h1 class="title">Michigan<br />ChatGPT</h1>
             <div class="context-box">
               <p class="context-label">Where this started</p>
-              <h2 class="context-heading">Michigan built the AI. Nobody could tell the four tools apart.</h2>
-              <p>Michigan ChatGPT is the university's own AI workspace: U-M GPT, Maizey, Go Blue and the GPT Toolkit, all running on models curated for people here. Michigan was the first university to pull that off, and I still think that is a big deal. The problem was never the models. It was that the homepage asked you to pick one of four tools before it told you what any of them were.</p>
+              <h2 class="context-heading">Michigan built the AI. Students could not tell the four tools apart.</h2>
+              <p>Michigan ChatGPT is the university's own AI workspace. It holds four tools: U-M GPT, Maizey, Go Blue and the GPT Toolkit. The models were not the problem. The problem was that the homepage asked you to pick one of the four before it told you what any of them did.</p>
             </div>
           </div>
 
@@ -174,7 +174,7 @@ const nextProject = {
             ))}
           </dl>
 
-          <p class="intro">I am a Michigan student, so I was a user of this thing long before I was a designer of it. That is the honest reason I picked it. What surprised me once I started asking people about it is that nobody was intimidated by the AI. They were stuck on the names. Maizey, Go Blue, GPT Toolkit: none of those tell you what is behind them. <strong>People were not failing to use the platform. They were failing to pick a starting point</strong>. When picking takes too long, they open ChatGPT in another tab and campus has lost them for the semester. So I stopped treating this as a visual refresh and started treating it as a naming problem that happens to have a homepage attached.</p>
+          <p class="intro">I used this platform as a student before I ever redesigned it. What surprised me when I asked other students about it is that nobody was intimidated by the AI. They were stuck on the names, because Maizey, Go Blue and GPT Toolkit do not tell you what is behind them. <strong>People were not failing to use the platform. They were failing to pick a starting point</strong>, and when that takes too long they open ChatGPT in another tab instead.</p>
 
           <p class="pull-quote" data-typewriter>
             <span aria-hidden="true"><span class="tw-seg" data-full="How do I get someone to the right tool "></span><span class="tw-seg pull-quote-highlight" data-full="before they give up and open another tab"></span><span class="tw-seg" data-full="?"></span></span>
@@ -193,12 +193,12 @@ const nextProject = {
       <section class="dark-block">
         <div class="wrap">
           <div class="challenge-head">
-            <span class="quirky">Four names, no map</span>
-            <h2>Nothing on the page told you which door to open</h2>
+            <span class="quirky">Four names, no explanation</span>
+            <h2>Nothing on the page told you which tool to pick</h2>
           </div>
           <ol class="challenge-grid challenge-grid-4">
             {challenges.map((c, i) => (
-              <li class:list={['challenge-card', { 'is-active': i === 0 }]} data-tilt>
+              <li class:list={['challenge-card']} data-tilt>
                 <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
                 <p>{c}</p>
               </li>
@@ -209,19 +209,12 @@ const nextProject = {
 
       <section class="white-block">
         <div class="wrap">
-          <h2>I asked around campus, and none of it was about the AI</h2>
-          <p>I ran surveys and sat down with students who use campus technology every week. Their answers kept landing in the same four places: <strong>{researchFindings.join('; ')}</strong>. Every one of those is about getting to the tool, not about the tool itself, which told me the fix was in the words and the first screen, not the models.</p>
+          <h2>I asked students on campus, and none of their problems were about the AI</h2>
+          <p>I ran surveys and interviewed students who use campus technology every week. Their answers came back to the same four problems: <strong>{researchFindings.join('; ')}</strong>. All four are about getting to the tool rather than using it, so I focused the redesign on the wording and the first screen.</p>
           <ul class="findings-list">
             {keyInsights.map((k) => <li>{k}</li>)}
           </ul>
-          <p class="take">
-            <span class="take-label">What I think about this stage</span>
-            I used to think research meant finding out what people want. It does not. Every person I
-            spoke to wanted "something simpler", which is not a design instruction. The useful part was
-            watching where they hesitated, and hesitation does not show up in a survey.{' '}
-            <strong>People are reliable about what they did and unreliable about what they would do</strong>,
-            so I weight the first and discount the second.
-          </p>
+          <p class="take">I used to think research meant finding out what people want. Everyone I asked wanted "something simpler", which is not something I can build. The useful part was watching where people stopped and hesitated. <strong>People describe what they already did accurately, and they guess badly about what they would do next</strong>, so I pay attention to the first and ignore the second.</p>
 
           <div class="visitor-needs">
             <div>
@@ -244,35 +237,11 @@ const nextProject = {
         </div>
       </section>
 
-      <section class="dark-block">
-        <div class="wrap">
-          <div class="challenge-head">
-            <span class="quirky">Fewer doors</span>
-            <h2>Every extra choice on the first screen costs you somebody</h2>
-          </div>
-          <ol class="challenge-grid challenge-grid-4">
-            {challenges.map((c, i) => (
-              <li class:list={['challenge-card', { 'is-active': i === 1 }]} data-tilt>
-                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
-                <p>{c}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
       <section class="white-block">
         <div class="wrap">
-          <h2>I designed for the person who had never heard of Maizey</h2>
-          <p>I went through the old site and wrote down every place I had to stop and think. Most of them were decisions the page was asking me to make before it had told me anything. Three ideas did the heavy lifting and none of them are complicated. Jakob's Law: people expect a new site to work like the sites they already use, so I did not invent a single new pattern. Hick's Law: every extra option makes the choice slower, so the homepage offers four things and not fourteen. The aesthetic usability effect: people judge a clean interface as easier to use even when it is not. Uncomfortable, but worth designing for. <em>Then I rewrote the order of the page so the first thing you meet is what the tools are, not a menu of them.</em> Four columns on mobile and twelve on desktop keep everything landing in the same places as the screen changes size.</p>
-          <p class="take">
-            <span class="take-label">What I think about this stage</span>
-            Naming the laws is the easy half. The honest version is that I had already decided the
-            homepage should carry four tools, and Hick's Law is how I defended it afterwards.{' '}
-            <strong>I think that is fine as long as you know you are doing it, and a problem the moment
-            you forget</strong>. Principles are good at stopping bad arguments. They are not where the
-            idea comes from.
-          </p>
+          <h2>I designed for the student who had never heard of Maizey</h2>
+          <p>I went through the old site and wrote down every place where I had to stop and think. Most of them were decisions the page asked me to make before it had explained anything. Three ideas shaped what I did next. Jakob's Law says people expect a new site to work like the sites they already use, so I did not invent any new patterns. Hick's Law says every extra option slows the choice down, so the homepage offers four things instead of fourteen. <em>Then I reordered the page so the first thing you see is what the tools do, rather than a menu of their names.</em></p>
+          <p class="take">Naming the laws is the easy part. To be transparent, I had already decided the homepage should hold four tools, and I used Hick's Law to justify that decision afterwards. <strong>I think that is fine as long as you know you are doing it, and a problem as soon as you forget.</strong> Design principles are useful for settling an argument, but they are not where the idea came from.</p>
 
           <div class="image-row-single image-row-single-wide">
             <img data-tilt src={img('02.webp')} alt="Three design-principle cards: Jakob's Law (familiarity), Hick's Law (decision simplification), and the Aesthetic-Usability Effect, each with how it was applied to the redesign" />
@@ -282,36 +251,13 @@ const nextProject = {
 
       <section class="white-block">
         <div class="wrap">
-          <p class="eyebrow-label">Eight ideas, drawn fast, most of them cut</p>
-          <p>I sketched eight directions before committing to one: finishing your sentence for you, shifting the background with the conversation, a video analyzer, translation, exporting a chat as a PDF, pulling text out of an image. Drawing them badly and quickly is the point, because it is much easier to throw away a sketch than a prototype. <strong>Most of them did not survive, and the ones that did were the boring ones</strong>: how much goes above the fold, and whether you can tell what a tool does from its card alone.</p>
-          <p class="take">
-            <span class="take-label">What I think about this stage</span>
-            Low fidelity is not really a stage, it is a permission slip. The uglier the sketch, the more
-            freely somebody tells you it is wrong, and I would much rather hear that in week one than in
-            week six. <strong>The minute a screen looks finished, feedback turns polite and stops being
-            useful.</strong> Staying ugly longer is the cheapest skill I have picked up.
-          </p>
+          <p class="eyebrow-label">Eight ideas, drawn quickly, most of them cut</p>
+          <p>I sketched eight directions before I committed to one, including finishing your sentence for you, a video analyzer, translation, and exporting a chat as a PDF. I drew them quickly and badly on purpose. <strong>The ideas that survived were the unglamorous ones</strong>: how much fits on the screen before you scroll, and whether you can tell what a tool does from its card alone.</p>
+          <p class="take">I do not think of low fidelity as a stage. A rough sketch makes it easier for other people to tell me I am wrong, and the rougher it is the more directly they say it. <strong>As soon as a screen looks finished, people soften their feedback and it stops being useful.</strong> Staying rough for longer is the cheapest skill I have learned.</p>
 
           <div class="image-row-single image-row-single-wide">
             <img data-tilt src={img('lowfi-wireframes.webp')} alt="Eight low fidelity wireframes for U-M GPT: finishing sentences, changing background color based on conversation, a video analyzer, translation mode, linking to other software, setting tone, exporting past chats as a PDF, and reading text from images and videos" />
           </div>
-        </div>
-      </section>
-
-      <section class="dark-block">
-        <div class="wrap">
-          <div class="challenge-head">
-            <span class="quirky">Two kinds of visitor</span>
-            <h2>New users and regulars want opposite things</h2>
-          </div>
-          <ol class="challenge-grid challenge-grid-4">
-            {challenges.map((c, i) => (
-              <li class:list={['challenge-card', { 'is-active': i === 2 }]} data-tilt>
-                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
-                <p>{c}</p>
-              </li>
-            ))}
-          </ol>
         </div>
       </section>
 
@@ -322,7 +268,7 @@ const nextProject = {
         </div>
         <div class="feature-text">
           <h2 class="feature-heading">Every tool on one screen, so nobody has to guess</h2>
-          <p>The homepage leads with a line that says what this actually is, then four cards, one per tool, each described in words a first year would use. You can read the whole thing in about as long as you were willing to spend deciding whether to bother. That is the entire goal: no guessing about what the platform is, and no guessing about where to start. Every visit now begins in the same place.</p>
+          <p>The homepage opens with one line explaining what the platform is, then four cards, one per tool, each described in words a first year student would use. You can read all of it in a few seconds, which is about as long as anyone was going to spend before giving up.</p>
         </div>
       </section>
 
@@ -332,8 +278,8 @@ const nextProject = {
           <img data-tilt class="feature-media-mobile" src={img('sidebar-mobile-yellow.webp')} alt="Michigan ChatGPT sidebar navigation, on a phone" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">One way back, from anywhere in the system</h2>
-          <p>The sidebar groups tools, resources and support into categories that stay put no matter which tool you are inside. <strong>Bigger tap targets, labels you can read, and the same icon meaning the same thing every time.</strong> People who come back every week do not read the screen. They aim at where the thing was last time. The sidebar is built for aiming.</p>
+          <h2 class="feature-heading">The same navigation inside every tool</h2>
+          <p>The sidebar groups tools, resources and support into categories that stay in the same place no matter which tool you are using. <strong>The tap targets are bigger, the labels are readable, and the same icon means the same thing everywhere.</strong> People who come back every week do not read the screen. They go straight to where it was last time.</p>
         </div>
       </section>
 
@@ -343,8 +289,8 @@ const nextProject = {
           <img data-tilt src={img('customize-desktop.webp')} alt="Michigan ChatGPT Choose Mode chatbot customization screen, on a laptop" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">Answers that already know you are on campus</h2>
-          <p>Responses are tuned for academic, research and campus questions, so what comes back is shaped for the place you are asking from. <em>It also covers for people who have never written a prompt in their life</em>. You should not have to be good at talking to AI to get something useful out of it, and most people are not, including plenty who use it daily.</p>
+          <h2 class="feature-heading">Answers written for people at this university</h2>
+          <p>Responses are tuned for academic, research and campus questions, so the answers fit the place you are asking from. <em>It also helps people who have never written a prompt before.</em> You should not have to be good at talking to AI to get something useful out of it.</p>
         </div>
       </section>
 
@@ -354,8 +300,8 @@ const nextProject = {
           <img data-tilt src={img('translation-desktop-yellow.webp')} alt="Michigan ChatGPT Translation Mode screen with input and output language selectors, on a laptop" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">Reading it in the language you actually think in</h2>
-          <p>Translation mode lets multilingual students work in whichever language they are fastest in, and switch back when they need the campus wording. <strong>A lot of people here think in another language first</strong>, and making them do financial aid or housing paperwork in their second one is a tax nobody chose to pay. This was the cheapest feature on the list and probably the one I would defend hardest.</p>
+          <h2 class="feature-heading">Reading it in the language you think in</h2>
+          <p>Translation mode lets multilingual students work in whichever language they are fastest in and switch back when they need the official campus wording. <strong>A lot of students here think in another language first</strong>, and making them do financial aid paperwork in their second language costs them time nobody else has to spend.</p>
         </div>
       </section>
 
@@ -365,27 +311,15 @@ const nextProject = {
           <img data-tilt src={img('audio-desktop.webp')} alt="Michigan ChatGPT audio feedback conversation with Keep Listening and Audio Respond controls, on a laptop" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">For the times you cannot look at the screen</h2>
-          <p>Audio feedback reads responses and confirmations out loud. It matters most to people with vision loss, and it quietly helps everyone else: walking to class, cooking, or just done with reading for the day. <em>Accessibility work keeps turning out to be convenience work for somebody else</em>, which is the argument I use when someone calls it a nice to have.</p>
-        </div>
-      </section>
-
-      <section class="white-block">
-        <div class="wrap">
-          <p class="take">
-            <span class="take-label">What I think about this stage</span>
-            Building the component library before the screens felt like procrastinating, and it saved me
-            more time than anything else on this project. Once a card exists as one thing, a change to it
-            is a change everywhere, and arguments about spacing stop being arguments.{' '}
-            <strong>A design system is not a deliverable, it is a way of only solving a problem once.</strong>
-          </p>
+          <h2 class="feature-heading">For when you cannot look at the screen</h2>
+          <p>Audio feedback reads responses and confirmations out loud. It matters most to students with vision loss, and it also helps anyone walking to class, cooking, or finished with reading for the day. <em>I keep finding that accessibility work turns out to be convenience work for someone else as well.</em></p>
         </div>
       </section>
 
       <section class="brand-section">
         <div class="wrap brand-intro">
-          <p class="eyebrow-label">The look</p>
-          <h2 class="brand-heading">Looks like<br />Michigan.</h2>
+          <p class="eyebrow-label">Layout</p>
+          <h2 class="brand-heading">The page structure</h2>
         </div>
         <div class="wrap brand-showcase-row">
           <div class="brand-phone-frame">
@@ -454,24 +388,23 @@ const nextProject = {
         </div>
       </section>
 
-      <section class="white-block white-block-flush-bottom white-block-flush-top">
-        <div class="image-row-single image-row-single-zero">
-          <img data-tilt src={img('13-figjam-board.webp')} alt="FigJam board of the Michigan ChatGPT redesign: component library, low fidelity wireframes, page flows, and desktop and mobile screen variations" />
-        </div>
-      </section>
-
-      <section class="dark-block">
+      <section class="white-block">
         <div class="wrap">
-          <h2>Where it landed, and what I would change</h2>
-          <ul class="findings-list findings-list-dark">
+          <h2>How it turned out, and what I would change</h2>
+          <ul class="findings-list">
             {whatShipped.map((w) => <li>{w}</li>)}
           </ul>
-          <p>What I was after is a platform you can trust at a glance, where the first visit and the fiftieth both start somewhere obvious.</p>
-          <p>The thing I did not expect to learn is how much of trust is just familiarity. Clarity and polish are not decoration here. They are what makes somebody willing to type a real question into a box owned by their school. Taking this from surveys through to finished screens is also the first time I owned a whole process end to end, and it changed how I start work now: <em>I spend far longer arguing about what to call things than I used to</em>.</p>
-          <ul class="findings-list findings-list-dark">
+          <p>What I wanted was a platform people can understand in a few seconds, where the first visit and the fiftieth both start in the same obvious place.</p>
+          <p>What I did not expect to learn is how much of trust comes from the interface being familiar. Clarity is not just about how it looks here. It is what makes a student willing to type a real question into a box owned by their school. <em>Since this project I spend much longer deciding what to call things than I used to.</em></p>
+          <ul class="findings-list">
             {lookingAhead.map((l) => <li>{l}</li>)}
           </ul>
-          <p>This one is personal. Michigan is my community, and these are tools my friends open between classes without thinking about it. <strong>Making them easier to find is a small change that a lot of people get to feel</strong>, which is most of why I want to do this work at all.</p>
+          <p>These are tools my friends open between classes, and a few hundred words on a homepage decides whether they use them or give up.</p>
+          <p>What I took away is what it means to redesign something people already use. Nobody was waiting for a new homepage. Students already had a habit, which was opening ChatGPT in another tab, so I was competing with that habit rather than with the old design. It meant the homepage had to be faster to read than opening a new tab, not just clearer than the page it replaced.</p>
+          <p>This was the first time I owned a project from the first survey to the last screen, and I felt the difference. There was nobody to hand a decision to. I also felt exposed putting a redesign of my own university's product online, because the people who built the original work on the same campus. <strong>I tried to write this page in a way I would be comfortable saying to their face.</strong></p>
+          <h2 class="ai-heading">How I would change this today with AI</h2>
+          <p>I accepted the premise that a student has to pick one of four tools before they can start. Today I would argue with that. One box that takes your question and sends it to the right tool would remove the choice completely, and that is a better answer than explaining four names more clearly. What I designed makes the menu understandable. Taking the menu away would be the stronger fix.</p>
+          <p>Two things would worry me. <strong>If it sent a question to the wrong tool, that would be worse than a menu</strong>, because the student cannot see what went wrong or how to correct it. And students still need to know which tool answered them, because the four handle university data differently, and that is not a detail you get to hide to make a homepage simpler.</p>
         </div>
       </section>
 
@@ -565,8 +498,6 @@ const nextProject = {
         background: #ffffff;
       }
 
-
-
       .wrap {
         max-width: 74rem;
         margin-inline: auto;
@@ -574,9 +505,6 @@ const nextProject = {
       }
 
       /* Nav ------------------------------------------------------------ */
-
-
-
 
       .btn-pill {
         display: inline-flex;
@@ -975,10 +903,6 @@ const nextProject = {
         margin-bottom: 0.4rem;
       }
 
-      .findings-list-dark li {
-        color: rgba(253, 251, 249, 0.7);
-      }
-
       .visitor-needs {
         display: grid;
         grid-template-columns: 1fr;
@@ -1101,13 +1025,17 @@ const nextProject = {
         gap: 1rem;
       }
 
+      /* Every card carries the lit treatment. There used to be three copies
+         of this grid, each dimming all but one card; the dim state read as
+         disabled rather than as sequence, so the grid appears once now and
+         all of it is legible. */
       .challenge-card {
         --tilt-x: 0deg;
         --tilt-y: 0deg;
-        border: 1px solid rgba(253, 251, 249, 0.15);
-        border-left: 3px solid rgba(253, 251, 249, 0.15);
+        border: 1px solid rgba(253, 251, 249, 0.3);
+        border-left: 3px solid #ffcb05;
         padding: 1.5rem;
-        background: rgba(253, 251, 249, 0.03);
+        background: rgba(253, 251, 249, 0.08);
         transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
         transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s var(--ease-out);
       }
@@ -1115,7 +1043,8 @@ const nextProject = {
       .challenge-card p {
         margin: 0.75rem 0 0;
         max-width: none;
-        color: rgba(253, 251, 249, 0.45);
+        color: var(--bg);
+        font-weight: 500;
         font-size: var(--step-body);
         line-height: var(--leading-body);
       }
@@ -1124,20 +1053,7 @@ const nextProject = {
         font-family: var(--font-body);
         font-weight: 800;
         font-size: 1.5rem;
-        color: rgba(253, 251, 249, 0.35);
-      }
-
-      .challenge-card.is-active {
-        background: rgba(253, 251, 249, 0.08);
-        border-color: rgba(253, 251, 249, 0.3);
-        border-left-color: #ffcb05;
-      }
-
-      .challenge-card.is-active .challenge-num { color: #ffcb05; }
-
-      .challenge-card.is-active p {
-        color: var(--bg);
-        font-weight: 500;
+        color: #ffcb05;
       }
 
       @media (min-width: 700px) {
@@ -1322,13 +1238,13 @@ const nextProject = {
       }
 
       .brand-heading {
-        margin: 0.5rem 0 0;
-        font-family: var(--font-body);
-        font-weight: 800;
-        letter-spacing: var(--track-display);
-        line-height: 0.95;
-        font-size: clamp(3rem, 9vw, 6.5rem);
-        color: #000000;
+        margin: 0 0 var(--gap-heading);
+        font-family: var(--font-display);
+        font-weight: 400;
+        letter-spacing: var(--track-tight);
+        line-height: 1.1;
+        font-size: clamp(1.9rem, 4vw, 2.8rem);
+        color: var(--ink);
       }
 
       .brand-intro .eyebrow-label {
@@ -1506,14 +1422,7 @@ const nextProject = {
 
       .take strong { color: var(--ink); font-weight: 600; }
 
-      .take-label {
-        display: block;
-        line-height: 1.2;
-        margin-bottom: var(--gap-label);
-        font-family: var(--font-quirky);
-        font-size: 1.05rem;
-        color: #00274c;
-      }
+      .ai-heading { margin-top: clamp(2.25rem, 5vw, 3.25rem); }
 </style>
   </body>
 </html>

@@ -239,7 +239,7 @@ const risks = [
   { code: 'EXT-1', name: 'Low Student Engagement', detail: 'Students are "lazy" or disinterested in attending sessions.', probability: 'High', impact: 'High', grade: 'A', mitigation: ['Incentivize attendance with social events (dinners/drinks).', 'Showcase success statistics early to prove value.'] },
   { code: 'EXT-2', name: 'Recruiters Not Participating', detail: 'Employers do not see the value in the platform.', probability: 'Medium', impact: 'High', grade: 'A', mitigation: ['Highlight reduced screening costs and access to "well prepared" candidates.', 'Create a sense of competition/urgency among firms.'] },
   { code: 'EXT-3', name: 'Alumni Fatigue', detail: 'Mentors feel overwhelmed by student requests or lack of structure.', probability: 'Medium', impact: 'Medium', grade: 'B', mitigation: ['Implement structured "Coffee Chat" modules and clear templates to reduce workload.', 'Guarantee recognition or stipends for their help.'] },
-  { code: 'INT-1', name: 'Technical Platform Failure', detail: 'The "Study Buddy" or matching algorithm fails.', probability: 'Low', impact: 'High', grade: 'A', mitigation: ['Conduct a rigorous 48-hour pilot testing phase before core launch.', 'Perform rapid technical iterations based on error reports.'] },
+  { code: 'INT-1', name: 'Technical Platform Failure', detail: 'The "Study Buddy" or matching algorithm fails.', probability: 'Low', impact: 'High', grade: 'A', mitigation: ['Conduct a rigorous 48 hour pilot testing phase before core launch.', 'Perform rapid technical iterations based on error reports.'] },
   { code: 'INT-2', name: 'Data Privacy Breach', detail: 'Leak of private alumni contact info (personally identifiable information) or student interview transcripts.', probability: 'Low', impact: 'Critical', grade: 'A', mitigation: ['Restrict access to the Esade network only.', 'Implement strict quality control and student governed repository rules.'] },
   { code: 'INT-3', name: 'Misalignment with Career Services', detail: 'Project duplicates work or creates extra burden for school staff.', probability: 'Medium', impact: 'High', grade: 'A', mitigation: ['Offer logistical support and run all joint events together.', 'Ensure complete transparency on data, objectives, and results.'] },
   { code: 'INT-4', name: 'Poor Quality of Prep Material', detail: 'Students share inaccurate "culture codes" or transcripts.', probability: 'Medium', impact: 'Medium', grade: 'B', mitigation: ['Establish a quality control protocol for all uploaded resources.', 'Assign leadership roles to Student Club reps for moderation.'] },
@@ -255,7 +255,7 @@ const marqueeWords = Array(6).fill(['E-LINK', 'ESADE BUSINESS SCHOOL']).flat();
 
 const nextProject = {
   title: 'Consulting Work',
-  subtitle: 'A couple of client deliverables from outside the case study projects above.',
+  subtitle: 'A couple of pieces of client work from outside the case studies above.',
   image: `${base}images/consulting-work/01-q-bakehouse.webp`,
   href: `${base}work/consulting-work/`,
 };
@@ -321,8 +321,8 @@ const nextProject = {
           <h1 class="title">E-LINK</h1>
           <div class="context-box">
             <p class="context-label">Where this started</p>
-            <h2 class="context-heading">Esade was losing interviews to its rivals, and nobody had a plan</h2>
-            <p>E-LINK is a business case and project management plan I built at Esade Business School in Barcelona with a team of classmates. It started as a business case assignment and grew into a full project management deliverable: a stakeholder analysis, a work breakdown structure, a rollout scheduled on a Gantt chart, and a risk register, on top of the original pitch. My focus was the project management side: scoping the work, building the schedule, and stress testing the plan against the people who’d actually have to run it. That is the part that turns a good idea into a plan a school could use.</p>
+            <h2 class="context-heading">Fewer Esade students were landing interviews than students at rival schools</h2>
+            <p>E-LINK is a business case and project management plan I built at Esade Business School in Barcelona with a team of classmates. It grew from a pitch into a full set of planning documents: a stakeholder analysis, a work breakdown structure, a Gantt rollout and a risk register. My job was deciding how much work it would take, building the schedule, and checking the plan against what the people running it could realistically do.</p>
           </div>
         </div>
 
@@ -335,7 +335,7 @@ const nextProject = {
           ))}
         </dl>
 
-        <p class="intro">I was the project manager on this one, which meant my job was not having the idea. It was working out whether the idea survived contact with the people who would have to run it. The pitch is an online platform linking students, alumni and recruiters, with one target: <strong>raise the interview landing rate by 20%</strong>. The part I care about is underneath that. A school cannot buy its way out of this with software, because every piece of it depends on busy people volunteering time. <em>So I spent most of the semester asking what each group gets back.</em></p>
+        <p class="intro">I was the project manager, so my job was not coming up with the idea. It was working out whether the idea would still work once real people had to run it. The pitch is a platform that connects students, alumni and recruiters, with one target: <strong>raise the interview landing rate by 20%</strong>. A school cannot solve this problem by buying software, because every part of the plan depends on busy people volunteering their time.</p>
 
         <p class="pull-quote" data-typewriter>
           <span aria-hidden="true"><span class="tw-seg" data-full="Esade’s third year students were landing interviews into summer internships at a "></span><span class="tw-seg pull-quote-highlight" data-full="35% rate, while direct competitors climbed to 45–53%"></span><span class="tw-seg" data-full=" over the same seven years."></span></span>
@@ -385,7 +385,7 @@ const nextProject = {
           <span class="quirky">35% vs. 45–53%</span>
           <h2>Esade held at 35% while its rivals climbed to 53%</h2>
         </div>
-        <p>We proposed E-LINK: a tiered mentorship and knowledge exchange network built on four pillars, in response to three specific problems.</p>
+        <p>We proposed E-LINK, a tiered mentorship and knowledge exchange network built on four pillars, to address three specific problems.</p>
         <ol class="challenge-grid challenge-grid-4">
           {challenges.map((c, i) => (
             <li class="challenge-card" data-tilt tabindex="0">
@@ -451,75 +451,11 @@ const nextProject = {
       </section>
     ))}
 
-    <section class="white-block codex">
-      <div class="wrap">
-        <span class="quirky">Behind the Prototype</span>
-        <h2>The Code, Page by Page</h2>
-        <p>Each page of the prototype next to the React component behind it. Pick a page to watch it run and read its code. E-LINK was a proposal, not a shipped product, so the people and companies in the prototype are sample data. Nothing shown here is real alumni or recruiter information, and no real personal data is used.</p>
-
-        <div class="codex-widget" data-codex>
-          <div class="codex-tabs" role="tablist" aria-label="E-LINK prototype pages">
-            {codePages.map((cp, i) => (
-              <button
-                class="codex-tab"
-                role="tab"
-                type="button"
-                id={`codex-tab-${cp.key}`}
-                aria-controls={`codex-panel-${cp.key}`}
-                aria-selected={i === 0 ? 'true' : 'false'}
-                tabindex={i === 0 ? 0 : -1}
-                data-key={cp.key}
-                data-video={img(cp.video)}
-                data-name={cp.name}
-                data-file={cp.file}
-                data-lines={cp.lines}
-              >
-                {cp.name}
-              </button>
-            ))}
-          </div>
-
-          <div class="codex-body">
-            <div class="codex-stage">
-              <div class="codex-frame-bar" aria-hidden="true">
-                <span class="codex-dot codex-dot-1"></span><span class="codex-dot codex-dot-2"></span><span class="codex-dot codex-dot-3"></span>
-                <span class="codex-frame-title" data-codex-name>{codePages[0].name}</span>
-              </div>
-              <video src={img(codePages[0].video)} autoplay muted loop playsinline aria-label="Screen recording of the selected E-LINK prototype page" data-codex-video></video>
-            </div>
-
-            <div class="codex-code">
-              <div class="codex-code-inner">
-                <div class="codex-code-head">
-                  <span class="codex-file" data-codex-file>{codePages[0].file}</span>
-                  <span class="codex-meta" data-codex-meta>{codePages[0].lines} lines</span>
-                  <button class="codex-copy" type="button" data-codex-copy>Copy</button>
-                </div>
-                {codePages.map((cp, i) => (
-                  <div class="codex-panel" role="tabpanel" id={`codex-panel-${cp.key}`} aria-labelledby={`codex-tab-${cp.key}`} hidden={i !== 0} data-key={cp.key}>
-                    <Code code={cp.code} lang="tsx" theme="github-dark-default" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="dark-block">
       <div class="wrap">
-        <h2>The riskiest assumption was never the platform</h2>
-        <p class="take">
-          <span class="take-label">What I think about this stage</span>
-          Being the project manager instead of the designer was the most useful thing that happened to
-          me this year. A designer gets to ask whether the thing is good. A project manager has to ask
-          who is doing the work, when, and what happens when they do not.{' '}
-          <strong>Most proposals I have seen fail on the second question while scoring full marks on the
-          first.</strong> I think about staffing and incentives now before I think about screens, which
-          is not a glamorous instinct but it is the one that survives contact with a real organization.
-        </p>
-        <p>Software is the easy part. The assumption worth testing was whether the people involved would show up at all. So we mapped students, alumni, recruiters and Career Services, whose workload we were quietly proposing to increase, against what each one gets and what we are asking for in exchange. <strong>Any group where that trade looks bad is where the plan dies.</strong></p>
+        <h2>The riskiest assumption was about people, not software</h2>
+        <p>Building the software is the easy part. The assumption worth testing was whether the people involved would turn up at all. So we mapped four groups, students, alumni, recruiters and Career Services, against what each one gets from E-LINK and what we are asking from them in return. <strong>If that trade looks bad for any group, the plan fails there.</strong></p>
+        <p class="take">Working as the project manager rather than the designer taught me more than the design work did. As a designer I ask whether the thing is good. As a project manager I had to ask who does the work, when they do it, and what happens if they do not. <strong>Most student proposals I have seen answer the first question well and the second one not at all.</strong></p>
         <div class="stakeholder-grid">
           {stakeholderGroups.map((g) => (
             <div class="stakeholder-card">
@@ -537,14 +473,14 @@ const nextProject = {
             {successFactors.map((f) => <li>{f}</li>)}
           </ol>
         </div>
-        <p>The two hardest groups to win over were students, likely to skip sessions without a reason to show up, and Career Services, who’d carry most of the added event workload. For students, that meant pairing every session with a real incentive (dinners, drinks) and leading with proof the program worked. For Career Services, it meant offering logistical support and ready to use templates so E-LINK reduced their workload rather than adding to it. A fair trade for their time.</p>
+        <p>The two hardest groups to win over were students, who would skip sessions without a reason to turn up, and Career Services, who would carry most of the added workload. So we paired every student session with a real incentive, and we gave Career Services logistical support and ready to use templates so that E-LINK reduced their workload instead of adding to it.</p>
       </div>
     </section>
 
     <section class="white-block">
       <div class="wrap">
-        <h2>Twelve weeks, five phases, a checkpoint on every one</h2>
-        <p>We broke the work into a five phase work breakdown structure, running from problem definition through pilot testing to expansion and closure, then scheduled it against a 12-week window from late February to mid May, with milestones for informing students, running a 48-hour pilot test, going live, and comparing results against baseline. Each phase closes with a clear checkpoint, so progress stays visible from the first week to the last, and everyone can see what comes next.</p>
+        <h2>Twelve weeks, five phases, a checkpoint at the end of each</h2>
+        <p>We broke the work into five phases, from problem definition through pilot testing to expansion and closure, and scheduled them across a 12 week window from late February to mid May. The milestones are informing students, running a 48 hour pilot, going live, and comparing the results against the baseline. Each phase ends with a checkpoint, so anyone can see what has been done and what comes next.</p>
 
         <p class="plan-sublabel">Timeline · Feb 23, 2026 to May 11, 2026</p>
         <ol class="timeline-list">
@@ -597,16 +533,9 @@ const nextProject = {
 
     <section class="dark-block">
       <div class="wrap">
-        <h2>We named the weak points before anyone else could</h2>
-        <p class="take">
-          <span class="take-label">What I think about this stage</span>
-          Writing a risk register before the pitch felt like volunteering reasons to say no. It is the
-          opposite. Every weakness we listed was one somebody in that room was going to find anyway, and
-          naming it first turns an objection into a line item you have already answered.{' '}
-          <strong>I would rather be the person who says this probably fails here than the person who
-          gets told.</strong>
-        </p>
-        <p>Before pitching the plan, we ran it through a risk register: three external risks (student engagement, recruiters coming on board, alumni fatigue) and four internal ones (platform failures, data privacy, misalignment with Career Services, and low quality prep material), each graded on probability and impact with a specific mitigation. Doing this before pitching meant the plan’s weakest points were named and answered up front, not after, so the pitch could speak to them head on.</p>
+        <h2>We listed the plan's weaknesses before the pitch</h2>
+        <p>We ran the plan through a risk register before we pitched it. We listed three external risks (student engagement, recruiters coming on board, alumni fatigue) and four internal ones (platform failures, data privacy, misalignment with Career Services, low quality prep material), and graded each one on probability and impact with a specific mitigation.</p>
+        <p class="take">Writing a risk register before the pitch felt like handing people reasons to say no. It had the opposite effect. Everyone in that room was going to find those weaknesses anyway, and listing them first meant we already had an answer ready for each one. <strong>I would rather point out where the plan is likely to fail than have someone else point it out for me.</strong></p>
         <div class="risk-table-wrap">
           <table class="risk-table">
             <thead>
@@ -640,27 +569,20 @@ const nextProject = {
             </tbody>
           </table>
         </div>
-        <p>The two "A"-grade risks that shaped the plan most: <strong>low student engagement</strong> (high probability, high impact) is why every milestone pairs a session with a social incentive, and <strong>data privacy</strong> (low probability, critical impact) is why the repository was scoped as private to Esade with student governed access controls rather than open to anyone with a link. Both choices came straight out of the risk register, and both are visible in the final plan, so the reasoning is easy to trace.</p>
+        <p>Two risks were graded A, and they shaped the plan more than anything else. <strong>Low student engagement</strong> is high probability and high impact, which is why every milestone pairs a session with a social incentive. <strong>Data privacy</strong> is low probability and critical impact, which is why we scoped the repository as private to Esade with student governed access rather than open to anyone with a link.</p>
       </div>
     </section>
 
     <section class="white-block metrics-section">
       <div class="wrap" data-metrics>
         <h2>How we would know whether it worked</h2>
-        <p class="take">
-          <span class="take-label">What I think about this stage</span>
-          The landing rate is the number the school cares about and the worst number to manage by,
-          because it answers two years late. So we tracked the things that move weekly instead:
-          who turned up, who messaged an alumnus, who came back.{' '}
-          <strong>A metric you cannot read until the project is over is a scoreboard, not a
-          steering wheel.</strong>
-        </p>
+        <p class="take">The landing rate is the number the school cares about, but it is a bad number to run the project on, because you do not get an answer for two years. So we also tracked things that change every week: who turned up, who messaged an alumnus, and who came back. <strong>A number you only get at the end tells you how you did. It cannot tell you what to change while the project is running.</strong></p>
 
         <div class="metrics-hero">
           <p class="metrics-hero-num" aria-label="Plus 20 percent">+<span data-count="20">20</span>%</p>
           <div class="metrics-hero-text">
             <p class="metrics-hero-title">Interview landing rate</p>
-            <p>The core KPI, a two year outcome, measured by comparing post launch results against the baseline of about 35% from before E-LINK.</p>
+            <p>The main measure of success. It takes two years to read, and it compares the interview landing rate after launch against the baseline of about 35% from before E-LINK.</p>
           </div>
         </div>
 
@@ -715,7 +637,7 @@ const nextProject = {
           </div>
         </div>
 
-        <p class="metrics-sublabel">Leading indicators</p>
+        <p class="metrics-sublabel">What we could measure every week</p>
         <div class="indicator-row">
           {leadingIndicators.map((ind) => (
             <div class="indicator">
@@ -724,15 +646,76 @@ const nextProject = {
             </div>
           ))}
         </div>
-        <p class="indicator-note">We tracked platform engagement directly as a leading indicator that would show up well before two years of interview data could.</p>
+        <p class="indicator-note">We tracked how much people actually used the platform, because that shows up within weeks, long before two years of interview data could.</p>
       </div>
     </section>
 
-    <section class="dark-block">
+    <section class="white-block codex">
       <div class="wrap">
-        <h2>Where it landed, and what I would change</h2>
-        <p>This was a proposal, not a product, and I want to be clear about that. What it had to be was disciplined enough that Career Services could pick it up and run it without us. The stakeholder analysis was the part that taught me the most: it is easy to design something excellent for students and forget it also has to be worth it for the staff running the events and the alumni giving up an evening. <strong>That analysis changed real decisions.</strong> Putting the resource repository under student governance instead of open access came straight out of it, not out of a design meeting.</p>
-        <p>What I would do next is stop stress testing it on paper. <em>Run a small pilot that Career Services has actually signed up for and find out what actually happens</em> when you ask busy people to show up. Every number in this plan is a projection until somebody does that.</p>
+        <span class="quirky">Behind the Prototype</span>
+        <h2>The Code, Page by Page</h2>
+        <p>This shows each page of the prototype next to the React component behind it. Pick a page to watch it run and read its code. E-LINK was a proposal and was never shipped, so every person and company in the prototype is sample data. No real alumni or recruiter information is used.</p>
+
+        <div class="codex-widget" data-codex>
+          <div class="codex-tabs" role="tablist" aria-label="E-LINK prototype pages">
+            {codePages.map((cp, i) => (
+              <button
+                class="codex-tab"
+                role="tab"
+                type="button"
+                id={`codex-tab-${cp.key}`}
+                aria-controls={`codex-panel-${cp.key}`}
+                aria-selected={i === 0 ? 'true' : 'false'}
+                tabindex={i === 0 ? 0 : -1}
+                data-key={cp.key}
+                data-video={img(cp.video)}
+                data-name={cp.name}
+                data-file={cp.file}
+                data-lines={cp.lines}
+              >
+                {cp.name}
+              </button>
+            ))}
+          </div>
+
+          <div class="codex-body">
+            <div class="codex-stage">
+              <div class="codex-frame-bar" aria-hidden="true">
+                <span class="codex-dot codex-dot-1"></span><span class="codex-dot codex-dot-2"></span><span class="codex-dot codex-dot-3"></span>
+                <span class="codex-frame-title" data-codex-name>{codePages[0].name}</span>
+              </div>
+              <video src={img(codePages[0].video)} autoplay muted loop playsinline aria-label="Screen recording of the selected E-LINK prototype page" data-codex-video></video>
+            </div>
+
+            <div class="codex-code">
+              <div class="codex-code-inner">
+                <div class="codex-code-head">
+                  <span class="codex-file" data-codex-file>{codePages[0].file}</span>
+                  <span class="codex-meta" data-codex-meta>{codePages[0].lines} lines</span>
+                  <button class="codex-copy" type="button" data-codex-copy>Copy</button>
+                </div>
+                {codePages.map((cp, i) => (
+                  <div class="codex-panel" role="tabpanel" id={`codex-panel-${cp.key}`} aria-labelledby={`codex-tab-${cp.key}`} hidden={i !== 0} data-key={cp.key}>
+                    <Code code={cp.code} lang="tsx" theme="github-dark-default" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="white-block">
+      <div class="wrap">
+        <h2>How it turned out, and what I would change</h2>
+        <p>This was a proposal, not a product. It had to be detailed enough that Career Services could pick it up and run it without us. The stakeholder analysis taught me the most. It is easy to design something excellent for students and forget that it also has to be worth the time of the staff and the alumni. <strong>That analysis changed real decisions in the plan.</strong></p>
+        <p>The next step is to stop testing it on paper. <em>I would run a small pilot that Career Services has actually agreed to.</em> Every number in this plan is a projection until someone does that.</p>
+        <p>What I took away is that on a project like this, nobody approves it because of the screens. I came in wanting to design the platform, and the useful work turned out to be the schedule, the stakeholder analysis and the risk register. Those are the documents that decide whether anything gets built at all.</p>
+        <p>I was frustrated for the first few weeks. Being the project manager meant watching other people make the decisions I wanted to make, and building a Gantt chart is not why I went into design. By the end I had changed my mind. <strong>The schedule and the risk register are what turned this from an idea into something a school could actually run</strong>, and I now put my hand up for that role instead of avoiding it.</p>
+        <h2 class="ai-heading">How I would change this today with AI</h2>
+        <p>Two parts of this plan were going to be done by hand and should not be. Matching a student to an alumnus meant Career Services reading profiles, which is exactly the work that made the plan expensive for them. A model could do the first pass from what each person says they want and hand staff a short list to approve. Writing the risk register and the schedule also took weeks, and a model would get me to a first draft in an afternoon.</p>
+        <p><strong>None of that touches the reason this plan might fail.</strong> The risk was never the software. It was whether busy alumni give up an evening, and no model makes anybody turn up. Faster drafts would only mean more of the semester spent testing the plan on real people instead of writing it.</p>
       </div>
     </section>
 
@@ -982,8 +965,6 @@ const nextProject = {
         background: #ffffff;
       }
 
-
-
       .wrap {
         max-width: 74rem;
         margin-inline: auto;
@@ -991,9 +972,6 @@ const nextProject = {
       }
 
       /* Nav ------------------------------------------------------------ */
-
-
-
 
       .btn-pill {
         display: inline-flex;
@@ -1439,7 +1417,6 @@ const nextProject = {
       .white-block strong { color: var(--ink); font-weight: 600; }
       .dark-block strong { color: var(--bg); font-weight: 600; }
 
-
       .findings-list {
         margin: 1rem 0 0;
         padding-left: 1.25rem;
@@ -1854,9 +1831,6 @@ const nextProject = {
         font-size: var(--step-caption);
         color: var(--ink-faint);
       }
-
-
-
 
       /* Stakeholder cards ------------------------------------------------------ */
       .stakeholder-grid {
@@ -2734,28 +2708,24 @@ const nextProject = {
 
       .take strong { color: var(--ink); font-weight: 600; }
 
-      .take-label {
-        display: block;
-        line-height: 1.2;
-        margin-bottom: var(--gap-label);
-        font-family: var(--font-quirky);
-        font-size: 1.05rem;
-        color: #00579d;
+      /* Two takes still sit on dark sections, so they need the dark variant.
+         .take strong and .dark-block strong have equal specificity, which is
+         why .dark-block .take strong has to be stated explicitly or the bold
+         sentence renders #101010 on #101010. */
+      .dark-block .take {
+        border-left-color: #4d9fdb;
+        color: rgba(253, 251, 249, 0.7);
       }
+
+      .dark-block .take strong { color: var(--bg); }
 
       /* The same aside also appears inside a .dark-block, where the
          brand purple/blue and the var(--ink) bold are invisible against
          near-black. These three overrides are what make it readable
          there; .dark-block .take strong is needed because .take strong
          has equal specificity and wins on source order. */
-      .dark-block .take {
-        border-left-color: #4d9fdb;
-        color: rgba(253, 251, 249, 0.7);
-      }
 
-      .dark-block .take-label { color: #4d9fdb; }
-
-      .dark-block .take strong { color: var(--bg); }
+      .ai-heading { margin-top: clamp(2.25rem, 5vw, 3.25rem); }
 </style>
   </body>
 </html>

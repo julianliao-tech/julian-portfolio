@@ -44,12 +44,38 @@ const meta = [
 ];
 
 const challenges = [
-  'Work out which obstacles actually change a trip, and leave the rest off the map.',
-  'Tell somebody an elevator is coming up without making them stop to read.',
-  'Design for a person already moving, who cannot study their phone.',
+  'Decide which obstacles actually stop a wheelchair, and leave the rest off the map.',
+  'Show that an elevator is ahead without making the user stop and read.',
+  'Design for someone who is moving and cannot look at their phone for long.',
 ];
 
 const painPoints = ['Elevators', 'Ramps', 'Crowds', 'Bathrooms', 'Report'];
+
+// The four conclusions from the survey and interviews. These were a flat image
+// (04.webp) until now; the text is the same, rebuilt as real markup so it is
+// selectable, searchable and readable by a screen reader.
+// Each card is tipped a different amount so the row reads as pinned notes
+// rather than a grid. Straightens on hover.
+const insightRotations = [-2.2, 1.6, -1.1, 2.4];
+
+const keyInsights = [
+  {
+    title: 'The problems people hit most often',
+    list: ['Lack of ramps', 'Broken elevators', 'Poor signage', 'Crowded spaces'],
+  },
+  {
+    title: 'Confidence giving accessibility information is low',
+    body: 'Most people did not feel confident telling someone with a disability whether a place would be accessible.',
+  },
+  {
+    title: 'People want real time data',
+    body: 'Respondents wanted to know whether a route is accessible right now, not whether it was accessible once.',
+  },
+  {
+    title: 'People who go out more have seen the problems',
+    body: 'Respondents who visit public spaces often had run into these accessibility problems themselves.',
+  },
+];
 const trustPoints = ['Elevator Status', 'Ramp Conditions', 'Reported Obstacles'];
 
 // Percentages measured directly from the real donut charts (surveytwo.png,
@@ -74,21 +100,23 @@ const surveyCharts = [
   },
 ];
 
-const conicGradient = (segments: { pct: number; color: string }[]) => {
+// The donut is an SVG whose radius makes the circumference exactly 100, so a
+// segment's stroke-dasharray is just its percentage. `start` is the running
+// total, used for stroke-dashoffset (25 rotates the origin to 12 o'clock).
+const withArcs = (segments: { pct: number; color: string; label: string }[]) => {
   let acc = 0;
-  const stops = segments.map((s) => {
-    const start = acc;
+  return segments.map((s) => {
+    const seg = { ...s, start: acc };
     acc += s.pct;
-    return `${s.color} ${start}% ${acc}%`;
+    return seg;
   });
-  return `conic-gradient(${stops.join(', ')})`;
 };
 
 const marqueeWords = Array(6).fill('TRAVELIN’ SAFE');
 
 const nextProject = {
   title: 'Michigan ChatGPT',
-  subtitle: 'Four campus AI tools nobody could tell apart, rebuilt into one front door',
+  subtitle: 'Four campus AI tools nobody could tell apart, rebuilt into one starting page',
   image: `${base}images/home/tile-michigan-chatgpt.webp`,
   href: `${base}work/michigan-chatgpt/`,
 };
@@ -125,7 +153,6 @@ const nextProject = {
       <section class="hero-banner">
         <img data-tilt src={img('01.webp')} alt="Guide app screens on a blue background: the Travelin' Safe title screen, a Nearby listing of accessible spots, and the G logo" />
       </section>
-
       <section class="marquee-section" aria-hidden="true">
         <div class="marquee-row">
           <div class="marquee-track marquee-track-left">
@@ -153,15 +180,14 @@ const nextProject = {
           </div>
         </div>
       </section>
-
       <section class="head-block">
         <div class="wrap">
           <div class="head-top">
             <h1 class="title">Guide</h1>
             <div class="context-box">
               <p class="context-label">Where this started</p>
-              <h2 class="context-heading">Planning the route should not cost more than the trip</h2>
-              <p>Guide is a navigation app for wheelchair users. It does three things: route you along paths that actually comply with the ADA, warn you about obstacles and crowds before you reach them, and show what is nearby (elevators, ramps, accessible restrooms) while you are still deciding. The point is that you know what is coming, so a trip stops being a gamble you take and starts being a trip you take.</p>
+              <h2 class="context-heading">Checking a route should not take longer than the trip</h2>
+              <p>Guide is a navigation app for wheelchair users. It finds routes that meet ADA requirements, warns people about obstacles and crowds before they get there, and shows where the nearest elevators, ramps and accessible restrooms are. I built it so someone can find out whether a route will work before they leave the house.</p>
             </div>
           </div>
 
@@ -175,14 +201,13 @@ const nextProject = {
           </dl>
         </div>
       </section>
-
       <section class="white-block personal-section">
         <div class="wrap personal-grid">
           <div class="personal-text">
-            <p class="eyebrow-label">Why this one</p>
-            <h2>My brothers used wheelchairs, and every trip out took planning</h2>
-            <p>Two of my brothers, Nate and Jake, used wheelchairs. They lived with epidermolysis bullosa, which leaves the skin fragile and prone to blistering, so a short trip out of the house was never a short trip. Somebody had to know in advance where the ramps were, which door worked, whether there would be a crowd.</p>
-            <p>Watching that taught me how often people with disabilities get quietly left out of ordinary days, and how rarely anybody builds for it. I had been thinking about this app for years before I had the skills to draw it. It is the most personal project in this portfolio, and the intent behind it is simple: <strong>most people get to assume a route will work. I wanted to build the thing that removes the assuming for everyone else.</strong></p>
+            <p class="eyebrow-label">Why I built it</p>
+            <h2>My brothers used wheelchairs, and every trip out had to be planned</h2>
+            <p>Two of my brothers, Nate and Jake, used wheelchairs. They had epidermolysis bullosa, a condition that makes skin fragile and causes blisters, so going out took planning. Someone in my family had to find out beforehand where the ramps were, which door worked, and whether there would be a crowd.</p>
+            <p>I thought about building this app for years before I had the skills to do it. <strong>Most people can leave the house without checking whether they will be able to get through the door. I wanted to give everyone else that same head start.</strong></p>
           </div>
           <div class="personal-photos">
             <img data-tilt src={img('personal-01.webp')} alt="Julian as a child with his brothers, one recovering from a bandaged arm, in a family photo" />
@@ -190,25 +215,23 @@ const nextProject = {
           </div>
         </div>
       </section>
-
       <section class="head-block head-block-tail">
         <div class="wrap">
           <p class="pull-quote" data-typewriter>
-            <span aria-hidden="true"><span class="tw-seg" data-full="How do you make a route feel certain "></span><span class="tw-seg pull-quote-highlight" data-full="before somebody is already out in it"></span><span class="tw-seg" data-full=", travelling alone?"></span></span>
-            <span class="sr-only">How do you make a route feel certain before somebody is already out in it, travelling alone?</span>
+            <span aria-hidden="true"><span class="tw-seg" data-full="How do you tell someone a route will work "></span><span class="tw-seg pull-quote-highlight" data-full="before they leave the house"></span><span class="tw-seg" data-full=", traveling on their own?"></span></span>
+            <span class="sr-only">How do you tell someone a route will work before they leave the house, traveling on their own?</span>
           </p>
         </div>
       </section>
-
       <section class="dark-block">
         <div class="wrap">
           <div class="challenge-head">
             <span class="quirky">Obstacles</span>
-            <h2>An obstacle you discover on arrival is not information</h2>
+            <h2>Finding out about an obstacle when you arrive is too late</h2>
           </div>
           <ol class="challenge-grid">
             {challenges.map((c, i) => (
-              <li class:list={['challenge-card', { 'is-active': i === 0 }]} data-tilt>
+              <li class:list={['challenge-card']} data-tilt>
                 <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
                 <p>{c}</p>
               </li>
@@ -216,55 +239,54 @@ const nextProject = {
           </ol>
         </div>
       </section>
-
       <section class="white-block tight">
         <div class="wrap">
           <h2>Four out of five people had never seen accessibility info in a map</h2>
-          <p>I ran a survey with over 20 responses and sat down with people who either have a disability or travel regularly with someone who does. The survey gave me the spread; the interviews told me why. The same two complaints came back every time: the path itself was not usable, and there was no way to find that out before setting off. <strong>That second one is the real product.</strong> Everything I drew after this points at it.</p>
-          <p class="take">
-            <span class="take-label">What I think about this stage</span>
-            The survey told me the problem was common. The interviews told me what it costs somebody.
-            I have come to think <strong>numbers are mostly for convincing other people, and
-            conversations are for knowing what to build</strong>. If I could only run one, I would run
-            the interviews every time and lose the chart.
-          </p>
+          <p>I ran a survey with over 20 responses and interviewed people who use a wheelchair or travel with someone who does. Two problems came up every time: <strong>the path was not usable for people in wheelchairs, and there was no way of knowing that before going on the route.</strong> I built the app to tell people about both before they leave.</p>
+          <p class="take">The survey showed me how common the problem was. The interviews showed me what it is like to plan every trip around it. If I could only run one of the two, I would run the interviews.</p>
         </div>
         <div class="image-row-single image-row-single-wide">
           <img data-tilt src={img('02-quotes-cropped.webp')} alt="Three quotes from survey respondents about inconsistent doors and elevators, missing ADA-accessible entrances, and difficulty maneuvering a wheelchair through crowds" />
         </div>
       </section>
-
       <section class="white-block tight">
         <div class="wrap">
-          <p class="eyebrow-label">What kept coming up</p>
-        </div>
-        <div class="image-row-single image-row-single-wide">
-          <img data-tilt src={img('04.webp')} alt="Four key insights: most common travel issues, low confidence providing accessibility info, high demand for real-time data, and frequent visitors noticing accessibility issues firsthand" />
-        </div>
-      </section>
-
-      <section class="white-block tight">
-        <div class="image-row-single image-row-single-wide">
-          <img data-tilt src={img('03.webp')} alt="Accessibility App Affinity Diagram grouping wheelchair-user research feedback into themes: Physical Barriers in Public, Information Gaps, Inconsistent Maintenance & Upkeep, Confidence in Recommending Accessible Spaces, and Desired App Features" />
-        </div>
-      </section>
-
-      <section class="white-block tight">
-        <div class="wrap">
-          <p class="eyebrow-label">The numbers behind it</p>
+          <p class="eyebrow-label">The survey results</p>
+          <p>Every percentage below is measured from my own survey responses. Hover a segment to see its share.</p>
           <div class="chart-grid">
             {surveyCharts.map((chart) => (
               <div class="chart-card">
                 <h3 class="chart-title">{chart.title}</h3>
                 <div class="chart-row">
-                  <div class="donut" style={{ background: conicGradient(chart.segments) }}>
-                    <span class="donut-hole"></span>
+                  <div class="donut-wrap" data-donut>
+                    <svg
+                      class="donut-svg"
+                      viewBox="0 0 50 50"
+                      role="img"
+                      aria-label={`${chart.title}: ${chart.segments.map((s) => `${s.pct}% ${s.label}`).join(', ')}`}
+                    >
+                      {withArcs(chart.segments).map((s) => (
+                        <circle
+                          class="donut-seg"
+                          cx="25"
+                          cy="25"
+                          r="15.915"
+                          data-pct={s.pct}
+                          data-label={s.label}
+                          style={`stroke: ${s.color}; stroke-dasharray: ${s.pct} ${100 - s.pct}; stroke-dashoffset: ${(125 - s.start) % 100};`}
+                        >
+                          <title>{s.pct}% {s.label}</title>
+                        </circle>
+                      ))}
+                    </svg>
+                    <span class="donut-tip" aria-hidden="true"></span>
                   </div>
                   <ul class="chart-legend">
                     {chart.segments.map((s) => (
                       <li>
                         <span class="swatch" style={{ background: s.color }}></span>
-                        {s.label}
+                        <span class="legend-pct">{s.pct}%</span>
+                        <span class="legend-label">{s.label}</span>
                       </li>
                     ))}
                   </ul>
@@ -275,166 +297,123 @@ const nextProject = {
           </div>
         </div>
       </section>
-
-      <section class="dark-block tight">
+      <section class="white-block tight">
         <div class="wrap">
-          <div class="challenge-head">
-            <span class="quirky">Wayfinding</span>
-            <h2>Nobody can read a screen while they are moving</h2>
-          </div>
-          <ol class="challenge-grid">
-            {challenges.map((c, i) => (
-              <li class:list={['challenge-card', { 'is-active': i === 1 }]} data-tilt>
-                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
-                <p>{c}</p>
+          <h2>Grouping the answers into themes</h2>
+          <p>I put every survey answer and interview note on a board and grouped the ones that said the same thing. Five themes came out of it: physical barriers in public, gaps in the information people are given, maintenance that is not kept up, low confidence recommending a place to someone else, and the features people asked for.</p>
+        </div>
+        <div class="image-row-single image-row-single-wide">
+          <img data-tilt src={img('03.webp')} alt="Affinity diagram grouping wheelchair user research feedback into five themes: physical barriers in public, information gaps, inconsistent maintenance and upkeep, confidence in recommending accessible spaces, and desired app features" />
+        </div>
+      </section>
+      <section class="white-block tight">
+        <div class="wrap">
+          <p class="eyebrow-label">Four key insights</p>
+          <h2>What the research came down to</h2>
+          <ol class="insight-row">
+            {keyInsights.map((k, i) => (
+              <li class="insight" style={`--rot: ${insightRotations[i]}deg`}>
+                <span class="insight-pin" aria-hidden="true"></span>
+                <span class="insight-num">{String(i + 1).padStart(2, '0')}</span>
+                <h3 class="insight-title">{k.title}</h3>
+                {k.list
+                  ? <ul class="insight-list">{k.list.map((item) => <li>{item}</li>)}</ul>
+                  : <p class="insight-body">{k.body}</p>}
               </li>
             ))}
           </ol>
         </div>
       </section>
-
       <section class="white-block tight">
         <div class="wrap">
-          <h2>What building personas actually taught me</h2>
-          <p>I built personas out of the research for wheelchair users and for the people who travel with them. The useful part was not the finished documents. It was that writing them forced me to name the frustration behind each goal, and <em>two personas who want the same thing for different reasons need two different screens</em>. The mistake I made first was writing personas that agreed with the app I already wanted to build. The ones I kept are the ones that argued with it.</p>
+          <h2>What building personas taught me</h2>
+          <p>I built personas for wheelchair users and for the people who travel with them. The finished persona documents were not what helped. Writing them made me put down what frustrated each person, not just what they wanted. <em>Two people can want the same thing for different reasons, and that means two different screens.</em> My first personas just matched the app I already wanted to build, so I rewrote them using what people actually told me.</p>
           <div class="image-row image-row-detail image-row-personas">
             <img data-tilt src={img('05.webp')} alt="User persona: Joseph, 33, an Occupational Therapist with moderate tech comfort, with his goals, pain points, and needs" />
             <img data-tilt src={img('16.webp')} alt="User persona: Sarah, 28, a freelance graphic designer and wheelchair user in an urban area, with her goals, pain points, and needs" />
           </div>
         </div>
       </section>
-
       <section class="white-block tight">
         <div class="wrap">
-          <p class="eyebrow-label">Mapping the <span class="accent">Flow</span></p>
+          <p class="eyebrow-label">The user <span class="accent">flow</span></p>
         </div>
         <div class="image-row-single image-row-single-wide">
           <img data-tilt src={img('08.webp')} alt="User flow diagram for the Guide navigation app" />
         </div>
       </section>
-
       <section class="white-block tight">
         <div class="wrap">
-          <h2>Sketching the route before drawing the app</h2>
-          <p>I sketched rough wireframes to work out the flow and the layout, and to check which pieces of accessibility information people actually wanted and in what order. Quick to make, quick to throw away. <strong>Nobody argues with a sketch the way they argue with a finished screen</strong>, which is exactly why I stayed there as long as I could.</p>
-          <div class="image-row-single">
-            <img data-tilt src={img('09.webp')} alt="Low-fidelity wireframes exploring the Guide app's core screens" />
-          </div>
-        </div>
-      </section>
-
-      <section class="dark-block tight">
-        <div class="wrap">
-          <div class="challenge-head">
-            <span class="quirky">On the move</span>
-            <h2>The screen has to work at a glance, held at an angle</h2>
-          </div>
-          <ol class="challenge-grid">
-            {challenges.map((c, i) => (
-              <li class:list={['challenge-card', { 'is-active': i === 2 }]} data-tilt>
-                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
-                <p>{c}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section class="white-block tight">
-        <div class="wrap">
-          <h2>Three versions of the route screen, and why the third won</h2>
-          <p>The first version drew the path and the obstacles but gave you no way to end the trip and no key for the icons, which is a map you have to learn before you can use it. Option 3 was the one that <strong>said what the symbols meant and let you stop, without adding a step to get there</strong>. It is not the prettiest of the three. It is the one you can use with a hand on a wheel.</p>
-          <p class="take">
-            <span class="take-label">What I think about this stage</span>
-            Something I had to catch myself doing: when I put three options side by side I pick the
-            best looking one, every single time, and then find reasons afterwards. So now I write down
-            what the screen has to let somebody do before I lay the options out, and I judge each one
-            against that list instead of against the other two.{' '}
-            <strong>Comparing designs to each other is how a whole set of bad options starts looking
-            fine.</strong>
-          </p>
+          <h2>Three versions of the route screen, and why I picked the third</h2>
+          <p>Version one drew the route and the obstacles, but it had no way to end the trip and no key for the icons, so you had to learn the map before you could use it. Option 3 <strong>labeled the symbols and added an End button without adding a step</strong>. It is not the best looking of the three. I picked it because it works when you only have one hand free.</p>
+          <p class="take">When I put three options side by side, I pick the best looking one and find reasons for it afterwards. So now I write down what the screen has to let someone do before I lay the options out, and I score each option against that list. <strong>If I only compare the options to each other, one of them looks best even when all three are bad.</strong></p>
         </div>
         <div class="image-row-single image-row-single-wide">
           <img data-tilt src={img('10.webp')} alt="Three iterations of the navigation page, from a version without an end button to the final option with labeled icons" />
         </div>
       </section>
-
       <section class="white-block tight">
         <div class="wrap">
-          <h2>The version with a Call button beat the better looking one</h2>
-          <p>Option 1 looked clean because it was missing the address and the hours. Easy to look clean when you leave out what people came for. I picked Option 3: <em>a clear hierarchy, and one obvious thing to do next</em>. In testing, the dedicated "Call" button was what got people through the task, because the real question on that screen is not what is here, it is whether anyone can confirm the place will work when I arrive.</p>
+          <h2>I picked the version with a Call button over the better looking one</h2>
+          <p>Option 1 looked clean because it left out the address and the opening hours. I picked Option 3, which <em>puts the most important information first and gives you one obvious thing to do next</em>. In testing, the Call button was what got people through the task. The question people actually have on that screen is whether someone can confirm the place will work when they arrive.</p>
         </div>
         <div class="image-row-single image-row-single-wide">
           <img data-tilt src={img('11.webp')} alt="Three iterations of the location detail page, ending in a version with a dedicated Call button and segmented data" />
         </div>
       </section>
-
       <section class="feature-band feature-band-blue feature-band-reverse tight">
         <div class="feature-media">
-          <img data-tilt src={img('12.webp')} alt="Two Guide app screens showing an elevator-location callout and an important-alert callout over the map" />
+          <img data-tilt src={img('12.webp')} alt="Two Guide app screens showing an elevator location callout and an important alert callout over the map" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">Five things people wanted to know before setting off</h2>
-          <p>Everything people told me collapsed into five markers worth putting on a route: elevators, ramps, crowds, accessible restrooms, and a way to report something that is wrong. <em>Five is the number you can read at a glance</em>; I had a longer list and cutting it was most of the work. The report marker is the one I would defend hardest. It is the only one that keeps the map honest after I stop maintaining it.</p>
+          <h2 class="feature-heading">Five things people wanted to know before going on a route</h2>
+          <p>Everything people told me came down to five things worth marking on a route: elevators, ramps, crowds, accessible restrooms, and a way to report something broken. I started with a longer list, and cutting it down was most of the work. <em>Five is the number someone can read quickly while they are moving.</em> I kept the report marker because it is what keeps the map accurate after I stop updating it.</p>
           <ul class="pinpoint-row">
             {painPoints.map((p) => <li>{p}</li>)}
           </ul>
         </div>
       </section>
-
       <section class="feature-band feature-band-blue tight">
         <div class="feature-media">
-          <img data-tilt src={img('13.webp')} alt="Two Guide app screens: turn-by-turn directions to Warm Springs Plaza with an accessibility icon bar, and the surrounding map view" />
+          <img data-tilt src={img('13.webp')} alt="Two Guide app screens: turn by turn directions to Warm Springs Plaza with an accessibility icon bar, and the surrounding map view" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">A route is only trustworthy if somebody checked it recently</h2>
-          <p>The app surfaces one route, the most accessible one with the fewest detours, and it favors paths that are maintained, marked, and <strong>confirmed by somebody recently</strong>. You can open any route to see elevator status, ramp condition and whatever has been reported. An accessibility map that nobody updates is worse than no map, because it gets believed. Recency is the feature.</p>
-          <p class="take">
-            <span class="take-label">What I think about this stage</span>
-            This is the one piece I would push back on if a client asked me to build it. An accessibility
-            map is a promise, and people plan their day around it. <strong>Shipping one and then not
-            maintaining it is worse than never shipping it at all</strong>, because the failure lands on
-            somebody standing outside a door that does not open. I would rather launch a smaller map that
-            stays true than a complete one that rots.
-          </p>
+          <h2 class="feature-heading">A route is only reliable if someone checked it recently</h2>
+          <p>The app gives one route, the most accessible one with the fewest detours. It favors paths that are maintained, marked and <strong>confirmed by someone recently</strong>. You can open the route to see elevator status, ramp condition, and anything that has been reported.</p>
+          <p class="take">People plan their day around an accessibility map. I think <strong>launching one and then not updating it is worse than never launching it</strong>, because the person who finds out it is wrong is already standing outside a door that does not open.</p>
           <ul class="pinpoint-row">
             {trustPoints.map((p) => <li>{p}</li>)}
           </ul>
         </div>
       </section>
-
       <section class="white-block tight">
         <div class="wrap">
-          <h2>How it ended up</h2>
+          <h2>The finished prototype</h2>
         </div>
         <div class="prototype-phone">
           <video src={img('prototype.mp4')} autoplay muted loop playsinline aria-label="Screen recording of the Guide prototype: navigating from Home and Nearby through location detail, directions, and alerts"></video>
         </div>
       </section>
-
       <section class="white-block tight">
         <div class="wrap">
-          <p class="eyebrow-label">The kit it is built from</p>
+          <p class="eyebrow-label">The design kit</p>
         </div>
         <div class="image-row-single image-row-single-wide">
           <img data-tilt src={img('15.webp')} alt="Guide app design kit: Work Sans typography scale, a blue/gray/coral color palette with hex codes, and the app's icon and button assets" />
         </div>
       </section>
-
-      <section class="white-block white-block-flush-bottom tight">
-        <div class="image-row-single image-row-single-full">
-          <img data-tilt src={img('14.webp')} alt="A map of the full Guide app screen flow, from Home and Nearby through location detail, directions, search, and alert-description screens" />
-        </div>
-      </section>
-
-      <section class="dark-block tight">
+      <section class="white-block tight">
         <div class="wrap">
-          <h2>Where it landed, and what I would change</h2>
-          <p>Designing for somebody already in motion forced me to <em>cut everything down to what is essential</em>, and it turns out that is a much shorter list than I wanted it to be. That habit followed me into every project since.</p>
-          <p>I ran every stage of this one myself, from the first survey response to the final prototype. If I picked it up again I would go back to the people I interviewed and test the finished flow on them, because I never closed that loop and it is the part I think about. <strong>This is the project I would still be working on if I could only keep one</strong>, and it is the reason I care about this field rather than just being good at it.</p>
+          <h2>How it turned out, and what I would change</h2>
+          <p>Designing for someone who is already moving made me <em>cut the route screen down to five markers and one action</em>, which is far less than I started with.</p>
+          <p>I ran every stage of this myself, from the first survey response to the prototype. I never went back to the people I interviewed to test the finished screens on them, and that is the part I did not finish. It is the first thing I would do if I worked on this again.</p>
+          <p>What I took from this is a habit I use on everything now. Before I draw anything I ask what the person is doing with their hands, their attention and their time while they use it. Guide had to work for someone pushing a wheelchair through a crowd, with one hand free and about two seconds to look. Once that is the test, most of what I wanted to put on the screen does not survive it.</p>
+          <p>This one was harder to work on than I expected. My brothers are the reason it exists, so I was slower and more careful with it than I am with other projects, because I did not want to build something that looked like it helped and did not. <strong>The part I am still uneasy about is that I made an accessibility app without putting it in front of a single wheelchair user.</strong> I know why I did not manage it in four weeks. I still think it was the wrong call.</p>
+          <h2 class="ai-heading">How I would change this today with AI</h2>
+          <p>The problem I never solved was keeping the map current. A map of ramps and elevators goes out of date within months, and I was relying on users to report every change themselves. Today I would have a model look at the photo somebody submits and confirm that the ramp or the elevator is there and working, so a report gets checked in seconds instead of sitting in a queue. I would also use a model to pull accessibility details out of sources that already exist, like business websites, city inspection records and reviews, so the map has something on it the day it launches instead of being empty.</p>
+          <p>I would not put any of that on the map without saying where it came from. <strong>A wrong accessibility claim is worse than no claim</strong>, because somebody plans their day around it. Anything a model produced would be marked as unconfirmed until a person checked it, and the route the app recommends would still only use paths a person has confirmed.</p>
         </div>
       </section>
-
       <section class="up-next tight">
         <div class="wrap">
           <span class="quirky">Up Next</span>
@@ -457,6 +436,26 @@ const nextProject = {
     <script>
       import '../../scripts/site.js';
       import '../../scripts/lightbox.js';
+
+      // Donut tooltips. The tooltip element is authored in the template (not
+      // created here) so Astro's scoped styles actually apply to it.
+      document.querySelectorAll<HTMLElement>('[data-donut]').forEach((wrap) => {
+        const tip = wrap.querySelector<HTMLElement>('.donut-tip');
+        if (!tip) return;
+        const hide = () => tip.classList.remove('is-on');
+        wrap.querySelectorAll<SVGCircleElement>('.donut-seg').forEach((seg) => {
+          const show = (e: PointerEvent) => {
+            tip.textContent = `${seg.dataset.pct}% ${seg.dataset.label}`;
+            tip.classList.add('is-on');
+            const box = wrap.getBoundingClientRect();
+            tip.style.left = `${e.clientX - box.left}px`;
+            tip.style.top = `${e.clientY - box.top}px`;
+          };
+          seg.addEventListener('pointerenter', show as EventListener);
+          seg.addEventListener('pointermove', show as EventListener);
+          seg.addEventListener('pointerleave', hide);
+        });
+      });
 
       const btn = document.querySelector('[data-copy-email]');
       btn?.addEventListener('click', async () => {
@@ -524,8 +523,6 @@ const nextProject = {
         background: #ffffff;
       }
 
-
-
       .wrap {
         max-width: 74rem;
         margin-inline: auto;
@@ -533,9 +530,6 @@ const nextProject = {
       }
 
       /* Nav ------------------------------------------------------------ */
-
-
-
 
       .btn-pill {
         display: inline-flex;
@@ -906,7 +900,6 @@ const nextProject = {
       .dark-block strong { color: var(--bg); font-weight: 600; }
       .dark-block em { color: var(--bg); font-style: italic; }
 
-
       .eyebrow-label {
         font-family: var(--font-body);
         font-weight: 600;
@@ -976,6 +969,112 @@ const nextProject = {
 
       /* Survey donut charts — built with a CSS conic-gradient, not
          images. Percentages are measured from the real source charts. */
+
+
+      /* Survey percentages ---------------------------------------------- */
+
+
+      .chart-legend li { align-items: baseline; }
+      .chart-legend .swatch { align-self: center; }
+
+      .legend-pct {
+        font-weight: 600;
+        color: var(--ink);
+        font-variant-numeric: tabular-nums;
+        min-width: 2.7em;
+      }
+
+      .legend-label { color: var(--ink-soft); }
+
+      /* Four key insights ------------------------------------------------
+         Was a flat exported image, then a row of dark cards. Now pinned
+         index cards on a tinted board: each one is tipped by its own
+         --rot and straightens on hover. */
+      .insight-row {
+        list-style: none;
+        margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+        padding: clamp(1.75rem, 4vw, 2.75rem) clamp(1.25rem, 3vw, 2.5rem);
+        background: rgba(151, 173, 209, 0.14);
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+
+      .insight {
+        position: relative;
+        background: var(--bg);
+        padding: 1.7rem 1.4rem 1.4rem;
+        transform: rotate(var(--rot, 0deg));
+        box-shadow: 0 10px 22px rgba(16, 16, 16, 0.12);
+        transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+      }
+
+      .insight:hover {
+        transform: rotate(0deg) translateY(-3px);
+        box-shadow: 0 16px 30px rgba(16, 16, 16, 0.16);
+      }
+
+      .insight-pin {
+        position: absolute;
+        top: -0.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0.9rem;
+        height: 0.9rem;
+        border-radius: 50%;
+        background: #e28a8a;
+        box-shadow: 0 2px 4px rgba(16, 16, 16, 0.3);
+      }
+
+      /* A marker face as a block label has to set its own leading, or it
+         inherits the body's 1.65 and sits lopsided in its box. */
+      .insight-num {
+        font-family: var(--font-quirky);
+        font-size: 1.3rem;
+        line-height: 1.2;
+        color: #6f88b4;
+        display: block;
+      }
+
+      .insight-title {
+        margin: 0.35rem 0 var(--gap-label);
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: var(--step-card-title);
+        line-height: 1.3;
+        color: var(--ink);
+      }
+
+      .insight-body {
+        margin: 0;
+        max-width: none;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
+        color: var(--ink-soft);
+      }
+
+      .insight-list {
+        margin: 0;
+        padding-left: 1.1rem;
+        display: grid;
+        gap: 0.3rem;
+      }
+
+      .insight-list li {
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
+        color: var(--ink-soft);
+      }
+
+      @media (min-width: 700px) {
+        .insight-row { grid-template-columns: 1fr 1fr; gap: 2.25rem; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .insight { transition: none; }
+        .insight:hover { transform: rotate(var(--rot, 0deg)); }
+      }
+
       .chart-grid {
         display: grid;
         grid-template-columns: 1fr;
@@ -1007,20 +1106,58 @@ const nextProject = {
         gap: 1.75rem;
       }
 
-      .donut {
+      /* The ring is an SVG so each segment is its own element: hoverable,
+         focusable, and able to carry a tooltip. r = 15.915 makes the
+         circumference exactly 100, so dasharray is the percentage itself. */
+      .donut-wrap {
         position: relative;
-        width: clamp(140px, 22vw, 190px);
-        aspect-ratio: 1;
-        border-radius: 50%;
+        width: clamp(150px, 23vw, 200px);
         flex-shrink: 0;
       }
 
-      .donut-hole {
-        position: absolute;
-        inset: 30%;
-        border-radius: 50%;
-        background: #ffffff;
+      .donut-svg {
         display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .donut-seg {
+        fill: none;
+        stroke-width: 13;
+        transition: stroke-width 0.15s var(--ease-out), opacity 0.15s var(--ease-out);
+      }
+
+      .donut-seg:hover {
+        stroke-width: 15;
+      }
+
+      .donut-wrap:hover .donut-seg:not(:hover) { opacity: 0.4; }
+
+      .donut-tip {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -150%);
+        padding: 0.3rem 0.6rem;
+        border-radius: 0.3rem;
+        background: var(--ink);
+        color: var(--bg);
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: var(--step-small);
+        line-height: 1.3;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.12s var(--ease-out);
+        z-index: 3;
+      }
+
+      .donut-tip.is-on { opacity: 1; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .donut-seg { transition: none; }
+        .donut-tip { transition: none; }
       }
 
       .chart-legend {
@@ -1192,13 +1329,17 @@ const nextProject = {
         gap: 1rem;
       }
 
+      /* Every card carries the lit treatment. There used to be three copies
+         of this grid, each dimming all but one card; the dim state read as
+         disabled rather than as sequence, so the grid appears once now and
+         all of it is legible. */
       .challenge-card {
         --tilt-x: 0deg;
         --tilt-y: 0deg;
-        border: 1px solid rgba(253, 251, 249, 0.15);
-        border-left: 3px solid rgba(253, 251, 249, 0.15);
+        border: 1px solid rgba(253, 251, 249, 0.3);
+        border-left: 3px solid #97add1;
         padding: 1.5rem;
-        background: rgba(253, 251, 249, 0.03);
+        background: rgba(253, 251, 249, 0.08);
         transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
         transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s var(--ease-out);
       }
@@ -1206,7 +1347,8 @@ const nextProject = {
       .challenge-card p {
         margin: 0.75rem 0 0;
         max-width: none;
-        color: rgba(253, 251, 249, 0.45);
+        color: var(--bg);
+        font-weight: 500;
         font-size: var(--step-body);
         line-height: var(--leading-body);
       }
@@ -1215,20 +1357,7 @@ const nextProject = {
         font-family: var(--font-body);
         font-weight: 800;
         font-size: 1.5rem;
-        color: rgba(253, 251, 249, 0.35);
-      }
-
-      .challenge-card.is-active {
-        background: rgba(253, 251, 249, 0.08);
-        border-color: rgba(253, 251, 249, 0.3);
-        border-left-color: #97add1;
-      }
-
-      .challenge-card.is-active .challenge-num { color: #97add1; }
-
-      .challenge-card.is-active p {
-        color: var(--bg);
-        font-weight: 500;
+        color: #97add1;
       }
 
       @media (min-width: 700px) {
@@ -1330,14 +1459,7 @@ const nextProject = {
 
       .take strong { color: var(--ink); font-weight: 600; }
 
-      .take-label {
-        display: block;
-        line-height: 1.2;
-        margin-bottom: var(--gap-label);
-        font-family: var(--font-quirky);
-        font-size: 1.05rem;
-        color: #1a50e0;
-      }
+      .ai-heading { margin-top: clamp(2.25rem, 5vw, 3.25rem); }
 </style>
   </body>
 </html>

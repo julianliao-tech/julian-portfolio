@@ -153,8 +153,8 @@ const carouselAngleStep = 360 / carouselPhotos.length;
           <h1 class="title">connexU<br />Event Website</h1>
           <div class="context-box">
             <p class="context-label">Where this started</p>
-            <h2 class="context-heading">A site that hid the one thing everybody came for</h2>
-            <p>connexU runs marketplace style conferences out of Sydney: Retail Tech, Ecommerce, Retail Property. They put senior buyers in curated one to one meetings with vendors. I spent the summer of 2026 on staff there rebuilding connexu.com.au from scratch, not refreshing it. I signed a confidentiality agreement, so what follows is the research and the outcomes rather than the interface itself. <strong>That turns out to be the half worth reading anyway.</strong></p>
+            <h2 class="context-heading">The site buried the one thing most visitors came to do</h2>
+            <p>connexU runs marketplace style conferences out of Sydney. They put senior buyers into scheduled one to one meetings with vendors. I spent the summer of 2026 on staff there, rebuilding connexu.com.au rather than updating the site they had. I signed a confidentiality agreement, so <strong>this page covers the research and the outcomes, not the interface itself.</strong></p>
           </div>
         </div>
 
@@ -167,7 +167,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
           ))}
         </dl>
 
-        <p class="intro">This was my first time designing for a business where I was not the customer and never would be. The people using this site book five figure sponsorships and fly in for two days of meetings, so nothing about my instincts as a student applied. So I stopped guessing and tested it: five people, ten tasks, a stopwatch. <strong>What I learned is that the site was organized around how the company describes itself, and visitors were looking for something else entirely.</strong> Everybody inside the company could navigate it perfectly. That is usually the warning sign, not the reassurance.</p>
+        <p class="intro">This was the first time I designed for a business where I was not the customer and never would be. The people using this site book five figure sponsorships and fly in for two days of meetings, so my instincts as a student did not apply. Instead of guessing, I tested the site with five people on ten tasks. <strong>The site was organized around how the company describes itself, and visitors were looking for something else.</strong></p>
 
         <p class="pull-quote" data-typewriter>
           <span aria-hidden="true"><span class="tw-seg" data-full="The site was organized "></span><span class="tw-seg pull-quote-highlight" data-full="the way the company thinks"></span><span class="tw-seg" data-full=", not the way a visitor does."></span></span>
@@ -197,16 +197,9 @@ const carouselAngleStep = 360 / carouselPhotos.length;
 
     <section class="white-block">
       <div class="wrap">
-        <h2>I scored the old site before I drew a single screen</h2>
-        <p class="take">
-          <span class="take-label">What I think about this stage</span>
-          A heuristic evaluation is the cheapest hour in this whole process and the one people skip.
-          It is just you, the site, and ten rules somebody else already argued about. What it buys you
-          is a list with severities attached, which is a completely different conversation from walking
-          into a client meeting with opinions about their homepage.{' '}
-          <strong>Opinions get debated. A High severity finding gets scheduled.</strong>
-        </p>
-        <p>Before touching anything I scored the existing site against Nielsen’s ten usability heuristics. Two problems came back <strong>High</strong> severity, three came back <strong>Medium</strong>. Doing this first meant I walked into the redesign with a list I could defend, rather than a set of opinions about how the site looked.</p>
+        <h2>I scored the old site before I designed anything</h2>
+        <p>Before I changed anything, I scored the existing site against Nielsen’s ten usability heuristics. Two problems came back <strong>High</strong> severity and three came back <strong>Medium</strong>. Doing this first meant I started the redesign with a list of specific problems rather than opinions about how the site looked.</p>
+        <p class="take">A heuristic evaluation takes about an hour and it is the step people skip. All you need is the site and the ten rules. I do it because <strong>a client will argue with my opinion, but they will schedule work to fix a problem marked High severity.</strong></p>
         <ul class="heuristic-list">
           {heuristicFindings.map((h) => (
             <li class="heuristic-row">
@@ -225,7 +218,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
           <span class="quirky">5 Participants, 10 Tasks</span>
           <h2>Five out of five could not find how to register</h2>
         </div>
-        <p>Five people, ten tasks on the live site. Nearly everyone finished nearly everything, which is the result that fools you if you only count completions. What I was watching was the hesitation: labels nobody could predict, people guessing where a thing would live and guessing wrong, and the constant checking of whether they were still on the right path. <strong>Several tasks ran far longer than they should have, and none of that time was the task being hard</strong>. It was the site being unpredictable. People knew exactly what they wanted. They could not work out where it was kept.</p>
+        <p>I tested five people on ten tasks on the live site. Nearly everyone finished nearly everything, so the completion rate looked fine. What I was watching was the hesitation: labels nobody could predict, and people guessing where something would be and guessing wrong. <strong>Several tasks took far longer than they should have, and the extra time was not people finding the task hard.</strong> They knew what they wanted. They could not work out where the site had put it.</p>
         <div class="participants-row">
           <p><strong>P1</strong>, 20, somewhat involved with event registration.</p>
           <p><strong>P2</strong>, 21, approaching the site as a first time visitor.</p>
@@ -246,18 +239,9 @@ const carouselAngleStep = 360 / carouselPhotos.length;
 
     <section class="white-block">
       <div class="wrap">
-        <p class="take">
-          <span class="take-label">What I think about this stage</span>
-          Watching the tests was uncomfortable, and I think that is the point of running them. I had
-          already formed a view about what was wrong with the site, and about half of it turned out to
-          be me projecting. Everybody inside the company could navigate that site perfectly, which I now
-          read as the warning rather than the reassurance.{' '}
-          <strong>You cannot unsee a building once you work inside it</strong>, so somebody from outside
-          has to tell you what it looks like from the street.
-        </p>
-
-        <h2>What changed, and what I am allowed to show you</h2>
-        <p>The navigation came down to plain labels that say what is behind them. Every event page now gives you three real ways forward ("Register your interest", "Download brochure", and a link to the event’s own site) instead of one generic button that assumed everybody wanted the same thing. The events index got filtering by sector and year. The contact page now promises a same day reply, because an unstated response time reads as no reply at all. And the dense paragraphs got broken into short stat callouts you can actually skim. <strong>Almost none of this was a visual decision. It was deciding what each page is for and then saying so.</strong></p>
+        <h2>What I changed, and what I am allowed to show you</h2>
+        <p>I rewrote the navigation so every label says what is behind it. Every event page now offers three specific things to do next instead of one generic button. The events index can be filtered by sector and year. The contact page states that you will get a reply the same day, because a page that does not say how long it will take makes it look like nobody will reply at all. <strong>Almost none of this was a visual decision. It was deciding what each page was for and then saying so on the page.</strong></p>
+        <p class="take">Watching the tests was uncomfortable. I had already decided what was wrong with the site, and about half of what I believed turned out to be wrong. Everyone inside the company could use the site perfectly, and I now treat that as a warning sign rather than a good result. <strong>People who work at a company already know where everything is, so they cannot tell you whether a new visitor would find it.</strong></p>
         <ul class="findings-list">
           {whatChanged.map((w) => <li>{w}</li>)}
         </ul>
@@ -266,26 +250,22 @@ const carouselAngleStep = 360 / carouselPhotos.length;
 
     <section class="white-block">
       <div class="wrap">
-        <p><strong>The confidentiality agreement means I cannot post much here, including the design system. Email me if you want to hear more. I am always happy to walk through the process and the research behind the redesign, as far as the agreement lets me.</strong></p>
+        <p><strong>The confidentiality agreement means I cannot post much here, including the design system. Email me if you want to hear more. I am happy to walk through the process and the research as far as the agreement allows.</strong></p>
         <a class="btn-pill btn-pill-solid cta-site-link" href="https://connexu.com.au/" target="_blank" rel="noreferrer">View Full Site</a>
       </div>
     </section>
 
-    <section class="dark-block">
+    <section class="white-block">
       <div class="wrap">
-        <p class="take">
-          <span class="take-label">What I think about this stage</span>
-          Almost nothing I changed on this site was a visual decision, and I think that is the part
-          people miss about redesigns. The nav got shorter because we decided what each page was for.
-          The contact page improved because somebody committed to answering in a day.{' '}
-          <strong>Most of what reads as a better looking site is actually a company being clearer about
-          what it does.</strong> I came in expecting to make things prettier and spent the summer
-          making them say what they meant.
-        </p>
-
-        <h2>Where it landed, and what I would change</h2>
-        <p>Working on staff for a summer also meant Sydney outside the office: 5 a.m. run clubs before the workday, Christmas in July in the middle of an Australian winter, and a trip up to the Great Barrier Reef. Living somewhere while you work there is a different thing from visiting, and I would do it again tomorrow.</p>
-        <p>The honest gap is that I never reran the tests. I know the structure shipped; I do not know from data that it worked, and I am inferring from the shape of the fix rather than measuring it. <strong>If I went back, the first thing I would do is run the same ten tasks against the live site</strong> and find out whether I was right, then use that to decide what to do about the agenda detail, which is still the weakest page.</p>
+        <h2>How it turned out, and what I would change</h2>
+        <p>Working there for a summer also meant living in Sydney: 5 a.m. run clubs before work, Christmas in July in the middle of an Australian winter, and a trip up to the Great Barrier Reef. I would do it again.</p>
+        <p>The part I did not finish is testing the new site. I know the new structure shipped, but I have no data showing that it worked. <strong>If I went back, the first thing I would do is run the same ten tasks on the live site</strong> and find out whether I was right.</p>
+        <p class="take">I arrived expecting to make the site look better and spent the summer making it clearer instead. The navigation got shorter because we decided what each page was for. The contact page got better because someone agreed to answer within a day. <strong>I think when people say a site looks better, what usually changed is that the company got clearer about what it does.</strong></p>
+        <p>What I took away is how different it is to design for a business whose customer you will never be. Every instinct I had came from being a student using student products. Here the visitor was a buyer spending five figures on a stand, and the only way to learn anything about them was to go and watch one.</p>
+        <p>I liked this work more than I expected to. I thought a conference site for business buyers would be dull, and <strong>writing for people who are nothing like me turned out to be the part of this job I enjoy most</strong>. What still bothers me is leaving at the end of the summer without ever finding out whether the redesign worked.</p>
+        <h2 class="ai-heading">How I would change this today with AI</h2>
+        <p>The whole problem was that the labels were written in the company's language instead of the visitor's. Today I would generate twenty sets of navigation labels with a model, cut them down myself, and bring only the best two into testing. I would also run a first pass of the ten usability heuristics with a model, which gives me a list to check in a few minutes rather than an hour.</p>
+        <p>None of that replaces the part that mattered. <strong>What told me the site was broken was watching five people hesitate</strong>, and a model does not hesitate. I would use it to get to the test faster and to spend those five participants on better questions, not to skip them.</p>
       </div>
     </section>
 
@@ -436,8 +416,6 @@ const carouselAngleStep = 360 / carouselPhotos.length;
         background: #ffffff;
       }
 
-
-
       .wrap {
         max-width: 74rem;
         margin-inline: auto;
@@ -445,9 +423,6 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       }
 
       /* Nav ------------------------------------------------------------ */
-
-
-
 
       .btn-pill {
         display: inline-flex;
@@ -904,7 +879,6 @@ const carouselAngleStep = 360 / carouselPhotos.length;
       .white-block p { color: var(--ink-soft); }
       .dark-block .wrap > p { color: rgba(253, 251, 249, 0.7); }
 
-
       .findings-list {
         margin: 1rem 0 0;
         padding-left: 1.25rem;
@@ -1194,28 +1168,13 @@ const carouselAngleStep = 360 / carouselPhotos.length;
 
       .take strong { color: var(--ink); font-weight: 600; }
 
-      .take-label {
-        display: block;
-        line-height: 1.2;
-        margin-bottom: var(--gap-label);
-        font-family: var(--font-quirky);
-        font-size: 1.05rem;
-        color: #1d0065;
-      }
-
       /* The same aside also appears inside a .dark-block, where the
          brand purple/blue and the var(--ink) bold are invisible against
          near-black. These three overrides are what make it readable
          there; .dark-block .take strong is needed because .take strong
          has equal specificity and wins on source order. */
-      .dark-block .take {
-        border-left-color: #a566ff;
-        color: rgba(253, 251, 249, 0.7);
-      }
 
-      .dark-block .take-label { color: #a566ff; }
-
-      .dark-block .take strong { color: var(--bg); }
+      .ai-heading { margin-top: clamp(2.25rem, 5vw, 3.25rem); }
 </style>
   </body>
 </html>

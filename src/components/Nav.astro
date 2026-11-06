@@ -4,7 +4,7 @@ const here = Astro.url.pathname.replace(/\/+$/, '');
 const isActive = (href: string) => here === href.replace(/\/+$/, '');
 
 const links = [
-  { label: 'Home', href: base },
+  { label: 'My Work', href: base },
   { label: 'About', href: `${base}about/` },
   { label: 'Photos', href: `${base}photos/` },
   { label: 'Travel', href: `${base}travel/` },
@@ -19,7 +19,7 @@ const links = [
     <nav class="links" aria-label="Primary">
       {links.map((link) => (
         <a
-          class:list={['navlink', { 'is-active': isActive(link.href), 'is-home': link.label === 'Home' }]}
+          class:list={['navlink', { 'is-active': isActive(link.href), 'is-home': link.href === base }]}
           href={link.href}
           aria-current={isActive(link.href) ? 'page' : undefined}
         >

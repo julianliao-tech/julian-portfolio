@@ -261,13 +261,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
             </span>
           </h1>
           <p class="hero-sub rise" style="--d: 300ms">
-            A product designer shaped by my two brothers, both disabled, and the technology that too often wasn't built for them.
-          </p>
-          <p class="hero-avail rise" style="--d: 340ms">
-            <span class="hero-avail-dot" aria-hidden="true"></span>
-            Senior at the University of Michigan School of Information, open to{' '}
-            <strong>full time product design roles</strong>.{' '}
-            <a href="mailto:julianliaowork@gmail.com">Email me</a>.
+            A product designer in my senior year at the University of Michigan School of
+            Information, shaped by my two brothers, both disabled, and the technology that
+            too often wasn't built for them. Open to{' '}
+            <strong>full time product design roles</strong>.
           </p>
         </div>
 
@@ -299,6 +296,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
             >{line.text}</div>
           ))}
         </div>
+
+        <a class="hero-cta rise" style="--d: 440ms" href="mailto:julianliaowork@gmail.com">
+          <span class="hero-avail-dot" aria-hidden="true"></span>
+          Email me
+        </a>
       </div>
     </div>
   </section>
@@ -589,37 +591,43 @@ const pad = (n: number) => String(n).padStart(2, '0');
     font-size: var(--step-body);
     line-height: var(--leading-body);
     color: var(--ink);
-    max-width: 34rem;
+    max-width: 38rem;
     margin: 0 auto var(--space-2);
   }
 
-  /* Availability line — the one thing on this page a hiring manager is
-     scanning for, so it sits directly under the intro rather than at the
-     bottom of the About page where it was effectively invisible. */
-  /* Normal text flow, not a flex row. As an inline-flex row with a
-     0.5rem gap, every segment boundary in this sentence got a fixed 8px
-     gap in place of a word space -- including before the full stops --
-     and because the font-size shrank with the viewport while the gap did
-     not, the spacing looked roughly 2.5x too wide on a phone. Real
-     spaces do the spacing now. The pill still hugs its text and stays
-     centred because .hero-copy is a centred column flex parent. */
-  .hero-avail {
-    margin: 0 auto var(--space-2);
-    padding: 0.4rem 0.9rem;
+  .hero-sub strong { color: var(--ink); font-weight: 600; }
+
+  /* The one action on this page a hiring manager is looking for, so it
+     is its own target under the credentials block rather than a link
+     buried mid-sentence. Pill shape kept from the old availability
+     line; the green dot still reads as "open to work". */
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.35rem;
     border: 1px solid var(--line);
     border-radius: 999px;
     background: var(--bg-elev);
+    color: var(--ink);
     font-size: var(--step-body);
     line-height: var(--leading-body);
-    text-align: center;
-    color: var(--ink-soft, var(--ink));
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s var(--ease), border-color 0.2s var(--ease),
+      transform 0.2s var(--ease);
   }
 
-  .hero-avail strong { color: var(--ink); font-weight: 600; }
+  .hero-cta:hover,
+  .hero-cta:focus-visible {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+    transform: translateY(-2px);
+  }
 
-  .hero-avail a {
-    color: inherit;
-    text-underline-offset: 3px;
+  @media (prefers-reduced-motion: reduce) {
+    .hero-cta:hover,
+    .hero-cta:focus-visible { transform: none; }
   }
 
   .hero-avail-dot {

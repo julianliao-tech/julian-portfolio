@@ -47,19 +47,19 @@ const meta = [
 ];
 
 const challenges = [
-  'Turn a live signal number into something a person can read at a glance.',
-  'Explain what 5G UW is without handing anybody a manual.',
+  'Turn a live signal number into a word a person can read quickly.',
+  'Explain what 5G UW is without making anyone read a manual.',
   'Work for someone on a ladder, in a basement, with one hand free.',
 ];
 
 const takeaways = [
   {
     title: 'Design for the worst conditions, not the demo',
-    body: 'Bad light, one free hand, a garage that had no signal to begin with. Every screen had to hold its own weight, because out there nobody gets a second guess.',
+    body: 'Bad light, one free hand, and a garage with no signal. Every screen had to work the first time, because nobody installing a booster gets to try again later.',
   },
   {
     title: 'Engineers will tell you what is cheap to build',
-    body: "SureCall's backend engineers flagged what was easy and what was painful, and it changed what I drew. Now I ask before I draw instead of after.",
+    body: "SureCall's backend engineers told me which parts were easy to build and which were slow, and that changed what I drew. Now I ask them before I draw instead of after.",
   },
 ];
 
@@ -104,7 +104,6 @@ const nextProject = {
       <section class="hero-banner">
         <img data-tilt src={img('01.webp')} alt="Two SureCall EZ-5G Signal Test app screens on a green background, showing a signal-strength check and the SureCall wordmark" />
       </section>
-
       <section class="marquee-section" aria-hidden="true">
         <div class="marquee-row">
           <div class="marquee-track marquee-track-left">
@@ -132,15 +131,14 @@ const nextProject = {
           </div>
         </div>
       </section>
-
       <section class="head-block">
         <div class="wrap">
           <div class="head-top">
             <h1 class="title">SureCall</h1>
             <div class="context-box">
               <p class="context-label">Where this started</p>
-              <h2 class="context-heading">A booster in the wrong spot is a paperweight</h2>
-              <p>SureCall builds cell signal boosters, and teamed up with Verizon on a phone app that helps you work out where to put one. It does three things: test the signal where you are standing, confirm the booster is working once it is mounted, and explain enough about 5G UW that the numbers start to mean something. All of that happens in a garage or a crawlspace, so it had to be <strong>fast, readable, and hard to get wrong</strong>.</p>
+              <h2 class="context-heading">A booster in the wrong spot does not improve the signal</h2>
+              <p>SureCall builds cell signal boosters and worked with Verizon on a phone app that helps people figure out where to put one. The app does three things: it tests the signal where you are standing, it confirms the booster is working once it is mounted, and it explains enough about 5G UW that the numbers mean something. People use it in a garage or a crawlspace, so it had to be <strong>fast, readable, and hard to get wrong</strong>.</p>
             </div>
           </div>
 
@@ -153,7 +151,7 @@ const nextProject = {
             ))}
           </dl>
 
-          <p class="intro">Boosters go into garages, basements and rural houses where the signal was already bad, which is the whole reason somebody buys one. The people installing them split into two groups that want opposite things: technicians who do this all day and want the raw number, and homeowners who will do it exactly once and want to be told whether they are finished. <em>I had to serve the second group without slowing down the first.</em> Verizon wanted fewer support calls, and <strong>a support call is usually just somebody who could not tell whether the thing was working</strong>.</p>
+          <p class="intro">Boosters go into garages, basements and rural houses where the signal was already bad. Two kinds of people install them and they want different things. Technicians do this all day and want the raw signal number. Homeowners do it once and want to be told they are finished. <em>I had to give the homeowner a plain answer without slowing the technician down.</em> Verizon wanted fewer support calls, and <strong>most support calls come from someone who could not tell whether the booster was working</strong>.</p>
 
           <p class="pull-quote" data-typewriter>
             <span aria-hidden="true"><span class="tw-seg" data-full="How do you tell somebody "></span><span class="tw-seg pull-quote-highlight" data-full="the install actually worked"></span><span class="tw-seg" data-full=", without teaching them what dBm means?"></span></span>
@@ -161,14 +159,12 @@ const nextProject = {
           </p>
         </div>
       </section>
-
       <section class="stat-band">
         <div class="location-block">
           <p class="location-label">Project Location</p>
           <p class="location-name">Silicon Valley, California</p>
         </div>
       </section>
-
       <section class="dark-block">
         <div class="wrap">
           <div class="challenge-head">
@@ -177,7 +173,7 @@ const nextProject = {
           </div>
           <ol class="challenge-grid">
             {challenges.map((c, i) => (
-              <li class:list={['challenge-card', 'challenge-card-blue', { 'is-active': i === 0 }]} data-tilt>
+              <li class="challenge-card" data-tilt>
                 <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
                 <p>{c}</p>
               </li>
@@ -185,69 +181,37 @@ const nextProject = {
           </ol>
         </div>
       </section>
-
       <section class="white-block">
         <div class="wrap">
-          <h2>I never met a user, and I am not going to pretend otherwise</h2>
-          <p>I did not run my own research on this one. What I had was a brief from the SureCall and Verizon project managers, and it was specific: most customers have no mental model for what a good or bad dBm value is, <span class="callout-phrase">people want to "see it work" in real time before they believe it</span>, and any instructions have to be <strong>skimmable, with the detail tucked underneath</strong>. We built two personas off that brief so the screens had somebody to answer to. Here is what I learned doing it: a persona built from a client brief is a weaker instrument than one built from interviews. It tells you what the business believes about its customers. <em>It still beat designing for myself</em>, which is what happens when you skip the step entirely.</p>
-          <p class="take">
-            <span class="take-label">What I think about this stage</span>
-            Having no research is not the same as having no user, and I think student work usually gets
-            this backwards. It either invents findings it never collected, or it shrugs and designs for
-            nobody in particular. <strong>The honest third option is to name the assumption out loud and
-            let somebody argue with it.</strong> Everything on this page traces back to a line in that
-            brief, which at least makes me wrong in a way you can check.
-          </p>
+          <h2>I never spoke to a user, and I am not going to pretend I did</h2>
+          <p>I did not run my own research on this project. I worked from a brief written by the SureCall and Verizon project managers. It said three things: customers do not know what counts as a good or bad dBm value, <span class="callout-phrase">people want to "see it work" before they believe it</span>, and instructions have to be <strong>skimmable, with the detail underneath</strong>. We built two personas from that brief so I had a specific person in mind while drawing each screen. A persona built from a client brief only tells you what the business believes about its customers. <em>It was still better than designing for myself.</em></p>
+          <p class="take">Having no research is not the same as having no user. I think student work usually does one of two things here: it invents findings it never collected, or it designs for nobody in particular. <strong>The third option is to write down what you assumed, so someone can check it.</strong> Every decision on this page comes from a line in that brief.</p>
           <div class="image-row image-row-personas">
             <img data-tilt src={img('03.webp')} alt="User persona: Sarah Scott, 38, a remote marketing worker in Wisconsin installing her first signal booster, with her goals, pain points, and needs from the app" />
             <img data-tilt src={img('04.webp')} alt="User persona: Jamal Ortiz, 29, a field technician in Texas who installs boosters professionally, with his goals, pain points, and needs from the app" />
           </div>
         </div>
       </section>
-
       <section class="white-block">
         <div class="wrap">
-          <p class="eyebrow-label">Deciding what earns a place on the screen</p>
-          <p>This page has one job: tell you whether the install worked. So the question for every element on it was whether it helped answer that, or whether it just made the page look informed. <strong>Most of it did not survive.</strong> What is left is the handful of things I could not argue away.</p>
-          <p class="take">
-            <span class="take-label">What I think about this stage</span>
-            Deciding what to remove is the actual job. Adding is easy and it feels productive, because
-            every addition can be justified on its own. <strong>I have never regretted taking something
-            off a screen. I have regretted keeping things on nearly every project I have worked on.</strong>
-          </p>
+          <h2>I sketched first, because a wrong sketch costs almost nothing</h2>
+          <p>I sketched rough concepts to work out <strong>the flow, the screens, and which features were worth keeping</strong>. Sketches are fast to draw and easy to lay side by side, and I would rather throw out six sketches than one prototype.</p>
+          <p class="take">Client work changed how I sketch. When a client is paying you, there is pressure to bring something finished, and if you finish it too early you spend the meeting defending it instead of testing it. So I started bringing three rough options instead of one finished one. <strong>People will tell you a rough drawing is wrong, and that is what the meeting is for.</strong></p>
+          <div class="image-row-single image-row-single-wide">
+            <img data-tilt src={img('07.webp')} alt="Low-fidelity wireframes for the SureCall app" />
+          </div>
+        </div>
+      </section>
+      <section class="white-block">
+        <div class="wrap">
+          <p class="eyebrow-label">Deciding what stays on the screen</p>
+          <p>This page has one job: tell you whether the install worked. For every element on it I asked whether it helped answer that question, or whether it was only there to look thorough. <strong>Most of them did not answer it, so I removed them.</strong></p>
+          <p class="take">I think deciding what to take off a screen is harder than deciding what to put on it. Adding is easy and it feels productive, because you can justify each thing you add on its own. <strong>I have never regretted taking something off a screen, and I have regretted keeping things on nearly every project I have worked on.</strong></p>
           <div class="image-row-single image-row-single-wide">
             <img data-tilt src={img('09.webp')} alt="Two iteration options for the signal-test page: Option 1 with Test Again and Learn More buttons, and Option 2 showing an automatic rescan with a Close button" />
           </div>
         </div>
       </section>
-
-      <section class="feature-band">
-        <div class="feature-media">
-          <img data-tilt src={img('13.webp')} alt="Two SureCall screens showing the signal search state and the color coded Great signal-strength result" />
-        </div>
-        <div class="feature-text">
-          <h2 class="feature-heading">Turning minus 80 dBm into the word Good</h2>
-          <p>A color coded meter with plain labels ("Good", "Great") does the translating, so nobody has to learn what dBm means to find out whether they are done. Big tap targets and one step per screen keep it usable with a thumb. The app <strong>rescans on its own once the booster is installed</strong> rather than waiting for you to press "Test Again", because the second you finish mounting it is exactly when you want that number. "Close" sends you back to the home screen instead of leaving you stuck on a results page. And <em>the raw RSRP value stays on screen for the technician who does want the real reading</em>. Plain language for one person, the data for the other, same screen, no mode switch.</p>
-        </div>
-      </section>
-
-      <section class="dark-block">
-        <div class="wrap">
-          <div class="challenge-head">
-            <span class="quirky quirky-sage">Plain language</span>
-            <h2>Teaching 5G without handing anyone a manual</h2>
-          </div>
-          <ol class="challenge-grid">
-            {challenges.map((c, i) => (
-              <li class:list={['challenge-card', 'challenge-card-sage', { 'is-active': i === 1 }]} data-tilt>
-                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
-                <p>{c}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
       <section class="white-block">
         <div class="wrap">
           <div class="image-row-single image-row-single-wide">
@@ -255,87 +219,60 @@ const nextProject = {
           </div>
         </div>
       </section>
-
+      <section class="feature-band">
+        <div class="feature-media">
+          <img data-tilt src={img('13.webp')} alt="Two SureCall screens showing the signal search state and the color coded Great signal-strength result" />
+        </div>
+        <div class="feature-text">
+          <h2 class="feature-heading">Showing the word Good instead of minus 80 dBm</h2>
+          <p>A color coded meter with plain labels ("Good", "Great") translates the signal reading, so nobody has to learn what dBm means to find out whether they are done. The app <strong>rescans on its own once the booster is mounted</strong>, because that is the moment you want the number. <em>The raw RSRP value stays on the screen for the technician who wants the real reading.</em> Both people get what they need from the same screen, without switching modes.</p>
+        </div>
+      </section>
       <section class="feature-band feature-band-reverse">
         <div class="feature-media">
           <img data-tilt src={img('14.webp')} alt="Three SureCall screens guiding a user to move near a window, checking 5G UW strength, and offering booster tips" />
         </div>
         <div class="feature-text">
-          <h2 class="feature-heading">You should know it worked before you climb down</h2>
-          <p>The test closes the loop in a few seconds, so you are not standing on a ladder wondering whether to take the whole thing back down. These installs happen in the worst rooms in the house, so <strong>a clear pass or fail mattered more than a beautiful readout</strong>. The mid fidelity rounds leaned on the <em>aesthetic usability effect</em>: a calm, uncluttered screen reads as trustworthy before anyone has read a word on it. In a dark garage, that first impression is most of what you get.</p>
+          <h2 class="feature-heading">You should know the booster works before you climb down the ladder</h2>
+          <p>The test finishes in a few seconds, so you are not standing on a ladder wondering whether to take the booster back down. These installs happen in the worst rooms in the house, so <strong>a clear pass or fail mattered more than a detailed readout</strong>. People decide whether to trust a screen before they read anything on it, and in a dark garage they are not going to read much.</p>
         </div>
       </section>
-
-      <section class="dark-block">
-        <div class="wrap">
-          <div class="challenge-head">
-            <span class="quirky quirky-coral">Field use</span>
-            <h2>Built for a basement, one hand, and bad light</h2>
-          </div>
-          <ol class="challenge-grid">
-            {challenges.map((c, i) => (
-              <li class:list={['challenge-card', 'challenge-card-coral', { 'is-active': i === 2 }]} data-tilt>
-                <span class="challenge-num">{String(i + 1).padStart(2, '0')}</span>
-                <p>{c}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
       <section class="white-block">
         <div class="wrap">
-          <h2>Sketches first, because they are cheap to be wrong in</h2>
-          <p>With the brief from my project manager and Verizon in hand, I sketched rough concepts to work out <strong>the flow, the screens, and which features earned their place</strong>. They were fast to draw and easy to lay side by side, which is the whole point. I would much rather throw out six sketches than one prototype.</p>
-          <p class="take">
-            <span class="take-label">What I think about this stage</span>
-            Client work changed how I sketch. When somebody is paying you, there is real pressure to
-            turn up with something polished, and polished too early is how you end up defending a
-            direction instead of testing one. I started bringing three rough options rather than one good
-            one, and the conversations got better immediately.{' '}
-            <strong>Nobody argues with a drawing that is obviously a draft.</strong>
-          </p>
-          <div class="image-row-single image-row-single-wide">
-            <img data-tilt src={img('07.webp')} alt="Low-fidelity wireframes for the SureCall app" />
-          </div>
-        </div>
-      </section>
-
-      <section class="white-block">
-        <div class="wrap">
-          <p class="eyebrow-label">How it ended up</p>
+          <p class="eyebrow-label">The finished prototype</p>
           <div class="image-row-single image-row-single-phone">
             <video class="prototype-video" src={`${base}images/surecall/prototype.mp4`} autoplay muted loop playsinline aria-label="Walkthrough of the final SureCall prototype, from the signal-strength check through booster setup"></video>
           </div>
         </div>
       </section>
-
       <section class="white-block">
         <div class="wrap">
-          <p class="eyebrow-label">The kit it is built from</p>
+          <p class="eyebrow-label">The design kit</p>
           <div class="image-row-single image-row-single-wide">
             <img data-tilt src={img('12.webp')} alt="SureCall design kit: typography scale, color palette, and logo and icon assets" />
           </div>
         </div>
       </section>
-
       <section class="white-block white-block-flush-bottom">
         <div class="image-row-single">
           <img data-tilt src={img('02.webp')} alt="Collage of SureCall app screens arranged at an angle, showing the signal test, booster setup, and information flows" />
         </div>
       </section>
-
-      <section class="dark-block">
+      <section class="white-block">
         <div class="wrap">
-          <h2>Where it landed, and what I would change</h2>
-          <p>This is the project where I learned that the screen is not the whole interface. The garage is part of the interface too. Bad light, a ladder, a phone in one hand: <em>designing for that made me cut things I was fond of</em>, and the app is better for it.</p>
-          <p>Working at a small company meant I got to be hands on with every step, which is not something I would have gotten somewhere larger. I came out of it with better design instincts and, unexpectedly, a working knowledge of cellular boosters. The part I valued most was sitting with the backend engineers and watching what actually gets built. They would tell me to change or add things based on <strong>how easy or hard an element was to code</strong>, which was humbling at first and then just useful. Thank you SureCall for having me.</p>
+          <h2>How it turned out, and what I would change</h2>
+          <p>This is the project where I learned to design for the room the app is used in, not just the screen. Bad light, a ladder, and one free hand: <em>designing for those conditions made me cut things I liked</em>, including a detailed signal history screen that nobody standing on a ladder is going to read.</p>
+          <p>Working at a small company meant I was involved in every step. The part I valued most was sitting with the backend engineers and watching what actually gets built. They told me to change things based on <strong>how easy or hard an element was to code</strong>, which was humbling at first and then just useful. Thank you to SureCall for having me.</p>
+          <p>What I learned here was how to work when the research belongs to someone else. I had a brief, two project managers and no users, and I had to decide which lines in that brief I was willing to build on. Most client work is like that, and no class had asked me to do it.</p>
+          <p>I was nervous for most of it. It was the first time I designed something a company was actually going to ship, and I spent the first few weeks expecting someone to tell me I did not know what I was doing. <strong>That went away once I stopped treating the brief as a test I could fail and started treating it as the only user I had.</strong> I left more confident than I arrived, which I had not expected.</p>
+          <h2 class="ai-heading">How I would change this today with AI</h2>
+          <p>The app tells you the signal is weak. It does not tell you what to do about it. Today I would let someone describe their house in plain words, or take a photo of the room, and have a model suggest where to mount the booster and where to put the outside antenna. That is what every support call is actually asking, and right now the app leaves it to the person standing on the ladder.</p>
+          <p>I would keep the live reading as the thing people trust. The brief said customers want to see it work before they believe it, and a sentence written by a model is not proof. <strong>The model can suggest where to try next. The meter still has to be the thing that tells you that you are done.</strong></p>
         </div>
       </section>
-
-      <section class="dark-block">
+      <section class="white-block">
         <div class="wrap">
-          <h2 class="takeaways-heading">What I took with me</h2>
+          <h2 class="takeaways-heading">What I learned</h2>
           <div class="takeaways-grid">
             {takeaways.map((t) => (
               <div class="takeaway-card">
@@ -347,7 +284,6 @@ const nextProject = {
           </div>
         </div>
       </section>
-
       <section class="up-next">
         <div class="wrap">
           <span class="quirky quirky-blue">Up Next</span>
@@ -441,8 +377,6 @@ const nextProject = {
         background: #ffffff;
       }
 
-
-
       .wrap {
         max-width: 74rem;
         margin-inline: auto;
@@ -450,9 +384,6 @@ const nextProject = {
       }
 
       /* Nav ------------------------------------------------------------ */
-
-
-
 
       .btn-pill {
         display: inline-flex;
@@ -807,7 +738,6 @@ const nextProject = {
         color: rgba(253, 251, 249, 0.7);
       }
 
-
       /* Typographic emphasis experiment — bold marks a design decision,
          italic marks an insight/rationale, and .callout-phrase (used once,
          on the single clearest insight on the page) bumps size + color for
@@ -999,13 +929,17 @@ const nextProject = {
         gap: 1rem;
       }
 
+      /* Every card carries the lit treatment. There used to be three copies
+         of this grid, each dimming all but one card; the dim state read as
+         disabled rather than as sequence, so the grid appears once now and
+         all of it is legible. */
       .challenge-card {
         --tilt-x: 0deg;
         --tilt-y: 0deg;
-        border: 1px solid rgba(253, 251, 249, 0.15);
-        border-left: 3px solid rgba(253, 251, 249, 0.15);
+        border: 1px solid rgba(253, 251, 249, 0.3);
+        border-left: 3px solid #00b385;
         padding: 1.5rem;
-        background: rgba(253, 251, 249, 0.03);
+        background: rgba(253, 251, 249, 0.08);
         transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
         transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s var(--ease-out);
       }
@@ -1013,7 +947,8 @@ const nextProject = {
       .challenge-card p {
         margin: 0.75rem 0 0;
         max-width: none;
-        color: rgba(253, 251, 249, 0.45);
+        color: var(--bg);
+        font-weight: 500;
         font-size: var(--step-body);
         line-height: var(--leading-body);
       }
@@ -1022,29 +957,7 @@ const nextProject = {
         font-family: var(--font-body);
         font-weight: 800;
         font-size: 1.5rem;
-        color: rgba(253, 251, 249, 0.35);
-      }
-
-      .challenge-card.is-active {
-        background: rgba(253, 251, 249, 0.08);
-        border-color: rgba(253, 251, 249, 0.3);
-      }
-
-      .challenge-card-blue.is-active,
-      .challenge-card-sage.is-active,
-      .challenge-card-coral.is-active {
-        border-left-color: #00b385;
-      }
-
-      .challenge-card-blue.is-active .challenge-num,
-      .challenge-card-sage.is-active .challenge-num,
-      .challenge-card-coral.is-active .challenge-num {
         color: #00b385;
-      }
-
-      .challenge-card.is-active p {
-        color: var(--bg);
-        font-weight: 500;
       }
 
       @media (min-width: 700px) {
@@ -1052,7 +965,7 @@ const nextProject = {
       }
 
       /* Key takeaways ------------------------------------------------------- */
-      .takeaways-heading { color: var(--bg); }
+      .takeaways-heading { color: var(--ink); }
 
       .takeaways-grid {
         display: grid;
@@ -1060,7 +973,7 @@ const nextProject = {
         gap: 1.5rem;
         margin-top: clamp(1.5rem, 4vw, 2.5rem);
         padding-top: clamp(1.5rem, 4vw, 2.5rem);
-        border-top: 1px solid rgba(253, 251, 249, 0.15);
+        border-top: 1px solid var(--line);
       }
 
       .takeaway-card {
@@ -1072,7 +985,7 @@ const nextProject = {
         width: 24px;
         height: 24px;
         border-radius: 999px;
-        background: var(--accent-light);
+        background: #00b385;
         margin-bottom: 1rem;
       }
 
@@ -1080,14 +993,14 @@ const nextProject = {
         font-family: var(--font-body);
         font-weight: 600;
         font-size: var(--step-card-title);
-        color: var(--bg);
+        color: var(--ink);
         margin: 0 0 var(--gap-subheading);
       }
 
       .takeaway-card p {
         margin: 0;
         max-width: none;
-        color: rgba(253, 251, 249, 0.6);
+        color: var(--ink-soft);
         font-size: var(--step-body);
         line-height: var(--leading-body);
       }
@@ -1098,7 +1011,7 @@ const nextProject = {
         }
 
         .takeaways-grid .takeaway-card:last-child {
-          border-left: 1px solid rgba(253, 251, 249, 0.15);
+          border-left: 1px solid var(--line);
           padding-left: 2rem;
         }
       }
@@ -1196,14 +1109,7 @@ const nextProject = {
 
       .take strong { color: var(--ink); font-weight: 600; }
 
-      .take-label {
-        display: block;
-        line-height: 1.2;
-        margin-bottom: var(--gap-label);
-        font-family: var(--font-quirky);
-        font-size: 1.05rem;
-        color: #00b385;
-      }
+      .ai-heading { margin-top: clamp(2.25rem, 5vw, 3.25rem); }
 </style>
   </body>
 </html>
