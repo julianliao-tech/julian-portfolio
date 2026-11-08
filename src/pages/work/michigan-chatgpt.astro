@@ -161,7 +161,7 @@ const nextProject = {
             <div class="context-box">
               <p class="context-label">Where this started</p>
               <h2 class="context-heading">Michigan built the AI. Students could not tell the four tools apart.</h2>
-              <p>Michigan ChatGPT is the university's own AI workspace. It holds four tools: U-M GPT, Maizey, Go Blue and the GPT Toolkit. The models were not the problem. The problem was that the homepage asked you to pick one of the four before it told you what any of them did.</p>
+              <p>Michigan ChatGPT is the university's own AI workspace. It holds four tools: U-M GPT, Maizey, Go Blue and the GPT Toolkit. The homepage asked you to pick one of the four before it told you what any of them did.</p>
             </div>
           </div>
 
@@ -174,7 +174,7 @@ const nextProject = {
             ))}
           </dl>
 
-          <p class="intro">I used this platform as a student before I ever redesigned it. What surprised me when I asked other students about it is that nobody was intimidated by the AI. They were stuck on the names, because Maizey, Go Blue and GPT Toolkit do not tell you what is behind them. <strong>People were not failing to use the platform. They were failing to pick a starting point</strong>, and when that takes too long they open ChatGPT in another tab instead.</p>
+          <p class="intro">I used this platform as a student before I ever redesigned it. What surprised me when I asked other students about it is that nobody was intimidated by the AI. They were stuck on the names, because Maizey, Go Blue and GPT Toolkit do not tell you what is behind them. <strong>Students could not pick a starting point</strong>, and when that takes too long they open ChatGPT in another tab instead.</p>
 
           <p class="pull-quote" data-typewriter>
             <span aria-hidden="true"><span class="tw-seg" data-full="How do I get someone to the right tool "></span><span class="tw-seg pull-quote-highlight" data-full="before they give up and open another tab"></span><span class="tw-seg" data-full="?"></span></span>
@@ -214,7 +214,7 @@ const nextProject = {
           <ul class="findings-list">
             {keyInsights.map((k) => <li>{k}</li>)}
           </ul>
-          <p class="take">I used to think research meant finding out what people want. Everyone I asked wanted "something simpler", which is not something I can build. The useful part was watching where people stopped and hesitated. <strong>People describe what they already did accurately, and they guess badly about what they would do next</strong>, so I pay attention to the first and ignore the second.</p>
+          <p class="take">I used to think research meant finding out what people want. Everyone I asked wanted "something simpler", which is not something I can build. The useful part was watching where people stopped and hesitated. <strong>People describe what they already did accurately, and they guess badly about what they would do next</strong>, so I pay attention to what they have already done and ignore what they say they would do.</p>
 
           <div class="visitor-needs">
             <div>
@@ -241,7 +241,7 @@ const nextProject = {
         <div class="wrap">
           <h2>I designed for the student who had never heard of Maizey</h2>
           <p>I went through the old site and wrote down every place where I had to stop and think. Most of them were decisions the page asked me to make before it had explained anything. Three ideas shaped what I did next. Jakob's Law says people expect a new site to work like the sites they already use, so I did not invent any new patterns. Hick's Law says every extra option slows the choice down, so the homepage offers four things instead of fourteen. <em>Then I reordered the page so the first thing you see is what the tools do, rather than a menu of their names.</em></p>
-          <p class="take">Naming the laws is the easy part. To be transparent, I had already decided the homepage should hold four tools, and I used Hick's Law to justify that decision afterwards. <strong>I think that is fine as long as you know you are doing it, and a problem as soon as you forget.</strong> Design principles are useful for settling an argument, but they are not where the idea came from.</p>
+          <p class="take">Naming the laws is the easy part. To be transparent, I had already decided the homepage should hold four tools, and I used Hick's Law to justify that decision afterwards. <strong>I think that is fine as long as you know you are doing it, and a problem as soon as you forget.</strong> I use design principles to explain a decision to other people after I have already made it.</p>
 
           <div class="image-row-single image-row-single-wide">
             <img data-tilt src={img('02.webp')} alt="Three design-principle cards: Jakob's Law (familiarity), Hick's Law (decision simplification), and the Aesthetic-Usability Effect, each with how it was applied to the redesign" />
@@ -252,8 +252,8 @@ const nextProject = {
       <section class="white-block">
         <div class="wrap">
           <p class="eyebrow-label">Eight ideas, drawn quickly, most of them cut</p>
-          <p>I sketched eight directions before I committed to one, including finishing your sentence for you, a video analyzer, translation, and exporting a chat as a PDF. I drew them quickly and badly on purpose. <strong>The ideas that survived were the unglamorous ones</strong>: how much fits on the screen before you scroll, and whether you can tell what a tool does from its card alone.</p>
-          <p class="take">I do not think of low fidelity as a stage. A rough sketch makes it easier for other people to tell me I am wrong, and the rougher it is the more directly they say it. <strong>As soon as a screen looks finished, people soften their feedback and it stops being useful.</strong> Staying rough for longer is the cheapest skill I have learned.</p>
+          <p>I sketched eight directions before I committed to one, including finishing your sentence for you, a video analyzer, translation, and exporting a chat as a PDF. I drew them quickly and badly on purpose. <strong>The ideas I kept were the plain ones</strong>: how much fits on the screen before you scroll, and whether you can tell what a tool does from its card alone.</p>
+          <p class="take">I keep drawings rough for as long as I can. A rough sketch makes it easier for other people to tell me I am wrong, and the rougher it is the more directly they say it. <strong>As soon as a screen looks finished, people soften their feedback and it stops being useful.</strong> Staying rough for longer is the easiest way I have found to get honest feedback.</p>
 
           <div class="image-row-single image-row-single-wide">
             <img data-tilt src={img('lowfi-wireframes.webp')} alt="Eight low fidelity wireframes for U-M GPT: finishing sentences, changing background color based on conversation, a video analyzer, translation mode, linking to other software, setting tone, exporting past chats as a PDF, and reading text from images and videos" />
@@ -279,7 +279,7 @@ const nextProject = {
         </div>
         <div class="feature-text">
           <h2 class="feature-heading">The same navigation inside every tool</h2>
-          <p>The sidebar groups tools, resources and support into categories that stay in the same place no matter which tool you are using. <strong>The tap targets are bigger, the labels are readable, and the same icon means the same thing everywhere.</strong> People who come back every week do not read the screen. They go straight to where it was last time.</p>
+          <p>The sidebar groups tools, resources and support into categories that stay in the same place no matter which tool you are using. <strong>The tap targets are bigger, the labels are readable, and the same icon means the same thing everywhere.</strong> People who come back every week go straight to where a thing was last time, so nothing moves between one tool and the next.</p>
         </div>
       </section>
 
@@ -290,7 +290,7 @@ const nextProject = {
         </div>
         <div class="feature-text">
           <h2 class="feature-heading">Answers written for people at this university</h2>
-          <p>Responses are tuned for academic, research and campus questions, so the answers fit the place you are asking from. <em>It also helps people who have never written a prompt before.</em> You should not have to be good at talking to AI to get something useful out of it.</p>
+          <p>Responses are tuned for academic, research and campus questions, so the answers are about this university rather than generic ones. <em>It also helps people who have never written a prompt before.</em> You should not have to be good at talking to AI to get something useful out of it.</p>
         </div>
       </section>
 
@@ -395,7 +395,7 @@ const nextProject = {
             {whatShipped.map((w) => <li>{w}</li>)}
           </ul>
           <p>What I wanted was a platform people can understand in a few seconds, where the first visit and the fiftieth both start in the same obvious place.</p>
-          <p>What I did not expect to learn is how much of trust comes from the interface being familiar. Clarity is not just about how it looks here. It is what makes a student willing to type a real question into a box owned by their school. <em>Since this project I spend much longer deciding what to call things than I used to.</em></p>
+          <p>What I did not expect to learn is how much trust comes from the interface being familiar. A student will only type a real question into a box owned by their school if the page looks like the sites they already use. <em>Since this project I spend much longer deciding what to call things than I used to.</em></p>
           <ul class="findings-list">
             {lookingAhead.map((l) => <li>{l}</li>)}
           </ul>

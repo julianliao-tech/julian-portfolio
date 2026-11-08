@@ -167,11 +167,11 @@ const carouselAngleStep = 360 / carouselPhotos.length;
           ))}
         </dl>
 
-        <p class="intro">This was the first time I designed for a business where I was not the customer and never would be. The people using this site book five figure sponsorships and fly in for two days of meetings, so my instincts as a student did not apply. Instead of guessing, I tested the site with five people on ten tasks. <strong>The site was organized around how the company describes itself, and visitors were looking for something else.</strong></p>
+        <p class="intro">This was the first time I designed for a business where I was not the customer and never would be. The people using this site book five figure sponsorships and fly in for two days of meetings, so my instincts as a student did not apply. Instead of guessing, I tested the site with five people on ten tasks. <strong>The site was organized around how the company describes itself. Visitors came to register for an event and could not find where to do it.</strong></p>
 
         <p class="pull-quote" data-typewriter>
-          <span aria-hidden="true"><span class="tw-seg" data-full="The site was organized "></span><span class="tw-seg pull-quote-highlight" data-full="the way the company thinks"></span><span class="tw-seg" data-full=", not the way a visitor does."></span></span>
-          <span class="sr-only">The site was organized the way the company thinks, not the way a visitor does.</span>
+          <span aria-hidden="true"><span class="tw-seg" data-full="Why could "></span><span class="tw-seg pull-quote-highlight" data-full="five out of five people"></span><span class="tw-seg" data-full=" not find how to register?"></span></span>
+          <span class="sr-only">Why could five out of five people not find how to register?</span>
         </p>
       </div>
     </section>
@@ -218,7 +218,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
           <span class="quirky">5 Participants, 10 Tasks</span>
           <h2>Five out of five could not find how to register</h2>
         </div>
-        <p>I tested five people on ten tasks on the live site. Nearly everyone finished nearly everything, so the completion rate looked fine. What I was watching was the hesitation: labels nobody could predict, and people guessing where something would be and guessing wrong. <strong>Several tasks took far longer than they should have, and the extra time was not people finding the task hard.</strong> They knew what they wanted. They could not work out where the site had put it.</p>
+        <p>I tested five people on ten tasks on the live site. Nearly everyone finished nearly everything, so the completion rate looked fine. What I was watching was the hesitation: labels nobody could predict, and people guessing where something would be and guessing wrong. <strong>Several tasks took far longer than they should have.</strong> People knew what they wanted, and spent the extra time working out where the site had put it.</p>
         <div class="participants-row">
           <p><strong>P1</strong>, 20, somewhat involved with event registration.</p>
           <p><strong>P2</strong>, 21, approaching the site as a first time visitor.</p>
@@ -240,7 +240,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
     <section class="white-block">
       <div class="wrap">
         <h2>What I changed, and what I am allowed to show you</h2>
-        <p>I rewrote the navigation so every label says what is behind it. Every event page now offers three specific things to do next instead of one generic button. The events index can be filtered by sector and year. The contact page states that you will get a reply the same day, because a page that does not say how long it will take makes it look like nobody will reply at all. <strong>Almost none of this was a visual decision. It was deciding what each page was for and then saying so on the page.</strong></p>
+        <p>I rewrote the navigation so every label says what is behind it. Every event page now offers three specific things to do next instead of one generic button. The events index can be filtered by sector and year. The contact page states that you will get a reply the same day, because a page that does not say how long it will take makes it look like nobody will reply at all. <strong>Almost all of this was deciding what each page was for and then saying so on the page, rather than changing how it looked.</strong></p>
         <p class="take">Watching the tests was uncomfortable. I had already decided what was wrong with the site, and about half of what I believed turned out to be wrong. Everyone inside the company could use the site perfectly, and I now treat that as a warning sign rather than a good result. <strong>People who work at a company already know where everything is, so they cannot tell you whether a new visitor would find it.</strong></p>
         <ul class="findings-list">
           {whatChanged.map((w) => <li>{w}</li>)}
@@ -260,12 +260,12 @@ const carouselAngleStep = 360 / carouselPhotos.length;
         <h2>How it turned out, and what I would change</h2>
         <p>Working there for a summer also meant living in Sydney: 5 a.m. run clubs before work, Christmas in July in the middle of an Australian winter, and a trip up to the Great Barrier Reef. I would do it again.</p>
         <p>The part I did not finish is testing the new site. I know the new structure shipped, but I have no data showing that it worked. <strong>If I went back, the first thing I would do is run the same ten tasks on the live site</strong> and find out whether I was right.</p>
-        <p class="take">I arrived expecting to make the site look better and spent the summer making it clearer instead. The navigation got shorter because we decided what each page was for. The contact page got better because someone agreed to answer within a day. <strong>I think when people say a site looks better, what usually changed is that the company got clearer about what it does.</strong></p>
+        <p class="take">I arrived expecting to make the site look better and spent the summer making it clearer instead. The navigation got shorter because we decided what each page was for. The contact page could promise a reply the same day because someone agreed to answer within a day. <strong>I think when people say a site looks better, what usually changed is that the company got clearer about what it does.</strong></p>
         <p>What I took away is how different it is to design for a business whose customer you will never be. Every instinct I had came from being a student using student products. Here the visitor was a buyer spending five figures on a stand, and the only way to learn anything about them was to go and watch one.</p>
         <p>I liked this work more than I expected to. I thought a conference site for business buyers would be dull, and <strong>writing for people who are nothing like me turned out to be the part of this job I enjoy most</strong>. What still bothers me is leaving at the end of the summer without ever finding out whether the redesign worked.</p>
         <h2 class="ai-heading">How I would change this today with AI</h2>
         <p>The whole problem was that the labels were written in the company's language instead of the visitor's. Today I would generate twenty sets of navigation labels with a model, cut them down myself, and bring only the best two into testing. I would also run a first pass of the ten usability heuristics with a model, which gives me a list to check in a few minutes rather than an hour.</p>
-        <p>None of that replaces the part that mattered. <strong>What told me the site was broken was watching five people hesitate</strong>, and a model does not hesitate. I would use it to get to the test faster and to spend those five participants on better questions, not to skip them.</p>
+        <p><strong>What told me the site was broken was watching five people hesitate</strong>, and a model does not hesitate. I would use it to get to the test faster and to spend those five participants on better questions, not to skip them.</p>
       </div>
     </section>
 

@@ -85,7 +85,7 @@ const challenges = [
       {
         video: 'alumni-network.mp4',
         alt: 'Alumni database page, filterable by career field and location, with student cards showing a Connect button',
-        caption: 'The alumni database, filterable by career field and location, is the matching buddies pillar and the information gap problem solved in one screen: a student can find someone a few years ahead in the exact role they’re prepping for, instead of cold emailing whoever answers first and waiting for a response soon.',
+        caption: 'The alumni database, filterable by career field and location, is the matching buddies pillar and the information gap problem solved in one screen: a student can find someone a few years ahead in the exact role they’re prepping for, instead of emailing whoever answers first and waiting to hear back.',
       },
     ],
   },
@@ -93,7 +93,7 @@ const challenges = [
     label: 'A large alumni network, scattered and unusable',
     problem: 'International underdevelopment. Esade’s alumni network is large but scattered; there was no single place pulling it together for the specific job of interview prep.',
     pillars: [
-      { name: 'Mentorships', text: 'Structured "coffee chat" and mock interview scheduling, so networking has a format instead of being cold outreach.' },
+      { name: 'Mentorships', text: 'Structured "coffee chat" and mock interview scheduling, so networking has a format instead of students emailing strangers.' },
     ],
     demos: [
       {
@@ -118,7 +118,7 @@ const challenges = [
       {
         video: 'dinners.mp4',
         alt: 'Recruiter dinners page showing McKinsey and Goldman Sachs dinner listings with a Reserve My Spot button and a remaining-spots counter',
-        caption: 'Recruiter dinners make the incentive from the stakeholder analysis real: a firm hosted dinner with a capped headcount and a visible "spots remaining" counter, giving recruiters a direct reason to stay engaged with the school instead of drifting to competitors. A simple, visible reason to keep showing up each time.',
+        caption: 'Recruiter dinners make the incentive from the stakeholder analysis real: a firm hosted dinner with a capped headcount and a visible "spots remaining" counter, giving recruiters a direct reason to stay engaged with the school instead of drifting to competitors.',
       },
     ],
   },
@@ -335,7 +335,7 @@ const nextProject = {
           ))}
         </dl>
 
-        <p class="intro">I was the project manager, so my job was not coming up with the idea. It was working out whether the idea would still work once real people had to run it. The pitch is a platform that connects students, alumni and recruiters, with one target: <strong>raise the interview landing rate by 20%</strong>. A school cannot solve this problem by buying software, because every part of the plan depends on busy people volunteering their time.</p>
+        <p class="intro">I was the project manager, so my job was working out whether the idea would still work once real people had to run it. The pitch is a platform that connects students, alumni and recruiters, with one target: <strong>raise the interview landing rate by 20%</strong>. A school cannot solve this problem by buying software, because every part of the plan depends on busy people volunteering their time.</p>
 
         <p class="pull-quote" data-typewriter>
           <span aria-hidden="true"><span class="tw-seg" data-full="Esade’s third year students were landing interviews into summer internships at a "></span><span class="tw-seg pull-quote-highlight" data-full="35% rate, while direct competitors climbed to 45–53%"></span><span class="tw-seg" data-full=" over the same seven years."></span></span>
@@ -453,9 +453,9 @@ const nextProject = {
 
     <section class="dark-block">
       <div class="wrap">
-        <h2>The riskiest assumption was about people, not software</h2>
-        <p>Building the software is the easy part. The assumption worth testing was whether the people involved would turn up at all. So we mapped four groups, students, alumni, recruiters and Career Services, against what each one gets from E-LINK and what we are asking from them in return. <strong>If that trade looks bad for any group, the plan fails there.</strong></p>
-        <p class="take">Working as the project manager rather than the designer taught me more than the design work did. As a designer I ask whether the thing is good. As a project manager I had to ask who does the work, when they do it, and what happens if they do not. <strong>Most student proposals I have seen answer the first question well and the second one not at all.</strong></p>
+        <h2>The riskiest assumption was that busy people would turn up</h2>
+        <p>The thing most likely to break this plan was whether the people involved would turn up at all. So we mapped four groups, students, alumni, recruiters and Career Services, against what each one gets from E-LINK and what we are asking from them in return. <strong>If that trade looks bad for any group, the plan fails there.</strong></p>
+        <p class="take">Working as the project manager rather than the designer taught me more than the design work did. As a designer I ask whether the design is good. As a project manager I had to ask who does the work, when they do it, and what happens if they do not. <strong>Most student proposals I have seen say whether the design is good and never say who does the work.</strong></p>
         <div class="stakeholder-grid">
           {stakeholderGroups.map((g) => (
             <div class="stakeholder-card">
@@ -535,7 +535,7 @@ const nextProject = {
       <div class="wrap">
         <h2>We listed the plan's weaknesses before the pitch</h2>
         <p>We ran the plan through a risk register before we pitched it. We listed three external risks (student engagement, recruiters coming on board, alumni fatigue) and four internal ones (platform failures, data privacy, misalignment with Career Services, low quality prep material), and graded each one on probability and impact with a specific mitigation.</p>
-        <p class="take">Writing a risk register before the pitch felt like handing people reasons to say no. It had the opposite effect. Everyone in that room was going to find those weaknesses anyway, and listing them first meant we already had an answer ready for each one. <strong>I would rather point out where the plan is likely to fail than have someone else point it out for me.</strong></p>
+        <p class="take">Writing a risk register before the pitch felt like handing people reasons to say no. It made the pitch easier. Everyone in that room was going to find those weaknesses anyway, and listing them first meant we already had an answer ready for each one. <strong>I would rather point out where the plan is likely to fail than have someone else point it out for me.</strong></p>
         <div class="risk-table-wrap">
           <table class="risk-table">
             <thead>
@@ -576,7 +576,7 @@ const nextProject = {
     <section class="white-block metrics-section">
       <div class="wrap" data-metrics>
         <h2>How we would know whether it worked</h2>
-        <p class="take">The landing rate is the number the school cares about, but it is a bad number to run the project on, because you do not get an answer for two years. So we also tracked things that change every week: who turned up, who messaged an alumnus, and who came back. <strong>A number you only get at the end tells you how you did. It cannot tell you what to change while the project is running.</strong></p>
+        <p class="take">The landing rate is the number the school cares about, but it is a bad number to run the project on, because you do not get an answer for two years. So we also tracked things that change every week: who turned up, who messaged an alumnus, and who came back. <strong>A number you only get at the end cannot tell you what to change while the project is still running.</strong></p>
 
         <div class="metrics-hero">
           <p class="metrics-hero-num" aria-label="Plus 20 percent">+<span data-count="20">20</span>%</p>
@@ -709,13 +709,13 @@ const nextProject = {
     <section class="white-block">
       <div class="wrap">
         <h2>How it turned out, and what I would change</h2>
-        <p>This was a proposal, not a product. It had to be detailed enough that Career Services could pick it up and run it without us. The stakeholder analysis taught me the most. It is easy to design something excellent for students and forget that it also has to be worth the time of the staff and the alumni. <strong>That analysis changed real decisions in the plan.</strong></p>
+        <p>This was a proposal. It had to be detailed enough that Career Services could pick it up and run it without us. The stakeholder analysis taught me the most. It is easy to design something excellent for students and forget that it also has to be worth the time of the staff and the alumni. <strong>That analysis changed real decisions in the plan.</strong></p>
         <p>The next step is to stop testing it on paper. <em>I would run a small pilot that Career Services has actually agreed to.</em> Every number in this plan is a projection until someone does that.</p>
-        <p>What I took away is that on a project like this, nobody approves it because of the screens. I came in wanting to design the platform, and the useful work turned out to be the schedule, the stakeholder analysis and the risk register. Those are the documents that decide whether anything gets built at all.</p>
+        <p>What I took away is that on a project like this, people approve the plan rather than the screens. I came in wanting to design the platform, and the useful work turned out to be the schedule, the stakeholder analysis and the risk register. Those are the documents that decide whether anything gets built at all.</p>
         <p>I was frustrated for the first few weeks. Being the project manager meant watching other people make the decisions I wanted to make, and building a Gantt chart is not why I went into design. By the end I had changed my mind. <strong>The schedule and the risk register are what turned this from an idea into something a school could actually run</strong>, and I now put my hand up for that role instead of avoiding it.</p>
         <h2 class="ai-heading">How I would change this today with AI</h2>
         <p>Two parts of this plan were going to be done by hand and should not be. Matching a student to an alumnus meant Career Services reading profiles, which is exactly the work that made the plan expensive for them. A model could do the first pass from what each person says they want and hand staff a short list to approve. Writing the risk register and the schedule also took weeks, and a model would get me to a first draft in an afternoon.</p>
-        <p><strong>None of that touches the reason this plan might fail.</strong> The risk was never the software. It was whether busy alumni give up an evening, and no model makes anybody turn up. Faster drafts would only mean more of the semester spent testing the plan on real people instead of writing it.</p>
+        <p><strong>None of that touches the reason this plan might fail, which is whether busy alumni give up an evening.</strong> No model makes anybody turn up. Faster drafts would only mean more of the semester spent testing the plan on real people instead of writing it.</p>
       </div>
     </section>
 
