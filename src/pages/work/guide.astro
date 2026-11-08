@@ -58,6 +58,67 @@ const painPoints = ['Elevators', 'Ramps', 'Crowds', 'Bathrooms', 'Report'];
 // rather than a grid. Straightens on hover.
 const insightRotations = [-2.2, 1.6, -1.1, 2.4];
 
+// The three interview quotes. These were a flat image (02-quotes-cropped.webp)
+// until now. The outlines below are a contour trace of that image, not a
+// redraw: it was thresholded, each bubble's outer and inner loop followed
+// along pixel edges, simplified (Douglas-Peucker, 2px) and smoothed into
+// quadratics, then filled even-odd, so the wobble in the line is the original
+// hand-drawn wobble (IoU against the source bitmap, 0.96). The quotes
+// themselves are word for word what the image said, now real text: selectable,
+// searchable, zoomable, and read aloud.
+//
+// Coordinates are percentages. x/y/w place the bubble on the stage; tx/ty/tw/th
+// are the text box inside it, and fs its type size in cqw -- all three work out
+// to one optical size because the widths stay in the original proportion.
+const quoteBubbles = [
+  {
+    "key": "left",
+    "vb": "702 579",
+    "outer": "M400.0 3.0Q431.0 4.0 448.0 7.5Q465.0 11.0 483.0 17.0Q501.0 23.0 524.5 35.5Q548.0 48.0 575.5 69.0Q603.0 90.0 618.0 106.5Q633.0 123.0 653.5 157.0Q674.0 191.0 681.0 210.5Q688.0 230.0 694.0 260.0Q700.0 290.0 699.5 312.0Q699.0 334.0 694.0 351.0Q689.0 368.0 678.5 384.5Q668.0 401.0 659.0 410.0Q650.0 419.0 640.0 425.5Q630.0 432.0 608.5 437.0Q587.0 442.0 556.0 444.5Q525.0 447.0 466.0 443.0Q407.0 439.0 401.5 440.0Q396.0 441.0 396.5 455.5Q397.0 470.0 400.0 481.5Q403.0 493.0 422.0 526.5Q441.0 560.0 440.0 566.0Q439.0 572.0 435.5 574.5Q432.0 577.0 425.5 577.0Q419.0 577.0 406.0 571.5Q393.0 566.0 376.5 554.0Q360.0 542.0 347.0 524.0Q334.0 506.0 320.0 478.5Q306.0 451.0 301.5 445.5Q297.0 440.0 270.0 437.0Q243.0 434.0 214.5 427.0Q186.0 420.0 152.5 415.0Q119.0 410.0 106.5 406.0Q94.0 402.0 90.5 394.5Q87.0 387.0 69.5 372.5Q52.0 358.0 39.5 339.0Q27.0 320.0 17.5 296.5Q8.0 273.0 5.0 254.5Q2.0 236.0 2.0 221.5Q2.0 207.0 4.0 198.5Q6.0 190.0 17.5 163.5Q29.0 137.0 42.5 118.5Q56.0 100.0 68.0 88.5Q80.0 77.0 93.5 67.0Q107.0 57.0 134.5 42.5Q162.0 28.0 190.0 19.0Q218.0 10.0 240.5 7.0Q263.0 4.0 316.0 3.0Q369.0 2.0 369.0 2.0Q369.0 2.0 400.0 3.0Z",
+    "inner": "M310.5 27.5Q260.0 28.0 243.0 30.0Q226.0 32.0 198.5 40.5Q171.0 49.0 147.5 61.0Q124.0 73.0 108.0 84.5Q92.0 96.0 82.0 106.0Q72.0 116.0 61.5 130.5Q51.0 145.0 44.0 159.0Q37.0 173.0 32.0 187.5Q27.0 202.0 26.5 218.5Q26.0 235.0 30.0 255.5Q34.0 276.0 42.5 295.0Q51.0 314.0 62.5 330.0Q74.0 346.0 91.0 361.5Q108.0 377.0 122.5 382.0Q137.0 387.0 226.5 402.5Q316.0 418.0 319.5 422.0Q323.0 426.0 328.0 438.5Q333.0 451.0 346.0 474.5Q359.0 498.0 367.5 509.5Q376.0 521.0 386.0 529.5Q396.0 538.0 387.0 519.0Q378.0 500.0 375.0 487.5Q372.0 475.0 371.5 453.5Q371.0 432.0 374.0 425.0Q377.0 418.0 384.5 415.5Q392.0 413.0 402.5 413.0Q413.0 413.0 436.0 415.5Q459.0 418.0 499.5 419.5Q540.0 421.0 559.5 419.0Q579.0 417.0 598.0 413.0Q617.0 409.0 631.0 398.5Q645.0 388.0 655.5 372.0Q666.0 356.0 670.0 341.5Q674.0 327.0 674.0 310.5Q674.0 294.0 668.5 264.5Q663.0 235.0 652.5 210.5Q642.0 186.0 624.0 158.0Q606.0 130.0 591.5 115.5Q577.0 101.0 553.0 83.5Q529.0 66.0 505.5 54.5Q482.0 43.0 453.0 36.0Q424.0 29.0 392.5 28.0Q361.0 27.0 361.0 27.0Q361.0 27.0 310.5 27.5Z",
+    "text": "“Electric doors not always functioning properly, or not being in place. Elevators being in very inconvenient places”",
+    "x": 0.0,
+    "y": 2.426,
+    "w": 39.572,
+    "fs": 4.986,
+    "tx": 17.95,
+    "ty": 14.34,
+    "tw": 58.4,
+    "th": 50.26
+  },
+  {
+    "key": "right",
+    "vb": "730 602",
+    "outer": "M365.5 2.5Q428.0 3.0 459.5 5.5Q491.0 8.0 520.0 16.0Q549.0 24.0 571.0 34.0Q593.0 44.0 618.0 60.5Q643.0 77.0 653.5 86.5Q664.0 96.0 676.5 111.0Q689.0 126.0 703.0 152.5Q717.0 179.0 721.5 193.0Q726.0 207.0 727.0 222.5Q728.0 238.0 723.5 264.5Q719.0 291.0 709.5 313.0Q700.0 335.0 688.0 353.0Q676.0 371.0 657.5 386.5Q639.0 402.0 638.0 406.5Q637.0 411.0 634.0 414.5Q631.0 418.0 620.0 421.5Q609.0 425.0 575.5 430.0Q542.0 435.0 508.5 443.0Q475.0 451.0 447.0 454.5Q419.0 458.0 402.5 489.0Q386.0 520.0 372.0 540.0Q358.0 560.0 343.0 572.0Q328.0 584.0 314.0 590.5Q300.0 597.0 292.5 598.5Q285.0 600.0 279.0 596.5Q273.0 593.0 272.0 588.5Q271.0 584.0 291.0 548.0Q311.0 512.0 314.5 497.5Q318.0 483.0 318.0 470.0Q318.0 457.0 250.0 460.5Q182.0 464.0 151.0 461.5Q120.0 459.0 98.0 454.0Q76.0 449.0 63.0 440.0Q50.0 431.0 34.5 411.5Q19.0 392.0 12.0 373.0Q5.0 354.0 3.5 331.5Q2.0 309.0 5.5 286.0Q9.0 263.0 18.0 233.5Q27.0 204.0 45.5 172.0Q64.0 140.0 74.0 126.5Q84.0 113.0 103.5 95.0Q123.0 77.0 151.5 57.5Q180.0 38.0 208.5 26.0Q237.0 14.0 270.0 8.0Q303.0 2.0 303.0 2.0Q303.0 2.0 365.5 2.5Z",
+    "inner": "M284.5 32.0Q257.0 36.0 235.0 43.5Q213.0 51.0 184.5 68.0Q156.0 85.0 131.5 106.0Q107.0 127.0 87.0 156.5Q67.0 186.0 57.0 206.5Q47.0 227.0 40.0 253.0Q33.0 279.0 31.0 305.5Q29.0 332.0 32.5 348.5Q36.0 365.0 42.0 376.5Q48.0 388.0 61.5 402.5Q75.0 417.0 85.5 422.0Q96.0 427.0 131.5 432.0Q167.0 437.0 210.0 435.5Q253.0 434.0 275.5 431.5Q298.0 429.0 311.0 429.0Q324.0 429.0 329.5 430.5Q335.0 432.0 338.0 435.0Q341.0 438.0 342.5 442.5Q344.0 447.0 344.0 467.5Q344.0 488.0 340.0 505.0Q336.0 522.0 327.5 540.5Q319.0 559.0 329.0 550.0Q339.0 541.0 347.5 529.5Q356.0 518.0 378.0 476.5Q400.0 435.0 405.0 433.0Q410.0 431.0 439.5 427.5Q469.0 424.0 498.5 417.0Q528.0 410.0 564.5 404.5Q601.0 399.0 609.5 395.0Q618.0 391.0 638.0 372.0Q658.0 353.0 671.5 331.5Q685.0 310.0 692.5 286.0Q700.0 262.0 701.5 240.5Q703.0 219.0 695.0 194.5Q687.0 170.0 672.0 146.5Q657.0 123.0 636.0 104.0Q615.0 85.0 590.5 71.0Q566.0 57.0 541.0 47.5Q516.0 38.0 498.5 34.5Q481.0 31.0 396.5 29.5Q312.0 28.0 312.0 28.0Q312.0 28.0 284.5 32.0Z",
+    "text": "“Not every space has ADA accessible entrances which can be difficult for such users.”",
+    "x": 58.85,
+    "y": 0.0,
+    "w": 41.15,
+    "fs": 4.795,
+    "tx": 21.23,
+    "ty": 16.45,
+    "tw": 62.88,
+    "th": 46.84
+  },
+  {
+    "key": "bottom",
+    "vb": "824 680",
+    "outer": "M483.5 4.5Q518.0 7.0 537.0 11.5Q556.0 16.0 574.0 22.5Q592.0 29.0 609.0 37.5Q626.0 46.0 641.5 56.0Q657.0 66.0 683.5 87.0Q710.0 108.0 729.0 130.0Q748.0 152.0 770.0 189.5Q792.0 227.0 803.0 262.0Q814.0 297.0 818.0 323.0Q822.0 349.0 820.5 373.5Q819.0 398.0 812.0 418.5Q805.0 439.0 791.5 458.0Q778.0 477.0 767.0 487.0Q756.0 497.0 747.5 502.0Q739.0 507.0 712.5 513.0Q686.0 519.0 656.0 521.5Q626.0 524.0 579.0 522.5Q532.0 521.0 503.5 518.0Q475.0 515.0 470.0 516.0Q465.0 517.0 465.0 530.5Q465.0 544.0 469.5 562.5Q474.0 581.0 496.0 620.0Q518.0 659.0 517.0 664.5Q516.0 670.0 509.5 674.0Q503.0 678.0 496.0 677.0Q489.0 676.0 470.5 667.5Q452.0 659.0 436.5 646.5Q421.0 634.0 404.5 610.5Q388.0 587.0 369.5 552.5Q351.0 518.0 347.5 516.5Q344.0 515.0 317.0 512.5Q290.0 510.0 249.0 500.5Q208.0 491.0 171.5 485.5Q135.0 480.0 123.0 476.0Q111.0 472.0 108.0 468.5Q105.0 465.0 103.5 459.5Q102.0 454.0 87.5 443.0Q73.0 432.0 65.5 424.0Q58.0 416.0 43.0 392.0Q28.0 368.0 19.5 346.5Q11.0 325.0 6.5 297.0Q2.0 269.0 2.5 255.0Q3.0 241.0 5.5 231.0Q8.0 221.0 16.0 200.5Q24.0 180.0 32.5 165.0Q41.0 150.0 52.0 135.5Q63.0 121.0 76.5 107.5Q90.0 94.0 117.0 75.0Q144.0 56.0 177.5 40.5Q211.0 25.0 241.0 17.0Q271.0 9.0 299.5 6.5Q328.0 4.0 388.5 3.0Q449.0 2.0 449.0 2.0Q449.0 2.0 483.5 4.5Z",
+    "inner": "M363.5 32.5Q307.0 33.0 288.5 35.0Q270.0 37.0 244.0 44.0Q218.0 51.0 185.0 66.5Q152.0 82.0 129.5 98.0Q107.0 114.0 96.0 125.0Q85.0 136.0 75.5 148.5Q66.0 161.0 52.0 189.5Q38.0 218.0 34.5 230.5Q31.0 243.0 30.5 254.5Q30.0 266.0 34.5 293.0Q39.0 320.0 47.5 340.5Q56.0 361.0 69.0 380.5Q82.0 400.0 103.0 420.0Q124.0 440.0 137.0 446.0Q150.0 452.0 193.0 458.5Q236.0 465.0 262.0 471.5Q288.0 478.0 329.0 484.0Q370.0 490.0 374.5 495.0Q379.0 500.0 390.0 524.5Q401.0 549.0 413.5 570.0Q426.0 591.0 434.5 602.0Q443.0 613.0 450.5 620.5Q458.0 628.0 461.5 629.5Q465.0 631.0 455.0 610.5Q445.0 590.0 440.5 571.5Q436.0 553.0 435.5 532.0Q435.0 511.0 436.0 505.5Q437.0 500.0 441.0 494.5Q445.0 489.0 451.5 487.0Q458.0 485.0 473.5 485.0Q489.0 485.0 518.0 488.0Q547.0 491.0 589.5 492.5Q632.0 494.0 653.5 492.0Q675.0 490.0 699.5 485.0Q724.0 480.0 736.0 472.0Q748.0 464.0 761.0 448.0Q774.0 432.0 781.5 413.0Q789.0 394.0 790.0 371.0Q791.0 348.0 786.0 317.5Q781.0 287.0 771.5 261.0Q762.0 235.0 740.5 199.0Q719.0 163.0 700.0 142.5Q681.0 122.0 655.0 102.5Q629.0 83.0 599.0 67.5Q569.0 52.0 536.0 43.5Q503.0 35.0 461.5 33.5Q420.0 32.0 420.0 32.0Q420.0 32.0 363.5 32.5Z",
+    "text": "“With too many ppl in a crowded space it is hard to manage a wheelchair without hitting people especially when you’re in a rush”",
+    "x": 26.663,
+    "y": 38.904,
+    "w": 46.449,
+    "fs": 4.248,
+    "tx": 15.78,
+    "ty": 16.03,
+    "tw": 62.99,
+    "th": 47.35
+  }
+];
+
+
 const keyInsights = [
   {
     title: 'The problems people hit most often',
@@ -143,7 +204,7 @@ const nextProject = {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Instrument+Serif:ital@0;1&family=Permanent+Marker&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Source+Serif+4:opsz,wght@8..60,700&family=Instrument+Serif:ital@0;1&family=Permanent+Marker&display=swap"
     />
   </head>
   <body>
@@ -207,7 +268,7 @@ const nextProject = {
             <p class="eyebrow-label">Why I built it</p>
             <h2>My brothers used wheelchairs, and every trip out had to be planned</h2>
             <p>Two of my brothers, Nate and Jake, used wheelchairs. They had epidermolysis bullosa, a condition that makes skin fragile and causes blisters, so going out took planning. Someone in my family had to find out beforehand where the ramps were, which door worked, and whether there would be a crowd.</p>
-            <p>I thought about building this app for years before I had the skills to do it. <strong>Most people can leave the house without checking whether they will be able to get through the door. I wanted to give everyone else that same head start.</strong></p>
+            <p>I thought about building this app for years before I had the skills to do it. <strong>Most people can leave the house without checking whether they will be able to get through the door. I wanted wheelchair users to be able to do the same.</strong></p>
           </div>
           <div class="personal-photos">
             <img data-tilt src={img('personal-01.webp')} alt="Julian as a child with his brothers, one recovering from a bandaged arm, in a family photo" />
@@ -244,10 +305,25 @@ const nextProject = {
           <h2>Four out of five people had never seen accessibility info in a map</h2>
           <p>I ran a survey with over 20 responses and interviewed people who use a wheelchair or travel with someone who does. Two problems came up every time: <strong>the path was not usable for people in wheelchairs, and there was no way of knowing that before going on the route.</strong> I built the app to tell people about both before they leave.</p>
           <p class="take">The survey showed me how common the problem was. The interviews showed me what it is like to plan every trip around it. If I could only run one of the two, I would run the interviews.</p>
+          <p class="eyebrow-label quote-eyebrow">What interviewees had to say</p>
         </div>
-        <div class="image-row-single image-row-single-wide">
-          <img data-tilt src={img('02-quotes-cropped.webp')} alt="Three quotes from survey respondents about inconsistent doors and elevators, missing ADA-accessible entrances, and difficulty maneuvering a wheelchair through crowds" />
-        </div>
+        <figure class="quote-stage" data-quotes>
+          {quoteBubbles.map((q, i) => (
+            <div class={`qbub qbub-${q.key}`} style={`--x:${q.x}%;--y:${q.y}%;--w:${q.w}%;--i:${i}`}>
+              <svg viewBox={`0 0 ${q.vb}`} class="qbub-svg" aria-hidden="true" focusable="false">
+                <path class="qbub-fill" d={q.inner} />
+                <path class="qbub-ink" fill-rule="evenodd" d={q.outer + q.inner} />
+              </svg>
+              <blockquote
+                class="qbub-text"
+                style={`--tx:${q.tx}%;--ty:${q.ty}%;--tw:${q.tw}%;--th:${q.th}%;--fs:${q.fs}cqw`}
+              >
+                <p>{q.text}</p>
+              </blockquote>
+            </div>
+          ))}
+          <figcaption class="qbub-sr">Three quotes from the people I interviewed.</figcaption>
+        </figure>
       </section>
       <section class="white-block tight">
         <div class="wrap">
@@ -326,8 +402,8 @@ const nextProject = {
       </section>
       <section class="white-block tight">
         <div class="wrap">
-          <h2>What building personas taught me</h2>
-          <p>I built personas for wheelchair users and for the people who travel with them. The finished persona documents were not what helped. Writing them made me put down what frustrated each person, not just what they wanted. <em>Two people can want the same thing for different reasons, and that means two different screens.</em> My first personas just matched the app I already wanted to build, so I rewrote them using what people actually told me.</p>
+          <h2>The personas showed me what frustrated each group</h2>
+          <p>I built personas for wheelchair users and for the people who travel with them. The personas <em>helped me write down the pain points and what frustrated each person</em>. My first versions matched the app I already wanted to build, so I rewrote them using what people told me in the interviews.</p>
           <div class="image-row image-row-detail image-row-personas">
             <img data-tilt src={img('05.webp')} alt="User persona: Joseph, 33, an Occupational Therapist with moderate tech comfort, with his goals, pain points, and needs" />
             <img data-tilt src={img('16.webp')} alt="User persona: Sarah, 28, a freelance graphic designer and wheelchair user in an urban area, with her goals, pain points, and needs" />
@@ -345,7 +421,7 @@ const nextProject = {
       <section class="white-block tight">
         <div class="wrap">
           <h2>Three versions of the route screen, and why I picked the third</h2>
-          <p>Version one drew the route and the obstacles, but it had no way to end the trip and no key for the icons, so you had to learn the map before you could use it. Option 3 <strong>labeled the symbols and added an End button without adding a step</strong>. It is not the best looking of the three. I picked it because it works when you only have one hand free.</p>
+          <p>Option 1 drew the route and the obstacles, but it had no way to end the trip and no key for the icons, so you had to learn the map before you could use it. Option 3 <strong>labeled the symbols and added an End button without adding a step</strong>. I picked Option 3 because it works when you only have one hand free, even though it is not the best looking of the three.</p>
           <p class="take">When I put three options side by side, I pick the best looking one and find reasons for it afterwards. So now I write down what the screen has to let someone do before I lay the options out, and I score each option against that list. <strong>If I only compare the options to each other, one of them looks best even when all three are bad.</strong></p>
         </div>
         <div class="image-row-single image-row-single-wide">
@@ -355,7 +431,7 @@ const nextProject = {
       <section class="white-block tight">
         <div class="wrap">
           <h2>I picked the version with a Call button over the better looking one</h2>
-          <p>Option 1 looked clean because it left out the address and the opening hours. I picked Option 3, which <em>puts the most important information first and gives you one obvious thing to do next</em>. In testing, the Call button was what got people through the task. The question people actually have on that screen is whether someone can confirm the place will work when they arrive.</p>
+          <p>Option 1 looked clean because it left out the address and the opening hours. I picked Option 3, which <em>puts the most important information first and gives you one obvious thing to do next</em>. In testing, the Call button was what got people through the task. People on that screen want to know whether someone can confirm the place will work when they arrive.</p>
         </div>
         <div class="image-row-single image-row-single-wide">
           <img data-tilt src={img('11.webp')} alt="Three iterations of the location detail page, ending in a version with a dedicated Call button and segmented data" />
@@ -367,7 +443,7 @@ const nextProject = {
         </div>
         <div class="feature-text">
           <h2 class="feature-heading">Five things people wanted to know before going on a route</h2>
-          <p>Everything people told me came down to five things worth marking on a route: elevators, ramps, crowds, accessible restrooms, and a way to report something broken. I started with a longer list, and cutting it down was most of the work. <em>Five is the number someone can read quickly while they are moving.</em> I kept the report marker because it is what keeps the map accurate after I stop updating it.</p>
+          <p>Everything people told me came down to five things worth marking on a route: elevators, ramps, crowds, accessible restrooms, and a way to report something broken. I started with a longer list, and cutting it down was most of the work. <em>Five markers is as many as someone can read quickly while they are moving.</em> I kept the report marker because it is what keeps the map accurate after I stop updating it.</p>
           <ul class="pinpoint-row">
             {painPoints.map((p) => <li>{p}</li>)}
           </ul>
@@ -407,8 +483,8 @@ const nextProject = {
           <h2>How it turned out, and what I would change</h2>
           <p>Designing for someone who is already moving made me <em>cut the route screen down to five markers and one action</em>, which is far less than I started with.</p>
           <p>I ran every stage of this myself, from the first survey response to the prototype. I never went back to the people I interviewed to test the finished screens on them, and that is the part I did not finish. It is the first thing I would do if I worked on this again.</p>
-          <p>What I took from this is a habit I use on everything now. Before I draw anything I ask what the person is doing with their hands, their attention and their time while they use it. Guide had to work for someone pushing a wheelchair through a crowd, with one hand free and about two seconds to look. Once that is the test, most of what I wanted to put on the screen does not survive it.</p>
-          <p>This one was harder to work on than I expected. My brothers are the reason it exists, so I was slower and more careful with it than I am with other projects, because I did not want to build something that looked like it helped and did not. <strong>The part I am still uneasy about is that I made an accessibility app without putting it in front of a single wheelchair user.</strong> I know why I did not manage it in four weeks. I still think it was the wrong call.</p>
+          <p>What I took from this is a habit I use on everything now. Before I draw anything I ask what the person is doing with their hands, their attention and their time while they use it. Guide had to work for someone pushing a wheelchair through a crowd, with one hand free and about two seconds to look. Once I ask that, most of what I wanted to put on the screen has to come off.</p>
+          <p>This one was harder to work on than I expected. My brothers are the reason it exists, so I was slower and more careful with it than I am with other projects, because I did not want to build something that looked like it helped and did not. <strong>The part I am still uneasy about is that I made an accessibility app without putting it in front of a single wheelchair user.</strong> I know why I did not manage it in four weeks. I still think that was the wrong decision.</p>
           <h2 class="ai-heading">How I would change this today with AI</h2>
           <p>The problem I never solved was keeping the map current. A map of ramps and elevators goes out of date within months, and I was relying on users to report every change themselves. Today I would have a model look at the photo somebody submits and confirm that the ramp or the elevator is there and working, so a report gets checked in seconds instead of sitting in a queue. I would also use a model to pull accessibility details out of sources that already exist, like business websites, city inspection records and reviews, so the map has something on it the day it launches instead of being empty.</p>
           <p>I would not put any of that on the map without saying where it came from. <strong>A wrong accessibility claim is worse than no claim</strong>, because somebody plans their day around it. Anything a model produced would be marked as unconfirmed until a person checked it, and the route the app recommends would still only use paths a person has confirmed.</p>
@@ -472,6 +548,29 @@ const nextProject = {
       document.querySelectorAll<HTMLVideoElement>('.marquee-phone video, .feature-media video, .prototype-phone video').forEach((v) => {
         v.play().catch(() => {});
       });
+
+      // The three interview quotes pop in one after another the first time
+      // the group scrolls into view. Reduced motion and no
+      // IntersectionObserver both go straight to the finished state, and a
+      // late timeout reveals them anyway if the observer never fires.
+      const quotesEl = document.querySelector<HTMLElement>('[data-quotes]');
+      if (quotesEl) {
+        const reducedQuotes = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reducedQuotes || !('IntersectionObserver' in window)) {
+          quotesEl.classList.add('is-in');
+        } else {
+          const qio = new IntersectionObserver((entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                quotesEl.classList.add('is-in');
+                obs.disconnect();
+              }
+            });
+          }, { threshold: 0.3 });
+          qio.observe(quotesEl);
+          window.setTimeout(() => quotesEl.classList.add('is-in'), 6000);
+        }
+      }
 
       // Typewriter effect on the pull-quote — types each segment in order
       // (plain text, then the highlighted phrase, then the trailing plain
@@ -948,6 +1047,115 @@ const nextProject = {
       .image-row-single img {
         display: block;
         width: 100%;
+      }
+
+      /* The three interview quotes ----------------------------------------
+         Was a flat image (02-quotes-cropped.webp). The stage is the same
+         56rem, no-gutter measure as .image-row-single-wide, so the group
+         sits exactly where the picture did, and the bubbles are placed on it
+         as percentages of the traced group's own 1774x1113 bounding box.
+         Each bubble is its own inline-size container, so its quote scales
+         with it; because the three widths keep the proportion they had in
+         the original artwork, all three quotes land on one optical size. */
+      /* .take above it has no bottom margin, so the gap before the label
+         belongs to the label; the stage then sits at the label's own
+         --gap-eyebrow, the way every other eyebrow sits on its heading. */
+      .quote-eyebrow {
+        margin-top: clamp(1.75rem, 4vw, 2.75rem);
+      }
+
+      .quote-stage {
+        position: relative;
+        max-width: 56rem;
+        margin: var(--gap-eyebrow) auto 0;
+      }
+
+      .quote-stage::before {
+        content: '';
+        display: block;
+        padding-top: 62.74%; /* 1113 / 1774 */
+      }
+
+      .qbub {
+        position: absolute;
+        left: var(--x);
+        top: var(--y);
+        width: var(--w);
+        container-type: inline-size;
+      }
+
+      .qbub-svg { display: block; width: 100%; height: auto; }
+      /* Interior is the page, not white, so the group never reads as a
+         pasted-in rectangle the way the exported image did. */
+      .qbub-fill { fill: var(--bg); }
+      .qbub-ink { fill: var(--ink); }
+
+      .qbub-text {
+        position: absolute;
+        margin: 0;
+        left: var(--tx);
+        top: var(--ty);
+        width: var(--tw);
+        height: var(--th);
+        display: flex;
+        align-items: center;
+      }
+
+      /* #1572b8 is 4.6:1 on --bg. The blue in the original export was
+         #3dadff, which is 2.4:1 and fails AA at any size -- survivable
+         inside a picture, not once it is real text, least of all here. */
+      .qbub-text p {
+        margin: 0;
+        max-width: none;
+        font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+        font-weight: 700;
+        font-size: var(--fs);
+        line-height: 1.38;
+        color: #1572b8;
+        text-wrap: pretty;
+      }
+
+      .qbub-sr {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* Each bubble pops in after the one before it, once, when the group
+         scrolls into view. The hidden start state is behind both html.js and
+         a reduced-motion check, so the quotes can never end up stranded
+         invisible -- the same guard global.css puts on [data-reveal]. */
+      @media (prefers-reduced-motion: no-preference) {
+        :global(html.js) .qbub { opacity: 0; }
+
+        :global(html.js) .quote-stage.is-in .qbub {
+          animation: qbub-pop 620ms var(--ease-out) both;
+          animation-delay: calc(var(--i) * 170ms);
+        }
+
+        @keyframes qbub-pop {
+          0% { opacity: 0; transform: scale(0.86); }
+          62% { opacity: 1; transform: scale(1.025); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+      }
+
+      /* Below the width where the cluster's type would drop under 15px, the
+         three stack one per row and take the gutter the body copy has. */
+      @media (max-width: 800px) {
+        .quote-stage {
+          display: grid;
+          gap: 1.25rem;
+          padding-inline: var(--gutter);
+        }
+        .quote-stage::before { display: none; }
+        .qbub { position: relative; left: auto; top: auto; width: 100%; }
       }
 
       .image-row {
