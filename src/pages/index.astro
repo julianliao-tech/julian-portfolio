@@ -240,6 +240,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   <section class="hero">
     <div class="wrap">
+      <p class="hero-made rise" style="--d: 20ms">made in github</p>
       <img
         class="hero-portrait rise"
         style="--d: 60ms"
@@ -533,6 +534,22 @@ const pad = (n: number) => String(n).padStart(2, '0');
     flex-direction: column;
   }
 
+  /* Code-voice eyebrow above the portrait: the mono face and the faint
+     ink of a source comment, but deliberately no box — no border, no
+     background, no padding — so it reads as a line of code sitting on
+     the page rather than a badge. Same treatment on phones and desktop;
+     only the size moves, between 10px and 12px. */
+  .hero-made {
+    margin: 0 0 clamp(0.6rem, 2vw, 0.9rem);
+    max-width: none;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: clamp(0.625rem, 2.2vw, 0.75rem);
+    line-height: 1.4;
+    letter-spacing: var(--track-label, 0.04em);
+    color: var(--ink-faint);
+  }
+
   .hero-portrait {
     display: block;
     width: clamp(132px, 16.5vw, 240px);
@@ -712,6 +729,17 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
     .hero-code-box--mobile {
       display: flex;
+      /* The shared 1.9vw sizing above is calibrated for the desktop
+         array's 55-character line, so on a phone — where the mobile
+         array's longest line is only 40 characters — it shrank the
+         snippet to ~7px and left the box swimming in empty gutter.
+         Size it from what actually has to fit instead: 40 characters
+         of JetBrains Mono (1ch = 0.6em, so 24em) plus the box's 2.5rem
+         of padding and slack, inside 100vw less both gutters. At 3.1vw
+         that lands near 12px on a 393px phone with ~20px to spare, and
+         it holds down to a 320px screen. The cap keeps it from
+         outgrowing the body copy on a tablet. */
+      font-size: clamp(0.6rem, 3.1vw, 0.875rem);
     }
   }
 
@@ -801,7 +829,19 @@ const pad = (n: number) => String(n).padStart(2, '0');
     display: block;
     position: relative;
     overflow: hidden;
-    border-radius: clamp(14px, 1.8vw, 22px);
+    /* iOS Safari drops a rounded `overflow: hidden` clip as soon as the
+       box is composited — and this one always is: the tile runs the
+       card-float transform animation, and the image or video inside it
+       is transformed too (perspective + scale). WebKit then clips the
+       composited layer to a plain rectangle, which is why the corners
+       came out square on a phone while desktop looked right. <video>
+       ignores an ancestor's radius there even without the animation.
+       clip-path is honored on composited content, so it does the actual
+       rounding; border-radius stays for the border and for anything that
+       doesn't support clip-path. One radius, declared once. */
+    --card-r: clamp(14px, 1.8vw, 22px);
+    border-radius: var(--card-r);
+    clip-path: inset(0 round var(--card-r));
     border: 1px solid var(--line);
     background: var(--bg-elev);
     /* Every tile the same perfect square, video or still. Screen
@@ -1208,7 +1248,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
     position: relative;
     display: block;
     overflow: hidden;
-    border-radius: clamp(14px, 1.8vw, 22px);
+    /* Same composited-clip problem as .card-media above — the image
+       inside is transformed, so iOS Safari squared these off too. */
+    --card-r: clamp(14px, 1.8vw, 22px);
+    border-radius: var(--card-r);
+    clip-path: inset(0 round var(--card-r));
     border: 1px solid var(--line);
     background: var(--bg-elev);
     /* Both thumbnails the same size, matching the MCBC deliverable's

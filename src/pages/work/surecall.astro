@@ -151,7 +151,7 @@ const nextProject = {
             ))}
           </dl>
 
-          <p class="intro">Boosters go into garages, basements and rural houses where the signal was already bad. Two kinds of people install them and they want different things. Technicians do this all day and want the raw signal number. Homeowners do it once and want to be told they are finished. <em>I had to give the homeowner a plain answer without slowing the technician down.</em> Verizon wanted fewer support calls, and <strong>most support calls come from someone who could not tell whether the booster was working</strong>.</p>
+          <p class="intro">Boosters go into garages, basements and rural houses where the signal was already bad. Two kinds of people install them and they want different things. Technicians do this all day and want the raw signal number. Homeowners do it once and want to be told they are finished. I had to give the homeowner a plain answer without slowing the technician down. Verizon wanted fewer support calls, and <strong>most support calls come from someone who could not tell whether the booster was working</strong>.</p>
 
           <p class="pull-quote" data-typewriter>
             <span aria-hidden="true"><span class="tw-seg" data-full="How do you tell somebody "></span><span class="tw-seg pull-quote-highlight" data-full="the install actually worked"></span><span class="tw-seg" data-full=", without teaching them what dBm means?"></span></span>
@@ -184,7 +184,7 @@ const nextProject = {
       <section class="white-block">
         <div class="wrap">
           <h2>I never spoke to a user, and I am not going to pretend I did</h2>
-          <p>I did not run my own research on this project. I worked from a brief written by the SureCall and Verizon project managers. It said three things: customers do not know what counts as a good or bad dBm value, <span class="callout-phrase">people want to "see it work" before they believe it</span>, and instructions have to be <strong>skimmable, with the detail underneath</strong>. We built two personas from that brief so I had a specific person in mind while drawing each screen. Those personas told me what SureCall and Verizon believed about their customers. <em>That was the only information I had, and it was better than designing for myself.</em></p>
+          <p>I did not run my own research on this project. I worked from a brief written by the SureCall and Verizon project managers. It said three things: customers do not know what counts as a good or bad dBm value, <span class="callout-phrase">people want to "see it work" before they believe it</span>, and instructions have to be <strong>skimmable, with the detail underneath</strong>. We built two personas from that brief so I had a specific person in mind while drawing each screen. Those personas told me what SureCall and Verizon believed about their customers. That was the only information I had, and it was better than designing for myself.</p>
           <p class="take">I had no research of my own, but I did have a user, described in the brief. I think student work usually either invents findings it never collected or designs for nobody in particular. <strong>I wrote down what I was assuming instead, so someone could check it.</strong> Every decision on this page comes from a line in that brief.</p>
           <div class="image-row image-row-personas">
             <img data-tilt src={img('03.webp')} alt="User persona: Sarah Scott, 38, a remote marketing worker in Wisconsin installing her first signal booster, with her goals, pain points, and needs from the app" />
@@ -225,7 +225,7 @@ const nextProject = {
         </div>
         <div class="feature-text">
           <h2 class="feature-heading">Showing the word Good instead of minus 80 dBm</h2>
-          <p>A color coded meter with plain labels ("Good", "Great") translates the signal reading, so nobody has to learn what dBm means to find out whether they are done. The app <strong>rescans on its own once the booster is mounted</strong>, because that is the moment you want the number. <em>The raw RSRP value stays on the screen for the technician who wants the real reading.</em> Both people get what they need from the same screen, without switching modes.</p>
+          <p>A color coded meter with plain labels ("Good", "Great") translates the signal reading, so nobody has to learn what dBm means to find out whether they are done. The app <strong>rescans on its own once the booster is mounted</strong>, because that is the moment you want the number. The raw RSRP value stays on the screen for the technician who wants the real reading. Both people get what they need from the same screen, without switching modes.</p>
         </div>
       </section>
       <section class="feature-band feature-band-reverse">
@@ -261,7 +261,7 @@ const nextProject = {
       <section class="white-block">
         <div class="wrap">
           <h2>How it turned out, and what I would change</h2>
-          <p>On this project I learned to design for the room the app is used in as well as for the screen. Bad light, a ladder, and one free hand: <em>designing for those conditions made me cut things I liked</em>, including a detailed signal history screen that nobody standing on a ladder is going to read.</p>
+          <p>On this project I learned to design for the room the app is used in as well as for the screen. Bad light, a ladder, and one free hand: designing for those conditions made me cut things I liked, including a detailed signal history screen that nobody standing on a ladder is going to read.</p>
           <p>Working at a small company meant I was involved in every step. The part I valued most was sitting with the backend engineers and watching what actually gets built. They told me to change things based on <strong>how easy or hard an element was to code</strong>, which was humbling at first and then just useful. Thank you to SureCall for having me.</p>
           <p>What I learned here was how to work when the research belongs to someone else. I had a brief, two project managers and no users, and I had to decide which lines in that brief I was willing to build on. Most client work is like that, and no class had asked me to do it.</p>
           <p>I was nervous for most of it. It was the first time I designed something a company was actually going to ship, and I spent the first few weeks expecting someone to tell me I did not know what I was doing. <strong>That went away once I stopped treating the brief as a test I could fail and started using it as the description of the user I had.</strong> I left more confident than I arrived, which I had not expected.</p>
@@ -738,10 +738,11 @@ const nextProject = {
         color: rgba(253, 251, 249, 0.7);
       }
 
-      /* Typographic emphasis experiment — bold marks a design decision,
-         italic marks an insight/rationale, and .callout-phrase (used once,
-         on the single clearest insight on the page) bumps size + color for
-         a magazine-pull-quote-within-a-paragraph effect. */
+      /* Typographic emphasis: bold only. Bold marks a design decision,
+         and .callout-phrase (used once, on the single clearest insight on
+         the page) is the same bold at full ink. The earlier italic and
+         colored-phrase treatments were removed — body copy carries no
+         emphasis other than weight. */
       .white-block strong,
       .context-box strong,
       .feature-text strong {
@@ -754,21 +755,9 @@ const nextProject = {
         font-weight: 600;
       }
 
-      .white-block em,
-      .context-box em,
-      .feature-text em {
-        font-style: italic;
-        color: var(--ink);
-      }
-
-      .dark-block em {
-        font-style: italic;
-        color: var(--bg);
-      }
-
       .callout-phrase {
         font-weight: 600;
-        color: #00b385;
+        color: var(--ink);
       }
 
       .eyebrow-label {
@@ -1098,7 +1087,7 @@ const nextProject = {
          from the account of what happened. */
       .take {
         max-width: 60ch;
-        margin: 2rem 0 0;
+        margin: 2rem 0 2rem;
         padding-left: 1.1rem;
         border-left: 3px solid #00b385;
         font-family: var(--font-body);

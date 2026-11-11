@@ -104,6 +104,7 @@
   --gap-label: 0.35rem;      /* card label -> its heading or value */
   --gap-subheading: 0.5rem;  /* card heading -> body copy */
   --gap-caption: 0.25rem;    /* tight caption pair (name + its one-line note) */
+  --gap-para: var(--space-3); /* paragraph -> next paragraph in body copy */
 }
 
 /* Phones: one step down for body copy, applied to the token so every
@@ -112,6 +113,11 @@
 @media (max-width: 640px) {
   :root {
     --step-body: 1rem;
+    /* Phones wrap a paragraph over eight or nine lines, so the 1.5rem
+       desktop gap — less than one line of leading — stopped reading as
+       a break between paragraphs. This is the single number to change
+       if the rhythm still feels wrong. */
+    --gap-para: 1.9rem;
   }
 }
 
@@ -193,7 +199,7 @@ h4 {
 }
 
 p {
-  margin: 0 0 var(--space-3);
+  margin: 0 0 var(--gap-para);
   color: var(--ink-soft);
   max-width: var(--measure);
   text-wrap: pretty;
