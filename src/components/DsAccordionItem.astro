@@ -1,0 +1,182 @@
+---
+// One row of the design-system accordion on a case-study page: a full-width title button and
+// the panel it opens.
+//
+// Progressive by default. The panel ships OPEN in the markup, and the
+// inline script at the top of DesignSystem.astro adds `js-acc` to
+// <html> before first paint, which is what collapses them — so with JS off the whole page
+// still reads as one long document, and there is no flash of expanded
+// content on the way in.
+//
+// The open state lives on .acc-item as data-open, not on the button,
+// because the panel is a sibling of the <h2> rather than of the button
+// inside it, so no CSS combinator reaches it from the button.
+interface Props {
+  num: string;
+  title: string;
+  sub: string;
+  id: string;
+}
+const { num, title, sub, id } = Astro.props;
+---
+
+<div class="acc-item" data-acc-item>
+  <h2 class="acc-h">
+    <button
+      type="button"
+      class="acc-btn"
+      id={`${id}-btn`}
+      aria-expanded="true"
+      aria-controls={`${id}-panel`}
+    >
+      <span class="acc-num">{num}</span>
+      <span class="acc-text">
+        <span class="acc-title">{title}</span>
+        <span class="acc-sub">{sub}</span>
+      </span>
+      <span class="acc-chev" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M5 9l7 7 7-7" stroke-linecap="square" />
+        </svg>
+      </span>
+    </button>
+  </h2>
+
+  <div class="acc-panel" id={`${id}-panel`} role="region" aria-labelledby={`${id}-btn`}>
+    <div class="acc-clip">
+      <div class="acc-inner">
+        <slot />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .acc-item { border-top: 1px solid var(--line-strong); }
+
+  .acc-h {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .acc-btn {
+    appearance: none;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: clamp(0.9rem, 3vw, 1.75rem);
+    padding: clamp(1.1rem, 2.6vw, 1.6rem) 0;
+    background: transparent;
+    border: 0;
+    text-align: left;
+    cursor: pointer;
+    color: var(--ink);
+    transition: color 0.2s var(--ease);
+  }
+
+  .acc-btn:hover { color: var(--pad); }
+  .acc-btn:hover .acc-num { color: var(--pad); border-color: var(--pad); }
+  .acc-btn:focus-visible { outline: 2px solid var(--pad); outline-offset: 3px; }
+
+  .acc-num {
+    flex: none;
+    width: 2.6rem;
+    font-family: var(--font-mono);
+    font-size: var(--step-small);
+    color: var(--ink-faint);
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 0.2rem;
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  }
+
+  .acc-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .acc-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+    line-height: 1.1;
+    letter-spacing: var(--track-tight);
+  }
+
+  .acc-sub {
+    font-family: var(--font-mono);
+    font-size: var(--step-micro);
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .acc-chev {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+    transition: transform 0.42s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease);
+  }
+
+  .acc-btn:hover .acc-chev { background: var(--pas); border-color: var(--pad); }
+
+  :global(.acc-item[data-open='true']) .acc-chev { transform: rotate(180deg); }
+
+  /* The panel. 0fr -> 1fr animates to the content's own height without
+     anyone having to measure it. The inner needs min-height:0 or the
+     grid row refuses to shrink below its content. */
+  .acc-panel {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 0.42s var(--ease);
+  }
+
+  /* Two elements, on purpose. The grid row sizes .acc-clip, and with
+     box-sizing: border-box a used height of 0 is still floored at the
+     element's own padding — so any padding here would leave a gap under
+     every collapsed row. The clip carries no padding and the padding
+     lives inside it, where it gets clipped away with everything else. */
+  .acc-clip {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .acc-inner { padding-bottom: clamp(2rem, 5vw, 3.25rem); }
+
+  :global(.js-acc) .acc-panel { grid-template-rows: 0fr; }
+
+  :global(.js-acc) .acc-inner {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 0.42s, opacity 0.2s var(--ease);
+  }
+
+  :global(.js-acc .acc-item[data-open='true']) .acc-panel { grid-template-rows: 1fr; }
+
+  :global(.js-acc .acc-item[data-open='true']) .acc-inner {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear 0s, opacity 0.3s var(--ease) 0.1s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .acc-panel,
+    .acc-inner,
+    .acc-chev { transition: none; }
+  }
+
+  /* The first child of a panel should not re-add top space. */
+  .acc-inner > :global(:first-child) { margin-top: 0; }
+
+  @media (max-width: 540px) {
+    .acc-num { display: none; }
+  }
+</style>

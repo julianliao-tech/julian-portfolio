@@ -37,6 +37,7 @@
 import '../../styles/global.css';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
+import SectionRail from '../../components/SectionRail.astro';
 import { Code } from 'astro:components';
 import alumniCode from '../../data/elink-code/AlumniDatabase.tsx.txt?raw';
 import groupChatsCode from '../../data/elink-code/GroupChats.tsx.txt?raw';
@@ -286,6 +287,7 @@ const nextProject = {
   </head>
   <body>
     <Nav />
+    <SectionRail />
 
     <section class="hero-banner">
       <img data-tilt src={img('esade-banner.webp')} alt="Esade wordmark beside a laptop showing the E-Link platform inside Esade's intranet" />

@@ -19,6 +19,9 @@ import '../../styles/global.css';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import Lightbox from '../../components/Lightbox.astro';
+import SectionRail from '../../components/SectionRail.astro';
+import DesignSystem from '../../components/DesignSystem.astro';
+import { michiganSystem } from '../../lib/ds-michigan';
 
 const base = import.meta.env.BASE_URL;
 const pageTitle = 'Michigan ChatGPT · Julian Liao';
@@ -114,11 +117,12 @@ const nextProject = {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Instrument+Serif:ital@0;1&family=Permanent+Marker&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Instrument+Serif:ital@0;1&family=Permanent+Marker&family=Geist:wght@300;400;500;600;700;800&family=Reddit+Sans:wght@500;600&display=swap"
     />
   </head>
   <body>
     <Nav />
+    <SectionRail />
 
     <div data-zoom-group data-zoom-scan>
       <section class="hero-banner">
@@ -387,6 +391,8 @@ const nextProject = {
           </div>
         </div>
       </section>
+
+      <DesignSystem sys={michiganSystem} />
 
       <section class="white-block">
         <div class="wrap">

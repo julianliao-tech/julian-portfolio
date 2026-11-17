@@ -29,6 +29,7 @@
 import '../../styles/global.css';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
+import SectionRail from '../../components/SectionRail.astro';
 
 const base = import.meta.env.BASE_URL;
 const pageTitle = 'connexU Event Website · Julian Liao';
@@ -118,6 +119,7 @@ const carouselAngleStep = 360 / carouselPhotos.length;
   </head>
   <body>
     <Nav />
+    <SectionRail />
 
     <section class="hero-banner">
       <img data-tilt src={img('hero-banner.webp')} alt="The connexU website's Our Leadership page shown on a laptop, beside the connexU wordmark" />

@@ -1,0 +1,896 @@
+---
+// ---------------------------------------------------------------------
+// A project's design system, rendered live from the real contents of
+// its Figma file rather than screenshotted.
+//
+// Same five collections, same section order and the same visual
+// language as the Disability Design Lab case study, so the three
+// pages that have a system document it the same way. Data comes from
+// src/lib/ds-<project>.ts; the shape is in src/lib/ds.ts.
+//
+// Mode switchers are progressive: each strip ships with a default
+// data-mode in the markup and the generated CSS hides every other
+// mode's values, so with JavaScript off one complete, correct mode
+// still renders.
+//
+// Provenance is in the data, not in prose: a value marked `kit` was in
+// the project's original design kit, `new` means it was added when the
+// system was built. The page prints the difference.
+// ---------------------------------------------------------------------
+import AccItem from './DsAccordionItem.astro';
+import { primitiveMap, modeKey, type DesignSystemData } from '../lib/ds';
+
+interface Props { sys: DesignSystemData }
+const { sys } = Astro.props;
+
+const prims = primitiveMap(sys.ramps);
+const resolve = (alias: string) => prims[alias] ?? '#000000';
+
+const nColors = sys.ramps.reduce((n, r) => n + r.steps.length, 0);
+const nTokens = sys.tokenGroups.reduce((n, g) => n + g.rows.length, 0) + sys.radii.length;
+
+const TOKEN_MODES = ['Light', 'Dark'];
+
+/** Token alias by name, for the preview card, so row order cannot break it. */
+const tokenAlias = (name: string, mode: string) => {
+  for (const g of sys.tokenGroups) {
+    for (const row of g.rows) if (row[0] === name) return row[mode === 'Light' ? 1 : 2];
+  }
+  return 'Greyscale/0';
+};
+const tokenHex = (name: string, mode: string) => resolve(tokenAlias(name, mode));
+
+/** Semantic aliases by name, for the preview cards. */
+const semAliases = (name: string) => sys.semantics.find((s) => s.name === name)?.aliases ?? [];
+const semHex = (name: string, i: number) => resolve(semAliases(name)[i] ?? 'Greyscale/0');
+
+const bodyFace = sys.faces[0]?.stack ?? 'inherit';
+
+// One generated rule per mode, so the switchers work for any set of
+// mode names without hardcoding them in the stylesheet.
+const allModes = [
+  ...TOKEN_MODES.map((m) => modeKey('t', m)),
+  ...sys.semModes.map((m) => modeKey('s', m)),
+  ...sys.typeModes.map((m) => modeKey('y', m)),
+];
+const modeCss = `
+.ds-page [data-mode] [data-m] { display: none; }
+${allModes.map((k) => `.ds-page [data-mode="${k}"] [data-m="${k}"] { display: revert; }`).join('\n')}
+${sys.semModes
+  .map(
+    (m) =>
+      `.ds-page [data-mode="${modeKey('s', m)}"] [data-cell="${modeKey('s', m)}"] { opacity: 1; background: var(--paper); }`
+  )
+  .join('\n')}
+${sys.typeModes
+  .map(
+    (m, i) =>
+      `.ds-page [data-mode="${modeKey('y', m)}"] .spec-sample { font-size: var(--s${i}); line-height: var(--l${i}); }`
+  )
+  .join('\n')}
+`;
+---
+
+<div
+  class="ds-page"
+  style={`--pa:${sys.accent};--pad:${sys.accentDeep};--pas:${sys.accentSoft};--poa:${sys.onAccent}`}
+>
+  {/* Collapses the accordion before first paint. Without JS the panels
+      stay open and the section reads as one long document. */}
+  <script is:inline>document.documentElement.classList.add('js-acc');</script>
+
+  <style is:inline set:html={modeCss}></style>
+
+  {/* Intro ---------------------------------------------------------- */}
+  <section class="ds-intro">
+    <div class="wrap">
+      <h2>Design System</h2>
+      <ul class="stat-row">
+        {sys.stats.map((s) => (
+          <li>
+            <span class="stat-n">{s.n}</span>
+            <span class="stat-label">{s.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="acc-section">
+    <div class="wrap">
+      <div class="acc">
+        <AccItem
+          num="01"
+          id={`${sys.slug}-primitives`}
+          title="Primitives"
+          sub={`${nColors} colors · ${sys.rawValues.length} numbers · 1 mode`}
+        >
+  {sys.ramps.map((r) => (
+    <div class="ramp">
+      <div class="ramp-head">
+        <h3>{r.family}</h3>
+      </div>
+      <ol class="ramp-row">
+        {r.steps.map(([step, hex]) => (
+          <li class={r.anchors.includes(step) ? 'is-anchor' : ''}>
+            <span class="chip" style={`background:${hex}`}></span>
+            <span class="chip-step">
+              {step}
+              {r.anchors.includes(step) && <span class="anchor-dot" title="already used in the project">●</span>}
+            </span>
+            <span class="chip-hex">{hex}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  ))}
+
+  <div class="ramp">
+    <div class="ramp-head">
+      <h3>The plain numbers</h3>
+    </div>
+    <ol class="value-row">
+      {sys.rawValues.map((v) => <li><code>{v}</code></li>)}
+    </ol>
+  </div>
+        </AccItem>
+
+        <AccItem
+          num="02"
+          id={`${sys.slug}-tokens`}
+          title="Tokens"
+          sub={`${nTokens} variables · Light / Dark`}
+        >
+  <div class="mode-strip" data-mode={modeKey('t', 'Light')} data-mode-group="tokens">
+    <div class="mode-switch" role="group" aria-label="Token mode">
+      {TOKEN_MODES.map((m, i) => (
+        <button type="button" data-mode-set={modeKey('t', m)} aria-pressed={i === 0 ? 'true' : 'false'}>
+          {m}
+        </button>
+      ))}
+    </div>
+
+    <div class="token-preview">
+      {TOKEN_MODES.map((m) => (
+        <div
+          class="token-card"
+          data-m={modeKey('t', m)}
+          style={`background:${tokenHex('Surface/default', m)};border-color:${tokenHex('Border/default', m)}`}
+        >
+          <span class="token-card-label" style={`color:${tokenHex('Text/caption', m)}`}>
+            {sys.tokenPreview.label}
+          </span>
+          <p style={`color:${tokenHex('Text/title', m)};font-family:${bodyFace}`}>
+            {sys.tokenPreview.title}
+          </p>
+          <span class="token-card-sub" style={`color:${tokenHex('Text/body', m)};font-family:${bodyFace}`}>
+            {sys.tokenPreview.sub}
+          </span>
+        </div>
+      ))}
+    </div>
+
+    <div class="token-tables">
+      {sys.tokenGroups.map((g) => (
+        <div class="table-scroll">
+          <table class="ds-table">
+            <caption>{g.group}</caption>
+            <thead>
+              <tr>
+                <th scope="col">Token</th>
+                <th scope="col">Points at</th>
+                <th scope="col">Ends up as</th>
+              </tr>
+            </thead>
+            <tbody>
+              {g.rows.map(([name, light, dark]) => (
+                <tr>
+                  <th scope="row"><code>{name}</code></th>
+                  <td>
+                    <code data-m={modeKey('t', 'Light')}>{light}</code>
+                    <code data-m={modeKey('t', 'Dark')}>{dark}</code>
+                  </td>
+                  <td class="cell-hex">
+                    <span data-m={modeKey('t', 'Light')}>
+                      <span class="dot" style={`background:${resolve(light)}`}></span>{resolve(light)}
+                    </span>
+                    <span data-m={modeKey('t', 'Dark')}>
+                      <span class="dot" style={`background:${resolve(dark)}`}></span>{resolve(dark)}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
+
+      <div class="table-scroll">
+        <table class="ds-table">
+          <caption>Corner radius, the same in both modes</caption>
+          <thead>
+            <tr>
+              <th scope="col">Token</th>
+              <th scope="col">Points at</th>
+              <th scope="col">Shape</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sys.radii.map(([name, alias, px]) => (
+              <tr>
+                <th scope="row"><code>{name}</code></th>
+                <td><code>{alias}</code></td>
+                <td><span class="radius-demo" style={`border-radius:${px}px`}></span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+        </AccItem>
+
+        <AccItem
+          num="03"
+          id={`${sys.slug}-semantics`}
+          title="Semantics"
+          sub={`${sys.semantics.length} variables · ${sys.semModes.length} modes`}
+        >
+  <div class="mode-strip" data-mode={modeKey('s', sys.semModes[0])} data-mode-group="semantics">
+    <div class="mode-switch" role="group" aria-label="Semantic mode">
+      {sys.semModes.map((m, i) => (
+        <button type="button" data-mode-set={modeKey('s', m)} aria-pressed={i === 0 ? 'true' : 'false'}>
+          {m}
+        </button>
+      ))}
+    </div>
+
+    <div class="sem-preview">
+      {sys.semModes.map((m, i) => (
+        <div class="sem-card" data-m={modeKey('s', m)}>
+          <span
+            class="sem-btn"
+            style={`background:${semHex('Surface/default', i)};color:${semHex('Text/on-default', i)};border-color:${semHex('Border/default', i)}`}
+            >{sys.semPreview.button}</span
+          >
+          <span
+            class="sem-badge"
+            style={`background:${semHex('Surface/subtle', i)};color:${semHex('Text/label', i)};border-color:${semHex('Border/subtle', i)}`}
+            >{sys.semPreview.badge}</span
+          >
+          <span class="sem-note" style={`color:${semHex('Text/label', i)}`}>Text/label in {m}</span>
+        </div>
+      ))}
+    </div>
+
+    <div class="table-scroll">
+      <table class="ds-table ds-table-sem">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            {sys.semModes.map((m) => <th scope="col">{m}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {sys.semantics.map((s) => (
+            <tr>
+              <th scope="row">
+                <code>{s.name}</code>
+                {s.note && <span class="row-note">{s.note}</span>}
+              </th>
+              {s.aliases.map((a, i) => (
+                <td class="cell-sem" data-cell={modeKey('s', sys.semModes[i])}>
+                  <span class="dot" style={`background:${resolve(a)}`}></span>
+                  <span class="cell-alias">{a}</span>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+        </AccItem>
+
+        <AccItem
+          num="04"
+          id={`${sys.slug}-typography`}
+          title="Typography"
+          sub={`${sys.typeRows.length * 2} variables · ${sys.typeModes.join(' / ')}`}
+        >
+  <div class="type-strip" data-mode={modeKey('y', sys.typeDefault)} data-mode-group="type">
+    <div class="mode-switch" role="group" aria-label="Typography mode">
+      {sys.typeModes.map((m) => (
+        <button
+          type="button"
+          data-mode-set={modeKey('y', m)}
+          aria-pressed={m === sys.typeDefault ? 'true' : 'false'}>{m}</button
+        >
+      ))}
+    </div>
+
+    <ul class="spec-list">
+      {sys.typeRows.map((t) => (
+        <li class="spec-row" style={t.modes.map((p, i) => `--s${i}:${p[0]}px;--l${i}:${p[1]}px`).join(';')}>
+          <div class="spec-meta">
+            <code class="spec-name">{t.style}</code>
+            <span class="spec-use">{t.use}</span>
+            {t.status === 'new' && <span class="spec-unused">added with the system</span>}
+            <span class="spec-nums">
+              {sys.typeModes.map((m, i) => (
+                <span data-m={modeKey('y', m)}>{t.modes[i][0]} / {t.modes[i][1]} px · {t.weight}</span>
+              ))}
+            </span>
+          </div>
+          <p class="spec-sample" style={`font-family:${t.face};font-weight:${t.weight}`}>{t.sample}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="face-grid">
+    {sys.faces.map((f) => (
+      <article class="face-card">
+        <p class="face-sample" style={`font-family:${f.stack}`}>{f.sample}</p>
+        <h3>{f.name}</h3>
+        <p class="face-weights">{f.weights}</p>
+      </article>
+    ))}
+  </div>
+        </AccItem>
+
+        <AccItem
+          num="05"
+          id={`${sys.slug}-layout`}
+          title={sys.layoutTitle}
+          sub={`${sys.layoutRows.length} variables · ${sys.layoutModes.join(' / ')}`}
+        >
+  <div class="table-scroll">
+    <table class="ds-table ds-table-resp">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          {sys.layoutModes.map((m) => <th scope="col">{m}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {sys.layoutRows.map((row) => (
+          <tr>
+            <th scope="row"><code>{row[0]}</code></th>
+            {row.slice(1).map((v) => <td>{v}</td>)}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+        </AccItem>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  // The panels are open in the markup and the `js-acc` class on <html>
+  // (set inline above) is what collapses them, so this only has to wire
+  // the toggles up.
+  document.querySelectorAll<HTMLElement>('[data-acc-item]').forEach((item) => {
+    const btn = item.querySelector<HTMLButtonElement>('.acc-btn');
+    if (!btn) return;
+    btn.setAttribute('aria-expanded', 'false');
+    btn.addEventListener('click', () => {
+      const open = item.dataset.open === 'true';
+      item.dataset.open = String(!open);
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+  });
+
+  // Mode switchers. The markup ships with a default data-mode and the
+  // CSS hides every other mode's values, so with JS off one complete
+  // mode still renders. This only moves which one is showing.
+  document.querySelectorAll<HTMLElement>('.ds-page [data-mode-group]').forEach((strip) => {
+    const buttons = Array.from(strip.querySelectorAll<HTMLButtonElement>('[data-mode-set]'));
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const mode = btn.dataset.modeSet;
+        if (!mode) return;
+        strip.dataset.mode = mode;
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      });
+    });
+  });
+</script>
+
+<style>
+
+      .ds-page { --paper: #f7f5f1; }
+
+      .wrap {
+        max-width: 74rem;
+        margin-inline: auto;
+        padding-inline: clamp(1.25rem, 5vw, 3.5rem);
+      }
+
+      /* Intro / outro bands --------------------------------------------- */
+      .ds-intro {
+        background: var(--ink);
+        color: var(--bg);
+        padding-block: clamp(3rem, 7vw, 4.5rem);
+      }
+
+      .ds-intro h1,
+      .ds-intro h2 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(2.1rem, 5vw, 3.4rem);
+        letter-spacing: var(--track-tight);
+        margin: 0 0 var(--gap-heading);
+      }
+
+      .eyebrow-label {
+        font-family: var(--font-body);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: var(--track-label);
+        color: var(--pad);
+        margin: 0 0 var(--gap-eyebrow);
+        font-size: var(--step-small);
+      }
+
+      .eyebrow-on-dark { color: var(--pa); }
+
+      .ds-lede {
+        max-width: 64ch;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
+        color: rgba(253, 251, 249, 0.72);
+      }
+
+      .ds-lede strong { color: var(--bg); font-weight: 600; }
+
+      .stat-row {
+        list-style: none;
+        margin: clamp(1.75rem, 4vw, 2.5rem) 0 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+      }
+
+      .stat-row li { border-top: 2px solid var(--pa); padding-top: 0.8rem; }
+
+      .stat-n {
+        display: block;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(2rem, 5vw, 3rem);
+        line-height: 1;
+        color: var(--bg);
+      }
+
+      .stat-label {
+        display: block;
+        margin-top: 0.4rem;
+        font-family: var(--font-body);
+        font-size: var(--step-small);
+        line-height: 1.5;
+        color: rgba(253, 251, 249, 0.65);
+      }
+
+      @media (min-width: 860px) {
+        .stat-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      }
+
+      /* The accordion --------------------------------------------------- */
+      .acc-section { padding-block: clamp(2rem, 5vw, 3.25rem); }
+
+      /* Shared block furniture ------------------------------------------- */
+      .section-lede {
+        max-width: 62ch;
+        margin-top: 0;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
+        color: var(--ink-soft);
+      }
+
+      .section-lede strong { font-weight: 600; color: var(--ink); }
+
+      .take {
+        max-width: 62ch;
+        margin: 2rem 0;
+        padding-left: 1.1rem;
+        border-left: 3px solid var(--pa);
+        font-family: var(--font-body);
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
+        color: var(--ink-soft);
+      }
+
+      .take strong { color: var(--ink); font-weight: 600; }
+
+      .legend {
+        margin: 1rem 0 0;
+        max-width: 62ch;
+        font-size: var(--step-caption);
+        line-height: 1.55;
+        color: var(--ink-faint);
+      }
+
+      .anchor-dot { color: var(--pad); font-size: 0.7em; }
+
+      /* What exists today ------------------------------------------------ */
+      .today-fig {
+        margin: clamp(1.5rem, 4vw, 2.25rem) 0;
+        border: 1px solid var(--line);
+        background: var(--paper);
+        padding: clamp(0.5rem, 2vw, 1rem);
+      }
+
+      @media (min-width: 760px) {
+        .today-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+
+      /* Ramps ------------------------------------------------------------ */
+      .ramp { margin-top: clamp(1.5rem, 3.5vw, 2rem); }
+
+      .ramp-head h3 {
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: var(--step-card-title);
+        margin: 0 0 var(--gap-caption);
+        color: var(--ink);
+      }
+
+      .ramp-head p {
+        margin: 0 0 0.8rem;
+        font-size: var(--step-caption);
+        color: var(--ink-faint);
+      }
+
+      .ramp-row,
+      .value-row {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(4.25rem, 1fr));
+        gap: 0.5rem;
+      }
+
+      .ramp-row li { display: flex; flex-direction: column; gap: 0.25rem; }
+
+      .chip { display: block; height: 3rem; border: 1px solid var(--line); }
+      .is-anchor .chip { outline: 2px solid var(--ink); outline-offset: 1px; }
+
+      .chip-step {
+        font-family: var(--font-mono);
+        font-size: var(--step-micro);
+        color: var(--ink);
+      }
+
+      .chip-hex {
+        font-family: var(--font-mono);
+        font-size: var(--step-micro);
+        color: var(--ink-faint);
+        text-transform: uppercase;
+        letter-spacing: var(--track-label);
+      }
+
+      .value-row { grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); }
+
+      .value-row li {
+        border: 1px solid var(--line);
+        background: var(--paper);
+        padding: 0.5rem 0.7rem;
+        color: var(--ink-soft);
+        font-size: var(--step-small);
+      }
+
+      /* Mode switch ------------------------------------------------------- */
+      .mode-switch {
+        display: inline-flex;
+        flex-wrap: wrap;
+        margin: clamp(1.25rem, 3vw, 1.75rem) 0 1.25rem;
+        border: 1px solid var(--line-strong);
+      }
+
+      .mode-switch button {
+        appearance: none;
+        background: transparent;
+        border: 0;
+        border-right: 1px solid var(--line-strong);
+        padding: 0.6em 1.1em;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: var(--step-small);
+        letter-spacing: var(--track-label);
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        cursor: pointer;
+        transition: background 0.25s var(--ease), color 0.25s var(--ease);
+      }
+
+      .mode-switch button:last-child { border-right: 0; }
+      .mode-switch button:hover { color: var(--ink); }
+
+      .mode-switch button[aria-pressed='true'] { background: var(--pad); color: #ffffff; }
+
+      .mode-notes {
+        margin: 1.25rem 0 0;
+        padding: 0;
+        list-style: none;
+        max-width: 62ch;
+        font-size: var(--step-caption);
+        line-height: 1.55;
+        color: var(--ink-soft);
+      }
+
+      .mode-notes li { padding: 0.3rem 0; }
+      .mode-notes strong { color: var(--ink); font-weight: 600; }
+
+      /* Token preview ------------------------------------------------------ */
+      .token-preview { margin-bottom: 1.5rem; }
+
+      .token-card { border: 1px solid; padding: 1.5rem; max-width: 28rem; }
+
+      .token-card-label {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: var(--step-micro);
+        text-transform: uppercase;
+        letter-spacing: var(--track-label);
+        margin-bottom: 0.6rem;
+      }
+
+      .token-card p { margin: 0 0 0.4rem; font-weight: 600; font-size: 1.35rem; line-height: 1.2; }
+      .token-card-sub { font-size: var(--step-caption); }
+
+      /* Tables -------------------------------------------------------------- */
+      .table-scroll { overflow-x: auto; min-width: 0; max-width: 100%; }
+
+      .ds-table th,
+      .ds-table td,
+      .cell-alias,
+      .spec-name { overflow-wrap: anywhere; }
+
+      .token-tables { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 2.5rem; }
+
+      @media (min-width: 860px) {
+        .token-tables { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+      }
+
+      .ds-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0 0 1.5rem;
+        font-size: var(--step-small);
+      }
+
+      .ds-table caption {
+        text-align: left;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: var(--step-caption);
+        color: var(--ink);
+        padding-bottom: 0.5rem;
+      }
+
+      .ds-table th,
+      .ds-table td {
+        text-align: left;
+        padding: 0.5rem 0.7rem;
+        border-bottom: 1px solid var(--line);
+        vertical-align: middle;
+      }
+
+      .ds-table thead th {
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: var(--step-micro);
+        letter-spacing: var(--track-label);
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        border-bottom: 1px solid var(--line-strong);
+      }
+
+      .ds-table tbody th { font-weight: 400; color: var(--ink); }
+      .ds-table td { color: var(--ink-soft); }
+      .ds-table tbody tr:hover { background: var(--paper); }
+
+      .row-note {
+        display: block;
+        font-family: var(--font-body);
+        font-size: var(--step-micro);
+        color: var(--ink-faint);
+        margin-top: 0.15rem;
+      }
+
+      .cell-hex {
+        font-family: var(--font-mono);
+        text-transform: uppercase;
+        letter-spacing: var(--track-label);
+      }
+
+      .dot {
+        display: inline-block;
+        width: 0.8rem;
+        height: 0.8rem;
+        margin-right: 0.4rem;
+        border: 1px solid var(--line-strong);
+        vertical-align: -0.1em;
+      }
+
+      .radius-demo {
+        display: inline-block;
+        width: 3rem;
+        height: 1.4rem;
+        background: var(--pas);
+        border: 1px solid var(--pad);
+      }
+
+      .ds-table-sem .cell-sem { opacity: 0.4; }
+      .cell-alias { font-family: var(--font-mono); font-size: var(--step-micro); }
+      .ds-table-resp td { font-family: var(--font-mono); }
+
+      /* Semantics preview ----------------------------------------------------- */
+      .sem-preview { margin-bottom: 1.5rem; }
+
+      .sem-card {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        border: 1px solid var(--line);
+        background: var(--paper);
+      }
+
+      .sem-btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 1.4em;
+        border: 1px solid;
+        font-weight: 600;
+        font-size: var(--step-caption);
+      }
+
+      .sem-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.35em 0.7em;
+        border: 1px solid;
+        font-size: var(--step-micro);
+        letter-spacing: var(--track-label);
+      }
+
+      .sem-note { font-family: var(--font-mono); font-size: var(--step-small); }
+
+      /* Type specimen ---------------------------------------------------------- */
+      .spec-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+
+      .spec-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.5rem 1.5rem;
+        align-items: baseline;
+        padding-block: 1rem;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .spec-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.9rem; }
+      .spec-name { color: var(--pad); font-weight: 500; }
+
+      .spec-use { font-family: var(--font-body); font-size: var(--step-small); color: var(--ink-faint); }
+      .spec-nums { font-family: var(--font-mono); font-size: var(--step-micro); color: var(--ink); }
+
+      .spec-unused {
+        align-self: center;
+        font-family: var(--font-mono);
+        font-size: var(--step-micro);
+        letter-spacing: var(--track-label);
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.1rem 0.45rem;
+        white-space: nowrap;
+      }
+
+      .spec-sample { margin: 0; max-width: none; color: var(--ink); overflow-wrap: anywhere; }
+
+      @media (min-width: 900px) {
+        .spec-row { grid-template-columns: 17rem minmax(0, 1fr); }
+        .spec-meta { flex-direction: column; gap: 0.15rem; }
+      }
+
+      /* Faces -------------------------------------------------------------------- */
+      .face-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+        gap: 1.25rem;
+        margin-top: clamp(1.75rem, 4vw, 2.5rem);
+      }
+
+      .face-card { border: 1px solid var(--line); padding: 1.4rem; }
+
+      .face-sample {
+        margin: 0 0 0.9rem;
+        max-width: none;
+        font-size: clamp(2rem, 4.5vw, 2.75rem);
+        line-height: 1.1;
+        color: var(--pad);
+      }
+
+      .face-card h3 {
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: var(--step-card-title);
+        margin: 0 0 var(--gap-subheading);
+        color: var(--ink);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .face-weights {
+        margin: 0 0 0.5rem;
+        font-family: var(--font-mono);
+        font-size: var(--step-micro);
+        letter-spacing: var(--track-label);
+        color: var(--ink-faint);
+      }
+
+      .face-card p:not(.face-sample):not(.face-weights) {
+        margin: 0;
+        font-size: var(--step-body);
+        line-height: var(--leading-body);
+        color: var(--ink-soft);
+      }
+
+      /* Components ------------------------------------------------------------------ */
+      .comp-tier {
+        margin: clamp(1.75rem, 4vw, 2.5rem) 0 0.9rem;
+        font-family: var(--font-mono);
+        font-size: var(--step-micro);
+        letter-spacing: var(--track-label);
+        text-transform: uppercase;
+        color: var(--pad);
+      }
+
+      @media (min-width: 640px) { .comp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      @media (min-width: 980px) { .comp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+  /* The accordion itself. Rows sit on the page background, like every
+     other block on a case study. */
+  .acc-section { padding-block: clamp(2rem, 5vw, 3.25rem); }
+
+  .acc-hint {
+    margin: 0 0 clamp(1rem, 2.5vw, 1.5rem);
+    font-family: var(--font-mono);
+    font-size: var(--step-micro);
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .acc { border-bottom: 1px solid var(--line-strong); }
+
+  /* Copy fields are written as HTML and injected with set:html, so the
+     tags inside them never get a scope attribute and the rules above
+     cannot reach them. Repeat those few rules globally, anchored to the
+     component root so nothing leaks into the rest of the page. */
+  .ds-page :global(.ds-lede strong) { color: var(--bg); font-weight: 600; }
+
+  .ds-page :global(.section-lede strong),
+  .ds-page :global(.take strong) { color: var(--ink); font-weight: 600; }
+
+  .ds-page :global(.ds-lede code),
+  .ds-page :global(.section-lede code),
+  .ds-page :global(.take code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    overflow-wrap: anywhere;
+  }
+</style>

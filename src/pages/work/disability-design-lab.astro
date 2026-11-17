@@ -33,6 +33,8 @@ import '../../styles/global.css';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import Lightbox from '../../components/Lightbox.astro';
+import SectionRail from '../../components/SectionRail.astro';
+import AccItem from '../../components/DsAccordionItem.astro';
 
 const base = import.meta.env.BASE_URL;
 const pageTitle = 'Disability Design Lab · Julian Liao';
@@ -614,9 +616,13 @@ const nextProject = {
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&family=Permanent+Marker&family=Space+Grotesk:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&family=Caveat:wght@400;600&display=swap"
     />
+    {/* Collapses the design-system accordion before first paint. Without
+        JS the panels stay open and the section reads as one document. */}
+    <script is:inline>document.documentElement.classList.add('js-acc');</script>
   </head>
   <body>
     <Nav />
+    <SectionRail />
 
     <div data-zoom-group data-zoom-scan>
       <section class="hero-banner">
@@ -799,359 +805,348 @@ const nextProject = {
         </div>
       </section>
 
-      <section class="white-block ds-block">
+      <section class="acc-section">
         <div class="wrap">
-          <p class="ds-kicker">Collection 01 · 67 variables · 1 mode</p>
-          <h2>Primitives</h2>
-          <p class="section-lede">
-            Five families, each a full 50–950 scale, plus a small set of raw numbers for spacing and
-            radius. <strong>No screen is allowed to point at these values directly</strong> once a token or a
-            semantic exists for the same job.
+          <div class="acc">
+            <AccItem num="01" id="ds-primitives" title="Primitives" sub="Collection 01 · 67 variables · 1 mode">
+<p class="section-lede">
+        Five families, each a full 50–950 scale, plus a small set of raw numbers for spacing and
+        radius. <strong>No screen is allowed to point at these values directly</strong> once a token or a
+        semantic exists for the same job.
+      </p>
+
+      <p class="take">Sticking to that order, primitive to token to semantic, is annoying every single time. Pointing a card at a raw hex code takes two seconds, and pointing it at a token takes a minute of naming. I kept doing the slow version, and because of that <strong>switching the whole file to Dark mode took one setting instead of a day of work.</strong></p>
+
+      {ramps.map((r) => (
+        <div class="ramp">
+          <div class="ramp-head">
+            <h3>{r.family}</h3>
+            <p>{r.note}</p>
+          </div>
+          <ol class="ramp-row">
+            {r.steps.map(([step, hex]) => (
+              <li>
+                <span class="chip" style={`background:${hex}`}></span>
+                <span class="chip-step">{step}</span>
+                <span class="chip-hex">{hex}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+
+      <div class="ramp">
+        <div class="ramp-head">
+          <h3>Collage &amp; raw values</h3>
+          <p>
+            Three loose paper colors for the torn collage wordmark, plus the numbers the radius
+            tokens alias into. <code>Value/full</code> is 10,000, which rounds a box into a pill shape whatever its size.
           </p>
-
-          <p class="take">Sticking to that order, primitive to token to semantic, is annoying every single time. Pointing a card at a raw hex code takes two seconds, and pointing it at a token takes a minute of naming. I kept doing the slow version, and because of that <strong>switching the whole file to Dark mode took one setting instead of a day of work.</strong></p>
-
-          {ramps.map((r) => (
-            <div class="ramp">
-              <div class="ramp-head">
-                <h3>{r.family}</h3>
-                <p>{r.note}</p>
-              </div>
-              <ol class="ramp-row">
-                {r.steps.map(([step, hex]) => (
-                  <li>
-                    <span class="chip" style={`background:${hex}`}></span>
-                    <span class="chip-step">{step}</span>
-                    <span class="chip-hex">{hex}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
+        </div>
+        <ol class="ramp-row ramp-row-sparse">
+          {collage.map(([name, hex]) => (
+            <li>
+              <span class="chip" style={`background:${hex}`}></span>
+              <span class="chip-step">{name.split('/')[1]}</span>
+              <span class="chip-hex">{hex}</span>
+            </li>
           ))}
+        </ol>
+        <ol class="value-row">
+          {['null · 0', '4', '8', '12', '16', '24', '32', 'full · 10000'].map((v) => (
+            <li><code>Value/{v}</code></li>
+          ))}
+        </ol>
+      </div>
+    
+            </AccItem>
 
-          <div class="ramp">
-            <div class="ramp-head">
-              <h3>Collage &amp; raw values</h3>
-              <p>
-                Three loose paper colors for the torn collage wordmark, plus the numbers the radius
-                tokens alias into. <code>Value/full</code> is 10,000, which rounds a box into a pill shape whatever its size.
-              </p>
-            </div>
-            <ol class="ramp-row ramp-row-sparse">
-              {collage.map(([name, hex]) => (
-                <li>
-                  <span class="chip" style={`background:${hex}`}></span>
-                  <span class="chip-step">{name.split('/')[1]}</span>
-                  <span class="chip-hex">{hex}</span>
-                </li>
-              ))}
-            </ol>
-            <ol class="value-row">
-              {['null · 0', '4', '8', '12', '16', '24', '32', 'full · 10000'].map((v) => (
-                <li><code>Value/{v}</code></li>
-              ))}
-            </ol>
+            <AccItem num="02" id="ds-tokens" title="Tokens" sub="Collection 02 · 22 variables · Light / Dark">
+<p class="section-lede">
+        The greyscale, assigned to the four things a neutral color is used for, with a second mode that
+        reverses the whole scale. The footer carries
+        <code> Tokens: Dark</code> at the component level, which is what makes it dark wherever it is
+        placed.
+      </p>
+
+      <div class="mode-strip" data-mode="Light" data-mode-group="tokens">
+        <div class="mode-switch" role="group" aria-label="Token mode">
+          <button type="button" data-mode-set="Light" aria-pressed="true">Light</button>
+          <button type="button" data-mode-set="Dark" aria-pressed="false">Dark</button>
+        </div>
+
+        <div class="token-preview">
+          <div class="token-card m-Light">
+            <span class="token-card-label">Surface/default · Text/title</span>
+            <p>Weighted Grip Pen</p>
+            <span class="token-card-sub">Text/body, a wider barrel steadies the line.</span>
+          </div>
+          <div class="token-card m-Dark">
+            <span class="token-card-label">Surface/default · Text/title</span>
+            <p>Weighted Grip Pen</p>
+            <span class="token-card-sub">Text/body, a wider barrel steadies the line.</span>
           </div>
         </div>
-      </section>
 
-      <section class="white-block ds-block">
-        <div class="wrap">
-          <p class="ds-kicker">Collection 02 · 22 variables · Light / Dark</p>
-          <h2>Tokens</h2>
-          <p class="section-lede">
-            The greyscale, assigned to the four things a neutral color is used for, with a second mode that
-            reverses the whole scale. The footer carries
-            <code> Tokens: Dark</code> at the component level, which is what makes it dark wherever it is
-            placed.
-          </p>
-
-          <div class="mode-strip" data-mode="Light" data-mode-group="tokens">
-            <div class="mode-switch" role="group" aria-label="Token mode">
-              <button type="button" data-mode-set="Light" aria-pressed="true">Light</button>
-              <button type="button" data-mode-set="Dark" aria-pressed="false">Dark</button>
-            </div>
-
-            <div class="token-preview">
-              <div class="token-card m-Light">
-                <span class="token-card-label">Surface/default · Text/title</span>
-                <p>Weighted Grip Pen</p>
-                <span class="token-card-sub">Text/body, a wider barrel steadies the line.</span>
-              </div>
-              <div class="token-card m-Dark">
-                <span class="token-card-label">Surface/default · Text/title</span>
-                <p>Weighted Grip Pen</p>
-                <span class="token-card-sub">Text/body, a wider barrel steadies the line.</span>
-              </div>
-            </div>
-
-            <div class="token-tables">
-              {tokenGroups.map((g) => (
-                <div class="table-scroll">
-                <table class="ds-table">
-                  <caption>Greyscale/{g.group}</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Token</th>
-                      <th scope="col">Aliases to</th>
-                      <th scope="col">Resolves to</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {g.rows.map(([name, light, dark]) => (
-                      <tr>
-                        <th scope="row"><code>{name}</code></th>
-                        <td>
-                          <code class="m-Light">{light}</code>
-                          <code class="m-Dark">{dark}</code>
-                        </td>
-                        <td class="cell-hex">
-                          <span class="m-Light">
-                            <span class="dot" style={`background:${resolve(light)}`}></span>{resolve(light)}
-                          </span>
-                          <span class="m-Dark">
-                            <span class="dot" style={`background:${resolve(dark)}`}></span>{resolve(dark)}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                </div>
-              ))}
-
-              <div class="table-scroll">
-              <table class="ds-table">
-                <caption>Radius, identical in both modes</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">Token</th>
-                    <th scope="col">Aliases to</th>
-                    <th scope="col">Shape</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {radii.map(([name, alias, px]) => (
-                    <tr>
-                      <th scope="row"><code>{name.split('/')[1]}</code></th>
-                      <td><code>{alias}</code></td>
-                      <td><span class="radius-demo" style={`border-radius:${px}px`}></span></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="white-block ds-block">
-        <div class="wrap">
-          <p class="ds-kicker">Collection 03 · 10 variables · 4 modes</p>
-          <h2>Semantics</h2>
-          <p class="section-lede">
-            Ten names that produce different colors depending on the mode a layer is set to. An indigo button and
-            an amber badge are both <code>Surface/default</code>. The only difference is the mode set on
-            the layer, which means changing the brand color is one mode change rather than an edit to every screen.
-          </p>
-
-          <div class="mode-strip" data-mode="Primary" data-mode-group="semantics">
-            <div class="mode-switch" role="group" aria-label="Semantic mode">
-              {semanticModes.map((m, i) => (
-                <button type="button" data-mode-set={m} aria-pressed={i === 0 ? 'true' : 'false'}>{m}</button>
-              ))}
-            </div>
-
-            <div class="sem-preview">
-              {semanticModes.map((m, i) => (
-                <div class={`sem-card m-${m}`}>
-                  <span
-                    class="sem-btn"
-                    style={`background:${resolve(semantics[2].aliases[i])};color:${resolve(semantics[9].aliases[i])};border-color:${resolve(semantics[3].aliases[i])}`}
-                    >Add to cart</span
-                  >
-                  <span
-                    class="sem-badge"
-                    style={`background:${resolve(semantics[0].aliases[i])};color:${resolve(semantics[8].aliases[i])};border-color:${resolve(semantics[4].aliases[i])}`}
-                    >ONE-HANDED</span
-                  >
-                  <span class="sem-note" style={`color:${resolve(semantics[8].aliases[i])}`}>Text/label in {m}</span>
-                </div>
-              ))}
-            </div>
-
+        <div class="token-tables">
+          {tokenGroups.map((g) => (
             <div class="table-scroll">
-              <table class="ds-table ds-table-sem">
-                <thead>
-                  <tr>
-                    <th scope="col">Variable</th>
-                    {semanticModes.map((m) => <th scope="col">{m}</th>)}
-                  </tr>
-                </thead>
-                <tbody>
-                  {semantics.map((s) => (
-                    <tr>
-                      <th scope="row"><code>{s.name}</code></th>
-                      {s.aliases.map((a, i) => (
-                        <td class="cell-sem" data-mode-cell={semanticModes[i]}>
-                          <span class="dot" style={`background:${resolve(a)}`}></span>
-                          <span class="cell-alias">{a}</span>
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="white-block ds-block">
-        <div class="wrap">
-          <p class="ds-kicker">Collection 04 · 32 variables · Mobile / Tablet / Desktop</p>
-          <h2>Typography</h2>
-          <p class="section-lede">
-            Sixteen published text styles. Each one points at a font-family, font-size and line-height variable
-            instead of holding its own numbers. All sixteen are shown below in the real typefaces,{' '}
-            <strong>including the six sizes no page ended up using</strong>. I kept them so the
-            scale has every step in it.
-          </p>
-
-          <div class="type-strip" data-mode="Desktop" data-mode-group="type">
-            <div class="mode-switch" role="group" aria-label="Typography mode">
-              {typeModes.map((m) => (
-                <button type="button" data-mode-set={m} aria-pressed={m === 'Desktop' ? 'true' : 'false'}>{m}</button>
-              ))}
-            </div>
-
-            <ul class="spec-list">
-              {typeRows.map((t) => (
-                <li
-                  class="spec-row"
-                  style={`--s-Mobile:${t.modes[0][0]}px;--l-Mobile:${t.modes[0][1]}px;--s-Tablet:${t.modes[1][0]}px;--l-Tablet:${t.modes[1][1]}px;--s-Desktop:${t.modes[2][0]}px;--l-Desktop:${t.modes[2][1]}px`}
-                >
-                  <div class="spec-meta">
-                    <code class="spec-name">{t.style}</code>
-                    <span class="spec-use">{t.use}</span>
-                    {!t.used && <span class="spec-unused">no frame uses it</span>}
-                    <span class="spec-nums">
-                      {typeModes.map((m, i) => (
-                        <span class={`m-${m}`}>{t.modes[i][0]} / {t.modes[i][1]} px</span>
-                      ))}
-                    </span>
-                  </div>
-                  <p class={`spec-sample spec-face-${t.face}`} style={`font-weight:${t.weight}`}>{t.sample}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div class="face-grid">
-            <article class="face-card">
-              <p class="face-sample spec-face-body" style="font-weight:400">Il1 0O</p>
-              <h3>Atkinson Hyperlegible</h3>
-              <p>
-                Everything a shopper has to read. The Braille Institute designed it to separate the characters
-                low vision readers mix up. I chose this typeface so people can read the product descriptions.
-              </p>
-            </article>
-            <article class="face-card">
-              <p class="face-sample spec-face-heading" style="font-weight:700">Aa Gg</p>
-              <h3>Space Grotesk</h3>
-              <p>
-                Headings and short labels only, where the words are large and read quickly, so its unusual
-                letterforms do not slow anyone down.
-              </p>
-            </article>
-            <article class="face-card">
-              <p class="face-sample spec-face-annotation" style="font-weight:400">4 left · $22</p>
-              <h3>Caveat</h3>
-              <p>
-                Small labels only: eyebrows, counts, and the price on a card. One style, bound to the P2 size
-                variable, and never used for body text or headings.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="white-block ds-block">
-        <div class="wrap">
-          <p class="ds-kicker">Collection 05 · 10 variables · Desktop / Tablet / Mobile</p>
-          <h2>Responsive Variables</h2>
-          <p class="section-lede">
-            The whole collection, with the screen size breakpoints stored as variables. The three <code>Nav/</code>
-            true or false values are what collapse the navigation bar, so the phone navigation is the same
-            component in a different mode rather than a second component.
-          </p>
-
-          <p class="take">Drawing the phone screen as a separate file is the shortcut most people take, and it is why the phone version and the desktop version end up different from each other. Making the 393px layout the same frame rearranging itself takes more time at the beginning. <strong>It is what kept these eight pages consistent while I changed my mind about the catalog three times.</strong></p>
-          <div class="table-scroll">
-            <table class="ds-table ds-table-resp">
+            <table class="ds-table">
+              <caption>Greyscale/{g.group}</caption>
               <thead>
                 <tr>
-                  <th scope="col">Variable</th>
-                  <th scope="col">Desktop</th>
-                  <th scope="col">Tablet</th>
-                  <th scope="col">Mobile</th>
+                  <th scope="col">Token</th>
+                  <th scope="col">Aliases to</th>
+                  <th scope="col">Resolves to</th>
                 </tr>
               </thead>
               <tbody>
-                {responsiveRows.map(([name, d, t, m]) => (
+                {g.rows.map(([name, light, dark]) => (
                   <tr>
                     <th scope="row"><code>{name}</code></th>
-                    <td>{d}</td>
-                    <td>{t}</td>
-                    <td>{m}</td>
+                    <td>
+                      <code class="m-Light">{light}</code>
+                      <code class="m-Dark">{dark}</code>
+                    </td>
+                    <td class="cell-hex">
+                      <span class="m-Light">
+                        <span class="dot" style={`background:${resolve(light)}`}></span>{resolve(light)}
+                      </span>
+                      <span class="m-Dark">
+                        <span class="dot" style={`background:${resolve(dark)}`}></span>{resolve(dark)}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            </div>
+          ))}
+
+          <div class="table-scroll">
+          <table class="ds-table">
+            <caption>Radius, identical in both modes</caption>
+            <thead>
+              <tr>
+                <th scope="col">Token</th>
+                <th scope="col">Aliases to</th>
+                <th scope="col">Shape</th>
+              </tr>
+            </thead>
+            <tbody>
+              {radii.map(([name, alias, px]) => (
+                <tr>
+                  <th scope="row"><code>{name.split('/')[1]}</code></th>
+                  <td><code>{alias}</code></td>
+                  <td><span class="radius-demo" style={`border-radius:${px}px`}></span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           </div>
         </div>
-      </section>
+      </div>
+    
+            </AccItem>
 
-      <section class="white-block ds-block ds-block-last">
-        <div class="wrap">
-          <p class="ds-kicker">The kit · 12 components</p>
-          <h2>Components</h2>
-          <p class="section-lede">
-            Five of these exist so the hand drawn treatment can be reused as a component instead of redrawn each time. The
-            accessibility rules are set here too:
-            <strong> every Button variant carries a 44px minimum height, and rebinding one label color took
-            the amber button from 2.13:1 to 8.15:1 across all sixteen frames at once.</strong>
+            <AccItem num="03" id="ds-semantics" title="Semantics" sub="Collection 03 · 10 variables · 4 modes">
+<p class="section-lede">
+        Ten names that produce different colors depending on the mode a layer is set to. An indigo button and
+        an amber badge are both <code>Surface/default</code>. The only difference is the mode set on
+        the layer, which means changing the brand color is one mode change rather than an edit to every screen.
+      </p>
+
+      <div class="mode-strip" data-mode="Primary" data-mode-group="semantics">
+        <div class="mode-switch" role="group" aria-label="Semantic mode">
+          {semanticModes.map((m, i) => (
+            <button type="button" data-mode-set={m} aria-pressed={i === 0 ? 'true' : 'false'}>{m}</button>
+          ))}
+        </div>
+
+        <div class="sem-preview">
+          {semanticModes.map((m, i) => (
+            <div class={`sem-card m-${m}`}>
+              <span
+                class="sem-btn"
+                style={`background:${resolve(semantics[2].aliases[i])};color:${resolve(semantics[9].aliases[i])};border-color:${resolve(semantics[3].aliases[i])}`}
+                >Add to cart</span
+              >
+              <span
+                class="sem-badge"
+                style={`background:${resolve(semantics[0].aliases[i])};color:${resolve(semantics[8].aliases[i])};border-color:${resolve(semantics[4].aliases[i])}`}
+                >ONE-HANDED</span
+              >
+              <span class="sem-note" style={`color:${resolve(semantics[8].aliases[i])}`}>Text/label in {m}</span>
+            </div>
+          ))}
+        </div>
+
+        <div class="table-scroll">
+          <table class="ds-table ds-table-sem">
+            <thead>
+              <tr>
+                <th scope="col">Variable</th>
+                {semanticModes.map((m) => <th scope="col">{m}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {semantics.map((s) => (
+                <tr>
+                  <th scope="row"><code>{s.name}</code></th>
+                  {s.aliases.map((a, i) => (
+                    <td class="cell-sem" data-mode-cell={semanticModes[i]}>
+                      <span class="dot" style={`background:${resolve(a)}`}></span>
+                      <span class="cell-alias">{a}</span>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    
+            </AccItem>
+
+            <AccItem num="04" id="ds-typography" title="Typography" sub="Collection 04 · 32 variables · Mobile / Tablet / Desktop">
+<p class="section-lede">
+        Sixteen published text styles. Each one points at a font-family, font-size and line-height variable
+        instead of holding its own numbers. All sixteen are shown below in the real typefaces,{' '}
+        <strong>including the six sizes no page ended up using</strong>. I kept them so the
+        scale has every step in it.
+      </p>
+
+      <div class="type-strip" data-mode="Desktop" data-mode-group="type">
+        <div class="mode-switch" role="group" aria-label="Typography mode">
+          {typeModes.map((m) => (
+            <button type="button" data-mode-set={m} aria-pressed={m === 'Desktop' ? 'true' : 'false'}>{m}</button>
+          ))}
+        </div>
+
+        <ul class="spec-list">
+          {typeRows.map((t) => (
+            <li
+              class="spec-row"
+              style={`--s-Mobile:${t.modes[0][0]}px;--l-Mobile:${t.modes[0][1]}px;--s-Tablet:${t.modes[1][0]}px;--l-Tablet:${t.modes[1][1]}px;--s-Desktop:${t.modes[2][0]}px;--l-Desktop:${t.modes[2][1]}px`}
+            >
+              <div class="spec-meta">
+                <code class="spec-name">{t.style}</code>
+                <span class="spec-use">{t.use}</span>
+                {!t.used && <span class="spec-unused">no frame uses it</span>}
+                <span class="spec-nums">
+                  {typeModes.map((m, i) => (
+                    <span class={`m-${m}`}>{t.modes[i][0]} / {t.modes[i][1]} px</span>
+                  ))}
+                </span>
+              </div>
+              <p class={`spec-sample spec-face-${t.face}`} style={`font-weight:${t.weight}`}>{t.sample}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="face-grid">
+        <article class="face-card">
+          <p class="face-sample spec-face-body" style="font-weight:400">Il1 0O</p>
+          <h3>Atkinson Hyperlegible</h3>
+          <p>
+            Everything a shopper has to read. The Braille Institute designed it to separate the characters
+            low vision readers mix up. I chose this typeface so people can read the product descriptions.
           </p>
-          <p class="comp-tier">Four variant sets</p>
-          <ul class="comp-grid comp-grid-sets">
-            {componentSets.map((c) => (
-              <li class="comp-card">
-                <div class="comp-media comp-media-set">
-                  <img data-tilt src={img(c.image)} alt={c.alt} style={cap(c)} />
-                </div>
-                <div class="comp-body">
-                  <h3>{c.name}</h3>
-                  <p>{c.variants}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
+        </article>
+        <article class="face-card">
+          <p class="face-sample spec-face-heading" style="font-weight:700">Aa Gg</p>
+          <h3>Space Grotesk</h3>
+          <p>
+            Headings and short labels only, where the words are large and read quickly, so its unusual
+            letterforms do not slow anyone down.
+          </p>
+        </article>
+        <article class="face-card">
+          <p class="face-sample spec-face-annotation" style="font-weight:400">4 left · $22</p>
+          <h3>Caveat</h3>
+          <p>
+            Small labels only: eyebrows, counts, and the price on a card. One style, bound to the P2 size
+            variable, and never used for body text or headings.
+          </p>
+        </article>
+      </div>
+    
+            </AccItem>
 
-          <p class="comp-tier">Eight singles</p>
-          <ul class="comp-grid comp-grid-singles">
-            {componentSingles.map((c) => (
-              <li class="comp-card">
-                <div class={`comp-media comp-media-single${c.h > c.w ? ' comp-media-tall' : ''}`}>
-                  <img data-tilt src={img(c.image)} alt={c.alt} style={cap(c)} />
-                </div>
-                <div class="comp-body">
-                  <h3>{c.name}</h3>
-                  <p>{c.variants}</p>
-                </div>
-              </li>
+            <AccItem num="05" id="ds-responsive-variables" title="Responsive Variables" sub="Collection 05 · 10 variables · Desktop / Tablet / Mobile">
+<p class="section-lede">
+        The whole collection, with the screen size breakpoints stored as variables. The three <code>Nav/</code>
+        true or false values are what collapse the navigation bar, so the phone navigation is the same
+        component in a different mode rather than a second component.
+      </p>
+
+      <p class="take">Drawing the phone screen as a separate file is the shortcut most people take, and it is why the phone version and the desktop version end up different from each other. Making the 393px layout the same frame rearranging itself takes more time at the beginning. <strong>It is what kept these eight pages consistent while I changed my mind about the catalog three times.</strong></p>
+      <div class="table-scroll">
+        <table class="ds-table ds-table-resp">
+          <thead>
+            <tr>
+              <th scope="col">Variable</th>
+              <th scope="col">Desktop</th>
+              <th scope="col">Tablet</th>
+              <th scope="col">Mobile</th>
+            </tr>
+          </thead>
+          <tbody>
+            {responsiveRows.map(([name, d, t, m]) => (
+              <tr>
+                <th scope="row"><code>{name}</code></th>
+                <td>{d}</td>
+                <td>{t}</td>
+                <td>{m}</td>
+              </tr>
             ))}
-          </ul>
+          </tbody>
+        </table>
+      </div>
+    
+            </AccItem>
+
+            <AccItem num="06" id="ds-components" title="Components" sub="The kit · 12 components">
+<p class="section-lede">
+        Five of these exist so the hand drawn treatment can be reused as a component instead of redrawn each time. The
+        accessibility rules are set here too:
+        <strong> every Button variant carries a 44px minimum height, and rebinding one label color took
+        the amber button from 2.13:1 to 8.15:1 across all sixteen frames at once.</strong>
+      </p>
+      <p class="comp-tier">Four variant sets</p>
+      <ul class="comp-grid comp-grid-sets">
+        {componentSets.map((c) => (
+          <li class="comp-card">
+            <div class="comp-media comp-media-set">
+              <img data-tilt src={img(c.image)} alt={c.alt} style={cap(c)} />
+            </div>
+            <div class="comp-body">
+              <h3>{c.name}</h3>
+              <p>{c.variants}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <p class="comp-tier">Eight singles</p>
+      <ul class="comp-grid comp-grid-singles">
+        {componentSingles.map((c) => (
+          <li class="comp-card">
+            <div class={`comp-media comp-media-single${c.h > c.w ? ' comp-media-tall' : ''}`}>
+              <img data-tilt src={img(c.image)} alt={c.alt} style={cap(c)} />
+            </div>
+            <div class="comp-body">
+              <h3>{c.name}</h3>
+              <p>{c.variants}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    
+            </AccItem>
+
+          </div>
         </div>
       </section>
 
@@ -1188,6 +1183,20 @@ const nextProject = {
 
     <script>
       import '../../scripts/site.js';
+
+      // Accordion. The panels are open in the markup and the `js-acc`
+      // class on <html> (set inline in the head) is what collapses them,
+      // so this only has to wire the toggles up.
+      document.querySelectorAll<HTMLElement>('[data-acc-item]').forEach((item) => {
+        const btn = item.querySelector<HTMLButtonElement>('.acc-btn');
+        if (!btn) return;
+        btn.setAttribute('aria-expanded', 'false');
+        btn.addEventListener('click', () => {
+          const open = item.dataset.open === 'true';
+          item.dataset.open = String(!open);
+          btn.setAttribute('aria-expanded', String(!open));
+        });
+      });
       import '../../scripts/lightbox.js';
 
       // The prototype loads on click, not on page load: a third-party
@@ -1799,6 +1808,10 @@ const nextProject = {
       /* Design-system blocks ------------------------------------------- */
       .ds-block { border-bottom: 1px solid var(--line); }
       .ds-block-last { border-bottom: 0; }
+
+      .acc-section { padding-block: clamp(2rem, 5vw, 3.25rem); }
+
+      .acc { border-bottom: 1px solid var(--line-strong); }
 
       .ds-kicker {
         font-family: var(--font-mono);
