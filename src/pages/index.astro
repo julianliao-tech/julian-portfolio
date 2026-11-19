@@ -330,7 +330,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
       {cards.map((card, i) => (
         <li class="bento-item rise" style={`--d: ${(i % 2) * 90}ms`}>
           <a class="card" href={card.href}>
-            <span class="card-media" data-tilt style={`--card-i: ${i};`}>
+            <span class="card-media" style={`--card-i: ${i};`}>
               {card.video ? (
                 <video
                   data-hover-video
@@ -382,7 +382,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           data-reveal
           data-reveal-delay={i * 90}
         >
-          <span class="consulting-media" data-tilt>
+          <span class="consulting-media">
             <img
               src={item.image}
               alt={item.alt}
@@ -852,18 +852,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
     aspect-ratio: 1 / 1;
   }
 
-  /* [data-tilt] (see site.js) keeps --tilt-x/y live while the cursor
-     moves over the thumbnail, so the screen rotates toward it — the
-     card's own device mockup "spins" to follow the pointer. */
-  .card-media {
-    --tilt-x: 0deg;
-    --tilt-y: 0deg;
-  }
-
   /* Idle float -----------------------------------------------------
-     Each thumbnail drifts gently on its own at rest — independent of
-     the cursor-tilt transform on the image inside it, so the two
-     never fight over the `transform` property. A negative delay
+     Each thumbnail drifts gently on its own at rest. The float lives
+     on the wrapper and the hover zoom on the image inside it, so the
+     two never fight over the `transform` property. A negative delay
      (keyed off --card-i, set inline per card above) starts every
      card mid-cycle instead of in lockstep, so the grid doesn't
      visibly pulse in unison. */
@@ -886,7 +878,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .card-media video {
     width: 100%;
     height: 100%;
-    transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.04);
+    /* Scale only. These used to carry a cursor-tracked rotateX/rotateY
+       as well (the old [data-tilt] hook in site.js), which swung the
+       thumbnail in 3D toward the pointer; Julian asked for the image to
+       stay square to the page, so the tile now just pushes in. */
+    transform: scale(1.04);
     transition: transform 0.6s var(--ease-out), filter 0.6s var(--ease);
   }
 
@@ -902,7 +898,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .card:focus-visible .card-media img,
   .card:hover .card-media video,
   .card:focus-visible .card-media video {
-    transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.14);
+    transform: scale(1.14);
     transition: transform 0.15s var(--ease-out);
   }
 
@@ -1262,23 +1258,17 @@ const pad = (n: number) => String(n).padStart(2, '0');
     aspect-ratio: 1540 / 1072;
   }
 
-  /* [data-tilt] (see site.js) keeps --tilt-x/y live while the cursor
-     moves over the thumbnail, so it rotates to follow the pointer. */
-  .consulting-media {
-    --tilt-x: 0deg;
-    --tilt-y: 0deg;
-  }
-
   .consulting-media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.02);
+    /* Scale only, to match the Projects tiles above. */
+    transform: scale(1.02);
     transition: transform 0.6s var(--ease-out);
   }
 
   .consulting-item:hover .consulting-media img {
-    transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1.1);
+    transform: scale(1.1);
     transition: transform 0.15s var(--ease-out);
   }
 

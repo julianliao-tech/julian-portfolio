@@ -1220,11 +1220,34 @@ const nextProject = {
           // built by createElement never gets one — so a `.proto-screen
           // iframe` rule silently fails to match and the frame falls
           // back to the HTML default 300x150. Keep these inline.
+          //
+          // Width is a real desktop viewport, not 100%. The Make site
+          // is a fixed desktop layout: 64px page padding, a 280px
+          // filter sidebar, then a three-column product grid. Handed
+          // the stage's own ~986px it still takes the desktop branch
+          // (its only breakpoints are 900px and 440px), which leaves
+          // each catalogue card about 160px wide — every title wraps
+          // to four lines and `.price-row` (a nowrap flex row with no
+          // width) overflows the card border, so the price sits
+          // outside the card. It is a third-party origin, so none of
+          // that is reachable from here. Give the frame the 1440x900
+          // viewport it was designed for and scale it to the stage
+          // instead of squeezing it. 1440x900 is also exactly the
+          // 16/10 .proto-screen ratio, so the scaled frame fills the
+          // stage with no letterboxing.
+          const DESIGN_W = 1440;
+          const DESIGN_H = 900;
           frame.style.display = 'block';
-          frame.style.width = '100%';
-          frame.style.height = '100%';
+          frame.style.width = DESIGN_W + 'px';
+          frame.style.height = DESIGN_H + 'px';
           frame.style.border = '0';
+          frame.style.transformOrigin = 'top left';
+          const fit = () => {
+            frame.style.transform = `scale(${stage.clientWidth / DESIGN_W})`;
+          };
           stage.replaceChildren(frame);
+          fit();
+          new ResizeObserver(fit).observe(stage);
         });
       });
 

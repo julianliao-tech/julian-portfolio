@@ -16,6 +16,7 @@ const places = [
   { name: 'Cabo San Lucas', lon: -109.912, lat: 22.89 },
   { name: 'Costa Rica', lon: -84.0, lat: 9.75 },
   { name: 'Eleuthera, Bahamas', lon: -76.15, lat: 24.95 },
+  { name: 'Punta Cana', lon: -68.347, lat: 18.644 },
   { name: 'Virgin Islands', lon: -64.85, lat: 18.34 },
   { name: 'Nantucket', lon: -70.1, lat: 41.283 },
   // Hawaii, one marker per island
@@ -31,7 +32,9 @@ const places = [
   { name: 'Barcelona', lon: 2.169, lat: 41.387 },
   { name: 'Seville', lon: -5.984, lat: 37.389 },
   { name: 'Valencia', lon: -0.376, lat: 39.47 },
+  { name: 'Mallorca', lon: 2.99, lat: 39.62 },
   { name: 'Lisbon', lon: -9.139, lat: 38.722 },
+  { name: 'Sintra', lon: -9.39, lat: 38.788 },
   { name: 'Zurich', lon: 8.541, lat: 47.377 },
   { name: 'Interlaken', lon: 7.863, lat: 46.686 },
   { name: 'Copenhagen', lon: 12.568, lat: 55.676 },
@@ -50,29 +53,187 @@ const places = [
   { name: 'Milan', lon: 9.19, lat: 45.464 },
   { name: 'Paris', lon: 2.352, lat: 48.857 },
   { name: 'Niort', lon: -0.459, lat: 46.324 },
+  { name: "Alpe d'Huez", lon: 6.074, lat: 45.09 },
   // Africa
   { name: 'Marrakech', lon: -7.981, lat: 31.629 },
   { name: 'Ouarzazate', lon: -6.894, lat: 30.919 },
+  { name: 'Merzouga', lon: -3.973, lat: 31.089 },
   // Australia
   { name: 'Sydney', lon: 151.209, lat: -33.869 },
   { name: 'Cairns', lon: 145.778, lat: -16.919 },
   // Asia
   { name: 'Beijing', lon: 116.407, lat: 39.904 },
   { name: 'Shanghai', lon: 121.474, lat: 31.23 },
+  { name: 'Hangzhou', lon: 120.155, lat: 30.25 },
   { name: 'Shenzhen', lon: 114.058, lat: 22.543 },
+  { name: 'Hong Kong', lon: 114.17, lat: 22.3 },
   { name: 'Chengdu', lon: 104.066, lat: 30.573 },
   { name: 'Chongqing', lon: 106.551, lat: 29.563 },
   { name: 'Wuhan', lon: 114.305, lat: 30.593 },
   { name: 'Yichang', lon: 111.286, lat: 30.692 },
 ];
 
+// Photos from the trips themselves, keyed by the place they belong to.
+// All of them are Julian's own, resized into public/images/travel/ with
+// every bit of EXIF — the GPS included — dropped on the way out.
+//
+// Two files arrived misnamed, and the photo's own GPS settled it rather
+// than the filename: "mallorca.HEIC" was taken at 48.208, 16.372, which
+// is St. Stephen's in Vienna, and "sevilla.HEIC" at 39.474, -0.376,
+// which is Valencia Cathedral. Both pictures agree with their
+// coordinates, so both are filed by coordinate.
+//
+// Mallorca, Merzouga and Alpe d'Huez are markers that only exist
+// because a photo carried the coordinates. Sintra, Interlaken and
+// Munich carried none and were placed by Julian from the pictures
+// themselves — don't treat those three as measured.
+const shots: Record<string, { src: string; alt: string }[]> = {
+  "Alpe d'Huez": [
+    { src: 'alpe-dhuez-1.webp', alt: "A group in ski gear crowded around a table of drinks at a mountain bar in Alpe d'Huez." },
+  ],
+  Amsterdam: [
+    { src: 'amsterdam-1.webp', alt: 'Five friends dressed head to toe in orange on an Amsterdam street.' },
+  ],
+  Barcelona: [
+    { src: 'barcelona-1.webp', alt: 'Julian and a friend sitting on a rock above Barcelona, the whole city spread out behind them.' },
+    { src: 'barcelona-2.webp', alt: 'Julian sitting on a low stone wall in the mountains outside Barcelona, ridges stretching into the haze.' },
+  ],
+  Beijing: [
+    { src: 'beijing-1.webp', alt: 'A young Julian in an orange shirt on the Great Wall at Mutianyu, the wall running off along the ridge behind him.' },
+  ],
+  Berlin: [
+    { src: 'berlin-1.webp', alt: 'Julian pointing up at the Fraternal Kiss mural on a standing stretch of the Berlin Wall.' },
+  ],
+  Bratislava: [
+    { src: 'bratislava-1.webp', alt: "Five friends with their backpacks around the Napoleon's soldier statue in Bratislava's main square." },
+  ],
+  Budapest: [
+    { src: 'budapest-1.webp', alt: 'Three friends with drinks at a table at night, the Hungarian Parliament lit gold across the water.' },
+  ],
+  Cairns: [
+    { src: 'cairns-1.webp', alt: 'A snorkeler swimming just above a large humphead wrasse over the Great Barrier Reef.' },
+  ],
+  'Cancún': [
+    { src: 'cancun-1.webp', alt: 'A five-a-side game underway on a green pitch in Cancún, palms and a hotel tower behind it.' },
+  ],
+  Chongqing: [
+    { src: 'chongqing-1.webp', alt: 'A young Julian in front of the carved stone and timber front of a guild hall in Chongqing.' },
+  ],
+  Copenhagen: [
+    { src: 'copenhagen-1.webp', alt: 'Swimmers on the wooden deck of a Copenhagen harbour bath, one of them mid-jump into the water.' },
+  ],
+  'Costa Rica': [
+    { src: 'costa-rica-1.webp', alt: 'Six friends sitting in a shallow jungle river in Costa Rica, rock and trees closing in over it.' },
+  ],
+  Dublin: [
+    { src: 'dublin-1.webp', alt: 'A big group of friends packed shoulder to shoulder in a Dublin pub.' },
+  ],
+  'Hawaii (Big Island)': [
+    { src: 'hawaii-big-island-1.webp', alt: 'A much younger Julian standing alone on a dark volcanic beach at dusk.' },
+  ],
+  Hangzhou: [
+    { src: 'hangzhou-1.webp', alt: 'A willow-lined causeway along West Lake in Hangzhou, bamboo arching over the path.' },
+  ],
+  'Hong Kong': [
+    { src: 'hong-kong-1.webp', alt: 'A young Julian at a lookout above Hong Kong with two others, the towers and harbour under low cloud behind them.' },
+  ],
+  Interlaken: [
+    { src: 'interlaken-1.webp', alt: 'Julian mid-freefall on a tandem skydive, cloud below him.' },
+  ],
+  Kauai: [
+    { src: 'kauai-1.webp', alt: 'Julian standing up in the buttress roots of an enormous tree on Kauai, another boy sitting on the roots beside him.' },
+  ],
+  Krakow: [
+    { src: 'krakow-1.webp', alt: "Julian in the middle of Krakow's main square, the Cloth Hall behind him." },
+  ],
+  Lisbon: [
+    { src: 'lisbon-1.webp', alt: 'Friends sitting out on a Lisbon rooftop terrace at dusk, domes and rooftops below.' },
+  ],
+  London: [
+    { src: 'london-1.webp', alt: 'Three friends standing in front of Big Ben and the Houses of Parliament.' },
+  ],
+  Mallorca: [
+    { src: 'mallorca-1.webp', alt: 'Julian in a bandana and sunglasses on the cliffs above a rocky Mallorcan cove.' },
+    { src: 'mallorca-2.webp', alt: "A hooked rocky headland reaching out into the sea below the cliffs of Mallorca's north coast." },
+  ],
+  Marrakech: [
+    { src: 'marrakech-1.webp', alt: "Julian and friends behind a juice stall piled with oranges and bananas in Marrakech's night market." },
+  ],
+  Merzouga: [
+    { src: 'merzouga-1.webp', alt: 'A big group sitting together along the crest of a Sahara dune at Merzouga.' },
+    { src: 'merzouga-2.webp', alt: 'Two riders with their arms up beside quad bikes on the dunes at Merzouga.' },
+  ],
+  Milan: [
+    { src: 'milan-1.webp', alt: 'Julian and friends in the stands of an Olympic ice hockey arena in Milan, the empty rink below.' },
+  ],
+  Munich: [
+    { src: 'munich-1.webp', alt: 'A long table of friends in lederhosen under the blue and white canopy of a Munich beer tent.' },
+  ],
+  Niort: [
+    { src: 'niort-1.webp', alt: 'A young Julian in a blazer in front of an old stone building in Niort.' },
+  ],
+  Ouarzazate: [
+    { src: 'ouarzazate-1.webp', alt: 'A group standing below the earthen kasbah at Ait Benhaddou, its towers climbing the hillside.' },
+  ],
+  Paris: [
+    { src: 'paris-1.webp', alt: 'A group lined up at night with the Eiffel Tower lit up above them.' },
+  ],
+  Prague: [
+    { src: 'prague-1.webp', alt: 'Four friends grinning from a wooden soaking tub in Prague.' },
+  ],
+  'Punta Cana': [
+    { src: 'punta-cana-1.webp', alt: 'Julian and a friend stretched out by a resort pool in Punta Cana, palms overhead.' },
+  ],
+  Seville: [
+    { src: 'seville-1.webp', alt: 'Five friends standing in the Plaza de Espana in Seville.' },
+  ],
+  Sintra: [
+    { src: 'sintra-1.webp', alt: 'Three friends on a terrace at the Pena Palace in Sintra, its red and yellow towers behind them.' },
+  ],
+  Stockholm: [
+    { src: 'stockholm-1.webp', alt: 'The salvaged warship Vasa filling the dark hall of its museum in Stockholm.' },
+  ],
+  Sydney: [
+    { src: 'sydney-1.webp', alt: 'A group posing on the steps of the Sydney Opera House.' },
+  ],
+  Valencia: [
+    { src: 'valencia-1.webp', alt: "Three friends in the square beneath Valencia Cathedral's bell tower." },
+  ],
+  Vienna: [
+    { src: 'vienna-1.webp', alt: "Julian in the crowd outside St. Stephen's Cathedral in Vienna, its spire rising above him." },
+  ],
+  'Virgin Islands': [
+    { src: 'virgin-islands-1.webp', alt: 'Eight friends on a deck above turquoise water and green islands in the Virgin Islands.' },
+  ],
+  Wuhan: [
+    { src: 'wuhan-1.webp', alt: 'The Yellow Crane Tower rising in tiers above the trees in Wuhan.' },
+  ],
+  Yichang: [
+    { src: 'yichang-1.webp', alt: 'Julian and a guide in sun hats at the Three Gorges Dam, its sluices and cranes behind them.' },
+  ],
+  Zurich: [
+    { src: 'zurich-1.webp', alt: 'Julian and friends crowded in for a photo at a bar in Zurich.' },
+  ],
+};
+
+// What the globe actually reads: every place, each carrying its photos
+// (most carry none) with the paths already resolved.
+const globePlaces = places.map((p) => ({
+  ...p,
+  shots: (shots[p.name] ?? []).map((s) => ({ ...s, src: `/images/travel/${s.src}` })),
+}));
+const shotCount = Object.values(shots).reduce((n, list) => n + list.length, 0);
+
 // One note per question block (the layout has room for three), left to
 // right. The country count is worked out from the places Julian listed:
-// 5 in North America (United States, Bahamas, Canada, Mexico, Costa
-// Rica), 16 in Europe, plus Morocco, China and Australia. Territories
-// like the Virgin Islands are not counted as separate countries.
+// 6 in North America and the Caribbean (United States, Bahamas, Canada,
+// Mexico, Costa Rica, Dominican Republic), 16 in Europe, plus Morocco,
+// China and Australia. Territories are not counted as separate
+// countries, which is why the Virgin Islands and Hong Kong do not move
+// the number. It went 24 -> 25 on 2026-11-19, when a photo from Punta
+// Cana put the Dominican Republic on the globe.
 const notes = [
-  { title: 'Countries', text: 'I have been to 24 countries across 5 continents so far.' },
+  { title: 'Countries', text: 'I have been to 25 countries across 5 continents so far.' },
   {
     title: 'Adventures',
     text: 'I have been skydiving over the Swiss Alps, cold plunged in the Nordic Sea, sandboarded in the Sahara and ridden a rollercoaster down the Great Wall of China.',
@@ -298,11 +459,24 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
       <canvas
         class="globe"
         data-globe
-        data-places={JSON.stringify(places)}
+        data-places={JSON.stringify(globePlaces)}
         tabindex="0"
         role="img"
-        aria-label={`Interactive globe marking ${places.length} places Julian has been. Drag, or use the arrow keys, to rotate.`}
+        aria-label={`Interactive globe marking ${places.length} places Julian has been. Drag, or use the arrow keys, to rotate. Press Enter to open a photo from the place nearest the middle.`}
       ></canvas>
+
+      {/* The photo a marker opens. One card, re-pointed at whichever
+          place was clicked, parked next to that marker. */}
+      <div class="shot" data-shot role="dialog" aria-label="Photo" hidden>
+        <img class="shot-img" alt="" decoding="async" draggable="false" />
+        <button class="shot-close" type="button" aria-label="Close photo">×</button>
+        <div class="shot-cap">
+          <button class="shot-nav shot-prev" type="button" aria-label="Previous photo" hidden>◀</button>
+          <span class="shot-place"></span>
+          <span class="shot-count"></span>
+          <button class="shot-nav shot-next" type="button" aria-label="Next photo" hidden>▶</button>
+        </div>
+      </div>
       </div>
     </div>
 
@@ -310,12 +484,16 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
       <span class="hint-key" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
       </span>
-      Drag to spin it yourself · Hover or tap a dot for its name
+      Drag to spin it yourself · Hover a dot for its name · Click a
+      ringed dot for a photo
     </p>
 
     <ul class="sr-only">
-      {places.map((p) => <li>{p.name}</li>)}
+      {places.map((p) => (
+        <li>{shots[p.name] ? `${p.name} — ${shots[p.name].length === 1 ? 'has a photo' : `has ${shots[p.name].length} photos`}` : p.name}</li>
+      ))}
     </ul>
+    <p class="sr-only">{shotCount} photos across {Object.keys(shots).length} of these places.</p>
   </section>
   </div>
 </BaseLayout>
@@ -599,7 +777,7 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .popup, .popup-next { animation: none; }
+    .popup, .popup-next, .shot { animation: none; }
     .dino, .dino-body, .dino-bubble { animation: none; }
     .cloud { animation: none; transform: translateX(10vw); }
     .cloud.c2 { transform: translateX(45vw); }
@@ -713,6 +891,87 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
     color: #fcd020;
   }
 
+  /* The photo a marker opens. Same NES dialogue box as .popup, so the
+     two read as one family; the photo takes the place of the text. */
+  .shot {
+    position: absolute;
+    z-index: 6;
+    width: min(19rem, calc(100% - 1.5rem));
+    padding: 4px;
+    background: #000;
+    border: 4px solid #ffffff;
+    box-shadow: 0 0 0 4px #000, 6px 10px 0 4px rgba(0, 0, 0, 0.25);
+    animation: popup-in 0.18s steps(4) both;
+  }
+
+  .shot[hidden] { display: none; }
+
+  .shot-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 42svh;
+    object-fit: contain;
+    background: #000;
+  }
+
+  .shot-cap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.55rem 0.3rem 0.35rem;
+    font-family: 'Press Start 2P', var(--font-mono);
+    font-size: 0.55rem;
+    line-height: 1.6;
+    letter-spacing: var(--track-label);
+    color: #fcd020;
+    text-transform: uppercase;
+  }
+
+  /* The name takes the slack so the arrows stay pinned to the ends. */
+  .shot-place { flex: 1 1 auto; }
+  .shot-count { flex: none; color: #ffffff; }
+
+  .shot-nav,
+  .shot-close {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: 'Press Start 2P', var(--font-mono);
+    font-size: 0.6rem;
+    line-height: 1;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  .shot-nav[hidden] { display: none; }
+
+  .shot-nav:hover, .shot-nav:focus-visible,
+  .shot-close:hover, .shot-close:focus-visible { color: #fcd020; }
+
+  .shot-nav:focus-visible,
+  .shot-close:focus-visible {
+    outline: 3px solid #fcd020;
+    outline-offset: -3px;
+  }
+
+  /* Over the photo, not beside it, so the picture keeps the full width.
+     The black plate behind it keeps the glyph legible on a bright shot. */
+  .shot-close {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 0.9rem;
+    background: rgba(0, 0, 0, 0.65);
+  }
+
   .sr-only {
     position: absolute;
     width: 1px;
@@ -746,6 +1005,20 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
     }
 
     .dino-bubble::after { right: 2.2rem; }
+
+    /* Same reason as .popup: at this width a card parked beside its
+       marker is half off the globe, so it docks to the screen instead. */
+    .shot {
+      position: fixed;
+      left: 50% !important;
+      top: auto !important;
+      bottom: 1rem;
+      z-index: 60;
+      width: min(19rem, calc(100vw - 1.5rem));
+      margin-left: calc(min(19rem, 100vw - 1.5rem) / -2);
+    }
+
+    .shot-img { max-height: 38svh; }
   }
 </style>
 
@@ -754,7 +1027,8 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
   import { feature } from 'topojson-client';
   import landTopology from 'world-atlas/land-110m.json';
 
-  type Place = { name: string; lon: number; lat: number };
+  type Shot = { src: string; alt: string };
+  type Place = { name: string; lon: number; lat: number; shots: Shot[] };
 
   const canvas = document.querySelector<HTMLCanvasElement>('[data-globe]');
   const ctx = canvas?.getContext('2d');
@@ -1007,6 +1281,16 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
         c.strokeStyle = '#ffffff';
         c.stroke();
 
+        // A place with a photo gets a hole punched in it, so it reads as
+        // a ring rather than a dot. Shape, not colour: the difference
+        // survives both colour blindness and a greyscale screenshot.
+        if (m.p.shots.length) {
+          c.beginPath();
+          c.arc(x, y, active ? 2.6 : 1.5, 0, Math.PI * 2);
+          c.fillStyle = '#ffffff';
+          c.fill();
+        }
+
         if (active) {
           const w = c.measureText(m.p.name).width + 20;
           const h = 24;
@@ -1033,7 +1317,8 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
 
       // Slow constant spin. It eases to a stop while you drag, coast, or
       // have a place's name open, and eases back in afterward.
-      const holding = dragging || hovered !== -1 || Math.abs(vx) > 0.05 || Math.abs(vy) > 0.05;
+      const holding =
+        dragging || hovered !== -1 || shotPlace !== -1 || Math.abs(vx) > 0.05 || Math.abs(vy) > 0.05;
       const target = reduceMotion || holding ? 0 : SPIN_DEG_PER_SEC;
       spin += (target - spin) * Math.min(1, dt * 2.5);
       if (spin > 0.001) {
@@ -1054,8 +1339,126 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
         draw(time);
         dirty = false;
       }
+      placeShot();
       requestAnimationFrame(frame);
     }
+
+    // ---- The photo card ------------------------------------------
+    // One card, re-pointed at whichever place was clicked. It is a DOM
+    // element rather than something drawn on the canvas, so the photo
+    // stays a real <img> with real alt text and the controls stay real
+    // buttons.
+    const holder = canvas.parentElement;
+    const card = document.querySelector<HTMLElement>('[data-shot]');
+    const cardImg = card?.querySelector<HTMLImageElement>('.shot-img') ?? null;
+    const cardPlace = card?.querySelector<HTMLElement>('.shot-place') ?? null;
+    const cardCount = card?.querySelector<HTMLElement>('.shot-count') ?? null;
+    const cardPrev = card?.querySelector<HTMLButtonElement>('.shot-prev') ?? null;
+    const cardNext = card?.querySelector<HTMLButtonElement>('.shot-next') ?? null;
+    const cardClose = card?.querySelector<HTMLButtonElement>('.shot-close') ?? null;
+    let shotPlace = -1;
+    let shotIndex = 0;
+
+    const shotsAt = (i: number) => (i >= 0 && i < places.length ? places[i].shots : []);
+
+    function renderShot() {
+      if (!card || !cardImg || !cardPlace || !cardCount) return;
+      const list = shotsAt(shotPlace);
+      if (!list.length) return;
+      const shot = list[shotIndex];
+      cardImg.src = shot.src;
+      cardImg.alt = shot.alt;
+      cardPlace.textContent = places[shotPlace].name;
+      cardCount.textContent = list.length > 1 ? `${shotIndex + 1}/${list.length}` : '';
+      if (cardPrev) cardPrev.hidden = list.length < 2;
+      if (cardNext) cardNext.hidden = list.length < 2;
+      card.setAttribute(
+        'aria-label',
+        list.length > 1
+          ? `${places[shotPlace].name}, photo ${shotIndex + 1} of ${list.length}`
+          : `${places[shotPlace].name}, photo`,
+      );
+    }
+
+    function openShot(i: number) {
+      if (!card || !shotsAt(i).length) return;
+      const same = i === shotPlace;
+      shotPlace = i;
+      shotIndex = same ? (shotIndex + 1) % shotsAt(i).length : 0;
+      renderShot();
+      card.hidden = false;
+      // Measured and parked before the browser paints it, or it shows up
+      // at last frame's marker for a tick.
+      placeShot();
+      cardClose?.focus({ preventScroll: true });
+    }
+
+    function closeShot(refocus = false) {
+      if (!card || card.hidden) return;
+      card.hidden = true;
+      shotPlace = -1;
+      dirty = true;
+      if (refocus) canvas!.focus({ preventScroll: true });
+    }
+
+    function stepShot(delta: number) {
+      const list = shotsAt(shotPlace);
+      if (list.length < 2) return;
+      shotIndex = (shotIndex + delta + list.length) % list.length;
+      renderShot();
+    }
+
+    // Park the card beside the marker it belongs to. The canvas runs its
+    // own float animation, so the offset is measured from the live rects
+    // instead of worked out from the holder's box — otherwise the card
+    // sits a few pixels off the dot for most of every bob.
+    function placeShot() {
+      if (!card || card.hidden || shotPlace < 0 || !holder) return;
+      const place = places[shotPlace];
+      // Rotated around the back: there is nothing left to point at.
+      if (visibility(place) <= 0) { closeShot(); return; }
+      const pt = projection([place.lon, place.lat]);
+      if (!pt) return;
+      const cr = canvas!.getBoundingClientRect();
+      const hr = holder.getBoundingClientRect();
+      const x = (pt[0] / size) * cr.width + (cr.left - hr.left);
+      const y = (pt[1] / size) * cr.height + (cr.top - hr.top);
+      const w = card.offsetWidth;
+      const h = card.offsetHeight;
+      let left = x + 20;
+      if (left + w > hr.width) left = x - 20 - w; // flip to the other side
+      left = Math.max(0, Math.min(left, Math.max(0, hr.width - w)));
+      const top = Math.max(0, Math.min(y - h / 2, Math.max(0, hr.height - h)));
+      card.style.left = `${left}px`;
+      card.style.top = `${top}px`;
+    }
+
+    // The visible place with a photo closest to the middle of the globe.
+    // This is what the keyboard opens: arrows bring somewhere to the
+    // front, Enter opens what is in front.
+    function nearestShotPlace() {
+      let best = Infinity;
+      let hit = -1;
+      places.forEach((place, i) => {
+        if (!place.shots.length || visibility(place) <= 0) return;
+        const d = geoDistance([-lambda, -phi], [place.lon, place.lat]);
+        if (d < best) {
+          best = d;
+          hit = i;
+        }
+      });
+      return hit;
+    }
+
+    cardPrev?.addEventListener('click', () => stepShot(-1));
+    cardNext?.addEventListener('click', () => stepShot(1));
+    cardClose?.addEventListener('click', () => closeShot(true));
+    card?.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        closeShot(true);
+      }
+    });
 
     // Nearest visible marker within reach of a screen point, or -1.
     function pick(clientX: number, clientY: number, reach = 14) {
@@ -1120,6 +1523,10 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
       if (!moved) {
         hovered = pick(e.clientX, e.clientY, e.pointerType === 'touch' ? 28 : 14);
         dirty = true;
+        // A ringed marker opens its photo; a plain one, or bare ocean,
+        // puts away whatever was open.
+        if (hovered !== -1 && places[hovered].shots.length) openShot(hovered);
+        else closeShot();
       }
       // A pause before release means no fling.
       if (performance.now() - last.t > 80 || reduceMotion) vx = vy = 0;
@@ -1140,6 +1547,23 @@ const brickTile = `url("data:image/svg+xml,${encodeURIComponent(svg(brickRows(),
     // Keyboard: arrows rotate in steps.
     canvas.addEventListener('keydown', (e) => {
       const step = 8;
+      // Enter opens the nearest photo to the middle of the globe, and
+      // again steps through that place's other photos. With the arrow
+      // keys above it, that is a complete path with no pointer.
+      if (e.key === 'Enter' || e.key === ' ') {
+        const hit = nearestShotPlace();
+        if (hit !== -1) {
+          hovered = hit;
+          dirty = true;
+          openShot(hit);
+        }
+        e.preventDefault();
+        return;
+      }
+      if (e.key === 'Escape') {
+        closeShot();
+        return;
+      }
       if (e.key === 'ArrowLeft') lambda -= step;
       else if (e.key === 'ArrowRight') lambda += step;
       else if (e.key === 'ArrowUp') phi = Math.min(90, phi + step);
